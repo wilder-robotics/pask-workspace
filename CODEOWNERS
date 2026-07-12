@@ -1,0 +1,10 @@
+# Every file requires review from Rob unless overridden below.
+*                @actionrob
+
+# The authoritative specification MUST be reviewed by Rob personally.
+/docs/draft-wilder-scitt-physical-site-engagement-receipt-*.md    @actionrob
+
+# Licensing and commercial-exception boilerplate MUST NOT be edited without
+# explicit approval.
+/LICENSE                    @actionrob
+/COMMERCIAL-EXCEPTION.md    @actionrob
