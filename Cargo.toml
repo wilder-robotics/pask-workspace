@@ -1,0 +1,21 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/pask-wire",
+    "crates/pask-wire-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "AGPL-3.0-only"
+repository = "https://github.com/actionrob/pask-workspace"
+authors = ["Wilder Robotics <rob@wilder-robotics.com>"]
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
