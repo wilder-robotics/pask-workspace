@@ -1,0 +1,46 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
+// pask-wire is licensed AGPL-3.0-only with a commercial exception; see
+// COMMERCIAL-EXCEPTION.md in the workspace root.
+
+use alloc::string::String;
+use core::fmt;
+
+/// Errors returned while parsing, producing, or verifying a statement.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Error {
+    /// JSON parsing or data-model conversion failed.
+    Json(String),
+    /// JCS serialization failed.
+    Jcs(String),
+    /// The COSE envelope is malformed.
+    Cose(&'static str),
+    /// A signature could not be created or verified.
+    Signature,
+    /// A protected-header requirement was not met.
+    Header(&'static str),
+    /// A payload profile requirement was not met.
+    Validation(&'static str),
+    /// The embedded payload bytes are not their JCS serialization.
+    NonCanonicalPayload,
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Json(message) => write!(formatter, "JSON error: {message}"),
+            Self::Jcs(message) => write!(formatter, "JCS error: {message}"),
+            Self::Cose(message) => write!(formatter, "COSE error: {message}"),
+            Self::Signature => formatter.write_str("signature error"),
+            Self::Header(message) => write!(formatter, "protected-header error: {message}"),
+            Self::Validation(message) => write!(formatter, "payload validation error: {message}"),
+            Self::NonCanonicalPayload => formatter.write_str("payload is not JCS canonical"),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for Error {}
+
+/// Result type used by this crate.
+pub type Result<T> = core::result::Result<T, Error>;

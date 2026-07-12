@@ -5,33 +5,17 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  scaffold-check:
-    # Placeholder job — passes on the scaffold-only commit before any
-    # Rust code lands. Once crates/pask-wire is added, replace this
-    # job with the full Rust matrix below.
-    runs-on: ubuntu-latest
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: verify scaffold present
-        run: |
-          test -f LICENSE
-          test -f COMMERCIAL-EXCEPTION.md
-          test -f README.md
-          test -f docs/draft-wilder-scitt-physical-site-engagement-receipt-00.md
-
-  # Uncomment once crates/pask-wire lands.
-  #
-  # test:
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-latest, macos-latest, windows-latest]
-  #   runs-on: ${{ matrix.os }}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: dtolnay/rust-toolchain@stable
-  #       with:
-  #         components: rustfmt, clippy
-  #     - run: cargo fmt --check
-  #     - run: cargo clippy --workspace --all-targets -- -D warnings
-  #     - run: cargo build --workspace --all-features
-  #     - run: cargo test --workspace
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - run: cargo fmt --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo build --workspace --all-features
+      - run: cargo test --workspace
