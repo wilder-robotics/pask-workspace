@@ -230,6 +230,114 @@ impl Payload {
         &self.chain.hash
     }
 
+    /// Returns the stable actor identifier.
+    #[must_use]
+    pub fn actor_id(&self) -> &str {
+        &self.actor.id
+    }
+
+    /// Returns the operator string associated with the actor.
+    #[must_use]
+    pub fn actor_operator(&self) -> &str {
+        &self.actor.operator
+    }
+
+    /// Returns the stable engagement identifier.
+    #[must_use]
+    pub fn engagement_id(&self) -> &str {
+        &self.engagement.id
+    }
+
+    /// Returns the engagement type string (RFC 3986 URI or short identifier per §6 of the draft).
+    #[must_use]
+    pub fn engagement_type(&self) -> &str {
+        &self.engagement.r#type
+    }
+
+    /// Returns the RFC 3339 UTC start of the engagement window.
+    #[must_use]
+    pub fn engagement_window_start(&self) -> &str {
+        &self.engagement.window.start
+    }
+
+    /// Returns the RFC 3339 UTC end of the engagement window.
+    #[must_use]
+    pub fn engagement_window_end(&self) -> &str {
+        &self.engagement.window.end
+    }
+
+    /// Returns the SHA-256 digest of the raw evidence bundle referenced by this engagement.
+    #[must_use]
+    pub fn engagement_evidence_digest(&self) -> &str {
+        &self.engagement.evidence_digest
+    }
+
+    /// Returns the TEE class identifier.
+    #[must_use]
+    pub fn attestation_tee_class(&self) -> &str {
+        &self.attestation.tee_class
+    }
+
+    /// Returns the SHA-256 digest of the sealed evidence blob.
+    #[must_use]
+    pub fn sealed_evidence_digest(&self) -> &str {
+        &self.attestation.sealed_evidence.digest
+    }
+
+    /// Returns the size in bytes of the sealed evidence blob.
+    #[must_use]
+    pub fn sealed_evidence_size_bytes(&self) -> u64 {
+        self.attestation.sealed_evidence.size_bytes
+    }
+
+    /// Returns the sealed evidence encoding identifier.
+    #[must_use]
+    pub fn sealed_evidence_encoding(&self) -> &str {
+        &self.attestation.sealed_evidence.encoding
+    }
+
+    /// Returns the operations-layer system identifier.
+    ///
+    /// This value selects which write-in adapter is responsible for pushing this receipt.
+    /// Values are defined by the PSER profile registry (see §6 of the draft). Example
+    /// values: `"buildium"`, `"propertymeld"`.
+    #[must_use]
+    pub fn adapter_system(&self) -> &str {
+        &self.adapter.system
+    }
+
+    /// Returns the opaque per-system endpoint identifier.
+    ///
+    /// The value is interpreted by the target adapter, not by `pask-wire`. For the
+    /// `buildium` adapter it is the Buildium rental property ID; for other adapters,
+    /// consult the adapter documentation.
+    #[must_use]
+    pub fn adapter_endpoint(&self) -> &str {
+        &self.adapter.endpoint
+    }
+
+    /// Returns the RFC 3339 UTC timestamp at which the write-in was posted.
+    #[must_use]
+    pub fn adapter_posted_at(&self) -> &str {
+        &self.adapter.posted_at
+    }
+
+    /// Returns the SHA-256 digest of the operations-layer acknowledgement.
+    #[must_use]
+    pub fn adapter_ack_digest(&self) -> &str {
+        &self.adapter.ack_digest
+    }
+
+    /// Returns whether the receipt is marked WRITE_ONLY.
+    ///
+    /// Every `wilder.pser/0.1` receipt that parses successfully MUST be WRITE_ONLY;
+    /// this accessor exists so downstream adapters can enforce the property as
+    /// defense-in-depth without pattern-matching the internal enum.
+    #[must_use]
+    pub fn adapter_is_write_only(&self) -> bool {
+        matches!(self.adapter.mode, AdapterMode::WriteOnly)
+    }
+
     pub(crate) fn parse_canonical(bytes: &[u8]) -> Result<Self> {
         let payload = Self::from_json(bytes)?;
         if payload.to_jcs()?.as_slice() != bytes {

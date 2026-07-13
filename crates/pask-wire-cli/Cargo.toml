@@ -6,21 +6,19 @@ rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 authors.workspace = true
-description = "Command-line producer and verifier for pask-wire statements"
+description = "Command-line producer, verifier, and optional adapter client for Pask receipts"
 
-[[bin]]
-name = "pask-wire"
-path = "src/main.rs"
+[features]
+default = []
+adapter = ["dep:pask-adapter"]
+es256 = ["pask-wire/es256"]
 
 [dependencies]
 anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8"] }
+pask-adapter = { path = "../pask-adapter", optional = true }
 pask-wire = { path = "../pask-wire", features = ["std"] }
-
-[dev-dependencies]
-ed25519-dalek = { version = "2.2.0", default-features = false, features = ["rand_core"] }
-rand_core = { version = "0.6.4", features = ["getrandom"] }
 
 [lints]
 workspace = true
