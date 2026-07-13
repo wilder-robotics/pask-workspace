@@ -1,0 +1,29 @@
+[package]
+name = "pask-adapter"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "WRITE_ONLY operations-layer adapters for verified Pask receipts"
+
+[features]
+default = []
+es256 = ["pask-wire/es256"]
+
+[dependencies]
+ed25519-dalek = { version = "2.2.0", default-features = false }
+pask-wire = { path = "../pask-wire", features = ["std"] }
+reqwest = { version = "0.12.20", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+sha2 = "0.10.9"
+thiserror = "2.0.12"
+url = "2.5.4"
+
+[dev-dependencies]
+ed25519-dalek = { version = "2.2.0", default-features = false }
+
+[lints]
+workspace = true

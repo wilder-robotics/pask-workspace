@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
-// pask-wire is licensed AGPL-3.0-only with a commercial exception; see
+// pask-wire-cli is licensed AGPL-3.0-only with a commercial exception; see
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
-//! Command-line wrapper for producing and verifying PSER statements.
-
-#![forbid(unsafe_code)]
-
-use std::{fs, path::PathBuf};
+use std::{
+    fs,
+    io::{self, Write},
+    path::PathBuf,
+};
 
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
@@ -17,8 +17,19 @@ use ed25519_dalek::{
 };
 use pask_wire::{Payload, produce_ed25519, verify_ed25519};
 
+#[cfg(feature = "adapter")]
+use {
+    clap::ValueEnum,
+    pask_adapter::{
+        AdapterError, AdapterWriteIn, BuildiumWriteIn, CredentialProvider, Credentials,
+        InMemoryDedupLog, PropertyMeldWriteIn, ReqwestHttpTransport, RetryPolicy,
+    },
+    std::sync::Arc,
+};
+
 #[derive(Debug, Parser)]
-#[command(name = "pask-wire", version, about)]
+#[command(name = "pask-wire")]
+#[command(about = "Produce, verify, and optionally push Pask receipts")]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -27,67 +38,156 @@ struct Cli {
 #[derive(Debug, Subcommand)]
 enum Command {
     Produce {
-        payload: PathBuf,
         #[arg(long)]
-        key: PathBuf,
+        input: PathBuf,
         #[arg(long)]
-        out: PathBuf,
+        private_key: PathBuf,
+        #[arg(long)]
+        output: PathBuf,
     },
     Verify {
-        statement: PathBuf,
-        #[arg(long = "trust-anchor")]
-        trust_anchor: PathBuf,
+        #[arg(long)]
+        input: PathBuf,
+        #[arg(long)]
+        public_key: PathBuf,
+        #[arg(long)]
+        output: Option<PathBuf>,
     },
+    #[cfg(feature = "adapter")]
+    Push {
+        #[arg(long)]
+        input: PathBuf,
+        #[arg(long)]
+        public_key: PathBuf,
+        #[arg(long, value_enum)]
+        adapter: AdapterSelection,
+        #[arg(long)]
+        base_url: Option<String>,
+    },
+}
+
+#[cfg(feature = "adapter")]
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum AdapterSelection {
+    Buildium,
+    Propertymeld,
+}
+
+#[cfg(feature = "adapter")]
+struct EnvironmentCredentials;
+
+#[cfg(feature = "adapter")]
+impl CredentialProvider for EnvironmentCredentials {
+    fn credentials(&self, adapter_name: &str) -> Result<Credentials, AdapterError> {
+        let client_id = std::env::var("PASK_BUILDIUM_CLIENT_ID").map_err(|_| {
+            AdapterError::CredentialMissing {
+                adapter: adapter_name.to_owned(),
+            }
+        })?;
+        let client_secret = std::env::var("PASK_BUILDIUM_CLIENT_SECRET").map_err(|_| {
+            AdapterError::CredentialMissing {
+                adapter: adapter_name.to_owned(),
+            }
+        })?;
+        Ok(Credentials {
+            client_id,
+            client_secret,
+        })
+    }
 }
 
 fn main() -> Result<()> {
     match Cli::parse().command {
-        Command::Produce { payload, key, out } => {
-            let input = fs::read(&payload)
-                .with_context(|| format!("failed to read payload {}", payload.display()))?;
-            let payload = Payload::from_json_for_production(&input)
-                .context("payload does not conform to wilder.pser/0.1")?;
-            let pem = fs::read_to_string(&key)
-                .with_context(|| format!("failed to read signing key {}", key.display()))?;
-            let key = SigningKey::from_pkcs8_pem(&pem)
-                .map_err(|error| anyhow::anyhow!("invalid Ed25519 PKCS#8 key: {error}"))?;
-            let statement = produce_ed25519(&payload, payload.witness_key(), &key)
-                .context("failed to produce statement")?;
-            fs::write(&out, statement)
-                .with_context(|| format!("failed to write statement {}", out.display()))?;
-        }
+        Command::Produce {
+            input,
+            private_key,
+            output,
+        } => produce(input, private_key, output),
         Command::Verify {
-            statement,
-            trust_anchor,
-        } => {
-            let statement_bytes = fs::read(&statement)
-                .with_context(|| format!("failed to read statement {}", statement.display()))?;
-            let pem = fs::read_to_string(&trust_anchor).with_context(|| {
-                format!("failed to read trust anchor {}", trust_anchor.display())
-            })?;
-            let key = VerifyingKey::from_public_key_pem(&pem)
-                .map_err(|error| anyhow::anyhow!("invalid Ed25519 public key: {error}"))?;
-            let payload =
-                verify_ed25519(&statement_bytes, &key).context("statement verification failed")?;
-            let canonical =
-                String::from_utf8(payload.to_jcs()?).context("canonical payload was not UTF-8")?;
-            println!("{canonical}");
-        }
+            input,
+            public_key,
+            output,
+        } => verify(input, public_key, output),
+        #[cfg(feature = "adapter")]
+        Command::Push {
+            input,
+            public_key,
+            adapter,
+            base_url,
+        } => push(input, public_key, adapter, base_url),
     }
-    Ok(())
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use pask_wire::testvectors::MINIMAL_VALID_PAYLOAD;
+fn produce(input: PathBuf, private_key: PathBuf, output: PathBuf) -> Result<()> {
+    let input = fs::read(&input)
+        .with_context(|| format!("failed to read payload input {}", input.display()))?;
+    let private_key_pem = fs::read_to_string(&private_key)
+        .with_context(|| format!("failed to read private key {}", private_key.display()))?;
+    let signing_key = SigningKey::from_pkcs8_pem(&private_key_pem)
+        .map_err(|error| anyhow::anyhow!("invalid Ed25519 private key: {error}"))?;
+    let payload =
+        Payload::from_json_for_production(&input).context("invalid producer payload input")?;
+    let issuer = payload.witness_key().to_owned();
+    let statement =
+        produce_ed25519(&payload, &issuer, &signing_key).context("failed to produce receipt")?;
+    fs::write(&output, statement)
+        .with_context(|| format!("failed to write receipt {}", output.display()))
+}
 
-    #[test]
-    fn cli_library_round_trip() {
-        let payload = Payload::from_json_for_production(MINIMAL_VALID_PAYLOAD.as_bytes()).unwrap();
-        let key = SigningKey::generate(&mut rand_core::OsRng);
-        let statement = produce_ed25519(&payload, payload.witness_key(), &key).unwrap();
-        let verified = verify_ed25519(&statement, &key.verifying_key()).unwrap();
-        assert_eq!(verified, payload);
+fn verify(input: PathBuf, public_key: PathBuf, output: Option<PathBuf>) -> Result<()> {
+    let statement =
+        fs::read(&input).with_context(|| format!("failed to read receipt {}", input.display()))?;
+    let verifying_key = read_verifying_key(&public_key)?;
+    let payload =
+        verify_ed25519(&statement, &verifying_key).context("receipt verification failed")?;
+    let canonical = payload
+        .to_jcs()
+        .context("failed to serialize verified payload")?;
+
+    if let Some(output) = output {
+        fs::write(&output, canonical)
+            .with_context(|| format!("failed to write payload {}", output.display()))
+    } else {
+        io::stdout()
+            .write_all(&canonical)
+            .context("failed to write verified payload")
     }
+}
+
+fn read_verifying_key(path: &PathBuf) -> Result<VerifyingKey> {
+    let public_key_pem = fs::read_to_string(path)
+        .with_context(|| format!("failed to read public key {}", path.display()))?;
+    VerifyingKey::from_public_key_pem(&public_key_pem)
+        .map_err(|error| anyhow::anyhow!("invalid Ed25519 public key: {error}"))
+}
+
+#[cfg(feature = "adapter")]
+fn push(
+    input: PathBuf,
+    public_key: PathBuf,
+    adapter: AdapterSelection,
+    base_url: Option<String>,
+) -> Result<()> {
+    let statement =
+        fs::read(&input).with_context(|| format!("failed to read receipt {}", input.display()))?;
+    let verifying_key = read_verifying_key(&public_key)?;
+
+    let outcome = match adapter {
+        AdapterSelection::Buildium => {
+            let base_url =
+                base_url.ok_or_else(|| anyhow::anyhow!("--base-url is required for Buildium"))?;
+            let adapter = BuildiumWriteIn::new(
+                &base_url,
+                Arc::new(ReqwestHttpTransport::new()),
+                Arc::new(EnvironmentCredentials),
+                Arc::new(InMemoryDedupLog::new()),
+                RetryPolicy::default(),
+            )?;
+            adapter.push(&statement, &verifying_key)?
+        }
+        AdapterSelection::Propertymeld => PropertyMeldWriteIn.push(&statement, &verifying_key)?,
+    };
+
+    println!("{outcome:?}");
+    Ok(())
 }
