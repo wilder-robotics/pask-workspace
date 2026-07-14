@@ -873,6 +873,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "pask-site"
+version = "0.1.0"
+dependencies = [
+ "ed25519-dalek",
+ "pask-adapter",
+ "pask-wire",
+ "rand_core 0.6.4",
+ "serde",
+ "serde_json",
+ "sha2",
+ "thiserror",
+]
+
+[[package]]
 name = "pask-wire"
 version = "0.1.0"
 dependencies = [

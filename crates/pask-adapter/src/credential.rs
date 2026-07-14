@@ -44,3 +44,29 @@ impl CredentialProvider for StaticCredentialProvider {
         Ok(self.credentials.clone())
     }
 }
+
+/// Reads Buildium credentials from `PASK_BUILDIUM_CLIENT_ID` and
+/// `PASK_BUILDIUM_CLIENT_SECRET` environment variables.
+///
+/// Returns `AdapterError::CredentialMissing` when either variable is unset.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct EnvironmentCredentials;
+
+impl CredentialProvider for EnvironmentCredentials {
+    fn credentials(&self, adapter_name: &str) -> Result<Credentials, AdapterError> {
+        let client_id = std::env::var("PASK_BUILDIUM_CLIENT_ID").map_err(|_| {
+            AdapterError::CredentialMissing {
+                adapter: adapter_name.to_owned(),
+            }
+        })?;
+        let client_secret = std::env::var("PASK_BUILDIUM_CLIENT_SECRET").map_err(|_| {
+            AdapterError::CredentialMissing {
+                adapter: adapter_name.to_owned(),
+            }
+        })?;
+        Ok(Credentials {
+            client_id,
+            client_secret,
+        })
+    }
+}
