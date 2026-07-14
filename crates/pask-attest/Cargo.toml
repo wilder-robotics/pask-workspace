@@ -1,0 +1,29 @@
+[package]
+name = "pask-attest"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "TEE attestation verification and typed claims for Pask receipts"
+
+[features]
+default = []
+mock = []
+
+[dependencies]
+ed25519-dalek = { version = "2.2.0", default-features = false, features = ["std"] }
+pask-site = { path = "../pask-site" }
+pask-wire = { path = "../pask-wire", features = ["std"] }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+thiserror = "2.0.12"
+time = { version = "=0.3.41", default-features = false, features = ["parsing"] }
+
+[dev-dependencies]
+proptest = "1.6.0"
+time = { version = "=0.3.41", default-features = false, features = ["formatting", "parsing"] }
+
+[lints]
+workspace = true

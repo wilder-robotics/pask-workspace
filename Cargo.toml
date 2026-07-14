@@ -5,6 +5,7 @@ members = [
     "crates/pask-wire-cli",
     "crates/pask-adapter",
     "crates/pask-site",
+    "crates/pask-attest",
 ]
 
 [workspace.package]
