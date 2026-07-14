@@ -1,0 +1,15 @@
+{
+  "engagementId": "eng:res-001:20261015-140000",
+  "files": [
+    {
+      "path": "files/observation-01.txt",
+      "sizeBytes": 61,
+      "digest": "sha256:5932312872c906678d568b527ded14cf9a2c94de634dfb2020e115dd882b28e4"
+    },
+    {
+      "path": "files/observation-02.txt",
+      "sizeBytes": 61,
+      "digest": "sha256:57455e5d5467200343e5556f28dab4c7e16dba5b9637e830236e6f785ad9e623"
+    }
+  ]
+}

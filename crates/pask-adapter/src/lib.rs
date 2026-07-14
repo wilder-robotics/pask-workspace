@@ -21,7 +21,9 @@ pub mod verify;
 pub use buildium::{
     BuildiumWriteIn, HttpMethod, HttpRequest, HttpResponse, HttpTransport, ReqwestHttpTransport,
 };
-pub use credential::{CredentialProvider, Credentials, StaticCredentialProvider};
+pub use credential::{
+    CredentialProvider, Credentials, EnvironmentCredentials, StaticCredentialProvider,
+};
 pub use dedup::{DedupLog, InMemoryDedupLog, lower_hex, receipt_digest};
 pub use error::AdapterError;
 pub use outcome::AdapterOutcome;

@@ -21,8 +21,8 @@ use pask_wire::{Payload, produce_ed25519, verify_ed25519};
 use {
     clap::ValueEnum,
     pask_adapter::{
-        AdapterError, AdapterWriteIn, BuildiumWriteIn, CredentialProvider, Credentials,
-        InMemoryDedupLog, PropertyMeldWriteIn, ReqwestHttpTransport, RetryPolicy,
+        AdapterWriteIn, BuildiumWriteIn, EnvironmentCredentials, InMemoryDedupLog,
+        PropertyMeldWriteIn, ReqwestHttpTransport, RetryPolicy,
     },
     std::sync::Arc,
 };
@@ -71,29 +71,6 @@ enum Command {
 enum AdapterSelection {
     Buildium,
     Propertymeld,
-}
-
-#[cfg(feature = "adapter")]
-struct EnvironmentCredentials;
-
-#[cfg(feature = "adapter")]
-impl CredentialProvider for EnvironmentCredentials {
-    fn credentials(&self, adapter_name: &str) -> Result<Credentials, AdapterError> {
-        let client_id = std::env::var("PASK_BUILDIUM_CLIENT_ID").map_err(|_| {
-            AdapterError::CredentialMissing {
-                adapter: adapter_name.to_owned(),
-            }
-        })?;
-        let client_secret = std::env::var("PASK_BUILDIUM_CLIENT_SECRET").map_err(|_| {
-            AdapterError::CredentialMissing {
-                adapter: adapter_name.to_owned(),
-            }
-        })?;
-        Ok(Credentials {
-            client_id,
-            client_secret,
-        })
-    }
 }
 
 fn main() -> Result<()> {

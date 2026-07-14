@@ -1,0 +1,1 @@
+`pask-site` is the reference site-owner producer for the `wilder.pser/0.1` profile: it canonicalizes deterministic engagement evidence, constructs and signs a validated receipt, and hands the signed bytes to a verify-before-push `pask-adapter` implementation.
