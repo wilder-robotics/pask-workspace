@@ -7,7 +7,6 @@
 
 #![forbid(unsafe_code)]
 
-mod clock;
 mod config;
 mod error;
 mod evidence;
@@ -16,9 +15,9 @@ mod producer;
 mod reference;
 mod uuid;
 
-pub use clock::{Clock, FixedClock, SystemClock};
 pub use config::SiteConfig;
 pub use error::SiteError;
 pub use evidence::{EvidenceBundle, EvidenceFile};
+pub use pask_attest::clock::{Clock, FixedClock, SystemClock};
 pub use producer::{Ed25519SiteProducer, EngagementRequest, SiteProducer};
 pub use reference::ReferenceSite;

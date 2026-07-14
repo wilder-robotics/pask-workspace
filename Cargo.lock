@@ -947,7 +947,6 @@ name = "pask-attest"
 version = "0.1.0"
 dependencies = [
  "ed25519-dalek",
- "pask-site",
  "pask-wire",
  "proptest",
  "serde",
@@ -962,6 +961,7 @@ version = "0.1.0"
 dependencies = [
  "ed25519-dalek",
  "pask-adapter",
+ "pask-attest",
  "pask-wire",
  "rand_core 0.6.4",
  "serde",
