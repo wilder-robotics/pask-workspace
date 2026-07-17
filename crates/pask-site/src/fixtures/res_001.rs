@@ -17,10 +17,18 @@ const ACTOR_ID: &str = "actor:robot-alpha-01";
 const ACTOR_CLASS: &str = "AUTONOMOUS";
 const ACTOR_OPERATOR: &str = "operator:wilder-robotics";
 const TEE_CLASS: &str = "arm64.tee-v1";
-const PLATFORM_EVIDENCE: &str = "ref:file:attest-2026-10-15T14:00:00Z.bin";
+const PLATFORM_EVIDENCE_ENCODING: &str = "opaque/1";
+const PLATFORM_EVIDENCE_DIGEST: &str =
+    "sha256:3333333333333333333333333333333333333333333333333333333333333333";
 const MEASURED_BOOT_CHAIN: &str =
+    "sha256:aa49a431481bba8610ab19c319ffe44a19412c5629cf0e2bedb5f9b40ba7c08e";
+const BOOTLOADER_DIGEST: &str =
+    "sha256:1111111111111111111111111111111111111111111111111111111111111111";
+const KERNEL_DIGEST: &str =
     "sha256:2222222222222222222222222222222222222222222222222222222222222222";
 const WITNESS_KEY: &str = "key:tee:res-001-witness-01";
+const VALIDITY_NOT_BEFORE: &str = "2026-10-15T13:00:00Z";
+const VALIDITY_NOT_AFTER: &str = "2026-10-15T15:00:00Z";
 const ADAPTER_SYSTEM: &str = "buildium";
 const ADAPTER_ENDPOINT: &str = "rental-42";
 const ENGAGEMENT_ID: &str = "eng:res-001:20261015-140000";
@@ -53,11 +61,18 @@ pub fn site_config() -> SiteConfig {
         actor_id: ACTOR_ID.to_owned(),
         actor_class: ACTOR_CLASS.to_owned(),
         actor_operator: ACTOR_OPERATOR.to_owned(),
-        // PASK-004 will replace these deterministic stand-ins with real TEE evidence.
+        // PASK-006 will replace these deterministic stand-ins with verified claims.
         attestation_tee_class: TEE_CLASS.to_owned(),
-        attestation_platform_evidence: PLATFORM_EVIDENCE.to_owned(),
+        attestation_platform_evidence_encoding: PLATFORM_EVIDENCE_ENCODING.to_owned(),
+        attestation_platform_evidence_digest: PLATFORM_EVIDENCE_DIGEST.to_owned(),
         attestation_measured_boot_chain: MEASURED_BOOT_CHAIN.to_owned(),
+        attestation_measured_boot_components: vec![
+            ("bootloader".to_owned(), BOOTLOADER_DIGEST.to_owned()),
+            ("kernel".to_owned(), KERNEL_DIGEST.to_owned()),
+        ],
         attestation_witness_key: WITNESS_KEY.to_owned(),
+        attestation_validity_not_before: VALIDITY_NOT_BEFORE.to_owned(),
+        attestation_validity_not_after: VALIDITY_NOT_AFTER.to_owned(),
         adapter_system: ADAPTER_SYSTEM.to_owned(),
         adapter_endpoint: ADAPTER_ENDPOINT.to_owned(),
     }

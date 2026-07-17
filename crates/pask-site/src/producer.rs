@@ -78,6 +78,17 @@ impl SiteProducer for Ed25519SiteProducer {
         let evidence_digest = pask_wire::sha256_prefixed(&evidence_jcs);
         let sealed_digest = evidence_digest.clone();
         let sealed_size = evidence_jcs.len() as u64;
+        let measured_boot_components = self
+            .config
+            .attestation_measured_boot_components
+            .iter()
+            .map(|(name, digest)| {
+                json!({
+                    "name": name,
+                    "digest": digest,
+                })
+            })
+            .collect::<Vec<_>>();
 
         if request.evidence.engagement_id != request.engagement_id {
             return Err(SiteError::EvidenceMismatch);
@@ -123,14 +134,24 @@ impl SiteProducer for Ed25519SiteProducer {
             },
             "attestation": {
                 "teeClass": self.config.attestation_tee_class,
-                "platformEvidence": self.config.attestation_platform_evidence,
-                "measuredBootChain": self.config.attestation_measured_boot_chain,
+                "measuredBoot": {
+                    "chain": self.config.attestation_measured_boot_chain,
+                    "components": measured_boot_components,
+                },
+                "platformEvidence": {
+                    "encoding": self.config.attestation_platform_evidence_encoding,
+                    "digest": self.config.attestation_platform_evidence_digest,
+                },
                 "sealedEvidence": {
                     "digest": sealed_digest,
                     "sizeBytes": sealed_size,
                     "encoding": "opaque/1",
                 },
                 "witnessKey": self.config.attestation_witness_key,
+                "validity": {
+                    "notBefore": self.config.attestation_validity_not_before,
+                    "notAfter": self.config.attestation_validity_not_after,
+                },
             },
             "adapter": {
                 "system": self.config.adapter_system,

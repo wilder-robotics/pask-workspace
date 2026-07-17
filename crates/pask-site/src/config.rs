@@ -30,12 +30,20 @@ pub struct SiteConfig {
     pub actor_operator: String,
     /// TEE class identifier.
     pub attestation_tee_class: String,
-    /// Platform-evidence reference.
-    pub attestation_platform_evidence: String,
+    /// Platform-evidence encoding identifier.
+    pub attestation_platform_evidence_encoding: String,
+    /// Lowercase `sha256:<64 hex>` platform-evidence digest.
+    pub attestation_platform_evidence_digest: String,
     /// Lowercase `sha256:<64 hex>` measured-boot-chain digest.
     pub attestation_measured_boot_chain: String,
+    /// Ordered measured-boot component names and lowercase SHA-256 digests.
+    pub attestation_measured_boot_components: Vec<(String, String)>,
     /// Witness key identifier.
     pub attestation_witness_key: String,
+    /// RFC 3339 UTC attestation-validity start.
+    pub attestation_validity_not_before: String,
+    /// RFC 3339 UTC attestation-validity end.
+    pub attestation_validity_not_after: String,
     /// Operations-layer adapter system.
     pub adapter_system: String,
     /// Opaque adapter endpoint identifier.

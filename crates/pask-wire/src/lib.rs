@@ -3,7 +3,7 @@
 // pask-wire is licensed AGPL-3.0-only with a commercial exception; see
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
-//! Producer and verifier for the `wilder.pser/0.1` signed-statement profile.
+//! Producer and verifier for the `wilder.pser/0.2` signed-statement profile.
 
 #![no_std]
 #![forbid(unsafe_code)]

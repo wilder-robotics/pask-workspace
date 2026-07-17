@@ -1,0 +1,11 @@
+# Enforce LF line endings for all text sources in the pask-workspace repo.
+# Codex diff delivery contracts (see willa-assets/codex-packages/) require
+# LF-only patches; committed CRLF causes git apply --check failures even
+# when file bodies otherwise match. This attribute prevents future drift.
+*.rs        text eol=lf
+*.toml      text eol=lf
+*.md        text eol=lf
+*.json      text eol=lf
+*.sh        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf

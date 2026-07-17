@@ -14,7 +14,7 @@ use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 use crate::{Error, Result, sha256_prefixed, validate_sha256};
 
 /// Supported PSER profile version.
-pub const SPEC_VERSION: &str = "wilder.pser/0.1";
+pub const SPEC_VERSION: &str = "wilder.pser/0.2";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -112,10 +112,41 @@ enum EnvelopeConformance {
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct Attestation {
     tee_class: String,
-    platform_evidence: String,
-    measured_boot_chain: String,
+    measured_boot: MeasuredBoot,
+    platform_evidence: PlatformEvidence,
     sealed_evidence: SealedEvidence,
     witness_key: String,
+    validity: Validity,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    quote: Option<Vec<u8>>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+struct MeasuredBoot {
+    chain: String,
+    components: Vec<MeasuredBootComponent>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+struct MeasuredBootComponent {
+    name: String,
+    digest: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+struct PlatformEvidence {
+    encoding: String,
+    digest: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+struct Validity {
+    not_before: String,
+    not_after: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -161,7 +192,7 @@ where
     Option::<T>::deserialize(deserializer)
 }
 
-/// Strongly typed `wilder.pser/0.1` payload.
+/// Strongly typed `wilder.pser/0.2` payload.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Payload {
@@ -330,7 +361,7 @@ impl Payload {
 
     /// Returns whether the receipt is marked WRITE_ONLY.
     ///
-    /// Every `wilder.pser/0.1` receipt that parses successfully MUST be WRITE_ONLY;
+    /// Every `wilder.pser/0.2` receipt that parses successfully MUST be WRITE_ONLY;
     /// this accessor exists so downstream adapters can enforce the property as
     /// defense-in-depth without pattern-matching the internal enum.
     #[must_use]
@@ -376,7 +407,7 @@ impl Payload {
             &self.engagement.id,
             &self.engagement.r#type,
             &self.attestation.tee_class,
-            &self.attestation.platform_evidence,
+            &self.attestation.platform_evidence.encoding,
             &self.attestation.sealed_evidence.encoding,
             &self.attestation.witness_key,
             &self.adapter.system,
@@ -401,8 +432,24 @@ impl Payload {
         validate_utc(&self.adapter.posted_at)?;
         validate_sha256(&self.site.envelope.digest)?;
         validate_sha256(&self.engagement.evidence_digest)?;
-        validate_sha256(&self.attestation.measured_boot_chain)?;
+        validate_sha256(&self.attestation.measured_boot.chain)?;
+        validate_sha256(&self.attestation.platform_evidence.digest)?;
         validate_sha256(&self.attestation.sealed_evidence.digest)?;
+        for component in &self.attestation.measured_boot.components {
+            if component.name.is_empty() {
+                return Err(Error::Validation(
+                    "measured-boot component name must not be empty",
+                ));
+            }
+            validate_sha256(&component.digest)?;
+        }
+        let validity_start = validate_utc(&self.attestation.validity.not_before)?;
+        let validity_end = validate_utc(&self.attestation.validity.not_after)?;
+        if validity_end < validity_start {
+            return Err(Error::Validation(
+                "attestation validity end precedes its start",
+            ));
+        }
         validate_sha256(&self.adapter.ack_digest)?;
         match (self.chain.seq, self.chain.prev_hash.as_deref()) {
             (0, None) => {}

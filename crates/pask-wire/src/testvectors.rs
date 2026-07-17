@@ -7,7 +7,7 @@
 
 /// Minimal valid unsigned payload with the package's placeholder chain hash.
 pub const MINIMAL_VALID_PAYLOAD: &str = r#"{
-  "spec": "wilder.pser/0.1",
+  "spec": "wilder.pser/0.2",
   "id": "uuid:00000000-0000-4000-8000-000000000001",
   "ts": "2026-10-15T14:00:00Z",
   "site": {
@@ -34,15 +34,30 @@ pub const MINIMAL_VALID_PAYLOAD: &str = r#"{
     "evidenceDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
   },
   "attestation": {
-    "teeClass": "nvidia.jetson-thor-cc",
-    "platformEvidence": "ref:file:attest-2026-10-15T14:00:00Z.bin",
-    "measuredBootChain": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "teeClass": "arm64.tee-v1",
+    "measuredBoot": {
+      "chain": "sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1",
+      "components": [
+        {
+          "name": "bl1",
+          "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      ]
+    },
+    "platformEvidence": {
+      "encoding": "opaque/1",
+      "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
     "sealedEvidence": {
       "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
       "sizeBytes": 4096,
       "encoding": "opaque/1"
     },
-    "witnessKey": "key:tee:jetson-thor-01"
+    "witnessKey": "key:tee:res-001-witness-01",
+    "validity": {
+      "notBefore": "2026-10-15T13:00:00Z",
+      "notAfter": "2026-10-15T15:00:00Z"
+    }
   },
   "adapter": {
     "system": "example.ticketing",
@@ -60,13 +75,13 @@ pub const MINIMAL_VALID_PAYLOAD: &str = r#"{
 
 /// Correct chain digest for [`MINIMAL_VALID_PAYLOAD`] after production normalization.
 pub const MINIMAL_CHAIN_HASH: &str =
-    "sha256:7a45a9871447473724e96553e6637c5e2547bc36b68f9773c7f8433073fd4324";
+    "sha256:a6f1265304a5834191ff05271f9ceca5fcd27b58c14328e587b6a77b2325f720";
 
 /// Expected JCS bytes for the normalized minimal payload.
-pub const MINIMAL_VALID_JCS: &str = r#"{"actor":{"class":"AUTONOMOUS","id":"actor:robot-alpha-01","operator":"operator:wilder-robotics"},"adapter":{"ackDigest":"sha256:4444444444444444444444444444444444444444444444444444444444444444","endpoint":"endpoint:res-001","mode":"WRITE_ONLY","postedAt":"2026-10-15T14:00:05Z","system":"example.ticketing"},"attestation":{"measuredBootChain":"sha256:2222222222222222222222222222222222222222222222222222222222222222","platformEvidence":"ref:file:attest-2026-10-15T14:00:00Z.bin","sealedEvidence":{"digest":"sha256:3333333333333333333333333333333333333333333333333333333333333333","encoding":"opaque/1","sizeBytes":4096},"teeClass":"nvidia.jetson-thor-cc","witnessKey":"key:tee:jetson-thor-01"},"chain":{"hash":"sha256:7a45a9871447473724e96553e6637c5e2547bc36b68f9773c7f8433073fd4324","prevHash":null,"seq":0},"engagement":{"envelopeConformance":"WITHIN","evidenceDigest":"sha256:1111111111111111111111111111111111111111111111111111111111111111","id":"eng:res-001:20261015-140000","outcomeClass":"COMPLETED","type":"patrol","window":{"end":"2026-10-15T14:00:00Z","start":"2026-10-15T13:30:00Z"}},"id":"uuid:00000000-0000-4000-8000-000000000001","site":{"class":"residential","envelope":{"digest":"sha256:0000000000000000000000000000000000000000000000000000000000000000","geobounds":null,"id":"env:res-001:2026-Q4","temporal":{"ends":null,"starts":"2026-10-01T00:00:00Z"}},"id":"site:res-001"},"spec":"wilder.pser/0.1","ts":"2026-10-15T14:00:00Z"}"#;
+pub const MINIMAL_VALID_JCS: &str = r#"{"actor":{"class":"AUTONOMOUS","id":"actor:robot-alpha-01","operator":"operator:wilder-robotics"},"adapter":{"ackDigest":"sha256:4444444444444444444444444444444444444444444444444444444444444444","endpoint":"endpoint:res-001","mode":"WRITE_ONLY","postedAt":"2026-10-15T14:00:05Z","system":"example.ticketing"},"attestation":{"measuredBoot":{"chain":"sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1","components":[{"digest":"sha256:2222222222222222222222222222222222222222222222222222222222222222","name":"bl1"}]},"platformEvidence":{"digest":"sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","encoding":"opaque/1"},"sealedEvidence":{"digest":"sha256:3333333333333333333333333333333333333333333333333333333333333333","encoding":"opaque/1","sizeBytes":4096},"teeClass":"arm64.tee-v1","validity":{"notAfter":"2026-10-15T15:00:00Z","notBefore":"2026-10-15T13:00:00Z"},"witnessKey":"key:tee:res-001-witness-01"},"chain":{"hash":"sha256:a6f1265304a5834191ff05271f9ceca5fcd27b58c14328e587b6a77b2325f720","prevHash":null,"seq":0},"engagement":{"envelopeConformance":"WITHIN","evidenceDigest":"sha256:1111111111111111111111111111111111111111111111111111111111111111","id":"eng:res-001:20261015-140000","outcomeClass":"COMPLETED","type":"patrol","window":{"end":"2026-10-15T14:00:00Z","start":"2026-10-15T13:30:00Z"}},"id":"uuid:00000000-0000-4000-8000-000000000001","site":{"class":"residential","envelope":{"digest":"sha256:0000000000000000000000000000000000000000000000000000000000000000","geobounds":null,"id":"env:res-001:2026-Q4","temporal":{"ends":null,"starts":"2026-10-01T00:00:00Z"}},"id":"site:res-001"},"spec":"wilder.pser/0.2","ts":"2026-10-15T14:00:00Z"}"#;
 
 /// Unsupported version used by malformed-payload tests.
-pub const WRONG_SPEC: &str = "wilder.pser/0.2";
+pub const WRONG_SPEC: &str = "wilder.pser/0.3";
 /// Invalid actor class used by malformed-payload tests.
 pub const INVALID_ACTOR_CLASS: &str = "ROBOT";
 /// Reversed engagement end used by malformed-payload tests.
