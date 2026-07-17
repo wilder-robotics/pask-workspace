@@ -16,7 +16,7 @@ use crate::{
 };
 
 /// Required protected content type for the profile.
-pub const CONTENT_TYPE: &str = "application/pser+json; profile=wilder.pser/0.1";
+pub const CONTENT_TYPE: &str = "application/pser+json; profile=wilder.pser/0.2";
 
 /// Produces an attached-payload `COSE_Sign1` statement using Ed25519.
 ///
