@@ -210,18 +210,18 @@ Adapter Write-In:
 Physical-Site Engagement Receipt (PSER):
 : A SCITT Signed Statement under this profile, carrying a canonical JSON
   payload conforming to {{payload}}, with the profile identifier
-  `wilder.pser/0.1` and a SCITT Receipt attached as defined in
+  `wilder.pser/0.2` and a SCITT Receipt attached as defined in
   {{RFC9942}}.
 
 # Profile identifier and media types
 
-The profile identifier for this document is `wilder.pser/0.1` and MUST appear
+The profile identifier for this document is `wilder.pser/0.2` and MUST appear
 as the value of the top-level `spec` member of the payload defined in
 {{payload}}.
 
 The COSE `content_type` (protected header label 3, {{RFC9052}}) for a
 Physical-Site Engagement Receipt Statement is
-`application/pser+json; profile=wilder.pser/0.1`. IANA registration of this
+`application/pser+json; profile=wilder.pser/0.2`. IANA registration of this
 media type is requested in {{iana}}.
 
 The `application/scitt-statement+cose` and `application/scitt-receipt+cose`
@@ -240,7 +240,7 @@ marked OPTIONAL.
 
 ~~~ json
 {
-  "spec": "wilder.pser/0.1",
+  "spec": "wilder.pser/0.2",
   "id": "<receipt id>",
   "ts": "<RFC 3339 UTC timestamp>",
 
@@ -306,7 +306,7 @@ marked OPTIONAL.
 
 ### `spec` (REQUIRED, string)
 
-MUST be `wilder.pser/0.1` for receipts conforming to this document. A verifier
+MUST be `wilder.pser/0.2` for receipts conforming to this document. A verifier
 MUST reject any Statement with a different `spec` value as out of scope of
 this profile.
 
@@ -454,7 +454,7 @@ the CWT Claims header parameter (label 15, {{RFC9597}}), carrying at least:
   claim.
 
 The protected header `content_type` (label 3) MUST be
-`application/pser+json; profile=wilder.pser/0.1`.
+`application/pser+json; profile=wilder.pser/0.2`.
 
 The Signed Statement's payload MUST be the JCS serialization of the JSON
 object defined in {{payload}}. Detached payloads are NOT PERMITTED under
@@ -506,7 +506,7 @@ This document requests the following IANA actions.
 ## Media type registration
 
 Register `application/pser+json` per {{RFC6838}}, with the required
-`profile` parameter and initial value `wilder.pser/0.1`.
+`profile` parameter and initial value `wilder.pser/0.2`.
 
 ## COSE Header Parameters
 
