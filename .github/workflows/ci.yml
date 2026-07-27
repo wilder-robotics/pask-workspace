@@ -1,7 +1,20 @@
+# Continuous integration for pask-workspace.
+#
+# All Actions are pinned to a full commit SHA per the panel's supply-chain
+# hardening discipline. Update SHAs via Dependabot PRs, not manually.
+#
+# Jobs:
+#   - cargo:      Rust build/test matrix (Linux + macOS + Windows).
+#   - dco:        Developer Certificate of Origin sign-off check on every
+#                 commit in a PR. Enforces the CONTRIBUTING.md contract.
+#   - draft:      xml2rfc validation + idnits compliance for the Internet-Draft
+#                 XML source. Runs only when files under docs/ change.
+
 name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
 
 permissions:
@@ -21,11 +34,14 @@ jobs:
 
     steps:
       - name: Check out source
-        uses: actions/checkout@v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
 
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
+          toolchain: stable
           components: clippy,rustfmt
 
       - name: Check formatting
@@ -42,3 +58,122 @@ jobs:
 
       - name: Test ES256 features
         run: cargo test --workspace --features es256
+
+  dco:
+    name: DCO sign-off
+    runs-on: ubuntu-latest
+    # Only PR events — pushes to main have already passed this gate.
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check DCO sign-off on every commit
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          echo "Checking commits between $BASE_SHA and $HEAD_SHA for DCO sign-off"
+          missing=0
+          # List each commit and verify Signed-off-by trailer.
+          for sha in $(git rev-list --no-merges "$BASE_SHA".."$HEAD_SHA"); do
+            author_name=$(git show -s --format='%an' "$sha")
+            author_email=$(git show -s --format='%ae' "$sha")
+            expected="Signed-off-by: ${author_name} <${author_email}>"
+            if git show -s --format='%B' "$sha" | grep -Fq "$expected"; then
+              echo "  ✓ $sha  $expected"
+            else
+              echo "  ✗ $sha  missing or mismatched DCO trailer"
+              echo "     expected: $expected"
+              echo "     trailers found:"
+              git show -s --format='%B' "$sha" | grep -iE '^signed-off-by:' || echo "       (none)"
+              missing=$((missing + 1))
+            fi
+          done
+          if [ "$missing" -gt 0 ]; then
+            echo ""
+            echo "DCO check failed: $missing commit(s) missing a Signed-off-by trailer."
+            echo "See CONTRIBUTING.md and https://developercertificate.org/."
+            echo "Fix: 'git commit --amend --signoff' or 'git rebase --signoff BASE_SHA'."
+            exit 1
+          fi
+          echo ""
+          echo "All commits are DCO-signed."
+
+  draft:
+    name: Draft (xml2rfc + idnits)
+    runs-on: ubuntu-latest
+    # Only when the draft source might have changed.
+    if: |
+      github.event_name == 'push' ||
+      github.event.pull_request.draft == false
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Detect draft-affecting changes
+        id: filter
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="${{ github.event.pull_request.base.sha }}"
+            head="${{ github.event.pull_request.head.sha }}"
+            if git diff --name-only "$base" "$head" | grep -qE '^docs/.*\.(xml|md)$'; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "run=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        if: steps.filter.outputs.run == 'true'
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install xml2rfc + idnits
+        if: steps.filter.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          # Pin exact versions; refresh via Dependabot on the pip ecosystem.
+          pip install "xml2rfc==3.24.0"
+          # idnits ships as a Perl script from the IETF tools tarball.
+          curl -sSL -o /tmp/idnits.tgz \
+            https://github.com/ietf-tools/idnits/archive/refs/tags/2.17.1.tar.gz
+          tar -xzf /tmp/idnits.tgz -C /tmp
+          sudo install -m 0755 /tmp/idnits-2.17.1/idnits /usr/local/bin/idnits
+          idnits --version || true
+
+      - name: Validate draft XML (if present)
+        if: steps.filter.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          xml_sources=(docs/draft-wilder-scitt-physical-site-engagement-receipt-*.xml)
+          if [ ${#xml_sources[@]} -eq 0 ]; then
+            echo "No draft XML source under docs/ — skipping xml2rfc validation."
+            echo "(A markdown-only draft is present; XML source is produced from it at filing time.)"
+            exit 0
+          fi
+          for src in "${xml_sources[@]}"; do
+            echo "== xml2rfc: $src =="
+            xml2rfc --v3 --text --out /tmp/$(basename "${src%.xml}").txt "$src"
+            echo "== idnits: /tmp/$(basename "${src%.xml}").txt =="
+            idnits /tmp/$(basename "${src%.xml}").txt
+          done
