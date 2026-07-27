@@ -1,0 +1,55 @@
+name: Feature request (reference implementation)
+description: Suggest a capability, ergonomic improvement, or non-normative enhancement to the reference implementation.
+title: "[feat] "
+labels: ["enhancement", "implementation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is for improvements to the **reference implementation** — the Rust workspace, CLI, adapters, or tooling.
+
+        For proposed changes to the **draft's normative content** (schema, wire format, MUST/SHOULD language), please use the "Draft language / interpretation question" form and consider bringing the discussion to the SCITT WG mailing list ([scitt@ietf.org](mailto:scitt@ietf.org)).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What are you trying to do that is currently difficult, awkward, or impossible with the reference implementation?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What API, command, or capability would solve it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you consider, and why did you not prefer them?
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Does this change normative behavior of the draft?
+      description: If yes, this issue should be paired with mailing-list discussion.
+      options:
+        - "No — reference-implementation-only change"
+        - "Unsure — please advise"
+        - "Yes — normative change (I understand this requires WG-level discussion)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have read CONTRIBUTING.md and understand the contribution process.
+          required: true

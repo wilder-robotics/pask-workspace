@@ -1,0 +1,62 @@
+# Dependabot configuration for pask-workspace
+#
+# Documentation:
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# Ecosystems covered:
+#   - cargo: the Rust workspace crates
+#   - github-actions: pinned Action SHAs in .github/workflows/
+#
+# Grouping strategy: group all minor + patch updates per ecosystem into a single
+# weekly PR to reduce reviewer load. Major-version bumps are opened as
+# individual PRs because they usually need manual review anyway.
+#
+# For pask-conformance-vectors, use the same file but drop the `cargo` block
+# (the vectors repo has no Rust workspace).
+
+version: 2
+
+updates:
+  # Rust workspace
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 5
+    groups:
+      cargo-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "cargo"
+
+  # GitHub Actions used in workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 5
+    groups:
+      github-actions-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
