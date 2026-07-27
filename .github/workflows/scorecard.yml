@@ -34,6 +34,12 @@ jobs:
   analysis:
     name: Scorecard analysis
     runs-on: ubuntu-latest
+    # Silently no-op while the repository is private. The Scorecard API and
+    # SARIF upload to Code Scanning both require a public repo (or GitHub
+    # Advanced Security on a private repo, which this project does not use).
+    # This gate lets the workflow live on `main` while we're still private,
+    # and start running automatically on public flip.
+    if: github.event.repository.visibility == 'public'
     permissions:
       # Needed to upload SARIF to Code Scanning.
       security-events: write
@@ -53,7 +59,8 @@ jobs:
           results_format: sarif
           # publish_results: true replaces the Scorecard team's weekly scan
           # of public repos with this workflow's results, and enables the
-          # public badge/API.
+          # public badge/API. This is gated by the job-level `if:` above so
+          # it does not fire until this repository is public.
           publish_results: true
 
       - name: "Upload artifact"
