@@ -587,6 +587,16 @@ management, and the TEE vendor's own security guidance for the specific
 
 ## Three-party trust model
 
+The trust model described in this section applies to deployments where
+the TEE that produces receipts is physically hosted at the Site. In such
+deployments, the *site owner* both controls physical access to the TEE
+hardware and is the party responsible for its continued operation. This
+profile revision does not address deployments in which the TEE travels
+with a mobile Actor (for example, a TEE integrated into a mobile robot's
+compute platform), where the party controlling the attester's physical
+platform is distinct from the party controlling the Site. Such on-device
+attester topologies are expected to be addressed in a subsequent revision.
+
 The security posture of this profile REQUIRES that three distinct parties
 participate in every receipt, and that no single party can produce a valid
 receipt alone:
