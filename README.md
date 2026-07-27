@@ -5,6 +5,27 @@ system for producing tamper-evident, TEE-anchored receipts of physical work
 performed by autonomous or human-directed actors at regulated real-world
 sites.
 
+## About this repository
+
+This repository is the reference implementation and workspace for
+[`draft-wilder-scitt-physical-site-engagement-receipt`](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engagement-receipt/), an IETF individual submission profiling
+SCITT for signed engagement receipts of physical-site events.
+
+**Ownership vs. protocol roles.** This repository is owned by the
+[Wilder Robotics](https://wilder-robotics.com) GitHub organization and
+maintained by Wilder Management Inc., operating under the Wilder
+Robotics assumed name. The draft is authored by Rob Wilder as an
+individual (see the Authors' Addresses section of the draft).
+**Neither the repository owner, the maintainer entity, nor the author is
+an Issuer, Attester, Verifier, or Relying Party in the sense §5 of the
+specification uses those terms.** Those roles are held by the deploying
+parties at each physical site — not by anyone associated with this
+repository.
+
+For governance, see [GOVERNANCE.md](./GOVERNANCE.md).
+For contributions, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+For security disclosures, see [SECURITY.md](./SECURITY.md).
+
 ## What lives here
 
 This repository is the code home for the reference producer and verifier of
@@ -18,6 +39,14 @@ to carry a five-artifact vocabulary (Site, Actor, Engagement, Attestation,
 Adapter Write-In) describing what physically occurred at a specific site,
 under what operating envelope, and whether the resulting receipt was
 posted into the operations layer the site already runs.
+
+## Conformance test vectors
+
+Conformance test vectors for the wire format are available in this
+reference implementation under
+[`crates/pask-wire/tests/`](crates/pask-wire/tests/). Extraction of the
+vectors into an independent conformance suite is planned for a future
+revision of this specification once the wire-format schema stabilizes.
 
 ## Repository layout (initial scaffold)
 
@@ -39,8 +68,8 @@ later commits per the ticket queue.
 
 Licensed under [AGPL-3.0-only](LICENSE) with a commercial exception. See
 [COMMERCIAL-EXCEPTION.md](COMMERCIAL-EXCEPTION.md) for the terms under which
-Wilder Robotics grants a commercial license outside the AGPL's
-network-copyleft obligations.
+Wilder Management Inc. (operating under the Wilder Robotics assumed name)
+grants a commercial license outside the AGPL's network-copyleft obligations.
 
 ## Trust model
 
@@ -68,3 +97,4 @@ embedded specification only.
 ## Contact
 
 Rob Wilder — rob@wilder-robotics.com
+Security disclosures — security@wilder-robotics.com (see [SECURITY.md](./SECURITY.md))
