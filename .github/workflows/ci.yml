@@ -111,10 +111,8 @@ jobs:
   draft:
     name: Draft (xml2rfc + idnits)
     runs-on: ubuntu-latest
-    # Only when the draft source might have changed.
-    if: |
-      github.event_name == 'push' ||
-      github.event.pull_request.draft == false
+    # Skip when the PR is still in draft state; always run on push to main.
+    if: ${{ github.event_name == 'push' || github.event.pull_request.draft == false }}
     permissions:
       contents: read
 
