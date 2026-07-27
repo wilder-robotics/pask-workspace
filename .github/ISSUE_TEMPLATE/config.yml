@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability report
+    url: https://github.com/wilder-robotics/pask-workspace/security/advisories/new
+    about: Please report security issues privately via GitHub Security Advisories, not as public issues. See SECURITY.md for details.
+  - name: SCITT WG mailing list discussion
+    url: https://www.ietf.org/mailman/listinfo/scitt
+    about: For substantive discussion of Pask's normative content (schema, wire format, MUST/SHOULD language), the SCITT WG mailing list is the correct venue. Editorial fixes and reference-implementation issues belong here on GitHub.
+  - name: IETF datatracker entry
+    url: https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engagement-receipt/
+    about: The canonical location for the draft, its history, and related IETF process artifacts.

@@ -1,0 +1,75 @@
+name: Draft language / interpretation question
+description: Ask about the interpretation of normative language in the draft, or propose an editorial improvement to the -XX draft text.
+title: "[draft] "
+labels: ["draft", "documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is for questions or editorial proposals about the **draft's text** — including MUST/SHOULD language, examples, ABNF, references, terminology, and cross-references.
+
+        **Where discussion happens:**
+        - For **editorial fixes** (typos, unclear cross-references, reference updates), GitHub is fine.
+        - For **substantive interpretation questions or normative-change proposals**, the SCITT WG mailing list ([scitt@ietf.org](mailto:scitt@ietf.org)) is the correct venue and reaches a much wider audience of implementers and reviewers. You are welcome to open the issue here for tracking, but please also send a note to the list.
+
+  - type: input
+    id: revision
+    attributes:
+      label: Draft revision
+      description: Which draft revision are you commenting on?
+      placeholder: "e.g. draft-wilder-scitt-physical-site-engagement-receipt-00"
+    validations:
+      required: true
+
+  - type: input
+    id: section
+    attributes:
+      label: Section reference
+      description: Section number or heading, and page/line if applicable.
+      placeholder: "e.g. §5.2, or 'Security Considerations', page 12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: quote
+    attributes:
+      label: Relevant text (quote)
+      description: Paste the exact text from the draft that this issue references.
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question or proposed change
+      description: What is unclear, ambiguous, or in need of correction? If proposing a specific change, please state the proposed new text.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: nature
+    attributes:
+      label: Nature of the change
+      options:
+        - "Editorial (typo, unclear phrasing, reference fix)"
+        - "Clarification (adds a non-normative note or example)"
+        - "Normative (changes MUST/SHOULD/MAY behavior, schema, or wire format)"
+        - "Question — not proposing a change yet"
+    validations:
+      required: true
+
+  - type: textarea
+    id: mailing_list
+    attributes:
+      label: Mailing-list thread (if any)
+      description: If you have already raised this on the SCITT WG mailing list, please link the archive thread.
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: For normative-change proposals, I understand that the decision venue is the IETF SCITT WG process, not this repository (per GOVERNANCE.md §3).
+          required: true

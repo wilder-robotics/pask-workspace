@@ -1,0 +1,86 @@
+name: Bug report (reference implementation)
+description: Report a defect in the Rust reference implementation, the build system, or tooling.
+title: "[bug] "
+labels: ["bug", "implementation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug in the Pask reference implementation. Before filing:
+
+        - If this is a **security issue**, do not use this form. See [SECURITY.md](../blob/main/SECURITY.md) for private reporting.
+        - If this is about **normative language in the draft**, use the "Draft language / interpretation question" form instead.
+        - Please search existing issues (open and closed) to avoid duplicates.
+
+  - type: input
+    id: version
+    attributes:
+      label: Affected version or commit SHA
+      description: Which release, tag, or commit did you observe the bug on?
+      placeholder: "e.g. commit abc1234 on main, or crate pask-core v0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      options:
+        - pask-core (signing / verification library)
+        - pask-cli (command-line tool)
+        - pask-adapters (TEE-specific adapters)
+        - Conformance test harness
+        - CI / build tooling
+        - Documentation
+        - Other (describe below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: A clear description of the bug, including any error output.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: What behavior did you expect, and why?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal reproduction steps. Include commands, inputs, and any receipt / vector files if relevant.
+      placeholder: |
+        1. Run `pask verify --receipt sample.pser`
+        2. Observe error: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Rust toolchain version, any TEE hardware involved.
+      placeholder: |
+        - OS: Ubuntu 24.04
+        - rustc: 1.82.0 (stable)
+        - TEE: none / Intel TDX / AMD SEV-SNP / Arm CCA / other
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: This is not a security issue (security issues go through SECURITY.md).
+          required: true
