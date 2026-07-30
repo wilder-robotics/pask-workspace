@@ -1,8 +1,9 @@
 ---
 title: "A SCITT Profile for Physical-Site Engagement Receipts"
 abbrev: "Physical-Site Engagement Receipt"
-docname: draft-wilder-scitt-physical-site-engagement-receipt-00
+docname: draft-wilder-scitt-physical-site-engage-receipt-00
 category: std
+submissionType: IETF
 ipr: trust200902
 area: Security
 workgroup: SCITT
@@ -25,14 +26,8 @@ author:
     email: rob@wilder-robotics.com
 
 normative:
-  RFC2119:
-  RFC8174:
-  RFC8392:
   RFC8785:
   RFC9052:
-  RFC9110:
-  RFC9162:
-  RFC9360:
   RFC9597:
   RFC9942:
   RFC9943:
@@ -40,7 +35,6 @@ normative:
 informative:
   I-D.noa-scitt-ai-agent-receipt:
   I-D.mih-scitt-agent-action-capsule:
-  RFC3161:
   RFC6838:
 
 --- abstract
@@ -49,14 +43,15 @@ This document defines a SCITT profile for *Physical-Site Engagement Receipts*
 (PSER): tamper-evident, signed, offline-verifiable records that describe an
 autonomous or human-directed physical engagement at a specific real-world site
 governed by a defined operating envelope. Each receipt is a SCITT Signed
-Statement per {{RFC9943}}, encoded as a COSE_Sign1 {{RFC9052}}, carrying a
-canonical ({{RFC8785}}) payload with a five-artifact vocabulary describing (1)
-the *Site*, (2) the *Operator* and *Actor*, (3) the *Engagement Window* and
+Statement as defined by the SCITT architecture, encoded as a COSE Single
+Signer message, carrying a JCS-canonicalized JSON payload with a five-artifact
+vocabulary describing (1) the *Site*, (2) the *Operator* and *Actor*, (3) the
+*Engagement Window* and
 *Envelope*, (4) the *Attestation Evidence* from a Trusted Execution
 Environment (TEE), and (5) the *Adapter Write-In* recording that the receipt
 was posted into an out-of-band operations layer. A Physical-Site Engagement
-Receipt is registerable in any conforming SCITT Transparency Service per
-{{RFC9942}} to obtain non-equivocation and tail-truncation properties an
+Receipt is registerable in any conforming SCITT Transparency Service
+to obtain non-equivocation and tail-truncation properties an
 issuer's own chain cannot provide alone.
 
 This profile deliberately makes a NARROW, checkable claim -- "this is a
@@ -81,7 +76,7 @@ receipt that lacks any one of them.
 
 --- middle
 
-# Introduction
+# Introduction {#intro}
 
 Autonomous mobile robots, semi-autonomous physical equipment, and
 human-directed physical work crews increasingly operate at regulated
@@ -190,7 +185,7 @@ Engagement:
   Actor performed physical work at the Site under the Site Envelope.
 
 Engagement Window:
-: The time interval [start, end] of the Engagement, expressed in RFC 3339
+: The time interval \[start, end\] of the Engagement, expressed in RFC 3339
   UTC, with the same clock basis as the TEE-sealed evidence.
 
 Attestation Evidence:
@@ -246,7 +241,8 @@ marked OPTIONAL.
 
   "site": {
     "id": "<stable site id>",
-    "class": "<site class (residential|industrial|healthcare|infra|other)>",
+    "class":
+      "<site class (residential|industrial|healthcare|infra|other)>",
     "envelope": {
       "id": "<stable envelope id>",
       "digest": "sha256:<hex>",
@@ -267,7 +263,8 @@ marked OPTIONAL.
     "window": { "start": "<RFC 3339 UTC>",
                 "end":   "<RFC 3339 UTC>" },
     "type": "<engagement type>",
-    "outcomeClass": "COMPLETED|ABORTED|REFUSED|ERRORED|OBSERVED_ONLY",
+    "outcomeClass":
+      "COMPLETED|ABORTED|REFUSED|ERRORED|OBSERVED_ONLY",
     "envelopeConformance":
       "WITHIN|EXCEEDED_TEMPORAL|EXCEEDED_GEO|EXCEEDED_ACTOR|UNKNOWN",
     "evidenceDigest": "sha256:<hex>"
