@@ -95,9 +95,21 @@ jobs:
           echo "Checking commits between $BASE_SHA and $HEAD_SHA for DCO sign-off"
           missing=0
           # List each commit and verify Signed-off-by trailer.
+          #
+          # Exemption: automated bot commits (dependabot[bot]) are skipped.
+          # Rationale: Dependabot cannot add a Signed-off-by trailer to its
+          # own commits, and the DCO's purpose (attesting to origin) is
+          # satisfied by GitHub's App identity signature on the commit.
+          # This matches CNCF and Kubernetes conventions for bot exemption.
           for sha in $(git rev-list --no-merges "$BASE_SHA".."$HEAD_SHA"); do
             author_name=$(git show -s --format='%an' "$sha")
             author_email=$(git show -s --format='%ae' "$sha")
+            case "$author_name" in
+              'dependabot[bot]')
+                echo "  ⊘ $sha  bot commit (dependabot[bot]) — DCO exempt"
+                continue
+                ;;
+            esac
             expected="Signed-off-by: ${author_name} <${author_email}>"
             if git show -s --format='%B' "$sha" | grep -Fq "$expected"; then
               echo "  ✓ $sha  $expected"
