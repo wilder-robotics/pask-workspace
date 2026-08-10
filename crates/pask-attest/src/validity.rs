@@ -63,22 +63,22 @@ impl ValidityWindow {
     }
 
     pub(crate) fn check_clock(&self, now: SystemTime) -> Result<(), AttestationError> {
-        if let Ok(early_by) = self.not_before.duration_since(now) {
-            if early_by > MAX_CLOCK_SKEW {
-                return Err(AttestationError::ClockSkew {
-                    not_before: self.not_before,
-                    now,
-                });
-            }
+        if let Ok(early_by) = self.not_before.duration_since(now)
+            && early_by > MAX_CLOCK_SKEW
+        {
+            return Err(AttestationError::ClockSkew {
+                not_before: self.not_before,
+                now,
+            });
         }
 
-        if let Ok(late_by) = now.duration_since(self.not_after) {
-            if late_by > MAX_CLOCK_SKEW {
-                return Err(AttestationError::ExpiredEvidence {
-                    not_after: self.not_after,
-                    now,
-                });
-            }
+        if let Ok(late_by) = now.duration_since(self.not_after)
+            && late_by > MAX_CLOCK_SKEW
+        {
+            return Err(AttestationError::ExpiredEvidence {
+                not_after: self.not_after,
+                now,
+            });
         }
 
         Ok(())

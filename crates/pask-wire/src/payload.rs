@@ -567,10 +567,10 @@ fn validate_utc(value: &str) -> Result<OffsetDateTime> {
 fn validate_optional_window(starts: Option<&str>, ends: Option<&str>) -> Result<()> {
     let starts = starts.map(validate_utc).transpose()?;
     let ends = ends.map(validate_utc).transpose()?;
-    if let (Some(start), Some(end)) = (starts, ends) {
-        if end < start {
-            return Err(Error::Validation("temporal end precedes its start"));
-        }
+    if let (Some(start), Some(end)) = (starts, ends)
+        && end < start
+    {
+        return Err(Error::Validation("temporal end precedes its start"));
     }
     Ok(())
 }

@@ -57,10 +57,7 @@ fn format_rfc3339_utc(unix_secs: u64) -> String {
     let second = sod % 60;
 
     let (year, month, day) = civil_from_days(days);
-    format!(
-        "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z",
-        year, month, day, hour, minute, second
-    )
+    format!("{year:04}-{month:02}-{day:02}T{hour:02}:{minute:02}:{second:02}Z")
 }
 
 /// Howard Hinnant's date algorithm, adapted to u64/i64.
