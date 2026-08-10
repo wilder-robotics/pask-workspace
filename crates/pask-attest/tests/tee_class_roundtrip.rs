@@ -4,28 +4,22 @@ use pask_attest::{AttestationError, TeeClass};
 use proptest::prelude::*;
 
 #[test]
-fn arm64_display_parses_back() {
-    let encoded = TeeClass::Arm64TeeV1.to_string();
-    assert_eq!(TeeClass::from_str(&encoded).unwrap(), TeeClass::Arm64TeeV1);
-}
-
-#[test]
-fn x86_display_parses_back() {
-    let encoded = TeeClass::X86_64TeeV1.to_string();
-    assert_eq!(TeeClass::from_str(&encoded).unwrap(), TeeClass::X86_64TeeV1);
+fn every_class_display_parses_back() {
+    for class in TeeClass::ALL {
+        let encoded = class.to_string();
+        assert_eq!(TeeClass::from_str(&encoded).unwrap(), class);
+    }
 }
 
 proptest! {
     #[test]
     fn arbitrary_string_from_str_is_error_or_known(
         value in any::<String>(),
-        class in prop_oneof![
-            Just(TeeClass::Arm64TeeV1),
-            Just(TeeClass::X86_64TeeV1),
-        ],
+        index in 0_usize..TeeClass::ALL.len(),
     ) {
+        let class = TeeClass::ALL[index];
         let parsed = TeeClass::from_str(&value);
-        let known = value == "arm64.tee-v1" || value == "x86_64.tee-v1";
+        let known = TeeClass::ALL.iter().any(|known| known.as_str() == value);
         prop_assert_eq!(parsed.is_ok(), known);
         if !known {
             prop_assert!(matches!(

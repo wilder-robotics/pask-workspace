@@ -7,8 +7,12 @@
 #   - cargo:      Rust build/test matrix (Linux + macOS + Windows).
 #   - dco:        Developer Certificate of Origin sign-off check on every
 #                 commit in a PR. Enforces the CONTRIBUTING.md contract.
-#   - draft:      xml2rfc validation + idnits compliance for the Internet-Draft
-#                 XML source. Runs only when files under docs/ change.
+#   - compliance: PASK-COMPLIANCE-002/003 deny-list grep over the code
+#                 repository surface, plus a self-test of the deny-list.
+#   - draft:      kramdown-rfc conversion, xml2rfc validation and idnits
+#                 compliance for the Internet-Draft. Runs only when files under
+#                 docs/ change. The draft is authored in Markdown; the RFCXML
+#                 is generated here and at filing time, never committed.
 
 name: CI
 
@@ -16,6 +20,13 @@ on:
   push:
     branches: [main]
   pull_request:
+    # `ready_for_review` is NOT in the default type set
+    # (opened, synchronize, reopened). Without it, the `draft` job's
+    # draft==false gate could never be re-evaluated when a PR left draft
+    # state, so the job stayed skipped until the next unrelated push.
+    # Found on PR #27, 2026-08-09: the PR was marked ready and the repaired
+    # draft-validation job still reported "skipping" because no event fired.
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read
@@ -108,11 +119,9 @@ jobs:
           echo ""
           echo "All commits are DCO-signed."
 
-  draft:
-    name: Draft (xml2rfc + idnits)
+  compliance:
+    name: Compliance grep
     runs-on: ubuntu-latest
-    # Skip when the PR is still in draft state; always run on push to main.
-    if: ${{ github.event_name == 'push' || github.event.pull_request.draft == false }}
     permissions:
       contents: read
 
@@ -122,20 +131,71 @@ jobs:
         with:
           persist-credentials: false
 
+      # Self-test first. A deny-list whose patterns have silently stopped
+      # matching reports a clean repository, which is the failure mode this
+      # whole job exists to prevent.
+      - name: Self-test the deny-list
+        run: bash scripts/compliance_grep.sh --self-test
+
+      - name: Scan the repository
+        run: bash scripts/compliance_grep.sh
+
+  draft:
+    name: Draft (xml2rfc + idnits)
+    runs-on: ubuntu-latest
+    # Skip when the PR is still in draft state; always run on push to main.
+    # Paired with `ready_for_review` in the trigger types above: this gate is
+    # only meaningful if an event fires when the PR leaves draft.
+    if: ${{ github.event_name == 'push' || github.event.pull_request.draft == false }}
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+          # Full history. The change filter below diffs the PR base against
+          # its head; under the default shallow clone neither object exists
+          # locally, `git diff` fails, and the filter silently reports "no
+          # draft changes" -- which is how this job passed in 5s while
+          # validating nothing. See the filter's own guard.
+          fetch-depth: 0
+
       - name: Detect draft-affecting changes
         id: filter
         run: |
           set -euo pipefail
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            base="${{ github.event.pull_request.base.sha }}"
-            head="${{ github.event.pull_request.head.sha }}"
-            if git diff --name-only "$base" "$head" | grep -qE '^docs/.*\.(xml|md)$'; then
-              echo "run=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "run=false" >> "$GITHUB_OUTPUT"
-            fi
-          else
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+
+          # Fail loudly rather than degrading to "nothing changed". A filter
+          # that cannot see the objects it is asked to compare must not be
+          # allowed to answer the question -- an unanswerable filter reporting
+          # false is a green check over an unrun validation.
+          for rev in "$base" "$head"; do
+            if ! git cat-file -e "${rev}^{commit}" 2>/dev/null; then
+              echo "::error::Change filter cannot resolve ${rev}. Refusing to" \
+                   "report 'no draft changes' from an incomplete clone."
+              exit 1
+            fi
+          done
+
+          changed="$(git diff --name-only "$base" "$head")"
+          echo "Files changed in this PR:"
+          echo "${changed}" | sed 's/^/  /'
+
+          if echo "${changed}" | grep -qE '^docs/.*\.(xml|md)$'; then
+            echo "Draft sources changed; validating."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No draft sources changed; validation not required."
+            echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up Python
@@ -151,27 +211,109 @@ jobs:
           python -m pip install --upgrade pip
           # Pin exact versions; refresh via Dependabot on the pip ecosystem.
           pip install "xml2rfc==3.24.0"
+          # kramdown-rfc converts the Markdown source to RFCXML.
+          # --user-install: the runner's system gem directory
+          # (/var/lib/gems) is not writable by the build user, and an
+          # unqualified `gem install` fails with Gem::FilePermissionError.
+          gem install --no-document --user-install kramdown-rfc2629 -v 1.7.39
+          echo "$(ruby -e 'puts Gem.user_dir')/bin" >> "$GITHUB_PATH"
+          export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
+          # Fail here rather than at the conversion step if the gem is not
+          # actually reachable on PATH.
+          kdrfc --version
           # idnits ships as a Perl script from the IETF tools tarball.
           curl -sSL -o /tmp/idnits.tgz \
             https://github.com/ietf-tools/idnits/archive/refs/tags/2.17.1.tar.gz
           tar -xzf /tmp/idnits.tgz -C /tmp
           sudo install -m 0755 /tmp/idnits-2.17.1/idnits /usr/local/bin/idnits
-          idnits --version || true
+          # Fail here rather than at the validation step if the install broke.
+          idnits --version
 
-      - name: Validate draft XML (if present)
+      - name: Convert, validate and lint the draft
         if: steps.filter.outputs.run == 'true'
         run: |
           set -euo pipefail
           shopt -s nullglob
-          xml_sources=(docs/draft-wilder-scitt-physical-site-engagement-receipt-*.xml)
-          if [ ${#xml_sources[@]} -eq 0 ]; then
-            echo "No draft XML source under docs/ — skipping xml2rfc validation."
-            echo "(A markdown-only draft is present; XML source is produced from it at filing time.)"
-            exit 0
+          sources=(docs/draft-wilder-scitt-physical-site-engage-receipt-*.md)
+          if [ ${#sources[@]} -eq 0 ]; then
+            echo "::error::No draft Markdown source found under docs/."
+            echo "Expected docs/draft-wilder-scitt-physical-site-engage-receipt-<rev>.md"
+            echo "This job previously globbed a filename stem that has never existed"
+            echo "in this tree, so it passed unconditionally without validating"
+            echo "anything. Do not restore that behaviour: a draft that xml2rfc"
+            echo "rejects must fail here, not at the IETF submission tool."
+            exit 1
           fi
-          for src in "${xml_sources[@]}"; do
-            echo "== xml2rfc: $src =="
-            xml2rfc --v3 --text --out /tmp/$(basename "${src%.xml}").txt "$src"
-            echo "== idnits: /tmp/$(basename "${src%.xml}").txt =="
-            idnits /tmp/$(basename "${src%.xml}").txt
-          done
+          if [ ${#sources[@]} -gt 1 ]; then
+            echo "::error::Found ${#sources[@]} revisions of the draft under docs/: ${sources[*]}"
+            echo "Exactly one revision is maintained at a time."
+            exit 1
+          fi
+          src="${sources[0]}"
+          xml="/tmp/$(basename "${src%.md}").xml"
+          txt="/tmp/$(basename "${src%.md}").txt"
+
+          echo "== kramdown-rfc2629: $src =="
+          kramdown-rfc2629 "$src" > "$xml"
+
+          echo "== xml2rfc: $xml =="
+          xml2rfc --v3 --text --out "$txt" "$xml"
+
+          echo "== idnits: $txt =="
+          # idnits exits 0 whatever it finds, so its verdict must be read out
+          # of its report rather than out of its status. Without this the job
+          # reports success over a draft idnits has rejected -- which is what
+          # it did on 2026-08-09, passing while idnits printed "1 error".
+          idnits "$txt" | tee /tmp/idnits.out
+
+          summary="$(grep -E '^\s*Summary:' /tmp/idnits.out | tail -1)"
+          if [ -z "${summary}" ]; then
+            echo "::error::idnits produced no Summary line. Its report format" \
+                 "changed, or it did not complete. Refusing to infer a pass."
+            exit 1
+          fi
+          echo "idnits verdict: ${summary}"
+
+          # Extract with grep -o, not a sed substitution. A sed 's/.*X.*/\1/'
+          # that fails to match silently emits the whole input line, so a
+          # regex typo turns a count into a sentence and the comparison below
+          # becomes meaningless. grep -o yields nothing on no match, which the
+          # guard then catches.
+          errors="$(grep -oE '[0-9]+ error' <<<"${summary}" | head -1 | grep -oE '[0-9]+' || true)"
+          flaws="$(grep -oE '[0-9]+ flaw' <<<"${summary}" | head -1 | grep -oE '[0-9]+' || true)"
+
+          if [ -z "${errors}" ] || [ -z "${flaws}" ]; then
+            echo "::error::Could not read error and flaw counts from idnits" \
+                 "summary: ${summary}"
+            exit 1
+          fi
+
+          # One accepted exception, and only one.
+          #
+          # The payload figure is the byte-identical output of
+          # `pask-wire-cli canonical-example`, and it carries full SHA-256
+          # digests. A 64-character hex digest inside a JSON string exceeds
+          # idnits' 72-column limit at ZERO indentation, so these 8 lines
+          # cannot be shortened by reformatting. The only ways to clear the
+          # nit are to truncate the digests -- which would make the figure a
+          # hand-edited fiction again and destroy the anti-drift guard this
+          # revision exists to build -- or to stop showing a real payload.
+          #
+          # The exception is pinned to the exact count. A ninth long line is
+          # a new one, and fails.
+          expected_long_lines=8
+          actual_long_lines="$(grep -cE 'instances of too long lines' /tmp/idnits.out || true)"
+
+          if [ "${errors}" = "1" ] \
+             && [ "${actual_long_lines}" = "1" ] \
+             && grep -qE "There are ${expected_long_lines} instances of too long lines" /tmp/idnits.out; then
+            echo "Sole error is the ${expected_long_lines} known digest lines in the payload figure."
+            echo "Accepted; see the comment in this workflow for why they cannot be shortened."
+            errors=0
+          fi
+
+          if [ "${errors}" != "0" ] || [ "${flaws}" != "0" ]; then
+            echo "::error::idnits reports ${errors} error(s) and ${flaws} flaw(s)" \
+                 "beyond the accepted exception. See the report above."
+            exit 1
+          fi

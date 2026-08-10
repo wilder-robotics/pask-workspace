@@ -14,7 +14,7 @@ use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 use crate::{Error, Result, sha256_prefixed, validate_sha256};
 
 /// Supported PSER profile version.
-pub const SPEC_VERSION: &str = "wilder.pser/0.2";
+pub const SPEC_VERSION: &str = "wilder.pser/0.3";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -117,8 +117,6 @@ struct Attestation {
     sealed_evidence: SealedEvidence,
     witness_key: String,
     validity: Validity,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    quote: Option<Vec<u8>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -192,7 +190,7 @@ where
     Option::<T>::deserialize(deserializer)
 }
 
-/// Strongly typed `wilder.pser/0.2` payload.
+/// Strongly typed `wilder.pser/0.3` payload.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Payload {
@@ -361,7 +359,7 @@ impl Payload {
 
     /// Returns whether the receipt is marked WRITE_ONLY.
     ///
-    /// Every `wilder.pser/0.2` receipt that parses successfully MUST be WRITE_ONLY;
+    /// Every `wilder.pser/0.3` receipt that parses successfully MUST be WRITE_ONLY;
     /// this accessor exists so downstream adapters can enforce the property as
     /// defense-in-depth without pattern-matching the internal enum.
     #[must_use]
@@ -445,9 +443,25 @@ impl Payload {
         }
         let validity_start = validate_utc(&self.attestation.validity.not_before)?;
         let validity_end = validate_utc(&self.attestation.validity.not_after)?;
-        if validity_end < validity_start {
+        // Q3, ruled 2026-08-09: `pask-wire` and `pask-attest` MUST enforce the
+        // identical rule. `pask-attest` rejects a zero-length window
+        // (`validity.rs`, `not_after <= not_before`); this crate previously
+        // accepted one, so a payload could pass one crate and fail the other.
+        // That is the Axis-B defect class this revision exists to close, so it
+        // is not left standing inside the revision that closes it.
+        //
+        // The single rule, stated once: notAfter MUST be strictly later than
+        // notBefore. A zero-length window asserts validity for an instant of
+        // zero duration and has no legitimate producer.
+        //
+        // Out of scope in `-01`: containment of `ts` within the window is NOT
+        // required in this revision. The interval is carried and its internal
+        // consistency is checked; nothing validates an event timestamp against
+        // it. Stated plainly so no policy author writes a rule this
+        // implementation does not enforce.
+        if validity_end <= validity_start {
             return Err(Error::Validation(
-                "attestation validity end precedes its start",
+                "attestation validity notAfter must be strictly later than notBefore",
             ));
         }
         validate_sha256(&self.adapter.ack_digest)?;

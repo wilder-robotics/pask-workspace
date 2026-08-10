@@ -1,7 +1,7 @@
 ---
 title: "A SCITT Profile for Physical-Site Engagement Receipts"
 abbrev: "Physical-Site Engagement Receipt"
-docname: draft-wilder-scitt-physical-site-engage-receipt-00
+docname: draft-wilder-scitt-physical-site-engage-receipt-01
 category: std
 submissionType: IETF
 ipr: trust200902
@@ -205,18 +205,18 @@ Adapter Write-In:
 Physical-Site Engagement Receipt (PSER):
 : A SCITT Signed Statement under this profile, carrying a canonical JSON
   payload conforming to {{payload}}, with the profile identifier
-  `wilder.pser/0.2` and a SCITT Receipt attached as defined in
+  `wilder.pser/0.3` and a SCITT Receipt attached as defined in
   {{RFC9942}}.
 
 # Profile identifier and media types
 
-The profile identifier for this document is `wilder.pser/0.2` and MUST appear
+The profile identifier for this document is `wilder.pser/0.3` and MUST appear
 as the value of the top-level `spec` member of the payload defined in
 {{payload}}.
 
 The COSE `content_type` (protected header label 3, {{RFC9052}}) for a
 Physical-Site Engagement Receipt Statement is
-`application/pser+json; profile=wilder.pser/0.2`. IANA registration of this
+`application/pser+json; profile=wilder.pser/0.3`. IANA registration of this
 media type is requested in {{iana}}.
 
 The `application/scitt-statement+cose` and `application/scitt-receipt+cose`
@@ -230,71 +230,94 @@ A Physical-Site Engagement Receipt is a SCITT Signed Statement per
 is a JSON object serialized with JCS {{RFC8785}} and carried as the
 `COSE_Sign1` payload.
 
-The payload conforms to the following schema. All members are REQUIRED unless
-marked OPTIONAL.
+The following is a complete example instance. It is not a schema: every value
+is literal, the whole object parses as JSON, and the `chain.hash` value is the
+digest this profile specifies over the rest of the object. Normative member
+definitions are in Section 4.1; where this example and Section 4.1 disagree,
+Section 4.1 governs.
+
+This figure is emitted by the reference implementation and asserted
+byte-identical to it in that implementation's continuous integration. It is
+not maintained by hand.
+
+Its values are illustrative. The digests are placeholders, the identifiers are
+synthetic, and the `teeClass` value is one conforming registry entry chosen so
+the example round-trips. This profile does not prefer, presume, or depend on
+any particular confidential-compute environment, and no value in this figure
+should be read as a statement about deployed hardware.
 
 ~~~ json
 {
-  "spec": "wilder.pser/0.2",
-  "id": "<receipt id>",
-  "ts": "<RFC 3339 UTC timestamp>",
-
-  "site": {
-    "id": "<stable site id>",
-    "class":
-      "<site class (residential|industrial|healthcare|infra|other)>",
-    "envelope": {
-      "id": "<stable envelope id>",
-      "digest": "sha256:<hex>",
-      "geobounds": "<geobounds ref or null>",
-      "temporal": { "starts": "<RFC 3339|null>",
-                    "ends": "<RFC 3339|null>" }
+  "actor": {
+    "class": "AUTONOMOUS",
+    "id": "actor:robot-alpha-01",
+    "operator": "operator:wilder-robotics"
+  },
+  "adapter": {
+    "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "endpoint": "endpoint:res-001",
+    "mode": "WRITE_ONLY",
+    "postedAt": "2026-10-15T14:00:05Z",
+    "system": "example.ticketing"
+  },
+  "attestation": {
+    "measuredBoot": {
+      "chain": "sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1",
+      "components": [
+        {
+          "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "name": "bl1"
+        }
+      ]
+    },
+    "platformEvidence": {
+      "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "encoding": "opaque/1"
+    },
+    "sealedEvidence": {
+      "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "encoding": "opaque/1",
+      "sizeBytes": 4096
+    },
+    "teeClass": "arm.cca",
+    "validity": {
+      "notAfter": "2026-10-15T15:00:00Z",
+      "notBefore": "2026-10-15T13:00:00Z"
+    },
+    "witnessKey": "key:tee:res-001-witness-01"
+  },
+  "chain": {
+    "hash": "sha256:119e8732733d3223c0d6a7f6bda4af3a404edfa3a30b5c5425628ead82034569",
+    "prevHash": null,
+    "seq": 0
+  },
+  "engagement": {
+    "envelopeConformance": "WITHIN",
+    "evidenceDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "id": "eng:res-001:20261015-140000",
+    "outcomeClass": "COMPLETED",
+    "type": "patrol",
+    "window": {
+      "end": "2026-10-15T14:00:00Z",
+      "start": "2026-10-15T13:30:00Z"
     }
   },
-
-  "actor": {
-    "id": "<stable actor id>",
-    "class": "AUTONOMOUS|SEMI_AUTONOMOUS|HUMAN|CREW",
-    "operator": "<operator id>"
-  },
-
-  "engagement": {
-    "id": "<engagement id>",
-    "window": { "start": "<RFC 3339 UTC>",
-                "end":   "<RFC 3339 UTC>" },
-    "type": "<engagement type>",
-    "outcomeClass":
-      "COMPLETED|ABORTED|REFUSED|ERRORED|OBSERVED_ONLY",
-    "envelopeConformance":
-      "WITHIN|EXCEEDED_TEMPORAL|EXCEEDED_GEO|EXCEEDED_ACTOR|UNKNOWN",
-    "evidenceDigest": "sha256:<hex>"
-  },
-
-  "attestation": {
-    "teeClass": "<TEE class identifier>",
-    "platformEvidence": "<attestation-format ref>",
-    "measuredBootChain": "sha256:<hex>",
-    "sealedEvidence": {
-      "digest": "sha256:<hex>",
-      "sizeBytes": <int>,
-      "encoding": "<opaque encoding label>"
+  "id": "uuid:00000000-0000-4000-8000-000000000001",
+  "site": {
+    "class": "residential",
+    "envelope": {
+      "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "geobounds": null,
+      "id": "env:res-001:2026-Q4",
+      "temporal": {
+        "ends": null,
+        "starts": "2026-10-01T00:00:00Z"
+      }
     },
-    "witnessKey": "<key id of the TEE signer>"
+    "id": "site:res-001"
   },
-
-  "adapter": {
-    "system": "<operations-layer system id>",
-    "endpoint": "<opaque endpoint id>",
-    "postedAt": "<RFC 3339 UTC>",
-    "ackDigest": "sha256:<hex>",
-    "mode": "WRITE_ONLY"
-  },
-
-  "chain": {
-    "seq": <int>,
-    "prevHash": "sha256:<hex>|null",
-    "hash": "sha256:<hex>"
-  }
+  "spec": "wilder.pser/0.3",
+  "ts": "2026-10-15T14:00:00Z"
 }
 ~~~
 {: title="Physical-Site Engagement Receipt payload"}
@@ -303,7 +326,7 @@ marked OPTIONAL.
 
 ### `spec` (REQUIRED, string)
 
-MUST be `wilder.pser/0.2` for receipts conforming to this document. A verifier
+MUST be `wilder.pser/0.3` for receipts conforming to this document. A verifier
 MUST reject any Statement with a different `spec` value as out of scope of
 this profile.
 
@@ -377,16 +400,39 @@ signed timestamp: the sealed evidence attests that the Issuer observed the
 engagement from inside a hardware-rooted, remotely attestable environment.
 
 - `attestation.teeClass` (REQUIRED, string): TEE class identifier.
-  Registry-governed; see {{iana}}. Examples the registry MAY seed:
+  Registry-governed; see {{iana}}. The *TEE Class* registry is REQUESTED by
+  this document and has NOT yet been allocated by IANA. Until allocation, the
+  admissible values are exactly the initial values listed in {{iana}}:
   `intel.tdx`, `amd.sev-snp`, `arm.cca`, `nvidia.h100-cc`,
-  `nvidia.jetson-thor-cc`, `aws.nitro-enclave`.
-- `attestation.platformEvidence` (REQUIRED, string): reference to the
+  `nvidia.jetson-thor-cc`, `aws.nitro-enclave`. A Verifier MUST reject a
+  `teeClass` value outside that set.
+
+  A confidential-compute environment absent from that set is not
+  accommodated by this revision, and an implementer on such an environment
+  has no conforming value to emit. The extension route is the registration
+  policy in {{iana}}: "Specification Required". A new value is added by
+  publishing a specification that defines the `platformEvidence` format the
+  class admits, and requesting registration against it. Once the registry is
+  allocated, that route does not require a revision of this document.
+- `attestation.platformEvidence` (REQUIRED, object): reference to the
   platform-native attestation document, in a format defined by the TEE
   class. The document itself MAY be conveyed by reference (URI + digest) or
   inline; when conveyed inline it SHOULD be in the unprotected header of
   the enclosing Signed Statement, not in the payload.
-- `attestation.measuredBootChain` (REQUIRED, string): JSON-DIGEST of the
+- `attestation.platformEvidence.digest` (REQUIRED, string): digest of the
+  platform-native attestation document.
+- `attestation.platformEvidence.encoding` (REQUIRED, string): opaque
+  encoding label for that document. The set of labels a given TEE class
+  admits is defined by that TEE class.
+- `attestation.measuredBoot` (REQUIRED, object): the measured-boot state of
+  the environment that produced the receipt.
+- `attestation.measuredBoot.chain` (REQUIRED, string): JSON-DIGEST of the
   measured-boot chain.
+- `attestation.measuredBoot.components` (REQUIRED, array): the measurements
+  the chain digest commits to, in boot order. Each element is an object with
+  a `name` (REQUIRED, string) naming the measured component and a `digest`
+  (REQUIRED, string) carrying its measurement. Verifiers MUST NOT infer any
+  meaning from `name` beyond identification.
 - `attestation.sealedEvidence.digest` (REQUIRED, string): digest of the
   sealed evidence bundle.
 - `attestation.sealedEvidence.sizeBytes` (REQUIRED, int): size of the
@@ -397,6 +443,17 @@ engagement from inside a hardware-rooted, remotely attestable environment.
 - `attestation.witnessKey` (REQUIRED, string): key identifier of the TEE
   signing key. This MAY differ from the Issuer's `iss` when the TEE
   operates as a delegated witness.
+- `attestation.validity` (REQUIRED, object): the interval over which the
+  attestation of the producing environment is asserted to hold.
+- `attestation.validity.notBefore` (REQUIRED, string): RFC 3339 UTC
+  timestamp at which the attestation becomes valid.
+- `attestation.validity.notAfter` (REQUIRED, string): RFC 3339 UTC timestamp
+  after which the attestation is no longer valid. `notAfter` MUST be strictly
+  later than `notBefore`; a Verifier MUST reject a receipt whose `notAfter` is
+  equal to or precedes its `notBefore`. A zero-length interval asserts
+  validity for an instant of zero duration and has no legitimate producer.
+  This revision does not
+  require a Verifier to test `ts` against the interval.
 
 ### `adapter` (REQUIRED, object)
 
@@ -451,7 +508,7 @@ the CWT Claims header parameter (label 15, {{RFC9597}}), carrying at least:
   claim.
 
 The protected header `content_type` (label 3) MUST be
-`application/pser+json; profile=wilder.pser/0.2`.
+`application/pser+json; profile=wilder.pser/0.3`.
 
 The Signed Statement's payload MUST be the JCS serialization of the JSON
 object defined in {{payload}}. Detached payloads are NOT PERMITTED under
@@ -503,7 +560,7 @@ This document requests the following IANA actions.
 ## Media type registration
 
 Register `application/pser+json` per {{RFC6838}}, with the required
-`profile` parameter and profile value `wilder.pser/0.2`.
+`profile` parameter and profile value `wilder.pser/0.3`.
 
 ## COSE Header Parameters
 
@@ -663,6 +720,36 @@ conforming COSE implementation and composes with any SCITT Transparency
 Service.
 
 --- back
+
+# Changes since -00
+
+This revision reconciles the profile identifier and four attestation members
+with the reference implementation, and changes how the example figure in
+Section 4 is produced.
+
+- The profile identifier and media-type parameter are `wilder.pser/0.3`. A
+  producer built against `wilder.pser/0.2` is rejected on version validation
+  rather than on an unknown member.
+- `attestation.measuredBootChain` (string) is replaced by
+  `attestation.measuredBoot`, an object carrying the chain digest and the
+  component sequence that hashes to it.
+- `attestation.platformEvidence` is an object carrying a digest and an
+  encoding label, rather than a bare string.
+- `attestation.validity` is added and is REQUIRED. It carries `notBefore` and
+  `notAfter`. `notAfter` MUST be strictly later than `notBefore`; a
+  zero-length interval is rejected. This revision does not require a Verifier
+  to test `ts` against the interval, and says so rather than implying a check
+  that does not happen.
+- The *TEE Class* registry is stated to be requested and not yet allocated,
+  and the route by which a value is added is stated explicitly, so that an
+  implementer on an unlisted confidential-compute environment has a documented
+  path rather than only a rejection.
+- The TEE Class registry values name confidential-compute environments rather
+  than instruction set architectures.
+- The Section 4 example is a complete, literal instance emitted by the
+  reference implementation, and is asserted byte-identical to that
+  implementation in its continuous integration. The -00 figure was a schema
+  template rendered in a JSON code block and did not parse as JSON.
 
 # Acknowledgments
 {:numbered="false"}

@@ -4,10 +4,25 @@
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
 //! Compile-time test vectors required by the profile package.
+//!
+//! # The values are illustrative, and one of them is load-bearing
+//!
+//! Every value here is synthetic. Digests are repeated-nibble placeholders,
+//! the site is the RES-001 reference fixture, and `attestation.teeClass` is a
+//! conforming registry value chosen so the vector round-trips. No Pask witness
+//! device has been built and no confidential-compute silicon has been
+//! selected, so `teeClass` here discloses nothing and prefers nothing.
+//!
+//! The load-bearing part: `MINIMAL_VALID_JCS` is the source of the example
+//! figure carried by the profile document, emitted through
+//! [`crate::canonical_example`] and asserted byte-identical to the document in
+//! CI. Changing any value in this vector changes the published figure. Change
+//! it deliberately, and regenerate with
+//! `cargo run -p pask-wire-cli -- canonical-example`.
 
 /// Minimal valid unsigned payload with the package's placeholder chain hash.
 pub const MINIMAL_VALID_PAYLOAD: &str = r#"{
-  "spec": "wilder.pser/0.2",
+  "spec": "wilder.pser/0.3",
   "id": "uuid:00000000-0000-4000-8000-000000000001",
   "ts": "2026-10-15T14:00:00Z",
   "site": {
@@ -34,7 +49,7 @@ pub const MINIMAL_VALID_PAYLOAD: &str = r#"{
     "evidenceDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
   },
   "attestation": {
-    "teeClass": "arm64.tee-v1",
+    "teeClass": "arm.cca",
     "measuredBoot": {
       "chain": "sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1",
       "components": [
@@ -75,13 +90,17 @@ pub const MINIMAL_VALID_PAYLOAD: &str = r#"{
 
 /// Correct chain digest for [`MINIMAL_VALID_PAYLOAD`] after production normalization.
 pub const MINIMAL_CHAIN_HASH: &str =
-    "sha256:a6f1265304a5834191ff05271f9ceca5fcd27b58c14328e587b6a77b2325f720";
+    "sha256:119e8732733d3223c0d6a7f6bda4af3a404edfa3a30b5c5425628ead82034569";
 
 /// Expected JCS bytes for the normalized minimal payload.
-pub const MINIMAL_VALID_JCS: &str = r#"{"actor":{"class":"AUTONOMOUS","id":"actor:robot-alpha-01","operator":"operator:wilder-robotics"},"adapter":{"ackDigest":"sha256:4444444444444444444444444444444444444444444444444444444444444444","endpoint":"endpoint:res-001","mode":"WRITE_ONLY","postedAt":"2026-10-15T14:00:05Z","system":"example.ticketing"},"attestation":{"measuredBoot":{"chain":"sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1","components":[{"digest":"sha256:2222222222222222222222222222222222222222222222222222222222222222","name":"bl1"}]},"platformEvidence":{"digest":"sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","encoding":"opaque/1"},"sealedEvidence":{"digest":"sha256:3333333333333333333333333333333333333333333333333333333333333333","encoding":"opaque/1","sizeBytes":4096},"teeClass":"arm64.tee-v1","validity":{"notAfter":"2026-10-15T15:00:00Z","notBefore":"2026-10-15T13:00:00Z"},"witnessKey":"key:tee:res-001-witness-01"},"chain":{"hash":"sha256:a6f1265304a5834191ff05271f9ceca5fcd27b58c14328e587b6a77b2325f720","prevHash":null,"seq":0},"engagement":{"envelopeConformance":"WITHIN","evidenceDigest":"sha256:1111111111111111111111111111111111111111111111111111111111111111","id":"eng:res-001:20261015-140000","outcomeClass":"COMPLETED","type":"patrol","window":{"end":"2026-10-15T14:00:00Z","start":"2026-10-15T13:30:00Z"}},"id":"uuid:00000000-0000-4000-8000-000000000001","site":{"class":"residential","envelope":{"digest":"sha256:0000000000000000000000000000000000000000000000000000000000000000","geobounds":null,"id":"env:res-001:2026-Q4","temporal":{"ends":null,"starts":"2026-10-01T00:00:00Z"}},"id":"site:res-001"},"spec":"wilder.pser/0.2","ts":"2026-10-15T14:00:00Z"}"#;
+pub const MINIMAL_VALID_JCS: &str = r#"{"actor":{"class":"AUTONOMOUS","id":"actor:robot-alpha-01","operator":"operator:wilder-robotics"},"adapter":{"ackDigest":"sha256:4444444444444444444444444444444444444444444444444444444444444444","endpoint":"endpoint:res-001","mode":"WRITE_ONLY","postedAt":"2026-10-15T14:00:05Z","system":"example.ticketing"},"attestation":{"measuredBoot":{"chain":"sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1","components":[{"digest":"sha256:2222222222222222222222222222222222222222222222222222222222222222","name":"bl1"}]},"platformEvidence":{"digest":"sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","encoding":"opaque/1"},"sealedEvidence":{"digest":"sha256:3333333333333333333333333333333333333333333333333333333333333333","encoding":"opaque/1","sizeBytes":4096},"teeClass":"arm.cca","validity":{"notAfter":"2026-10-15T15:00:00Z","notBefore":"2026-10-15T13:00:00Z"},"witnessKey":"key:tee:res-001-witness-01"},"chain":{"hash":"sha256:119e8732733d3223c0d6a7f6bda4af3a404edfa3a30b5c5425628ead82034569","prevHash":null,"seq":0},"engagement":{"envelopeConformance":"WITHIN","evidenceDigest":"sha256:1111111111111111111111111111111111111111111111111111111111111111","id":"eng:res-001:20261015-140000","outcomeClass":"COMPLETED","type":"patrol","window":{"end":"2026-10-15T14:00:00Z","start":"2026-10-15T13:30:00Z"}},"id":"uuid:00000000-0000-4000-8000-000000000001","site":{"class":"residential","envelope":{"digest":"sha256:0000000000000000000000000000000000000000000000000000000000000000","geobounds":null,"id":"env:res-001:2026-Q4","temporal":{"ends":null,"starts":"2026-10-01T00:00:00Z"}},"id":"site:res-001"},"spec":"wilder.pser/0.3","ts":"2026-10-15T14:00:00Z"}"#;
 
 /// Unsupported version used by malformed-payload tests.
-pub const WRONG_SPEC: &str = "wilder.pser/0.3";
+///
+/// MUST stay strictly below every version this profile has ever accepted, so
+/// that adopting a new `SPEC_VERSION` can never collide with the negative
+/// fixture the verifier is asserted to reject.
+pub const WRONG_SPEC: &str = "wilder.pser/0.0";
 /// Invalid actor class used by malformed-payload tests.
 pub const INVALID_ACTOR_CLASS: &str = "ROBOT";
 /// Reversed engagement end used by malformed-payload tests.

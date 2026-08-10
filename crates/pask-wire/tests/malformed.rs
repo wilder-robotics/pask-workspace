@@ -165,6 +165,64 @@ fn package_payload_mutations_are_rejected() {
     assert_payload_rejected(&missing_site_id);
 }
 
+/// Asserts a payload is rejected *for the stated reason*.
+///
+/// `assert_payload_rejected` only checks `is_err()`. Every mutation of a
+/// payload also invalidates `chain.hash`, so a bare `is_err()` assertion
+/// passes for every mutation regardless of whether the validation under test
+/// exists at all. Discovered 2026-08-09 while adding the Q1 and Q3 controls:
+/// both passed with their fixes reverted.
+fn assert_rejected_because(value: &Value, expected: &str) {
+    let bytes = serde_json::to_vec(value).unwrap();
+    let error = Payload::from_json(&bytes)
+        .err()
+        .unwrap_or_else(|| panic!("payload was accepted; expected rejection for {expected:?}"));
+    let rendered = error.to_string();
+    assert!(
+        rendered.contains(expected),
+        "rejected for the wrong reason.\n  expected to contain: {expected}\n  actual: {rendered}"
+    );
+}
+
+/// Q3, ruled 2026-08-09: `notAfter` MUST be strictly later than `notBefore`.
+///
+/// Before this revision `pask-wire` accepted a zero-length window while
+/// `pask-attest` rejected it, so a payload could pass one crate and fail the
+/// other. Negative control: reverting the comparison to `<` fails this test on
+/// the reason string, not merely on `is_err()`.
+#[test]
+fn zero_length_attestation_validity_is_rejected() {
+    let value = normalized_value();
+    let not_before = value["attestation"]["validity"]["notBefore"]
+        .as_str()
+        .expect("notBefore is a string")
+        .to_owned();
+
+    let mut zero_length = value;
+    zero_length["attestation"]["validity"]["notAfter"] = json!(not_before);
+    assert_rejected_because(
+        &zero_length,
+        "attestation validity notAfter must be strictly later than notBefore",
+    );
+}
+
+/// Q1, ruled 2026-08-09: `attestation.quote` is removed from the documented
+/// wire surface in `-01`, and the document is silent about it.
+///
+/// `Attestation` carries `deny_unknown_fields`, so removing the member turns a
+/// payload carrying `quote` from accepted into rejected. Negative control:
+/// reintroducing the field fails this test, because the payload then parses
+/// and is rejected later for a chain-hash mismatch instead.
+///
+/// `-02` may reintroduce `quote` alongside the vendor-trust model it requires.
+/// This test is then the thing that must be consciously changed.
+#[test]
+fn attestation_quote_is_not_part_of_the_wire_surface() {
+    let mut value = normalized_value();
+    value["attestation"]["quote"] = json!("3q2+7w==");
+    assert_rejected_because(&value, "unknown field `quote`");
+}
+
 #[test]
 fn content_type_must_be_present_and_exact() {
     for content_type in [None, Some(WRONG_CONTENT_TYPE)] {

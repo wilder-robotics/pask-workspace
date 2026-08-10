@@ -10,42 +10,79 @@ use crate::AttestationError;
 
 /// A supported category-level confidential-compute profile.
 ///
+/// The accepted set is the initial seed of the *TEE Class* registry requested
+/// in the profile's IANA considerations. `arm64` and `x86_64` are instruction
+/// set architectures, not confidential-compute environments, and the profile
+/// states that the `platformEvidence` format is defined by the TEE class — a
+/// property an architecture cannot carry.
+///
 ///     use std::str::FromStr;
 ///     use pask_attest::TeeClass;
 ///
-///     let class = TeeClass::from_str("arm64.tee-v1")?;
-///     assert_eq!(class.to_string(), "arm64.tee-v1");
+///     let class = TeeClass::from_str("arm.cca")?;
+///     assert_eq!(class.to_string(), "arm.cca");
 ///     # Ok::<(), pask_attest::AttestationError>(())
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum TeeClass {
-    /// ARM64 with the confidential-compute v1 profile.
-    #[serde(rename = "arm64.tee-v1")]
-    Arm64TeeV1,
-    /// x86_64 with the confidential-compute v1 profile.
-    #[serde(rename = "x86_64.tee-v1")]
-    X86_64TeeV1,
+    /// Intel Trust Domain Extensions.
+    #[serde(rename = "intel.tdx")]
+    IntelTdx,
+    /// AMD Secure Encrypted Virtualization with Secure Nested Paging.
+    #[serde(rename = "amd.sev-snp")]
+    AmdSevSnp,
+    /// Arm Confidential Compute Architecture.
+    #[serde(rename = "arm.cca")]
+    ArmCca,
+    /// NVIDIA H100 confidential computing.
+    #[serde(rename = "nvidia.h100-cc")]
+    NvidiaH100Cc,
+    /// NVIDIA Jetson Thor confidential computing.
+    #[serde(rename = "nvidia.jetson-thor-cc")]
+    NvidiaJetsonThorCc,
+    /// AWS Nitro Enclaves.
+    #[serde(rename = "aws.nitro-enclave")]
+    AwsNitroEnclave,
+}
+
+impl TeeClass {
+    /// Every accepted TEE class identifier, in registry order.
+    pub const ALL: [Self; 6] = [
+        Self::IntelTdx,
+        Self::AmdSevSnp,
+        Self::ArmCca,
+        Self::NvidiaH100Cc,
+        Self::NvidiaJetsonThorCc,
+        Self::AwsNitroEnclave,
+    ];
+
+    /// Returns the registry identifier for this class.
+    #[must_use]
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::IntelTdx => "intel.tdx",
+            Self::AmdSevSnp => "amd.sev-snp",
+            Self::ArmCca => "arm.cca",
+            Self::NvidiaH100Cc => "nvidia.h100-cc",
+            Self::NvidiaJetsonThorCc => "nvidia.jetson-thor-cc",
+            Self::AwsNitroEnclave => "aws.nitro-enclave",
+        }
+    }
 }
 
 impl FromStr for TeeClass {
     type Err = AttestationError;
 
     fn from_str(value: &str) -> Result<Self, Self::Err> {
-        match value {
-            "arm64.tee-v1" => Ok(Self::Arm64TeeV1),
-            "x86_64.tee-v1" => Ok(Self::X86_64TeeV1),
-            other => Err(AttestationError::UnsupportedTeeClass(other.to_owned())),
-        }
+        Self::ALL
+            .into_iter()
+            .find(|class| class.as_str() == value)
+            .ok_or_else(|| AttestationError::UnsupportedTeeClass(value.to_owned()))
     }
 }
 
 impl Display for TeeClass {
-    #[allow(unreachable_patterns)]
     fn fmt(&self, formatter: &mut Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Arm64TeeV1 => formatter.write_str("arm64.tee-v1"),
-            Self::X86_64TeeV1 => formatter.write_str("x86_64.tee-v1"),
-            _ => Err(fmt::Error),
-        }
+        formatter.write_str(self.as_str())
     }
 }

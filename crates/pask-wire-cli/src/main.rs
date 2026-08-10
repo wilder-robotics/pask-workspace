@@ -15,7 +15,7 @@ use ed25519_dalek::{
     SigningKey, VerifyingKey,
     pkcs8::{DecodePrivateKey, DecodePublicKey},
 };
-use pask_wire::{Payload, produce_ed25519, verify_ed25519};
+use pask_wire::{Payload, canonical_example, produce_ed25519, verify_ed25519};
 
 #[cfg(feature = "adapter")]
 use {
@@ -45,6 +45,11 @@ enum Command {
         #[arg(long)]
         output: PathBuf,
     },
+    /// Emit the canonical example instance embedded in the profile document.
+    ///
+    /// The Internet-Draft's example figure is this output verbatim. A test
+    /// asserts they are byte-identical.
+    CanonicalExample,
     Verify {
         #[arg(long)]
         input: PathBuf,
@@ -80,6 +85,11 @@ fn main() -> Result<()> {
             private_key,
             output,
         } => produce(input, private_key, output),
+        Command::CanonicalExample => {
+            let mut stdout = io::stdout().lock();
+            writeln!(stdout, "{}", canonical_example()?)
+                .context("failed to write the canonical example to stdout")
+        }
         Command::Verify {
             input,
             public_key,

@@ -18,9 +18,9 @@ fn tampered_jcs_bytes_fail_signature() {
     let key = signing_key(2);
     let mut quote = valid_quote(&key, WITNESS_KEY);
     let offset = quote
-        .windows(b"arm64".len())
-        .position(|window| window == b"arm64")
-        .unwrap();
+        .windows(b"arm.cca".len())
+        .position(|window| window == b"arm.cca")
+        .expect("quote carries the teeClass value verbatim");
     quote[offset] = b'b';
     let error = root(&key, WITNESS_KEY)
         .verify(&quote, &clock_at(MIDPOINT_SECS))

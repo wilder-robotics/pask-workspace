@@ -3,7 +3,7 @@
 // pask-wire is licensed AGPL-3.0-only with a commercial exception; see
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
-//! Producer and verifier for the `wilder.pser/0.2` signed-statement profile.
+//! Producer and verifier for the `wilder.pser/0.3` signed-statement profile.
 
 #![no_std]
 #![forbid(unsafe_code)]
@@ -13,6 +13,8 @@ extern crate alloc;
 #[cfg(feature = "std")]
 extern crate std;
 
+#[cfg(feature = "alloc")]
+mod canonical_example;
 #[cfg(feature = "alloc")]
 mod cwt;
 #[cfg(feature = "alloc")]
@@ -26,6 +28,8 @@ mod payload;
 #[cfg(feature = "alloc")]
 pub mod testvectors;
 
+#[cfg(feature = "alloc")]
+pub use canonical_example::canonical_example;
 #[cfg(feature = "alloc")]
 pub use digest::{sha256_prefixed, validate_sha256};
 #[cfg(feature = "alloc")]

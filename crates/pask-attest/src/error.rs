@@ -38,7 +38,9 @@ pub enum AttestationError {
     #[error("attestation quote malformed: {0}")]
     MalformedQuote(String),
     /// The quote names a TEE class outside the supported category taxonomy.
-    #[error("unsupported TEE class '{0}' — allowed: arm64.tee-v1, x86_64.tee-v1")]
+    #[error(
+        "unsupported TEE class '{0}' — allowed: intel.tdx, amd.sev-snp, arm.cca, nvidia.h100-cc, nvidia.jetson-thor-cc, aws.nitro-enclave"
+    )]
     UnsupportedTeeClass(String),
     /// The component sequence does not hash to the declared measured-boot chain.
     #[error("measured-boot chain hash does not match component digests")]

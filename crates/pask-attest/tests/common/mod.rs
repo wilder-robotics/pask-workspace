@@ -47,7 +47,7 @@ pub fn root(signing_key: &SigningKey, witness_key: &str) -> Ed25519RootOfTrust {
 pub fn sample_claims(witness_key: &str) -> Value {
     let mut claims = json!({
         "spec": "wilder.attest/0.1",
-        "teeClass": "arm64.tee-v1",
+        "teeClass": "arm.cca",
         "measuredBoot": {
             "chain": "",
             "components": [

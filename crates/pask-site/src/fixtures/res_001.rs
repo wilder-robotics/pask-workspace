@@ -4,6 +4,23 @@
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
 //! RES-001 deterministic fixture constructors.
+//!
+//! # These values are illustrative
+//!
+//! No Pask witness device has been built. RES-001 exercises the signing
+//! pipeline against a site that exists, but the confidential-compute
+//! environment these fixtures describe does not: there is no box, and no
+//! silicon has been selected.
+//!
+//! `TEE_CLASS` in particular is a syntactically valid registry value chosen so
+//! the fixture compiles and round-trips. It is not a hardware disclosure, not
+//! a procurement signal, and not a statement that this profile expects,
+//! prefers, or has been validated against Arm CCA. Read it as `<some
+//! conforming TEE class>`.
+//!
+//! Nothing in this profile depends on which of the registry values appears
+//! here. If a value must be cited as fact, it has to come from a device that
+//! exists.
 
 use crate::{EngagementRequest, EvidenceBundle, EvidenceFile, SiteConfig};
 
@@ -16,7 +33,9 @@ const ENVELOPE_STARTS: &str = "2026-10-01T00:00:00Z";
 const ACTOR_ID: &str = "actor:robot-alpha-01";
 const ACTOR_CLASS: &str = "AUTONOMOUS";
 const ACTOR_OPERATOR: &str = "operator:wilder-robotics";
-const TEE_CLASS: &str = "arm64.tee-v1";
+/// Illustrative only — see the module documentation. No silicon has been
+/// selected for the RES-001 witness and this value discloses nothing about it.
+const TEE_CLASS: &str = "arm.cca";
 const PLATFORM_EVIDENCE_ENCODING: &str = "opaque/1";
 const PLATFORM_EVIDENCE_DIGEST: &str =
     "sha256:3333333333333333333333333333333333333333333333333333333333333333";
