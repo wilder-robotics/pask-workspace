@@ -99,9 +99,9 @@ jobs:
           #
           # Exemption: authenticated Dependabot PR commits are skipped.
           # Rationale: Dependabot cannot add a Signed-off-by trailer to its
-          # own commits, and the DCO's purpose (attesting to origin) is
-          # satisfied by GitHub's App identity signature on the commit.
-          # This matches CNCF and Kubernetes conventions for bot exemption.
+          # own commits. The event payload authenticates the PR owner, while
+          # the name and fixed noreply address constrain which commits in that
+          # PR are exempt. This does not verify commit signature status.
           for sha in $(git rev-list --no-merges "$BASE_SHA".."$HEAD_SHA"); do
             author_name=$(git show -s --format='%an' "$sha")
             author_email=$(git show -s --format='%ae' "$sha")
