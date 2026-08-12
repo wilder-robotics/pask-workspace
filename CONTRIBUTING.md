@@ -1,6 +1,6 @@
 # Contributing to Pask
 
-Thank you for your interest in Pask. This repository is the reference implementation and workspace for the IETF individual submission [`draft-wilder-scitt-physical-site-engagement-receipt`](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engagement-receipt/) — a SCITT profile for signed, portable receipts of physical-site engagements involving robots, autonomous systems, and other machine actors.
+Thank you for your interest in Pask. This repository is the reference implementation and workspace for the IETF individual submission [`draft-wilder-scitt-physical-site-engage-receipt`](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engage-receipt/) — a SCITT profile for signed, portable receipts of physical-site engagements involving robots, autonomous systems, and other machine actors.
 
 Contributions from the community are welcome. This document describes how to file issues, propose changes, and participate in the standards process around Pask.
 
@@ -11,9 +11,8 @@ Contributions from the community are welcome. This document describes how to fil
 We accept the following kinds of contributions:
 
 - **Issues** — questions, bug reports, editorial suggestions on the draft, requests for clarification of normative language, or observations about the reference implementation.
-- **Pull requests against the draft (`draft/` directory)** — editorial improvements to the `-XX` XML source, typo fixes, reference updates, cross-reference cleanups. Substantive normative changes are generally decided on the [IETF SCITT mailing list](mailto:scitt@ietf.org), not in this repo.
+- **Pull requests against the draft (`docs/` directory)** — editorial improvements to the `-XX` Markdown source, typo fixes, reference updates, cross-reference cleanups. Substantive normative changes are generally decided on the [IETF SCITT mailing list](mailto:scitt@ietf.org), not in this repo.
 - **Pull requests against the reference implementation (Rust workspace)** — bug fixes, test-vector additions, adapter implementations against additional TEE platforms, documentation improvements.
-- **Conformance vectors** — additions to [pask-conformance-vectors](https://github.com/wilder-robotics/pask-conformance-vectors), including negative-case vectors and platform-specific attestation vectors.
 
 We do not accept contributions that:
 
@@ -64,7 +63,7 @@ By submitting a contribution (issue, pull request, or otherwise) you agree that 
 ## Code style and quality gates
 
 - **Rust code:** must pass `cargo fmt --check`, `cargo clippy -- -D warnings`, and `cargo test`. These are enforced by CI.
-- **Draft XML:** must pass `xml2rfc` validation and `idnits` compliance checks. These are enforced by CI.
+- **Draft Markdown:** must convert with `kramdown-rfc2629`, validate with `xml2rfc`, and pass `idnits` compliance checks. These are enforced by CI.
 - **Line length:** 72 columns for draft plain-text renderings, per IETF convention. No hard limit on Rust source.
 
 ---

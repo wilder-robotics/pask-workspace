@@ -8,7 +8,7 @@ sites.
 ## About this repository
 
 This repository is the reference implementation and workspace for
-[`draft-wilder-scitt-physical-site-engagement-receipt`](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engagement-receipt/), an IETF individual submission profiling
+[`draft-wilder-scitt-physical-site-engage-receipt`](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engage-receipt/), an IETF individual submission profiling
 SCITT for signed engagement receipts of physical-site events.
 
 **Ownership vs. protocol roles.** This repository is owned by the
