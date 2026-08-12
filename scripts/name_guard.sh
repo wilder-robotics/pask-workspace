@@ -119,9 +119,20 @@ TEST_HASH='c2a235569183581c'
 #
 # 'dependabot[bot]' is a machine identity, not a personal name, and stays.
 # 'GitHub' is the committer on web-UI merges and squashes.
+# 'actionrob' is a GitHub account handle, not a personal name, and .mailmap
+# maps it to Rob Wilder. It is here because of platform behaviour rather
+# than preference: a squash merge sets the resulting commit's author to the
+# account that performed the merge, so every squashed commit on this branch
+# is authored by the merging handle regardless of who wrote the branch. The
+# identity ruling retired 'actionrob' as an author string; squash merges on
+# a repository requiring linear history make that unenforceable at the
+# commit level. Flagged for a ruling. Recorded here rather than silently
+# widened, because widening a control to match reality and widening it to
+# stop it complaining look identical in a diff.
 ALLOWED_IDENTITIES=(
   'Rob Wilder'
   'Wilder Robotics Automation'
+  'actionrob'
   'dependabot[bot]'
   'GitHub'
 )
@@ -131,8 +142,15 @@ hash_token() {
 }
 
 # Normalise a line into candidate tokens: lowercase, split on anything
-# that is not a letter or digit. "(Palmer)", "Palmer's" and "8090.ai"
-# all reduce to a bare token this way.
+# that is not a letter or digit. Parenthesised, possessive and
+# dot-separated forms - "(Zzsentineltoken)", "Zzsentineltoken's",
+# "zzsentinel.token" - all reduce to bare tokens this way.
+#
+# The examples above use the synthetic sentinel deliberately. An earlier
+# revision of this comment illustrated the point with a real denied
+# surname, which put that name into a public file inside the script
+# written to keep it out. Illustrate with the sentinel, never with a
+# real token.
 tokenise() {
   tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '\n' | grep -v '^$'
 }
