@@ -111,10 +111,17 @@ TEST_HASH='c2a235569183581c'
 # Commit identities permitted on a public artifact. Anything else is a
 # failure, whether or not it is a personal name — an unrecognised
 # identity is exactly how an unreviewed name reaches the history.
+# Per the identity ruling of 2026-08-11 (Q-ID = B): exactly two identities
+# author public commits, one human and one machine. 'PASKMASTER' and 'Willa'
+# are retired as public author strings and are deliberately absent below.
+# 'actionrob' is retired likewise; .mailmap maps it to Rob Wilder for display
+# but new commits must not use it.
+#
+# 'dependabot[bot]' is a machine identity, not a personal name, and stays.
+# 'GitHub' is the committer on web-UI merges and squashes.
 ALLOWED_IDENTITIES=(
   'Rob Wilder'
-  'actionrob'
-  'PASKMASTER'
+  'Wilder Robotics Automation'
   'dependabot[bot]'
   'GitHub'
 )
