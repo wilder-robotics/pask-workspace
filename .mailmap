@@ -1,0 +1,17 @@
+# Canonical identities per Willa's ruling of 2026-08-11 (Q-ID = B).
+#
+# Two actors appear in this history: Rob Wilder, and the automation that
+# commits on his behalf. Nine identity variants accumulated before the
+# rule existed. .mailmap collapses the display without falsifying the
+# underlying commit metadata, which is the correct trade for a project
+# whose subject is verifiable attribution.
+#
+# dependabot[bot] is a machine identity, not a personal name, and stays.
+Rob Wilder <rob@wilder-robotics.com> <rob@wildermgmt.com>
+Rob Wilder <rob@wilder-robotics.com> actionrob <rob@wilder-robotics.com>
+Rob Wilder <rob@wilder-robotics.com> actionrob <rob@wildermgmt.com>
+Rob Wilder <rob@wilder-robotics.com> Rob Wilder (via PC) <rob@wilder-robotics.com>
+Wilder Robotics Automation <willa@wildermgmt.com> PASKMASTER <willa@wildermgmt.com>
+Wilder Robotics Automation <willa@wildermgmt.com> willa <willa@wildermgmt.com>
+Wilder Robotics Automation <willa@wildermgmt.com> Willa <willa@wildermgmt.com>
+Wilder Robotics Automation <willa@wildermgmt.com> Willa (Wilder Management Automation) <willa@wildermgmt.com>
