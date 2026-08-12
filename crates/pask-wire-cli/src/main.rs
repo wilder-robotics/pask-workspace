@@ -87,7 +87,8 @@ fn main() -> Result<()> {
         } => produce(input, private_key, output),
         Command::CanonicalExample => {
             let mut stdout = io::stdout().lock();
-            writeln!(stdout, "{}", canonical_example()?)
+            stdout
+                .write_all(canonical_example()?.as_bytes())
                 .context("failed to write the canonical example to stdout")
         }
         Command::Verify {
