@@ -94,14 +94,27 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
           set -euo pipefail
           echo "Checking commits between $BASE_SHA and $HEAD_SHA for DCO sign-off"
           missing=0
           # List each commit and verify Signed-off-by trailer.
+          #
+          # Exemption: authenticated Dependabot PR commits are skipped.
+          # Rationale: Dependabot cannot add a Signed-off-by trailer to its
+          # own commits. The event payload authenticates the PR owner, while
+          # the name and fixed noreply address constrain which commits in that
+          # PR are exempt. This does not verify commit signature status.
           for sha in $(git rev-list --no-merges "$BASE_SHA".."$HEAD_SHA"); do
             author_name=$(git show -s --format='%an' "$sha")
             author_email=$(git show -s --format='%ae' "$sha")
+            if [ "$PR_AUTHOR" = 'dependabot[bot]' ] \
+              && [ "$author_name" = 'dependabot[bot]' ] \
+              && [ "$author_email" = '49699333+dependabot[bot]@users.noreply.github.com' ]; then
+              echo "  ⊘ $sha  authenticated Dependabot commit — DCO exempt"
+              continue
+            fi
             expected="Signed-off-by: ${author_name} <${author_email}>"
             if git show -s --format='%B' "$sha" | grep -Fq "$expected"; then
               echo "  ✓ $sha  $expected"
