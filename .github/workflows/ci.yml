@@ -7,6 +7,10 @@
 #   - cargo:      Rust build/test matrix (Linux + macOS + Windows).
 #   - dco:        Developer Certificate of Origin sign-off check on every
 #                 commit in a PR. Enforces the CONTRIBUTING.md contract.
+#   - name-guard:  Public Name Rule enforcement over tracked files plus
+#                 commit messages and author/committer fields. Distinct from
+#                 `compliance`: different surface, different deny-list, and
+#                 deliberately not merged with it.
 #   - compliance: PASK-COMPLIANCE-002/003 deny-list grep over the code
 #                 repository surface, plus a self-test of the deny-list.
 #   - draft:      kramdown-rfc conversion, xml2rfc validation and idnits
@@ -317,3 +321,40 @@ jobs:
                  "beyond the accepted exception. See the report above."
             exit 1
           fi
+
+  name-guard:
+    name: Public Name Rule
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # Full history: this job reads commit messages and author fields,
+          # which a shallow clone does not carry.
+          fetch-depth: 0
+          persist-credentials: false
+
+      # The self-test runs first and unconditionally. A matcher that has
+      # silently stopped matching reports a clean repository, which is the
+      # exact failure this job exists to prevent. It ran clean once while
+      # blind, and that clean result is why the incident lasted 29 hours.
+      - name: Self-test the matcher
+        run: bash scripts/name_guard.sh --self-test
+
+      - name: Scan tracked files
+        run: bash scripts/name_guard.sh --files
+
+      # Commit messages and author fields, over this PR's range only.
+      # History before the rule existed contains identity strings the rule
+      # retired; those are handled by .mailmap, not by rewriting merged
+      # commits. Scanning all of history here would fail every run and the
+      # pressure would be to add an exception.
+      - name: Scan commit messages and author fields
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: bash scripts/name_guard.sh --commits "$BASE_SHA".."$HEAD_SHA"
