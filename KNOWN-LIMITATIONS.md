@@ -175,6 +175,30 @@ produced in this repository against which a verifier could be tested.
 
 ---
 
+## 5.2 Nothing in the repository registers with a Transparency Service
+
+`-01` makes registration mandatory: an Issuer MUST register every receipt it
+issues with at least one Transparency Service, and a relying party MUST NOT
+accept an unregistered receipt as conforming.
+
+**No crate in this repository registers anything with any Transparency
+Service.** A grep across `pask-adapter`, `pask-attest`, `pask-site`,
+`pask-wire`, and `pask-wire-cli` for `transparency_service`,
+`register_receipt`, `scitt_register`, and `register(` returns zero matches.
+
+The consequence, stated plainly: **every receipt this reference implementation
+has ever produced is non-conforming under `-01`**, because none carries an
+attached Receipt from a Transparency Service. The library produces valid
+`wilder.pser/0.3` payloads and valid signed statements; it does not produce
+Transparent Statements.
+
+This is a declared divergence in the safe direction — the document requires
+more than the code performs — and it is recorded here rather than resolved by
+weakening the requirement. It is closed by implementing registration, not by
+editing the draft.
+
+Reviewed 2026-08-15.
+
 ## 6. Wire format and tooling
 
 - **A supplied chain hash is silently replaced.** `pask-wire` recomputes

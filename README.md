@@ -94,6 +94,13 @@ production-readiness claims. No safety, insurance, or regulatory-compliance
 claims. Test vectors, unit tests, and CI-verified conformance to the
 embedded specification only.
 
+Scope of that conformance, stated precisely: this library produces and
+validates `wilder.pser/0.3` payloads and signed statements. It does **not**
+register statements with a SCITT Transparency Service, and therefore does not
+produce Transparent Statements. Because the `-01` draft makes registration
+mandatory, receipts produced by this library are **not conforming receipts**
+under that draft. See [KNOWN-LIMITATIONS.md](./KNOWN-LIMITATIONS.md) §5.2.
+
 ## Contact
 
 Rob Wilder — rob@wilder-robotics.com
