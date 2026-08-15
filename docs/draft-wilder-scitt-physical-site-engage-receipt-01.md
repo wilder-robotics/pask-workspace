@@ -33,6 +33,7 @@ normative:
   RFC9943:
 
 informative:
+  RFC7942:
   I-D.noa-scitt-ai-agent-receipt:
     title: A SCITT Profile for AI-Agent Action Receipts
     author:
@@ -521,12 +522,19 @@ profile depends on that document.
 - `chain.seq` (REQUIRED, int): non-negative sequence number within the
   Issuer's chain for the identified Subject. The first receipt in a chain
   MUST carry `chain.seq` 0.
-- `chain.prevHash` (REQUIRED, string or null): JSON-DIGEST of the
-  immediately preceding receipt in the chain, or `null` for the first
+- `chain.prevHash` (REQUIRED, string or null): the value of the
+  immediately preceding receipt's `chain.hash`, or `null` for the first
   receipt. A receipt whose `chain.seq` is 0 MUST carry `null`; a receipt
-  whose `chain.seq` is nonzero MUST carry a JSON-DIGEST.
+  whose `chain.seq` is nonzero MUST carry the preceding receipt's
+  `chain.hash` value. Note that this is a digest over the preceding
+  receipt EXCLUDING its `chain.hash` member, per the definition of
+  `chain.hash` below; it is not a digest over the preceding receipt as
+  transmitted.
 - `chain.hash` (REQUIRED, string): JSON-DIGEST of the receipt's canonical
-  form, excluding the `chain.hash` field itself.
+  form with the `chain.hash` member absent. An Issuer computes this value
+  over the complete receipt including `chain.seq` and `chain.prevHash`, then
+  inserts it; a verifier recomputes it by removing the member before
+  canonicalizing. `chain.hash` is never an input to its own computation.
 
 A Chain-Verifier presented with two or more receipts as one contiguous chain
 MUST check, for each adjacent pair, that the later receipt's `chain.seq` is
@@ -535,6 +543,12 @@ exactly one greater than the earlier receipt's, and that the later receipt's
 does not perform both checks MUST NOT report the presentation as a verified
 chain. These are chain-level obligations; an Issuer producing individual
 receipts is unaffected by them.
+
+A conforming three-receipt chain, together with the sequence-gap and
+broken-link cases these checks are required to reject, is published as test
+data in the reference implementation repository. Implementers are advised to
+confirm that an honest complete chain verifies under their implementation of
+both checks before relying on either.
 
 ## COSE header requirements {#cose-header}
 
@@ -809,6 +823,40 @@ publish only the Signed Statement's Receipt to a public Transparency
 Service, following the guidance in {{RFC9943}} Section 6.2 for sensitive
 Statements.
 
+# Implementation status
+
+This section records the status of known implementations of the protocol
+defined by this specification at the time of posting, and is based on a
+proposal described in {{RFC7942}}. The description of implementations in this
+section is intended to assist the IETF in its decision processes in
+progressing drafts to RFCs. This section is to be removed before publishing as
+an RFC.
+
+**Reference implementation.** `pask-workspace`, Rust, five crates
+(`pask-wire`, `pask-attest`, `pask-site`, `pask-adapter`, `pask-wire-cli`).
+Maturity: prototype. Coverage of this profile is partial and the gaps below are
+normative requirements this revision states and the implementation does not yet
+meet.
+
+- **Transparency Service registration is not implemented.** No crate registers
+  a Signed Statement with any Transparency Service, and none consumes an
+  attached Receipt. Consequently every receipt this implementation has produced
+  to date is non-conforming under Section 6 of this document, and no
+  end-to-end verification path exists.
+- **The two Chain-Verifier checks of Section 4.1 are not implemented.**
+  Receipts are validated individually; no code evaluates two or more receipts
+  as one presented chain. The conforming and non-conforming chain test data
+  referenced in Section 4.1 exists; the code that consumes it does not.
+- **Single-receipt structure, COSE encoding, JCS canonicalization, the field
+  semantics of Section 4.1 and the attestation binding of Section 4.3 are
+  implemented** and exercised in continuous integration. The example figure in
+  Section 4 is emitted by the implementation and asserted byte-identical to it.
+- **A disagreement between crates is unresolved:** `pask-wire` admits
+  `notAfter == notBefore` where `pask-attest` requires strictly greater. This
+  document does not currently state which is correct.
+
+The author is aware of no other implementation of this profile.
+
 # Complementary positioning
 
 This profile is orthogonal to:
@@ -892,6 +940,17 @@ them.
   preceding receipt's `chain.hash`. `-00` described these properties as
   holding without requiring any party to check them. *Chain-Verifier* is
   defined in Section 2.
+- **`chain.prevHash` is redefined to remove an inconsistency that made the
+  chain check unsatisfiable.** `-00` and an earlier draft of this revision
+  defined `chain.prevHash` as a digest of "the immediately preceding
+  receipt", while defining `chain.hash` as a digest taken with the
+  `chain.hash` member absent. Read literally, those two definitions do not
+  produce equal values, so the adjacent-pair check added above would have
+  rejected every honest chain. `chain.prevHash` now carries the preceding
+  receipt's `chain.hash` value by reference to that member rather than by an
+  independent digest definition, and the exclusion is restated in both
+  places. This was found by constructing a three-receipt chain and
+  evaluating the requirement against it.
 - **Registration is now mandatory.** An Issuer MUST register every receipt it
   issues with at least one Transparency Service, and a relying party MUST NOT
   accept a receipt as conforming without a verifying attached Receipt from a

@@ -1,0 +1,36 @@
+{
+  "description": "Head of chain carries seq 1 with null prevHash. Violates the Section 4.1 requirement that the first receipt carry seq 0.",
+  "expect": "rejected",
+  "receipts": [
+    {
+      "actor": {
+        "class": "AUTONOMOUS",
+        "operator": "urn:pask:op:example-fleet"
+      },
+      "chain": {
+        "hash": "sha-256:428c12e23be3c7033b44dd9309d23e52f5a4329e3bd08f5360480ae8256fff07",
+        "prevHash": null,
+        "seq": 1
+      },
+      "engagement": {
+        "evidenceDigest": "sha-256:abababababababababababababababababababababababababababababababab",
+        "subject": "urn:pask:subject:example-dock-3"
+      }
+    },
+    {
+      "actor": {
+        "class": "AUTONOMOUS",
+        "operator": "urn:pask:op:example-fleet"
+      },
+      "chain": {
+        "hash": "sha-256:22dfc28f7144e0562990ee122a8929962b4cb91ceff1cb57d0c09199cbe47e18",
+        "prevHash": "sha-256:428c12e23be3c7033b44dd9309d23e52f5a4329e3bd08f5360480ae8256fff07",
+        "seq": 2
+      },
+      "engagement": {
+        "evidenceDigest": "sha-256:abababababababababababababababababababababababababababababababab",
+        "subject": "urn:pask:subject:example-dock-3"
+      }
+    }
+  ]
+}
