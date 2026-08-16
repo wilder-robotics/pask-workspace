@@ -33,7 +33,16 @@ normative:
   RFC9943:
 
 informative:
+  RFC7942:
   I-D.noa-scitt-ai-agent-receipt:
+    title: A SCITT Profile for AI-Agent Action Receipts
+    author:
+      - name: T. Toraman
+        org: NordenSoft
+    date: 2026-08-15
+    target: https://datatracker.ietf.org/doc/html/draft-noa-scitt-ai-agent-receipt-01
+    seriesinfo:
+      Internet-Draft: draft-noa-scitt-ai-agent-receipt-01
   I-D.mih-scitt-agent-action-capsule:
   RFC6838:
 
@@ -50,9 +59,10 @@ vocabulary describing (1) the *Site*, (2) the *Operator* and *Actor*, (3) the
 *Envelope*, (4) the *Attestation Evidence* from a Trusted Execution
 Environment (TEE), and (5) the *Adapter Write-In* recording that the receipt
 was posted into an out-of-band operations layer. A Physical-Site Engagement
-Receipt is registerable in any conforming SCITT Transparency Service
-to obtain non-equivocation and tail-truncation properties an
-issuer's own chain cannot provide alone.
+Receipt is registerable in any conforming SCITT Transparency Service,
+obtaining a Receipt that proves the Statement's inclusion in that Service's
+verifiable data structure. Registration does not establish that the Issuer
+registered every receipt it issued.
 
 This profile deliberately makes a NARROW, checkable claim -- "this is a
 tamper-evident, signature-verifiable record that a specific engagement
@@ -118,10 +128,15 @@ together:
   -- as recorded by the `adapter` field in {{payload}}. This profile
   explicitly does NOT define a new operations dashboard; it defines how
   receipts enter the operations layers a site already runs.
-- *Transparency-service registration.* Non-equivocation and cross-chain
-  tail-truncation are detected by the SCITT Transparency Service, not by
-  the TEE alone. A TEE on customer premises without external witnessing is
-  insufficient; SCITT registration is REQUIRED to complete the trust model.
+- *Transparency-service registration.* Neither the Issuer's `chain` nor the
+  TEE establishes that a presented history is complete, or that it is the
+  only history. A withheld suffix is internally consistent at every link,
+  and a TEE establishes that it wrote the state it attests, not that that
+  state is the most recent. Registration in a SCITT Transparency Service
+  supplies the external reference against which relying parties and auditors
+  can test those questions. A TEE on customer premises without external
+  witnessing is therefore insufficient; SCITT registration is REQUIRED by
+  this profile ({{scitt-registration}}).
 
 Physical-Site Engagement Receipts are complementary to, and compose with,
 existing SCITT-AI drafts. An AI agent that dispatches a physical robot MAY
@@ -151,7 +166,7 @@ This revision does not:
 These non-goals are NORMATIVE: implementations and relying parties MUST NOT
 imply the stronger claims from a receipt.
 
-# Terminology
+# Terminology {#terminology}
 
 This document uses the terms defined in {{RFC9943}} (Signed Statement,
 Statement, Issuer, Subject, Transparency Service, Registration Policy,
@@ -207,6 +222,15 @@ Physical-Site Engagement Receipt (PSER):
   payload conforming to {{payload}}, with the profile identifier
   `wilder.pser/0.3` and a SCITT Receipt attached as defined in
   {{RFC9942}}.
+
+Chain-Verifier:
+: A relying party, or a party acting on a relying party's behalf, that is
+  presented with two or more Physical-Site Engagement Receipts as one
+  contiguous chain and evaluates the chain-level properties defined in
+  {{payload}}. Chain-Verifier is a role, not a distinct principal: any
+  verifier MAY act as a Chain-Verifier, and the obligations this profile
+  places on a Chain-Verifier apply only to a presentation of two or more
+  receipts. A verifier presented with a single receipt incurs none of them.
 
 # Profile identifier and media types
 
@@ -483,19 +507,48 @@ in the site's existing workflow.
 
 ### `chain` (REQUIRED, object)
 
-Hash-chains successive receipts by the same Issuer to detect in-band
-tampering and tail truncation *within* a presented chain, following the
-convention established in {{I-D.noa-scitt-ai-agent-receipt}} Section 5.
-Equivocation across chains is detected only by SCITT Transparency Service
-registration; see {{security}}.
+Hash-chains successive receipts by the same Issuer so that a verifier can
+detect broken hash links, sequence discontinuities, and modification,
+substitution or reordering among the receipts presented as one contiguous
+chain. The chain does NOT establish that its last presented receipt is the
+Issuer's latest: a prover that withholds a suffix presents a prefix that is
+internally consistent at every link. See {{security}}.
 
-- `chain.seq` (REQUIRED, int): monotonic sequence number within the
-  Issuer's chain for the identified Subject.
-- `chain.prevHash` (REQUIRED, string or null): JSON-DIGEST of the
-  immediately preceding receipt in the chain, or `null` for the first
-  receipt.
+The construction is defined normatively in this document. It follows the
+convention established in {{I-D.noa-scitt-ai-agent-receipt}} Section 5,
+which is cited for provenance only: no conformance requirement of this
+profile depends on that document.
+
+- `chain.seq` (REQUIRED, int): non-negative sequence number within the
+  Issuer's chain for the identified Subject. The first receipt in a chain
+  MUST carry `chain.seq` 0.
+- `chain.prevHash` (REQUIRED, string or null): the value of the
+  immediately preceding receipt's `chain.hash`, or `null` for the first
+  receipt. A receipt whose `chain.seq` is 0 MUST carry `null`; a receipt
+  whose `chain.seq` is nonzero MUST carry the preceding receipt's
+  `chain.hash` value. Note that this is a digest over the preceding
+  receipt EXCLUDING its `chain.hash` member, per the definition of
+  `chain.hash` below; it is not a digest over the preceding receipt as
+  transmitted.
 - `chain.hash` (REQUIRED, string): JSON-DIGEST of the receipt's canonical
-  form, excluding the `chain.hash` field itself.
+  form with the `chain.hash` member absent. An Issuer computes this value
+  over the complete receipt including `chain.seq` and `chain.prevHash`, then
+  inserts it; a verifier recomputes it by removing the member before
+  canonicalizing. `chain.hash` is never an input to its own computation.
+
+A Chain-Verifier presented with two or more receipts as one contiguous chain
+MUST check, for each adjacent pair, that the later receipt's `chain.seq` is
+exactly one greater than the earlier receipt's, and that the later receipt's
+`chain.prevHash` equals the earlier receipt's `chain.hash`. A verifier that
+does not perform both checks MUST NOT report the presentation as a verified
+chain. These are chain-level obligations; an Issuer producing individual
+receipts is unaffected by them.
+
+A conforming three-receipt chain, together with the sequence-gap and
+broken-link cases these checks are required to reject, is published as test
+data in the reference implementation repository. Implementers are advised to
+confirm that an honest complete chain verifies under their implementation of
+both checks before relying on either.
 
 ## COSE header requirements {#cose-header}
 
@@ -537,7 +590,7 @@ timestamps within a single receipt. Verifiers MUST derive elapsed-time
 computations from the receipt's own bytes, not from the verifier's local
 wall clock.
 
-# SCITT registration and Receipt attachment
+# SCITT registration and Receipt attachment {#scitt-registration}
 
 A Physical-Site Engagement Receipt Signed Statement is registered with a
 SCITT Transparency Service per {{RFC9943}} Section 6.3. The TS applies its
@@ -552,6 +605,38 @@ SCITT Transparent Statement per {{RFC9943}} Section 7.
 The same Signed Statement MAY be registered in multiple Transparency Services
 and MAY carry multiple attached Receipts, one per Transparency Service, per
 {{RFC9943}} Section 6.3.
+
+Registration is mandatory in this profile. An Issuer MUST register every
+Physical-Site Engagement Receipt it issues with at least one Transparency
+Service. A relying party MUST NOT accept a Physical-Site Engagement Receipt
+as conforming to this profile unless at least one attached Receipt from a
+Transparency Service that relying party trusts verifies per {{RFC9942}}.
+Verifying an attached Receipt does not demonstrate that the Issuer registered
+every receipt it issued; a relying party that requires that assurance MUST
+obtain it from the Transparency Service's own audit and consistency
+mechanisms, not from an individual attached Receipt.
+
+Requiring registration does not require a relying party to be online when it
+verifies. An attached Receipt is a Verifiable Data Structure Proof per
+{{RFC9942}}, checkable from the presented bytes together with the
+Transparency Service's verification key, both of which MAY be held locally.
+The offline-verifiable property stated in {{terminology}} is preserved: what
+registration adds is a reference obtained before verification, not a network
+dependency during it. This revision defines no conforming mode of
+operation in which no Transparency Service is reachable at issuance time.
+
+An Issuer MAY register with a Transparency Service it operates itself, or
+that is operated by a principal affiliated with it. Where it does so, the
+Issuer MUST disclose that relationship in its manifest, and a relying party
+MUST NOT treat such a registration as evidence obtained from outside the
+Issuer for the purposes of {{security}}. Registration with a Transparency
+Service operated by an unaffiliated principal is the only case in which an
+attached Receipt supplies a reference external to the party whose
+completeness is in question. This profile does not prohibit the affiliated
+case, because a self-operated Transparency Service still binds the Issuer to
+a consistent published history and still admits third-party auditing; it
+requires that the weaker standing of that case be visible rather than
+implied.
 
 # IANA considerations {#iana}
 
@@ -610,13 +695,48 @@ Relying parties MUST NOT infer these claims from a receipt.
 
 ## Equivocation and tail-truncation
 
-The `chain` field defined in {{payload}} detects *in-band* tampering and
-*tail truncation within a presented chain*. It does NOT detect *equivocation*
--- an Issuer signing two divergent chains for the same Subject -- nor
-*cross-chain tail truncation*. Detection of equivocation and cross-chain
-tail truncation REQUIRES registration in a SCITT Transparency Service or
-equivalent external witness. This is unchanged from
-{{I-D.noa-scitt-ai-agent-receipt}} Section 5.
+The `chain` field defined in {{payload}} makes *in-band tampering*
+detectable: modification, substitution, reordering, or omission of receipts
+interior to a presented chain breaks a `chain.prevHash` link, `chain.seq`
+contiguity, or a signature. This property holds against parties that do not
+hold the Issuer's signing key. An Issuer that holds the key can sign an
+alternative, internally consistent chain omitting receipts at any position.
+
+The `chain` field does NOT detect *tail truncation* -- the withholding of the
+most recent receipts -- in any presentation. A truncated chain is internally
+consistent at every link, and no property of the presented bytes reveals the
+withholding, because no receipt commits to a successor that did not exist
+when it was signed. This is not a limitation of the hash or signature
+algorithms: the presented bytes are identical whether or not a suffix exists.
+The `chain` field likewise does NOT detect *equivocation*, in which an Issuer
+signs two divergent chains for the same Subject.
+
+Detecting either condition REQUIRES evidence obtained from outside the
+presentation. Registration of a Signed Statement in a SCITT Transparency
+Service {{RFC9943}} supplies such evidence to relying parties and auditors
+that check against that Service. Registration does not by itself establish
+completeness: a conforming Transparency Service does not compel an Issuer to
+register every Signed Statement it issues ({{RFC9943}}, Section 9.3), and a
+Receipt proves the inclusion of one Signed Statement rather than the absence
+of others ({{RFC9942}}). A Transparency Service therefore does not detect
+these conditions itself; it supplies the reference against which other
+parties can.
+
+A relying party that retains the highest `chain.seq` receipt it has verified
+for a chain holds such a reference. A later presentation whose head precedes
+that receipt, or which presents a different `chain.hash` at that `chain.seq`,
+is evidence of truncation or equivocation relative to it. Relying parties
+SHOULD retain these anchors. Detection reaches only as far as the anchor's
+own age: a presentation ending after the retained anchor is not thereby shown
+to be complete, and a presentation ending before it is not by itself proof of
+misbehaviour, since it may be an earlier honest observation.
+
+This profile does not define what a relying party does upon detecting such a
+mismatch, how long anchors are retained, or what evidentiary weight a
+mismatch carries. Those are matters for the relying party's own policy. A
+relying party that reproduces this section in a contract, underwriting rule,
+or adjudication SHOULD state its own remedy; this document supplies a
+detection property, not a remedy.
 
 ## Adapter Write-In is write-only in this revision
 
@@ -639,7 +759,7 @@ identified by `attestation.teeClass`. Relying parties SHOULD consult
 management, and the TEE vendor's own security guidance for the specific
 `teeClass`.
 
-## Three-party trust model
+## Three-party trust model {#trust-model}
 
 The trust model described in this section applies to deployments where
 the TEE that produces receipts is physically hosted at the Site. In such
@@ -666,8 +786,12 @@ receipt alone:
 - The *Issuer* (typically the operator of a witness service) writes the
   Statement payload, causes the TEE to sign, registers the resulting Signed
   Statement with a Transparency Service, and performs the Adapter Write-In.
-  The Issuer CANNOT sign without a live TEE and CANNOT prevent an equivocated
-  chain from being detected once registered.
+  The Issuer CANNOT sign without a live TEE. An Issuer that registers a
+  receipt cannot prevent a relying party or auditor checking the
+  Transparency Service from observing an equivocated chain. An Issuer that
+  withholds a receipt from registration is not detected by this mechanism,
+  which is why registration is mandatory in this profile
+  ({{scitt-registration}}).
 
 An implementation that collapses two or more of these roles into a single
 principal (for example, a cloud service that owns the TEE hardware AND
@@ -699,6 +823,40 @@ publish only the Signed Statement's Receipt to a public Transparency
 Service, following the guidance in {{RFC9943}} Section 6.2 for sensitive
 Statements.
 
+# Implementation status
+
+This section records the status of known implementations of the protocol
+defined by this specification at the time of posting, and is based on a
+proposal described in {{RFC7942}}. The description of implementations in this
+section is intended to assist the IETF in its decision processes in
+progressing drafts to RFCs. This section is to be removed before publishing as
+an RFC.
+
+**Reference implementation.** `pask-workspace`, Rust, five crates
+(`pask-wire`, `pask-attest`, `pask-site`, `pask-adapter`, `pask-wire-cli`).
+Maturity: prototype. Coverage of this profile is partial and the gaps below are
+normative requirements this revision states and the implementation does not yet
+meet.
+
+- **Transparency Service registration is not implemented.** No crate registers
+  a Signed Statement with any Transparency Service, and none consumes an
+  attached Receipt. Consequently every receipt this implementation has produced
+  to date is non-conforming under Section 6 of this document, and no
+  end-to-end verification path exists.
+- **The two Chain-Verifier checks of Section 4.1 are not implemented.**
+  Receipts are validated individually; no code evaluates two or more receipts
+  as one presented chain. The conforming and non-conforming chain test data
+  referenced in Section 4.1 exists; the code that consumes it does not.
+- **Single-receipt structure, COSE encoding, JCS canonicalization, the field
+  semantics of Section 4.1 and the attestation binding of Section 4.3 are
+  implemented** and exercised in continuous integration. The example figure in
+  Section 4 is emitted by the implementation and asserted byte-identical to it.
+- **A disagreement between crates is unresolved:** `pask-wire` admits
+  `notAfter == notBefore` where `pask-attest` requires strictly greater. This
+  document does not currently state which is correct.
+
+The author is aware of no other implementation of this profile.
+
 # Complementary positioning
 
 This profile is orthogonal to:
@@ -723,9 +881,15 @@ Service.
 
 # Changes since -00
 
-This revision reconciles the profile identifier and four attestation members
-with the reference implementation, and changes how the example figure in
-Section 4 is produced.
+This revision makes two groups of changes. The first reconciles the profile
+identifier and four attestation members with the reference implementation and
+changes how the example figure in Section 4 is produced. The second corrects
+statements in `-00` that were found to be wrong or unsupported, and adds
+normative requirements that `-00` implied without stating. Both groups are
+enumerated below. Every normative change in this revision appears in one of
+them.
+
+## Reconciliation with the reference implementation
 
 - The profile identifier and media-type parameter are `wilder.pser/0.3`. A
   producer built against `wilder.pser/0.2` is rejected on version validation
@@ -750,6 +914,58 @@ Section 4 is produced.
   reference implementation, and is asserted byte-identical to that
   implementation in its continuous integration. The -00 figure was a schema
   template rendered in a JSON code block and did not parse as JSON.
+
+## Corrections and added normative requirements
+
+- The claim that the hash chain detects tail truncation is **withdrawn**. The
+  `chain` field does not detect the withholding of the most recent receipts in
+  any presentation, and does not detect equivocation. Section 7.2 is rewritten
+  to state what the chain does and does not establish, and to attribute
+  detection of either condition to evidence obtained from outside the
+  presentation. The Abstract no longer asserts truncation detection, and the
+  corresponding Section 1 scope bullet is rewritten. An appeal to TEE
+  attestation as establishing recency is removed as unsound: a TEE
+  establishes that it wrote the state it attests, not that that state is the
+  most recent.
+- The `chain` construction is now specified **normatively in this document**.
+  `-00` deferred part of it to {{I-D.noa-scitt-ai-agent-receipt}}; that
+  document is now cited for provenance only, and no conformance requirement of
+  this profile depends on it.
+- `chain.seq` is stated as **non-negative** rather than monotonic, and the
+  first receipt in a chain MUST carry `chain.seq` 0. `-00` used "monotonic",
+  which does not constrain a single receipt and did not state the head value.
+- **Two chain-level verification requirements are added.** A Chain-Verifier
+  presented with two or more receipts as one contiguous chain MUST check
+  `chain.seq` contiguity and MUST check that each `chain.prevHash` equals the
+  preceding receipt's `chain.hash`. `-00` described these properties as
+  holding without requiring any party to check them. *Chain-Verifier* is
+  defined in Section 2.
+- **`chain.prevHash` is redefined to remove an inconsistency that made the
+  chain check unsatisfiable.** `-00` and an earlier draft of this revision
+  defined `chain.prevHash` as a digest of "the immediately preceding
+  receipt", while defining `chain.hash` as a digest taken with the
+  `chain.hash` member absent. Read literally, those two definitions do not
+  produce equal values, so the adjacent-pair check added above would have
+  rejected every honest chain. `chain.prevHash` now carries the preceding
+  receipt's `chain.hash` value by reference to that member rather than by an
+  independent digest definition, and the exclusion is restated in both
+  places. This was found by constructing a three-receipt chain and
+  evaluating the requirement against it.
+- **Registration is now mandatory.** An Issuer MUST register every receipt it
+  issues with at least one Transparency Service, and a relying party MUST NOT
+  accept a receipt as conforming without a verifying attached Receipt from a
+  Transparency Service it trusts. `-00` described registration as REQUIRED in
+  its scope discussion without stating the requirement normatively. Where the
+  Transparency Service is operated by the Issuer or an affiliate, that
+  relationship MUST be disclosed and MUST NOT be treated as evidence external
+  to the Issuer.
+- A relying party **SHOULD** retain the highest verified `chain.seq` per chain
+  as an anchor. The limits of that anchor, and the absence of any remedy
+  defined by this profile, are stated explicitly.
+- Section 7.5 no longer states that an Issuer cannot prevent an equivocated
+  chain from being detected once registered. An Issuer that does not register
+  is not detected by that mechanism; the mandatory-registration requirement is
+  the response to that gap.
 
 # Acknowledgments
 {:numbered="false"}

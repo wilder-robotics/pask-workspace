@@ -1,0 +1,51 @@
+{
+  "description": "Receipt 1 prevHash does not equal receipt 0 chain.hash. The linkage check MUST reject.",
+  "expect": "rejected",
+  "receipts": [
+    {
+      "actor": {
+        "class": "AUTONOMOUS",
+        "operator": "urn:pask:op:example-fleet"
+      },
+      "chain": {
+        "hash": "sha-256:011d9d4b8c8c9cc110e97d0f8a4b5b079b0d7d57c10b29adbbc33e3db8e950d4",
+        "prevHash": null,
+        "seq": 0
+      },
+      "engagement": {
+        "evidenceDigest": "sha-256:abababababababababababababababababababababababababababababababab",
+        "subject": "urn:pask:subject:example-dock-3"
+      }
+    },
+    {
+      "actor": {
+        "class": "AUTONOMOUS",
+        "operator": "urn:pask:op:example-fleet"
+      },
+      "chain": {
+        "hash": "sha-256:a90edc7d1993e88650ec3cd1401b1c2a10838f755f49655ac8b3e22ec8cd6c1b",
+        "prevHash": "sha-256:0000000000000000000000000000000000000000000000000000000000000000",
+        "seq": 1
+      },
+      "engagement": {
+        "evidenceDigest": "sha-256:abababababababababababababababababababababababababababababababab",
+        "subject": "urn:pask:subject:example-dock-3"
+      }
+    },
+    {
+      "actor": {
+        "class": "AUTONOMOUS",
+        "operator": "urn:pask:op:example-fleet"
+      },
+      "chain": {
+        "hash": "sha-256:836009378dda8fb5c6722abe5dadb5f268fb8ee65ef15ae0656661bf61e3f543",
+        "prevHash": "sha-256:a90edc7d1993e88650ec3cd1401b1c2a10838f755f49655ac8b3e22ec8cd6c1b",
+        "seq": 2
+      },
+      "engagement": {
+        "evidenceDigest": "sha-256:abababababababababababababababababababababababababababababababab",
+        "subject": "urn:pask:subject:example-dock-3"
+      }
+    }
+  ]
+}

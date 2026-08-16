@@ -4,7 +4,7 @@
 | --- | --- |
 | Applies to | `draft-wilder-scitt-physical-site-engage-receipt-01` and this repository |
 | Profile identifier in the implementation | `wilder.pser/0.3` |
-| Last reviewed | 2026-08-09 |
+| Last reviewed | 2026-08-15 |
 | Status | Pre-alpha reference implementation |
 
 This file is maintained alongside the code. It records what the profile and
@@ -148,7 +148,56 @@ The producer is a reference, not a deployment. Specifically:
   from a device.
 - **Receipt identity collides on reissue.** Reissuing produces the same `id`.
 
+### 5.1 No code verifies the link between two receipts
+
+`pask-wire` validates one receipt at a time. Its chain validation
+(`crates/pask-wire/src/payload.rs`) enforces three things and no others: that
+`chain.seq` 0 carries a null `chain.prevHash`, that a nonzero `chain.seq`
+carries a syntactically valid digest, and that `chain.hash` recomputes from the
+payload.
+
+It does **not** compare two receipts. No function in this repository takes a
+receipt and its predecessor and checks that `chain.prevHash` equals the
+predecessor's `chain.hash`, or that `chain.seq` increments by one. A receipt
+carrying an arbitrary well-formed digest in `chain.prevHash` — one that
+corresponds to no receipt that was ever issued — passes validation today.
+`verify_chain` in `pask-attest` concerns the measured-boot component chain and
+is unrelated to receipt chaining.
+
+The consequence is that the in-band tamper detection the profile describes is a
+property of the construction and not a property this implementation checks. The
+Chain-Verifier obligations stated in `-01` Section 4.1 are normative in the
+document and unimplemented here. This is a declared divergence between the
+document and the code, in the direction of the document specifying more than
+the code performs; it is recorded rather than resolved because the profile has
+to define its own core mechanism, and because no two-receipt chain has yet been
+produced in this repository against which a verifier could be tested.
+
 ---
+
+## 5.2 Nothing in the repository registers with a Transparency Service
+
+`-01` makes registration mandatory: an Issuer MUST register every receipt it
+issues with at least one Transparency Service, and a relying party MUST NOT
+accept an unregistered receipt as conforming.
+
+**No crate in this repository registers anything with any Transparency
+Service.** A grep across `pask-adapter`, `pask-attest`, `pask-site`,
+`pask-wire`, and `pask-wire-cli` for `transparency_service`,
+`register_receipt`, `scitt_register`, and `register(` returns zero matches.
+
+The consequence, stated plainly: **every receipt this reference implementation
+has ever produced is non-conforming under `-01`**, because none carries an
+attached Receipt from a Transparency Service. The library produces valid
+`wilder.pser/0.3` payloads and valid signed statements; it does not produce
+Transparent Statements.
+
+This is a declared divergence in the safe direction — the document requires
+more than the code performs — and it is recorded here rather than resolved by
+weakening the requirement. It is closed by implementing registration, not by
+editing the draft.
+
+Reviewed 2026-08-15.
 
 ## 6. Wire format and tooling
 
