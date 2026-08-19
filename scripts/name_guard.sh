@@ -83,12 +83,26 @@
 # ===================================================================
 set -uo pipefail
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 cd "$(dirname "$0")/.."
 
 SALT="pask-name-guard-v1"
 
 # Salted SHA-256 prefixes of the denied tokens. See header.
+#
+# v1.1.0 (2026-08-16): the list below was extended from twelve tokens to
+# forty-two. v1.0.0 covered one internal review panel only. Two further
+# panels used the same device -- real people named as seats -- and none of
+# their tokens were denied here, so the control that was written to stop an
+# unreviewed name reaching a public surface would have caught roughly a third
+# of the names it existed to catch. The gap was found by hashing every token
+# in every panel roster against this list and counting the misses, which is a
+# check that should have been run when the list was first written.
+#
+# The lesson is the same one the header already records: a rule enforced by
+# remembering which roster it applied to is not enforcement. Any future
+# internal device that names a real person must add its tokens here in the
+# same commit that creates the device.
 DENIED_HASHES=(
   '2f6478e32b423502'
   '821bf8c38040147c'
@@ -102,6 +116,36 @@ DENIED_HASHES=(
   'f5d8775c1afaff6c'
   '9e4dfb9bb575b92a'
   '9c1eebd3bef9f379'
+  'c2252aaec38e95b9'
+  'd90cc76660dfd082'
+  '2190e2afead85bb0'
+  '201584a8e45f9c0e'
+  '72671453193f1541'
+  'd67dc29afb7030f1'
+  'c98855e703dec5ee'
+  'c62190e908bcdb0f'
+  '1e9b1c02e93e47ef'
+  '3736fc54dcccbb30'
+  '89b50868a9fa5cfe'
+  '8302a642a35cc4f6'
+  '65eeb6eb2d4cfed4'
+  'a1d5fc590d35372a'
+  '6b9b5f48f8e1a7e3'
+  '4329263ad07df61d'
+  '9fc016953c454453'
+  'f6c9b17cb244d4bf'
+  'e9396efce8ceb039'
+  '446dd09077cd906c'
+  '5bb199089c598e75'
+  '76834418515972b3'
+  '32bb0b7ee3c7588a'
+  '0c5960f46d9ccacd'
+  'a45681b68b4665ee'
+  'c6a10be33548927a'
+  'b5e1d6b340a75b94'
+  '8da700a07abd6823'
+  '9a75f323ee43668e'
+  '65b73cf1725bb2f1'
 )
 
 # Synthetic token, present for no reason other than to prove the
