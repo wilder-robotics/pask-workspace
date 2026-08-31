@@ -1,36 +1,150 @@
 {
-  "description": "seq 0 followed by seq 2. The seq-contiguity check MUST reject.",
+  "description": "Two-receipt presentation whose second member is seq 2 rather than seq 1. The Chain-Verifier's seq-contiguity check MUST reject it.",
   "expect": "rejected",
   "receipts": [
     {
       "actor": {
         "class": "AUTONOMOUS",
-        "operator": "urn:pask:op:example-fleet"
+        "id": "actor:robot-alpha-01",
+        "operator": "operator:wilder-robotics"
+      },
+      "adapter": {
+        "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "endpoint": "endpoint:res-001",
+        "mode": "WRITE_ONLY",
+        "postedAt": "2026-10-15T14:00:05Z",
+        "system": "example.ticketing"
+      },
+      "attestation": {
+        "measuredBoot": {
+          "chain": "sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1",
+          "components": [
+            {
+              "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "name": "bl1"
+            }
+          ]
+        },
+        "platformEvidence": {
+          "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "encoding": "opaque/1"
+        },
+        "sealedEvidence": {
+          "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "encoding": "opaque/1",
+          "sizeBytes": 4096
+        },
+        "teeClass": "arm.cca",
+        "validity": {
+          "notAfter": "2026-10-15T15:00:00Z",
+          "notBefore": "2026-10-15T13:00:00Z"
+        },
+        "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha-256:011d9d4b8c8c9cc110e97d0f8a4b5b079b0d7d57c10b29adbbc33e3db8e950d4",
+        "hash": "sha256:9e7cf36bdc67afb45169902364f155769676d091b99a16494a2cdf1a208ca9e5",
         "prevHash": null,
         "seq": 0
       },
       "engagement": {
-        "evidenceDigest": "sha-256:abababababababababababababababababababababababababababababababab",
-        "subject": "urn:pask:subject:example-dock-3"
-      }
+        "envelopeConformance": "WITHIN",
+        "evidenceDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "id": "eng:res-001:20261015-140000",
+        "outcomeClass": "COMPLETED",
+        "type": "patrol",
+        "window": {
+          "end": "2026-10-15T14:00:00Z",
+          "start": "2026-10-15T13:30:00Z"
+        }
+      },
+      "id": "uuid:00000000-0000-4000-8000-0000000000b0",
+      "site": {
+        "class": "residential",
+        "envelope": {
+          "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "geobounds": null,
+          "id": "env:res-001:2026-Q4",
+          "temporal": {
+            "ends": null,
+            "starts": "2026-10-01T00:00:00Z"
+          }
+        },
+        "id": "site:res-001"
+      },
+      "spec": "wilder.pser/0.3",
+      "ts": "2026-10-15T14:00:00Z"
     },
     {
       "actor": {
         "class": "AUTONOMOUS",
-        "operator": "urn:pask:op:example-fleet"
+        "id": "actor:robot-alpha-01",
+        "operator": "operator:wilder-robotics"
+      },
+      "adapter": {
+        "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "endpoint": "endpoint:res-001",
+        "mode": "WRITE_ONLY",
+        "postedAt": "2026-10-15T14:00:05Z",
+        "system": "example.ticketing"
+      },
+      "attestation": {
+        "measuredBoot": {
+          "chain": "sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1",
+          "components": [
+            {
+              "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "name": "bl1"
+            }
+          ]
+        },
+        "platformEvidence": {
+          "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "encoding": "opaque/1"
+        },
+        "sealedEvidence": {
+          "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "encoding": "opaque/1",
+          "sizeBytes": 4096
+        },
+        "teeClass": "arm.cca",
+        "validity": {
+          "notAfter": "2026-10-15T15:00:00Z",
+          "notBefore": "2026-10-15T13:00:00Z"
+        },
+        "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha-256:836009378dda8fb5c6722abe5dadb5f268fb8ee65ef15ae0656661bf61e3f543",
-        "prevHash": "sha-256:a90edc7d1993e88650ec3cd1401b1c2a10838f755f49655ac8b3e22ec8cd6c1b",
+        "hash": "sha256:8213ec443088fe8b840ebf22c8e8696b4c80a29b245399d80aad6f316b0bfc70",
+        "prevHash": "sha256:9e7cf36bdc67afb45169902364f155769676d091b99a16494a2cdf1a208ca9e5",
         "seq": 2
       },
       "engagement": {
-        "evidenceDigest": "sha-256:abababababababababababababababababababababababababababababababab",
-        "subject": "urn:pask:subject:example-dock-3"
-      }
+        "envelopeConformance": "WITHIN",
+        "evidenceDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "id": "eng:res-001:20261015-140000",
+        "outcomeClass": "COMPLETED",
+        "type": "patrol",
+        "window": {
+          "end": "2026-10-15T14:00:00Z",
+          "start": "2026-10-15T13:30:00Z"
+        }
+      },
+      "id": "uuid:00000000-0000-4000-8000-0000000000b2",
+      "site": {
+        "class": "residential",
+        "envelope": {
+          "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "geobounds": null,
+          "id": "env:res-001:2026-Q4",
+          "temporal": {
+            "ends": null,
+            "starts": "2026-10-01T00:00:00Z"
+          }
+        },
+        "id": "site:res-001"
+      },
+      "spec": "wilder.pser/0.3",
+      "ts": "2026-10-15T14:00:00Z"
     }
   ]
 }

@@ -259,6 +259,18 @@ impl Payload {
         &self.chain.hash
     }
 
+    /// Returns the receipt's position in its chain.
+    #[must_use]
+    pub fn chain_seq(&self) -> u64 {
+        self.chain.seq
+    }
+
+    /// Returns the preceding receipt's `chain.hash`, or `None` at sequence zero.
+    #[must_use]
+    pub fn chain_prev_hash(&self) -> Option<&str> {
+        self.chain.prev_hash.as_deref()
+    }
+
     /// Returns the stable actor identifier.
     #[must_use]
     pub fn actor_id(&self) -> &str {

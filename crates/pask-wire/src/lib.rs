@@ -16,6 +16,8 @@ extern crate std;
 #[cfg(feature = "alloc")]
 mod canonical_example;
 #[cfg(feature = "alloc")]
+mod chain;
+#[cfg(feature = "alloc")]
 mod cwt;
 #[cfg(feature = "alloc")]
 mod digest;
@@ -30,6 +32,8 @@ pub mod testvectors;
 
 #[cfg(feature = "alloc")]
 pub use canonical_example::canonical_example;
+#[cfg(feature = "alloc")]
+pub use chain::verify_chain;
 #[cfg(feature = "alloc")]
 pub use digest::{sha256_prefixed, validate_sha256};
 #[cfg(feature = "alloc")]
