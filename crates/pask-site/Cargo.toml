@@ -6,7 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 authors.workspace = true
-description = "Reference site producer for the wilder.pser/0.3 profile"
+description = "Reference site producer for the wilder.pser/0.4 profile"
 
 [features]
 default = []

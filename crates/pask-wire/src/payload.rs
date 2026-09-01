@@ -14,7 +14,16 @@ use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 use crate::{Error, Result, sha256_prefixed, validate_sha256};
 
 /// Supported PSER profile version.
-pub const SPEC_VERSION: &str = "wilder.pser/0.3";
+pub const SPEC_VERSION: &str = "wilder.pser/0.4";
+
+/// Wire strings for the three named `adapter.ackProvenance` values.
+///
+/// The value space is a closed set enumerated in the profile document rather
+/// than an IANA registry, so these strings are the whole of it. A conforming
+/// producer MUST emit one of them.
+const ACK_PROVENANCE_THIRD_PARTY: &str = "THIRD_PARTY";
+const ACK_PROVENANCE_ISSUER_ASSERTED: &str = "ISSUER_ASSERTED";
+const ACK_PROVENANCE_NONE: &str = "NONE";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -162,6 +171,7 @@ struct Adapter {
     endpoint: String,
     posted_at: String,
     ack_digest: String,
+    ack_provenance: AckProvenance,
     mode: AdapterMode,
 }
 
@@ -171,6 +181,138 @@ enum AdapterMode {
     WriteOnly,
 }
 
+/// How the acknowledgement recorded in `adapter.ackDigest` was obtained.
+///
+/// # Why this member exists
+///
+/// Under a write-only adapter posture there is no read path, so `ackDigest`
+/// alone cannot tell a reader whether an independent operations layer
+/// acknowledged the write-in or the Issuer authored a minimal acknowledgement
+/// object itself when nothing structured came back. The digest proves a digest
+/// was computed over something. It does not prove who produced the thing. This
+/// member makes the distinction a property of the record instead of a property
+/// of the Issuer's unpublished manifest.
+///
+/// Classification belongs to the profile. What a deployment then *does* about
+/// an Issuer-asserted acknowledgement -- refuse, warn, or record and carry on
+/// -- is a matter of that deployment's risk appetite and is deliberately not
+/// specified here.
+///
+/// # Why an unrecognised value is preserved rather than rejected
+///
+/// [`Self::Unrecognized`] carries the exact string that was on the wire. Two
+/// rules sit next to each other and they are separate requirements:
+///
+/// 1. The three named values remain distinguishable from each other.
+/// 2. An unrecognised value is surfaced as unrecognised. It is not read as
+///    [`Self::ThirdParty`] and it is not normalised to [`Self::NoAcknowledgement`].
+///
+/// The second rule is the one that is easy to get wrong, because the obvious
+/// instinct is to fail closed on anything unrecognised. **That instinct is
+/// correct for an enumeration feeding a pre-action gate and wrong here, and the
+/// difference is the cost function underneath it.** At a gate, refusing costs
+/// availability and the action simply does not happen. This member is a
+/// descriptive property of a record that gets read afterwards, often by
+/// somebody reconstructing an event months later. Refusing there means refusing
+/// the record, and refusing the record destroys the reconstruction the record
+/// exists to serve. Once the engagement has already happened, refusal is not
+/// the conservative choice.
+///
+/// Normalising to [`Self::NoAcknowledgement`] is the same collapse pointing the
+/// other way: it manufactures a positive claim that the operations layer
+/// returned nothing, which is a substantive statement about what happened at the
+/// site and may be false.
+///
+/// So the profile is **closed on the producing side and tolerant on the
+/// consuming side.** A conforming producer MUST emit one of the three named
+/// values; a verifier MUST NOT refuse a receipt solely because this member
+/// carries something else, and MUST surface it as unrecognised.
+///
+/// # Serialization
+///
+/// `Serialize` and `Deserialize` are written by hand rather than derived.
+/// `#[serde(other)]` would discard the unrecognised string, which fails rule 2:
+/// the value has to stay available to the reader, not merely be distinguishable
+/// as "not one of ours". Round-tripping is byte-exact, which matters because the
+/// payload is signed over its JCS serialization -- a variant that re-serialised
+/// to anything other than the original bytes would invalidate the signature.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum AckProvenance {
+    /// An independent operations layer produced the acknowledgement. Wire value
+    /// `THIRD_PARTY`.
+    ///
+    /// Under a write-only posture this remains the Issuer's claim about a third
+    /// party rather than an independently verified fact. The profile does not
+    /// name this state `CONFIRMED` for exactly that reason.
+    ThirdParty,
+    /// The Issuer authored the acknowledgement object itself. Wire value
+    /// `ISSUER_ASSERTED`.
+    IssuerAsserted,
+    /// No acknowledgement was obtained. Wire value `NONE`.
+    ///
+    /// Named `NoAcknowledgement` in Rust rather than `None`, which would shadow
+    /// [`Option::None`] at every use site and produce compiler messages that
+    /// read as if the option type were involved. The wire string is pinned by
+    /// hand and is unaffected.
+    NoAcknowledgement,
+    /// A value outside the closed set, preserved exactly as it appeared.
+    ///
+    /// A receipt carrying this is not conforming. It still parses, still
+    /// validates, and still presents this member to the reader, for the reasons
+    /// in the type-level documentation.
+    Unrecognized(String),
+}
+
+impl AckProvenance {
+    /// Returns the wire string for this value.
+    #[must_use]
+    pub fn as_wire_str(&self) -> &str {
+        match self {
+            Self::ThirdParty => ACK_PROVENANCE_THIRD_PARTY,
+            Self::IssuerAsserted => ACK_PROVENANCE_ISSUER_ASSERTED,
+            Self::NoAcknowledgement => ACK_PROVENANCE_NONE,
+            Self::Unrecognized(raw) => raw,
+        }
+    }
+
+    /// Returns `true` when the value is outside the closed set the profile names.
+    ///
+    /// A verifier that surfaces the acknowledgement-provenance state to a reader
+    /// uses this rather than comparing against the named variants, so that an
+    /// unrecognised value cannot be silently folded into one of them.
+    #[must_use]
+    pub const fn is_unrecognized(&self) -> bool {
+        matches!(self, Self::Unrecognized(_))
+    }
+}
+
+impl Serialize for AckProvenance {
+    fn serialize<S: serde::Serializer>(
+        &self,
+        serializer: S,
+    ) -> core::result::Result<S::Ok, S::Error> {
+        serializer.serialize_str(self.as_wire_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for AckProvenance {
+    fn deserialize<D: serde::Deserializer<'de>>(
+        deserializer: D,
+    ) -> core::result::Result<Self, D::Error> {
+        let raw = String::deserialize(deserializer)?;
+        Ok(match raw.as_str() {
+            ACK_PROVENANCE_THIRD_PARTY => Self::ThirdParty,
+            ACK_PROVENANCE_ISSUER_ASSERTED => Self::IssuerAsserted,
+            ACK_PROVENANCE_NONE => Self::NoAcknowledgement,
+            // Deliberately not an error. See the type-level documentation: this
+            // is a record read after the fact, and refusing it destroys the
+            // reconstruction it exists for. The raw string is retained so the
+            // value stays distinguishable from both THIRD_PARTY and NONE.
+            _ => Self::Unrecognized(raw),
+        })
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct Chain {
@@ -178,6 +320,43 @@ struct Chain {
     #[serde(deserialize_with = "deserialize_required_option")]
     prev_hash: Option<String>,
     hash: String,
+}
+
+/// Reads only `spec` and rejects a version this build does not implement.
+///
+/// This runs **before** the full deserialization, and the ordering is the whole
+/// point of it. Deserializing first and checking the version afterwards produces
+/// an honest answer only while every revision happens to carry the same members.
+/// The moment a revision requires a member an earlier one did not carry -- which
+/// is exactly what `wilder.pser/0.4` does with `adapter.ackProvenance` -- a
+/// receipt from the earlier revision fails on the missing member and the caller
+/// is told a member is absent when the real and far more useful answer is that
+/// the receipt is from a revision this build does not implement. One diagnosis
+/// sends an operator looking for a malformed producer; the other tells them to
+/// upgrade the verifier.
+///
+/// Measured on `wilder.pser/0.3` before this check existed: a receipt whose
+/// version *and* member shape both differed reported
+/// `unknown field ...`, while a receipt differing in version alone reported
+/// `unsupported spec version` correctly. Only the first case was wrong, and only
+/// the first case is the one a real version skew produces.
+///
+/// The permissive intermediate parse is deliberate: this stage must tolerate a
+/// document it cannot fully model, or it could not report the version at all.
+fn check_spec_version(bytes: &[u8]) -> Result<()> {
+    #[derive(Deserialize)]
+    struct SpecOnly {
+        spec: String,
+    }
+
+    // A document too malformed to yield a `spec` string is not a version
+    // problem. Say nothing and let the full parse produce the real diagnosis.
+    if let Ok(probe) = serde_json::from_slice::<SpecOnly>(bytes)
+        && probe.spec != SPEC_VERSION
+    {
+        return Err(Error::Validation("unsupported spec version"));
+    }
+    Ok(())
 }
 
 fn deserialize_required_option<'de, D, T>(
@@ -212,6 +391,7 @@ impl Payload {
     ///
     /// Returns an error when JSON parsing or any profile validation rule fails.
     pub fn from_json(bytes: &[u8]) -> Result<Self> {
+        check_spec_version(bytes)?;
         let payload: Self =
             serde_json::from_slice(bytes).map_err(|error| Error::Json(error.to_string()))?;
         payload.validate()?;
@@ -224,6 +404,7 @@ impl Payload {
     ///
     /// Returns an error when JSON parsing, hashing, or any profile validation rule fails.
     pub fn from_json_for_production(bytes: &[u8]) -> Result<Self> {
+        check_spec_version(bytes)?;
         let mut payload: Self =
             serde_json::from_slice(bytes).map_err(|error| Error::Json(error.to_string()))?;
         payload.update_chain_hash()?;
@@ -269,6 +450,16 @@ impl Payload {
     #[must_use]
     pub fn chain_prev_hash(&self) -> Option<&str> {
         self.chain.prev_hash.as_deref()
+    }
+
+    /// Returns how the acknowledgement in `adapter.ackDigest` was obtained.
+    ///
+    /// A value outside the closed set is returned as
+    /// [`AckProvenance::Unrecognized`] carrying the original string, never
+    /// folded into one of the named values. See [`AckProvenance`] for why.
+    #[must_use]
+    pub const fn adapter_ack_provenance(&self) -> &AckProvenance {
+        &self.adapter.ack_provenance
     }
 
     /// Returns the stable actor identifier.

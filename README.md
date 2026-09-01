@@ -30,7 +30,7 @@ For security disclosures, see [SECURITY.md](./SECURITY.md).
 
 This repository is the code home for the reference producer and verifier of
 **Physical-Site Engagement Receipts** as defined in
-[`docs/draft-wilder-scitt-physical-site-engage-receipt-01.md`](docs/draft-wilder-scitt-physical-site-engage-receipt-01.md).
+[`docs/draft-wilder-scitt-physical-site-engage-receipt-02.md`](docs/draft-wilder-scitt-physical-site-engage-receipt-02.md).
 
 Physical-Site Engagement Receipts are a profile of the IETF SCITT
 architecture ([RFC 9943](https://datatracker.ietf.org/doc/rfc9943/)) that
@@ -53,7 +53,7 @@ revision of this specification once the wire-format schema stabilizes.
 ```
 pask-workspace/
 ├── docs/
-│   └── draft-wilder-scitt-physical-site-engage-receipt-01.md   ← authoritative spec
+│   └── draft-wilder-scitt-physical-site-engage-receipt-02.md   ← authoritative spec
 ├── .github/workflows/ci.yml                                        ← CI (Rust)
 ├── LICENSE                                                         ← AGPL-3.0-only
 ├── COMMERCIAL-EXCEPTION.md                                         ← commercial licensing terms
@@ -95,7 +95,7 @@ claims. Test vectors, unit tests, and CI-verified conformance to the
 embedded specification only.
 
 Scope of that conformance, stated precisely: this library produces and
-validates `wilder.pser/0.3` payloads and signed statements. It does **not**
+validates `wilder.pser/0.4` payloads and signed statements. It does **not**
 register statements with a SCITT Transparency Service, and therefore does not
 produce Transparent Statements. Because the `-01` draft makes registration
 mandatory, receipts produced by this library are **not conforming receipts**

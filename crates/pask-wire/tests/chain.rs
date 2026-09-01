@@ -182,12 +182,29 @@ fn generate_expected() -> Vec<(&'static str, Value)> {
     ]
 }
 
+/// Asserts the committed fixtures match the generator, and can rewrite them.
+///
+/// Set `PASK_REGEN_FIXTURES=1` to write the generated content to disk instead of
+/// asserting against it. This exists because the assertion message told the
+/// reader to "regenerate it from this test's expected content" without providing
+/// any way to do so, which left hand-editing as the only available route -- the
+/// precise thing the message forbids. Regeneration is opt-in and never runs in
+/// CI, so the guard against silent drift is unaffected.
+///
+/// Review the diff after regenerating. These fixtures are signed-payload inputs
+/// and a change to any of them changes what conformance means.
 #[test]
 fn committed_fixtures_are_byte_identical_to_the_generator() {
+    let regenerate = std::env::var("PASK_REGEN_FIXTURES").is_ok_and(|value| value == "1");
     let dir = fixtures_dir();
     for (name, expected) in generate_expected() {
         let expected_text = render(&expected);
         let path = dir.join(name);
+        if regenerate {
+            fs::write(&path, &expected_text)
+                .unwrap_or_else(|error| panic!("{} is writable: {error}", path.display()));
+            continue;
+        }
         let committed = fs::read_to_string(&path)
             .unwrap_or_else(|error| panic!("{} is readable: {error}", path.display()));
         assert_eq!(

@@ -10,6 +10,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "ackProvenance": "THIRD_PARTY",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -42,7 +43,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:e31f54262d457c3be046216d74e526bfe551a2dcaa1f7e2fac900170d3c6bd5a",
+        "hash": "sha256:a163b4fdea7c467a62519f379f03a9d5cb8c0b2171ff34529a8fa6838cd1dcfa",
         "prevHash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "seq": 1
       },
@@ -71,7 +72,7 @@
         },
         "id": "site:res-001"
       },
-      "spec": "wilder.pser/0.3",
+      "spec": "wilder.pser/0.4",
       "ts": "2026-10-15T14:00:00Z"
     }
   ]

@@ -10,6 +10,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "ackProvenance": "THIRD_PARTY",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -42,7 +43,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:0fe8a121eb4dd248f4bf99da994f6b8bed9d632e87e1f587587d6bfd26bc102e",
+        "hash": "sha256:a20336ed15c0bf90b849e6ccec761e53f963ae33ea77dac66b6ac420c26a8bb8",
         "prevHash": null,
         "seq": 0
       },
@@ -71,7 +72,7 @@
         },
         "id": "site:res-001"
       },
-      "spec": "wilder.pser/0.3",
+      "spec": "wilder.pser/0.4",
       "ts": "2026-10-15T14:00:00Z"
     },
     {
@@ -82,6 +83,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "ackProvenance": "THIRD_PARTY",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -114,7 +116,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:c09b5d16ac3735f8a0b05e28e08ce2e5a23eb68ee91ddc25c6aa8f4c4e4ae1eb",
+        "hash": "sha256:2f9c002968b7c7d282849894e2c067245920068742bf3ae6ece2a47086d876dd",
         "prevHash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
         "seq": 1
       },
@@ -143,7 +145,7 @@
         },
         "id": "site:res-001"
       },
-      "spec": "wilder.pser/0.3",
+      "spec": "wilder.pser/0.4",
       "ts": "2026-10-15T14:00:00Z"
     },
     {
@@ -154,6 +156,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "ackProvenance": "THIRD_PARTY",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -186,8 +189,8 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:eae0b4cf274a662f1f477982cd382f7a601eaa19c9d400d9aa4ed479f16be466",
-        "prevHash": "sha256:c09b5d16ac3735f8a0b05e28e08ce2e5a23eb68ee91ddc25c6aa8f4c4e4ae1eb",
+        "hash": "sha256:84091a6942160bccb39468cbca6680cd0c6eab173b8ab5b7a57e66b91ab97b6b",
+        "prevHash": "sha256:2f9c002968b7c7d282849894e2c067245920068742bf3ae6ece2a47086d876dd",
         "seq": 2
       },
       "engagement": {
@@ -215,7 +218,7 @@
         },
         "id": "site:res-001"
       },
-      "spec": "wilder.pser/0.3",
+      "spec": "wilder.pser/0.4",
       "ts": "2026-10-15T14:00:00Z"
     }
   ]

@@ -1,7 +1,7 @@
 ---
 title: "A SCITT Profile for Physical-Site Engagement Receipts"
 abbrev: "Physical-Site Engagement Receipt"
-docname: draft-wilder-scitt-physical-site-engage-receipt-01
+docname: draft-wilder-scitt-physical-site-engage-receipt-02
 category: std
 submissionType: IETF
 ipr: trust200902
@@ -220,7 +220,7 @@ Adapter Write-In:
 Physical-Site Engagement Receipt (PSER):
 : A SCITT Signed Statement under this profile, carrying a canonical JSON
   payload conforming to {{payload}}, with the profile identifier
-  `wilder.pser/0.3` and a SCITT Receipt attached as defined in
+  `wilder.pser/0.4` and a SCITT Receipt attached as defined in
   {{RFC9942}}.
 
 Chain-Verifier:
@@ -234,13 +234,13 @@ Chain-Verifier:
 
 # Profile identifier and media types
 
-The profile identifier for this document is `wilder.pser/0.3` and MUST appear
+The profile identifier for this document is `wilder.pser/0.4` and MUST appear
 as the value of the top-level `spec` member of the payload defined in
 {{payload}}.
 
 The COSE `content_type` (protected header label 3, {{RFC9052}}) for a
 Physical-Site Engagement Receipt Statement is
-`application/pser+json; profile=wilder.pser/0.3`. IANA registration of this
+`application/pser+json; profile=wilder.pser/0.4`. IANA registration of this
 media type is requested in {{iana}}.
 
 The `application/scitt-statement+cose` and `application/scitt-receipt+cose`
@@ -279,6 +279,7 @@ should be read as a statement about deployed hardware.
   },
   "adapter": {
     "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "ackProvenance": "THIRD_PARTY",
     "endpoint": "endpoint:res-001",
     "mode": "WRITE_ONLY",
     "postedAt": "2026-10-15T14:00:05Z",
@@ -311,7 +312,7 @@ should be read as a statement about deployed hardware.
     "witnessKey": "key:tee:res-001-witness-01"
   },
   "chain": {
-    "hash": "sha256:119e8732733d3223c0d6a7f6bda4af3a404edfa3a30b5c5425628ead82034569",
+    "hash": "sha256:96eb8bb3743f07b05067f16d4bea99d170019db5307a87ca78ff019a52984018",
     "prevHash": null,
     "seq": 0
   },
@@ -340,7 +341,7 @@ should be read as a statement about deployed hardware.
     },
     "id": "site:res-001"
   },
-  "spec": "wilder.pser/0.3",
+  "spec": "wilder.pser/0.4",
   "ts": "2026-10-15T14:00:00Z"
 }
 ~~~
@@ -350,7 +351,7 @@ should be read as a statement about deployed hardware.
 
 ### `spec` (REQUIRED, string)
 
-MUST be `wilder.pser/0.3` for receipts conforming to this document. A verifier
+MUST be `wilder.pser/0.4` for receipts conforming to this document. A verifier
 MUST reject any Statement with a different `spec` value as out of scope of
 this profile.
 
@@ -561,7 +562,7 @@ the CWT Claims header parameter (label 15, {{RFC9597}}), carrying at least:
   claim.
 
 The protected header `content_type` (label 3) MUST be
-`application/pser+json; profile=wilder.pser/0.3`.
+`application/pser+json; profile=wilder.pser/0.4`.
 
 The Signed Statement's payload MUST be the JCS serialization of the JSON
 object defined in {{payload}}. Detached payloads are NOT PERMITTED under
@@ -645,7 +646,7 @@ This document requests the following IANA actions.
 ## Media type registration
 
 Register `application/pser+json` per {{RFC6838}}, with the required
-`profile` parameter and profile value `wilder.pser/0.3`.
+`profile` parameter and profile value `wilder.pser/0.4`.
 
 ## COSE Header Parameters
 
@@ -891,7 +892,7 @@ them.
 
 ## Reconciliation with the reference implementation
 
-- The profile identifier and media-type parameter are `wilder.pser/0.3`. A
+- The profile identifier and media-type parameter are `wilder.pser/0.4`. A
   producer built against `wilder.pser/0.2` is rejected on version validation
   rather than on an unknown member.
 - `attestation.measuredBootChain` (string) is replaced by

@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Applies to | `draft-wilder-scitt-physical-site-engage-receipt-01` and this repository |
-| Profile identifier in the implementation | `wilder.pser/0.3` |
+| Profile identifier in the implementation | `wilder.pser/0.4` |
 | Last reviewed | 2026-08-15 |
 | Status | Pre-alpha reference implementation |
 
@@ -27,7 +27,7 @@ safety, insurance, or regulatory-compliance claim.
 
 ### 1.1 The profile identifier is not published in any register
 
-The implementation emits `wilder.pser/0.3`. The document that defines `0.3` is
+The implementation emits `wilder.pser/0.4`. The document that defines `0.3` is
 `-01`. Until `-01` is posted, the most recent identifier described by a posted
 revision is `wilder.pser/0.2`, and an implementer working from a posted
 document is working from `0.2`.
@@ -189,7 +189,7 @@ Service.** A grep across `pask-adapter`, `pask-attest`, `pask-site`,
 The consequence, stated plainly: **every receipt this reference implementation
 has ever produced is non-conforming under `-01`**, because none carries an
 attached Receipt from a Transparency Service. The library produces valid
-`wilder.pser/0.3` payloads and valid signed statements; it does not produce
+`wilder.pser/0.4` payloads and valid signed statements; it does not produce
 Transparent Statements.
 
 This is a declared divergence in the safe direction — the document requires
