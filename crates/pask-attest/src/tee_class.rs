@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
+// Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
 
 use std::fmt::{self, Display, Formatter};
 use std::str::FromStr;

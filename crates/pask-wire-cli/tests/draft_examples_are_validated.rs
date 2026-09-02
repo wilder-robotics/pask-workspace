@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
+// Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
 // pask-wire-cli is licensed Apache-2.0. See LICENSING.md.
 
 //! MEM-P1 — Phase 1 CI: every example embedded in the specification is

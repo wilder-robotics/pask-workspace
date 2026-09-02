@@ -163,6 +163,20 @@ holding the line. The mark is the follow-on workstream; the vectors are the cont
 
 ---
 
+## Who is licensing this
+
+The copyright holder, and therefore the Licensor under Apache-2.0 and the party offering the
+commercial exception, is **Wilder Management Inc.**, an Illinois corporation, trading under the
+assumed name **Wilder Robotics**. Wilder Robotics is a d/b/a and not a separate legal entity; no
+other entity has held or contributed copyright in this repository.
+
+Source files previously carried a notice reading "Wilder Robotics" alone. That named the trade name
+rather than the corporation, which is ordinary practice but leaves an avoidable question for anyone
+reading the license as a legal instrument, since Apache-2.0 defines the Licensor as the copyright
+owner or an entity authorised by the owner to grant the license. All 73 notices were corrected on
+2026-09-02, while Wilder Management Inc. was the sole copyright holder and the correction required
+no one else's agreement.
+
 ## Publication and protocol versions
 
 These crates are not yet published to crates.io. When they are, the crate version and the protocol
