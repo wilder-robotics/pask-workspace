@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 #![allow(dead_code)]
 
 use std::time::{Duration, SystemTime, UNIX_EPOCH};

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 //! PASK-COMPLIANCE-002 / PASK-COMPLIANCE-003 negative-test roster.
 //!
 //! This file asserts that `TeeClass::from_str` rejects SKU and ISA strings

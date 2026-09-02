@@ -11,8 +11,22 @@ description = "WRITE_ONLY operations-layer adapters for verified Pask receipts"
 [features]
 default = []
 es256 = ["pask-wire/es256"]
+# The `pask-adapt` binary. Gated so that consumers of the library are not made
+# to build clap. Not a licensing boundary: everything in this crate, binary and
+# library alike, is AGPL-3.0-only.
+cli = ["dep:anyhow", "dep:clap", "ed25519-dalek/pem", "ed25519-dalek/pkcs8"]
+
+# Built only with --features cli. Pushing a verified receipt into an operations
+# system is product surface, so it lives on the copyleft side of the license
+# split rather than in the Apache-2.0 conformance tool. See LICENSING.md.
+[[bin]]
+name = "pask-adapt"
+path = "src/bin/pask-adapt.rs"
+required-features = ["cli"]
 
 [dependencies]
+anyhow = { version = "1.0.98", optional = true }
+clap = { version = "4.5.40", features = ["derive"], optional = true }
 ed25519-dalek = { version = "2.2.0", default-features = false }
 pask-wire = { path = "../pask-wire", features = ["std"] }
 reqwest = { version = "0.12.20", default-features = false, features = ["blocking", "json", "rustls-tls"] }

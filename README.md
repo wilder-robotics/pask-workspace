@@ -66,10 +66,28 @@ later commits per the ticket queue.
 
 ## License
 
-Licensed under [AGPL-3.0-only](LICENSE) with a commercial exception. See
-[COMMERCIAL-EXCEPTION.md](COMMERCIAL-EXCEPTION.md) for the terms under which
-Wilder Management Inc. (operating under the Wilder Robotics assumed name)
-grants a commercial license outside the AGPL's network-copyleft obligations.
+**This repository is not licensed uniformly.** The spec-side crates are permissive so
+that anyone implementing this profile can copy them without a legal review; the
+operational crates are copyleft.
+
+| Crate | License |
+| --- | --- |
+| `pask-wire` | [Apache-2.0](LICENSE-APACHE-2.0) |
+| `pask-attest` | [Apache-2.0](LICENSE-APACHE-2.0) |
+| `pask-wire-cli` | [Apache-2.0](LICENSE-APACHE-2.0) |
+| `pask-site` | [AGPL-3.0-only](LICENSE) |
+| `pask-adapter` | [AGPL-3.0-only](LICENSE) |
+
+The rule behind the split: code whose purpose is **interoperability** is Apache-2.0,
+code whose purpose is **operating a deployment** is AGPL-3.0-only. **[LICENSING.md](LICENSING.md)
+is authoritative** — it states that rule, records how each crate was placed under it,
+and gives the dependency rules that keep the split sound. `scripts/license_guard.sh`
+enforces it in CI.
+
+[COMMERCIAL-EXCEPTION.md](COMMERCIAL-EXCEPTION.md) applies only to the AGPL-3.0-only
+crates. It sets out the terms on which Wilder Management Inc. (operating under the
+Wilder Robotics assumed name) grants a commercial license outside the AGPL's
+network-copyleft obligations. No such agreement is needed for the Apache-2.0 crates.
 
 ## Trust model
 

@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
 
 use std::fmt::{self, Display, Formatter};
 

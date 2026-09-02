@@ -1,7 +1,6 @@
-// SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
-// pask-wire-cli is licensed AGPL-3.0-only with a commercial exception; see
-// COMMERCIAL-EXCEPTION.md in the workspace root.
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
+// pask-wire-cli is licensed Apache-2.0. See LICENSING.md.
 
 use std::process::{Command, Output};
 
