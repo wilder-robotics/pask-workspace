@@ -9,6 +9,7 @@ obtained. Its closed set is `THIRD_PARTY`, `ISSUER_ASSERTED`, and `NONE`.
 | File | Expect |
 |---|---|
 | `collapsed-unrecognized-and-NONE.json` | distinguishable |
+| `collapsed-issuer-asserted-and-THIRD_PARTY.json` | distinguishable |
 
 ## What this vector is for
 
@@ -23,6 +24,20 @@ requirement is neither an acceptance nor a rejection. A verifier that accepted
 both and reported them as the same state would satisfy `verifies` and would
 still be wrong. That is the whole reason this vector exists, and it is why a
 parse-only test does not cover the rule.
+
+## What the second vector is for
+
+The first vector pins the boundary of the closed set. The second pins the
+distinction *inside* it, which is the distinction the member was added for.
+
+Its two receipts carry an identical, well-formed `adapter.ackDigest` and are
+both chain-valid. They differ only in `adapter.ackProvenance`: one
+`ISSUER_ASSERTED`, one `THIRD_PARTY`. A verifier that checked the digest and
+stopped would accept both and report them as the same thing. It would be wrong,
+and no parse-only test catches it, because nothing about the digest is
+malformed. The difference is whether anybody outside the Issuer stood behind the
+acknowledgement, and that is the whole question a reader reconstructing an
+event months later is asking.
 
 ## Why an unrecognised value is accepted at all
 
