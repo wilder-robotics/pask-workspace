@@ -1,7 +1,12 @@
-// SPDX-License-Identifier: AGPL-3.0-only
-// Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
-// pask-wire-cli is licensed AGPL-3.0-only with a commercial exception; see
-// COMMERCIAL-EXCEPTION.md in the workspace root.
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
+// pask-wire-cli is licensed Apache-2.0. It is a conformance tool: it produces
+// receipts, verifies them, and emits the canonical example figure carried in
+// the profile document. An implementer must be able to run it against their
+// own implementation without a copyleft review, so it takes no dependency on
+// the operational crates. Pushing a verified receipt into an operations
+// system lives in the `pask-adapt` binary in the AGPL-3.0-only pask-adapter
+// crate. See LICENSING.md.
 
 use std::{
     fs,
@@ -17,19 +22,17 @@ use ed25519_dalek::{
 };
 use pask_wire::{Payload, canonical_example, produce_ed25519, verify_ed25519};
 
-#[cfg(feature = "adapter")]
-use {
-    clap::ValueEnum,
-    pask_adapter::{
-        AdapterWriteIn, BuildiumWriteIn, EnvironmentCredentials, InMemoryDedupLog,
-        PropertyMeldWriteIn, ReqwestHttpTransport, RetryPolicy,
-    },
-    std::sync::Arc,
-};
-
 #[derive(Debug, Parser)]
 #[command(name = "pask-wire")]
-#[command(about = "Produce, verify, and optionally push Pask receipts")]
+#[command(about = "Produce, verify, and emit canonical Pask receipts")]
+// A `push` subcommand used to live here behind an `adapter` feature. It moved
+// to the `pask-adapt` binary when the workspace license was split, so a user
+// who types `pask-wire push` needs to be told where it went rather than left
+// with "unrecognized subcommand".
+#[command(after_help = "Pushing a verified receipt into an operations system \
+moved to the `pask-adapt` binary (cargo run -p pask-adapter --features cli \
+--bin pask-adapt). It is licensed AGPL-3.0-only; this tool is Apache-2.0. \
+See LICENSING.md.")]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -58,24 +61,6 @@ enum Command {
         #[arg(long)]
         output: Option<PathBuf>,
     },
-    #[cfg(feature = "adapter")]
-    Push {
-        #[arg(long)]
-        input: PathBuf,
-        #[arg(long)]
-        public_key: PathBuf,
-        #[arg(long, value_enum)]
-        adapter: AdapterSelection,
-        #[arg(long)]
-        base_url: Option<String>,
-    },
-}
-
-#[cfg(feature = "adapter")]
-#[derive(Clone, Copy, Debug, ValueEnum)]
-enum AdapterSelection {
-    Buildium,
-    Propertymeld,
 }
 
 fn main() -> Result<()> {
@@ -96,13 +81,6 @@ fn main() -> Result<()> {
             public_key,
             output,
         } => verify(input, public_key, output),
-        #[cfg(feature = "adapter")]
-        Command::Push {
-            input,
-            public_key,
-            adapter,
-            base_url,
-        } => push(input, public_key, adapter, base_url),
     }
 }
 
@@ -147,35 +125,4 @@ fn read_verifying_key(path: &PathBuf) -> Result<VerifyingKey> {
         .with_context(|| format!("failed to read public key {}", path.display()))?;
     VerifyingKey::from_public_key_pem(&public_key_pem)
         .map_err(|error| anyhow::anyhow!("invalid Ed25519 public key: {error}"))
-}
-
-#[cfg(feature = "adapter")]
-fn push(
-    input: PathBuf,
-    public_key: PathBuf,
-    adapter: AdapterSelection,
-    base_url: Option<String>,
-) -> Result<()> {
-    let statement =
-        fs::read(&input).with_context(|| format!("failed to read receipt {}", input.display()))?;
-    let verifying_key = read_verifying_key(&public_key)?;
-
-    let outcome = match adapter {
-        AdapterSelection::Buildium => {
-            let base_url =
-                base_url.ok_or_else(|| anyhow::anyhow!("--base-url is required for Buildium"))?;
-            let adapter = BuildiumWriteIn::new(
-                &base_url,
-                Arc::new(ReqwestHttpTransport::new()),
-                Arc::new(EnvironmentCredentials),
-                Arc::new(InMemoryDedupLog::new()),
-                RetryPolicy::default(),
-            )?;
-            adapter.push(&statement, &verifying_key)?
-        }
-        AdapterSelection::Propertymeld => PropertyMeldWriteIn.push(&statement, &verifying_key)?,
-    };
-
-    println!("{outcome:?}");
-    Ok(())
 }

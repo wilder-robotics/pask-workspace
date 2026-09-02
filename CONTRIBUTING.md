@@ -48,7 +48,23 @@ All commits merged to `main` must be [cryptographically signed](https://docs.git
 
 ### DCO — Developer Certificate of Origin
 
-Every commit must include a `Signed-off-by:` line certifying that you have the right to submit the contribution under the repository's license. The full DCO text is at [developercertificate.org](https://developercertificate.org). By signing off on a commit, you certify agreement with the DCO.
+Every commit must include a `Signed-off-by:` line certifying that you have the right to submit the contribution under the license of the crate you are modifying. The full DCO text is at [developercertificate.org](https://developercertificate.org). By signing off on a commit, you certify agreement with the DCO.
+
+There is no Contributor License Agreement and no copyright assignment is taken. You keep the copyright in your contribution.
+
+### Which license your contribution lands under
+
+**This repository is not licensed uniformly**, so check before you start:
+
+- `pask-wire`, `pask-attest`, and `pask-wire-cli` are **Apache-2.0**
+- `pask-site` and `pask-adapter` are **AGPL-3.0-only**
+
+[`LICENSING.md`](LICENSING.md) is authoritative and explains why. Two rules follow from it that a contributor can trip over:
+
+1. **Never add a dependency from `pask-wire`, `pask-attest`, or `pask-wire-cli` onto an AGPL-3.0-only crate** — including an *optional* one behind a feature flag, which is how this trap was originally set. That is a license violation, not a style problem. If a spec-side crate seems to need something from an operational crate, the thing it needs is in the wrong crate.
+2. **Never add a copyleft third-party dependency to a permissive crate.** Every current dependency of those two crates is permissive, and that is what makes the permissive license honest.
+
+Both rules are checked in CI. If you are unsure which side a change belongs on, open an issue before writing the code.
 
 ---
 
@@ -56,7 +72,9 @@ Every commit must include a `Signed-off-by:` line certifying that you have the r
 
 This repository relates to activities in the Internet Engineering Task Force (IETF). All material in this repository is considered Contributions to the IETF Standards Process, as defined in the intellectual property policies of IETF currently designated as [BCP 78](https://www.rfc-editor.org/info/bcp78), [BCP 79](https://www.rfc-editor.org/info/bcp79), and the [IETF Trust Legal Provisions (TLP)](https://trustee.ietf.org/documents/trust-legal-provisions/) relating to IETF Documents.
 
-By submitting a contribution (issue, pull request, or otherwise) you agree that your contribution is licensed under the terms of the repository's license (AGPL-3.0-only for code; the applicable IETF Trust boilerplate for draft text) and that you have made the disclosures required under BCP 78 and BCP 79.
+By submitting a contribution (issue, pull request, or otherwise) you agree that your contribution is licensed under the terms applicable to what you changed — Apache-2.0 for `pask-wire`, `pask-attest`, and `pask-wire-cli`, AGPL-3.0-only for `pask-site` and `pask-adapter`, and the applicable IETF Trust boilerplate for draft text — and that you have made the disclosures required under BCP 78 and BCP 79.
+
+Note that the IETF Trust provisions govern the draft text independently of the code license. Changing a crate's copyright license does not alter the terms on which draft contributions are made.
 
 ---
 

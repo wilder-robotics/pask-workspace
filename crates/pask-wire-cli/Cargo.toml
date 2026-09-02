@@ -3,21 +3,23 @@ name = "pask-wire-cli"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-license.workspace = true
+# Apache-2.0, not the workspace AGPL-3.0-only default. This binary is a
+# conformance tool an implementer runs against their own implementation, so it
+# must not require a copyleft review. It depends only on pask-wire. See
+# LICENSING.md.
+license = "Apache-2.0"
 repository.workspace = true
 authors.workspace = true
-description = "Command-line producer, verifier, and optional adapter client for Pask receipts"
+description = "Command-line conformance tool: produce, verify, and emit canonical Pask receipts"
 
 [features]
 default = []
-adapter = ["dep:pask-adapter"]
 es256 = ["pask-wire/es256"]
 
 [dependencies]
 anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8"] }
-pask-adapter = { path = "../pask-adapter", optional = true }
 pask-wire = { path = "../pask-wire", features = ["std"] }
 
 [lints]
