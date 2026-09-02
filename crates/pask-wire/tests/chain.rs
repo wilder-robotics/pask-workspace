@@ -256,7 +256,11 @@ fn try_load_receipts(name: &str) -> Result<Vec<Payload>, pask_wire::Error> {
 #[test]
 fn valid_three_receipt_chain_verifies() {
     let receipts = load_receipts("valid-3.json");
-    assert_eq!(verify_chain(&receipts), Ok(()));
+    let report = verify_chain(&receipts).expect("the conforming chain verifies");
+    assert!(
+        report.affiliation_is_uniform(),
+        "this chain does not change issuerAffiliation, so the report must be empty"
+    );
 }
 
 #[test]
@@ -332,7 +336,8 @@ fn head_not_zero_is_rejected_with_the_specific_error() {
 #[test]
 fn single_receipt_chain_at_seq_zero_verifies() {
     let receipts = load_receipts("valid-3.json");
-    assert_eq!(verify_chain(&receipts[..1]), Ok(()));
+    let report = verify_chain(&receipts[..1]).expect("a single receipt at seq 0 verifies");
+    assert!(report.affiliation_is_uniform());
 }
 
 #[test]

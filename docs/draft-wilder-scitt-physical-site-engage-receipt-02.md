@@ -434,10 +434,13 @@ requires that the Verifier never silently resolve the ambiguity. The value set
 is closed in this revision and is not registry-governed. A later revision that
 adds a value does so additively, without redefining an existing one.
 
-The relationship this member describes is a standing one between two principals,
-not a property of a single engagement, so receipts presented as one chain cannot
-honestly disagree about it. The chain-level obligation is stated with the other
-Chain-Verifier checks under `chain`.
+The relationship this member describes is a standing one between two principals
+rather than a property of a single engagement, but standing relationships
+change. Receipts presented as one chain may therefore disagree about it without
+either receipt being defective. The chain-level obligation, which is to surface
+such a change rather than to reject the presentation or to resolve it in favour
+of either value, is stated with the other Chain-Verifier obligations under
+`chain`.
 
 This member is distinct from, and does not substitute for, the manifest
 disclosure required of an Issuer that registers with a Transparency Service it
@@ -657,24 +660,38 @@ does not perform both checks MUST NOT report the presentation as a verified
 chain. These are chain-level obligations; an Issuer producing individual
 receipts is unaffected by them.
 
-A Chain-Verifier MUST additionally check, for each adjacent pair, that
-`issuerAffiliation` is identical. Where two receipts presented as one chain
-carry different values, the Chain-Verifier MUST NOT report the presentation as a
-verified chain, and MUST surface the disagreement. In particular it MUST NOT
-resolve the disagreement by adopting the value carried by the later receipt.
-Adopting the later value would allow a chain to be relabelled after the fact by
-appending a single receipt, with nothing in the presentation showing that the
-label had previously said something else. Refusing the presentation leaves every
-receipt in it individually well-formed and individually readable; what is
-refused is the claim that they constitute one chain. An Issuer whose affiliation
-with the Site Owner genuinely changes therefore starts a new chain rather than
-continuing an existing one.
+A Chain-Verifier MUST additionally compare `issuerAffiliation` across each
+adjacent pair. Where two receipts presented as one chain carry different values,
+the Chain-Verifier MUST surface the change to the relying party, identified by
+the `chain.seq` of the receipt carrying the later value. A change in
+`issuerAffiliation` does not by itself invalidate the presentation, and a
+Chain-Verifier MUST NOT report the presentation as unverified on that basis
+alone.
 
-A conforming three-receipt chain, together with the sequence-gap, broken-link
-and changed-affiliation cases these checks are required to reject, is published
-as test data in the reference implementation repository. Implementers are
-advised to confirm that an honest complete chain verifies under their
-implementation of all three checks before relying on any of them.
+The two preceding checks are structural. `chain.seq` and `chain.prevHash` are
+wholly under the Issuer's control, so a violation of either admits no honest
+explanation. `issuerAffiliation` is not structural: it states a relationship
+between two principals in the world outside the receipt, and such relationships
+change. An Issuer independent of a Site Owner at one engagement may be acquired
+by that Site Owner before the next. Reporting that as an unverified chain would
+place an ordinary corporate event in the same category as tampering, and the
+only conforming response available to the Issuer would be to begin a new chain,
+which resets `chain.seq` and `chain.prevHash` and so severs the record either
+side of the change. That is the continuity the chain exists to carry.
+
+What a Chain-Verifier MUST NOT do is reduce the presentation to a single
+affiliation value. In particular it MUST NOT adopt the value carried by the
+latest receipt as the value of the chain. Adopting the later value would allow a
+chain to be relabelled after the fact by appending a single receipt, with
+nothing in the presentation showing that the label had previously said something
+else. Each reported value remains attached to the receipts that carry it.
+
+A conforming three-receipt chain, the sequence-gap and broken-link cases these
+checks are required to reject, and a two-receipt presentation whose members
+disagree about `issuerAffiliation` and which is required to verify with the
+change surfaced, are published as test data in the reference implementation
+repository. Implementers are advised to confirm that an honest complete chain
+verifies under their implementation before relying on any of these checks.
 
 ## COSE header requirements {#cose-header}
 
@@ -1089,10 +1106,11 @@ meet.
   attached Receipt. Consequently every receipt this implementation has produced
   to date is non-conforming under Section 6 of this document, and no
   end-to-end verification path exists.
-- **All three Chain-Verifier checks of Section 4.1 are implemented** in
+- **All three Chain-Verifier obligations of Section 4.1 are implemented** in
   `pask-wire` and exercised in continuous integration against the conforming
   and non-conforming chain test data referenced in Section 4.1, including the
-  `issuerAffiliation` consistency check added in this revision. This corrects
+  `issuerAffiliation` comparison added in this revision, which returns the
+  points at which the value changed rather than a pass or fail. This corrects
   the statement in `-01`, which reported the two checks it defined as
   unimplemented and was accurate when filed.
 - **Single-receipt structure, COSE encoding, JCS canonicalization, the field
@@ -1184,9 +1202,16 @@ members and bumps the profile identifier; it removes nothing.
   `NOT_DISCLOSED`. The profile records the Issuer's claim about itself and
   defines no mechanism for verifying it; a verified receipt is evidence that
   the claim was made and bound, not that it is true.
-- **A third Chain-Verifier check is added:** receipts presented as one chain
-  MUST agree about `issuerAffiliation`, and a disagreement is surfaced rather
-  than resolved in favour of the later receipt.
+- **A third Chain-Verifier obligation is added, and it is deliberately not a
+  rejection.** Where receipts presented as one chain carry different
+  `issuerAffiliation` values, the change MUST be surfaced and identified by
+  sequence number, and the presentation remains verifiable. Unlike `chain.seq`
+  and `chain.prevHash`, which are wholly under the Issuer's control and admit
+  no honest violation, affiliation is a relationship in the world outside the
+  receipt and can legitimately change. What is prohibited is reducing a
+  presentation to a single affiliation value, and in particular adopting the
+  latest receipt's value, which is what would permit a chain to be relabelled
+  after the fact by appending one receipt.
 - ***Site Owner* is added to {{terminology}}**, defined by capability rather
   than by title. `-01` used the term in prose at three places in
   {{trust-model}} without defining it, and this revision is the first to assign

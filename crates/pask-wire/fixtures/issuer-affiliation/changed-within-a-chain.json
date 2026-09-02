@@ -1,6 +1,6 @@
 {
-  "description": "Two-receipt presentation whose members disagree about issuerAffiliation: seq 0 says the parties are independent, seq 1 says they are affiliated. Every other chain-level check passes, so this isolates the consistency rule. A Chain-Verifier MUST refuse the presentation and MUST NOT resolve the disagreement by taking the newer value. Taking the newer value would let a chain be relabelled after the fact by appending a single receipt, leaving nothing in the record to show the label had changed.",
-  "expect": "rejected",
+  "description": "Two-receipt presentation whose members disagree about issuerAffiliation: seq 0 says the parties are independent, seq 1 says they are affiliated. Every other chain-level check passes, so this isolates the affiliation rule. The presentation is VALID. Affiliation is a claim about the world outside the receipt and the world changes, so a change is an ordinary event rather than a malformed chain, and rejecting it would force an Issuer to start a new chain and destroy the very link the chain exists to carry. A Chain-Verifier MUST surface the change, identified by the chain.seq of the receipt that introduced it, and MUST NOT collapse the presentation to a single affiliation value. Collapsing is what the rule forbids: resolving the disagreement in favour of the newest receipt would let a chain be relabelled after the fact by appending a single receipt, leaving nothing in the record to show the label had changed.",
+  "expect": "surfaced",
   "receipts": [
     {
       "actor": {
@@ -149,6 +149,13 @@
       },
       "spec": "wilder.pser/0.4",
       "ts": "2026-10-15T14:00:00Z"
+    }
+  ],
+  "surfaced": [
+    {
+      "at_seq": 1,
+      "from": "INDEPENDENT",
+      "to": "AFFILIATED"
     }
   ]
 }

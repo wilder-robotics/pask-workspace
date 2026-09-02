@@ -12,8 +12,9 @@
 //!    particular `NOT_DISCLOSED` is never read as `INDEPENDENT`.
 //! 2. An unrecognised value is surfaced as unrecognised. It is not read as
 //!    `AFFILIATED` and it is not normalised to `NOT_DISCLOSED`.
-//! 3. Receipts presented as one chain MUST agree about the value. Where they
-//!    disagree the presentation is refused, and the disagreement is named.
+//! 3. Where receipts presented as one chain disagree about the value, the
+//!    change is surfaced and identified by sequence number, and the
+//!    presentation still verifies.
 //!
 //! Rule 1 carries the whole point of the member. A relying party reading a
 //! receipt wants to know whether the party that signed it has an interest in
@@ -29,19 +30,26 @@
 //! lenient parser that quietly mapped an unknown string onto `NOT_DISCLOSED`
 //! also parses, and would pass a parse-only test while the promise was broken.
 //!
-//! Rule 2 is not fail-closed and rule 3 is. That is not an inconsistency. An
-//! unrecognised value appears on a single receipt read after the fact, often by
-//! somebody reconstructing an event months later, and refusing the record there
-//! destroys the reconstruction the record exists to serve. A disagreement
-//! inside a chain is different in kind: it is not a value the reader cannot
-//! interpret, it is two values that cannot both be true, and the tempting
-//! resolution (take the newer one) is exactly how a chain gets relabelled after
-//! the fact by appending one receipt. Refusing costs a verifier one
-//! presentation and leaves every individual receipt intact and readable.
+//! Neither rule 2 nor rule 3 is fail-closed, and rule 3 is worth saying out
+//! loud because the obvious design is to reject. Affiliation is a claim about
+//! the world outside the receipt, and the world changes: an Issuer independent
+//! of the Site Owner in March can be acquired by it in September. Rejecting
+//! would put an ordinary corporate event in the same bucket as tampering, and
+//! the only way to comply would be to start a new chain, which resets the
+//! sequence and the hash link and so destroys the continuity the chain exists
+//! to carry.
+//!
+//! What closes the relabelling attack is not rejection but the prohibition on
+//! collapsing a presentation to one affiliation value. The tempting resolution,
+//! take the newer one, is exactly how a chain gets relabelled after the fact by
+//! appending a single receipt. Every value stays attached to the receipt that
+//! carries it, and the report names where it changed.
 
 use std::{fs, path::PathBuf};
 
-use pask_wire::{Error, IssuerAffiliation, Payload, testvectors::MINIMAL_VALID_JCS};
+use pask_wire::{
+    AffiliationChange, Error, IssuerAffiliation, Payload, testvectors::MINIMAL_VALID_JCS,
+};
 
 /// Returns the canonical JCS vector with `issuerAffiliation` set to `value`.
 fn with_affiliation(value: &str) -> String {
@@ -217,13 +225,13 @@ fn not_disclosed_is_not_independent_vector_is_committed_and_holds() {
     );
 }
 
-/// Second negative conformance vector: the chain-consistency rule.
+/// Second conformance vector: the chain-level affiliation rule.
 #[test]
-fn changed_within_a_chain_vector_is_committed_and_is_refused() {
+fn changed_within_a_chain_vector_is_committed_and_is_surfaced() {
     let vector = load_vector("changed-within-a-chain.json");
     assert_eq!(
-        vector["expect"], "rejected",
-        "this vector asserts a rejection at the chain level"
+        vector["expect"], "surfaced",
+        "this vector asserts a surfaced change, not a rejection"
     );
 
     let parsed = parse_receipts(
@@ -240,27 +248,49 @@ fn changed_within_a_chain_vector_is_committed_and_is_refused() {
         &IssuerAffiliation::Affiliated
     );
 
-    // Every other chain-level check passes, so the rejection can only be the
-    // consistency rule. Asserting this is what makes the vector a test of the
-    // new rule rather than an accidental retest of seq contiguity.
+    // Every other chain-level check passes, so anything this test observes is
+    // the affiliation rule and not an accidental retest of seq contiguity.
     assert_eq!(parsed[1].chain_seq(), parsed[0].chain_seq() + 1);
     assert_eq!(parsed[1].chain_prev_hash(), Some(parsed[0].chain_hash()));
 
-    let error = pask_wire::verify_chain(&parsed)
-        .expect_err("a chain whose members disagree about issuerAffiliation is refused");
+    let report = pask_wire::verify_chain(&parsed).expect(
+        "a change in issuerAffiliation is an ordinary event, not a malformed chain, so the \
+         presentation still verifies",
+    );
+
     assert!(
-        matches!(
-            error,
-            Error::Validation("issuerAffiliation changed within a chain")
-        ),
-        "the error must name the disagreement rather than any other rule: got {error:?}"
+        !report.affiliation_is_uniform(),
+        "the verifier must not report a chain that changed affiliation as uniform"
+    );
+    assert_eq!(
+        report.affiliation_changes(),
+        &[AffiliationChange {
+            at_seq: 1,
+            from: IssuerAffiliation::Independent,
+            to: IssuerAffiliation::Affiliated,
+        }],
+        "the change must be surfaced, and identified by the seq of the receipt that made it"
+    );
+
+    // The relabelling attack this rule exists to close. Both values remain
+    // attached to the receipts that carry them; neither receipt is rewritten to
+    // agree with the other, and in particular the later value has not been
+    // taken as the value of the chain.
+    assert_eq!(
+        parsed[0].issuer_affiliation(),
+        &IssuerAffiliation::Independent
+    );
+    assert_eq!(
+        parsed[1].issuer_affiliation(),
+        &IssuerAffiliation::Affiliated
     );
 }
 
 #[test]
-fn a_chain_that_agrees_about_affiliation_still_verifies() {
-    // The consistency rule must not make chains harder to build. This is the
-    // control for the vector above.
+fn a_chain_that_agrees_about_affiliation_reports_no_change() {
+    // The control for the vector above: an ordinary chain reports an empty set
+    // of changes, so a caller can tell "uniform" from "changed" without having
+    // to compare receipts itself.
     let vector = load_vector("changed-within-a-chain.json");
     let receipts = vector["receipts"]
         .as_array()
@@ -277,5 +307,7 @@ fn a_chain_that_agrees_about_affiliation_still_verifies() {
     let second = Payload::from_json_for_production(&second_bytes).expect("second parses");
 
     assert_eq!(head.issuer_affiliation(), second.issuer_affiliation());
-    pask_wire::verify_chain(&[head, second]).expect("an agreeing chain verifies");
+    let report = pask_wire::verify_chain(&[head, second]).expect("an agreeing chain verifies");
+    assert!(report.affiliation_is_uniform());
+    assert!(report.affiliation_changes().is_empty());
 }
