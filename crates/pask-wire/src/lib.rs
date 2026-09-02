@@ -33,7 +33,7 @@ pub mod testvectors;
 #[cfg(feature = "alloc")]
 pub use canonical_example::canonical_example;
 #[cfg(feature = "alloc")]
-pub use chain::verify_chain;
+pub use chain::{AffiliationChange, ChainReport, verify_chain};
 #[cfg(feature = "alloc")]
 pub use digest::{sha256_prefixed, validate_sha256};
 #[cfg(feature = "alloc")]
@@ -43,4 +43,4 @@ pub use envelope::{produce_es256, verify_es256};
 #[cfg(feature = "alloc")]
 pub use error::{Error, Result};
 #[cfg(feature = "alloc")]
-pub use payload::{AckProvenance, Payload, SPEC_VERSION, canonicalize_json};
+pub use payload::{AckProvenance, IssuerAffiliation, Payload, SPEC_VERSION, canonicalize_json};

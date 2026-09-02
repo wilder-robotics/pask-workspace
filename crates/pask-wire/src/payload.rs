@@ -25,6 +25,14 @@ const ACK_PROVENANCE_THIRD_PARTY: &str = "THIRD_PARTY";
 const ACK_PROVENANCE_ISSUER_ASSERTED: &str = "ISSUER_ASSERTED";
 const ACK_PROVENANCE_NONE: &str = "NONE";
 
+/// Wire strings for the three named `issuerAffiliation` values.
+///
+/// Closed set, enumerated in the profile document rather than an IANA registry.
+/// A conforming producer MUST emit one of them.
+const ISSUER_AFFILIATION_AFFILIATED: &str = "AFFILIATED";
+const ISSUER_AFFILIATION_INDEPENDENT: &str = "INDEPENDENT";
+const ISSUER_AFFILIATION_NOT_DISCLOSED: &str = "NOT_DISCLOSED";
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Site {
@@ -313,6 +321,158 @@ impl<'de> Deserialize<'de> for AckProvenance {
     }
 }
 
+/// Whether the Site Owner and the Issuer are affiliated parties.
+///
+/// # Why this member exists
+///
+/// Nothing else in a receipt tells a reader whether the party that controls the
+/// site and the party that issued the receipt are related. A reader who cannot
+/// see the relationship has no way to check it, and the natural reading of
+/// silence is that the two are unrelated. That reading is a claim, and it is a
+/// claim nobody made.
+///
+/// The failure is the same shape as an unrecognised [`AckProvenance`] read as
+/// [`AckProvenance::ThirdParty`], one level up: an unknown resolved in the
+/// receipt's favour rather than surfaced as unknown. So the fix is the same.
+/// Name the unknown, and make naming it the default rather than the exception.
+///
+/// This does not overlap the profile's prohibition on collapsing two of the
+/// three trust roles into one principal. That rule addresses one principal
+/// wearing two hats. This member addresses the ordinary and far more common
+/// case of three distinct principals, two of which are related.
+///
+/// # What the profile does and does not do with it
+///
+/// The Issuer signs the receipt, so this member is the Issuer's statement about
+/// the Issuer's own standing. **The profile records that statement. It does not
+/// verify it, and no verification of it is possible from the receipt bytes.**
+///
+/// That is a weaker guarantee than it first appears to be and it is still worth
+/// having. A false value here is a false statement inside a signed, timestamped,
+/// registered record, attributable to the key that signed it and discoverable by
+/// anyone auditing the log. Silence is unfalsifiable and costs a dishonest
+/// Issuer nothing at all. The whole profile rests on that trade.
+///
+/// # Why REQUIRED rather than optional
+///
+/// Identical reasoning to [`AckProvenance`]: an absent member would itself have
+/// to be assigned a meaning, and every available meaning is wrong. Read as
+/// independent, it manufactures the claim this member exists to prevent. Read as
+/// affiliated, it defames an Issuer that simply predates the member. Read as
+/// unknown, it duplicates [`Self::NotDisclosed`] while being indistinguishable
+/// from a producer that forgot.
+///
+/// [`Self::NotDisclosed`] is the honest default value. A producer that has not
+/// established the relationship, or that declines to state it, emits it
+/// explicitly.
+///
+/// # Why an unrecognised value is preserved rather than rejected
+///
+/// See [`AckProvenance`]. The cost function is the same one: this is a
+/// descriptive property of a record read after the fact, refusing the record
+/// destroys the reconstruction it exists to serve, and normalising to
+/// [`Self::NotDisclosed`] manufactures a positive claim that nobody disclosed
+/// anything when in fact somebody may have disclosed something this build does
+/// not recognise.
+///
+/// # A standing fact carried per receipt
+///
+/// Affiliation between two principals is a standing relationship, not a fact
+/// about one engagement. Carrying it per receipt means a chain can disagree with
+/// itself. A verifier that observes the value change within a single chain
+/// surfaces the change rather than taking the later value as current, in the same
+/// way an ordering that cannot be established is surfaced as undetermined rather
+/// than guessed. This crate exposes [`Payload::issuer_affiliation`] so a chain
+/// verifier can make that comparison; the comparison itself is a chain-level
+/// concern and is not performed here.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum IssuerAffiliation {
+    /// The Site Owner and the Issuer are affiliated parties, and the Issuer
+    /// discloses it. Wire value `AFFILIATED`.
+    ///
+    /// The profile does not prohibit this arrangement. It requires that the
+    /// weaker standing of a receipt issued under it be visible rather than
+    /// implied, which is the same treatment already given to an Issuer that
+    /// registers with a Transparency Service it operates itself.
+    Affiliated,
+    /// The Issuer asserts that it and the Site Owner are unaffiliated. Wire
+    /// value `INDEPENDENT`.
+    ///
+    /// An assertion by the Issuer about the Issuer. Not independently verified,
+    /// and not verifiable from the receipt bytes.
+    Independent,
+    /// The relationship is not disclosed. Wire value `NOT_DISCLOSED`.
+    ///
+    /// The default, and an honest one. It states that nobody made a claim, which
+    /// is different from a claim of independence and must not be read as one.
+    NotDisclosed,
+    /// A value outside the closed set, preserved exactly as it appeared.
+    ///
+    /// A receipt carrying this is not conforming. It still parses, still
+    /// validates, and still presents this member to the reader.
+    Unrecognized(String),
+}
+
+impl IssuerAffiliation {
+    /// Returns the wire string for this value.
+    #[must_use]
+    pub fn as_wire_str(&self) -> &str {
+        match self {
+            Self::Affiliated => ISSUER_AFFILIATION_AFFILIATED,
+            Self::Independent => ISSUER_AFFILIATION_INDEPENDENT,
+            Self::NotDisclosed => ISSUER_AFFILIATION_NOT_DISCLOSED,
+            Self::Unrecognized(raw) => raw,
+        }
+    }
+
+    /// Returns `true` when the value is outside the closed set the profile names.
+    ///
+    /// A verifier that surfaces the affiliation state to a reader uses this
+    /// rather than comparing against the named variants, so that an unrecognised
+    /// value cannot be silently folded into one of them.
+    #[must_use]
+    pub const fn is_unrecognized(&self) -> bool {
+        matches!(self, Self::Unrecognized(_))
+    }
+
+    /// Returns `true` when the receipt carries no disclosure of the relationship.
+    ///
+    /// Deliberately distinct from [`Self::is_unrecognized`]. A reader that
+    /// collapses "nobody disclosed" and "disclosed something I do not recognise"
+    /// into one state loses the difference between an Issuer that declined to
+    /// speak and an Issuer that spoke in a vocabulary this build predates.
+    #[must_use]
+    pub const fn is_not_disclosed(&self) -> bool {
+        matches!(self, Self::NotDisclosed)
+    }
+}
+
+impl Serialize for IssuerAffiliation {
+    fn serialize<S: serde::Serializer>(
+        &self,
+        serializer: S,
+    ) -> core::result::Result<S::Ok, S::Error> {
+        serializer.serialize_str(self.as_wire_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for IssuerAffiliation {
+    fn deserialize<D: serde::Deserializer<'de>>(
+        deserializer: D,
+    ) -> core::result::Result<Self, D::Error> {
+        let raw = String::deserialize(deserializer)?;
+        Ok(match raw.as_str() {
+            ISSUER_AFFILIATION_AFFILIATED => Self::Affiliated,
+            ISSUER_AFFILIATION_INDEPENDENT => Self::Independent,
+            ISSUER_AFFILIATION_NOT_DISCLOSED => Self::NotDisclosed,
+            // Deliberately not an error, for the reasons in the type-level
+            // documentation. The raw string is retained so the value stays
+            // distinguishable from both INDEPENDENT and NOT_DISCLOSED.
+            _ => Self::Unrecognized(raw),
+        })
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct Chain {
@@ -369,13 +529,14 @@ where
     Option::<T>::deserialize(deserializer)
 }
 
-/// Strongly typed `wilder.pser/0.3` payload.
+/// Strongly typed `wilder.pser/0.4` payload.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct Payload {
     spec: String,
     id: String,
     ts: String,
+    issuer_affiliation: IssuerAffiliation,
     site: Site,
     actor: Actor,
     engagement: Engagement,
@@ -450,6 +611,18 @@ impl Payload {
     #[must_use]
     pub fn chain_prev_hash(&self) -> Option<&str> {
         self.chain.prev_hash.as_deref()
+    }
+
+    /// Returns whether the Site Owner and the Issuer are affiliated parties.
+    ///
+    /// A value outside the closed set is returned as
+    /// [`IssuerAffiliation::Unrecognized`] carrying the original string, never
+    /// folded into one of the named values. [`IssuerAffiliation::NotDisclosed`]
+    /// means nobody made a claim and MUST NOT be read as a claim of
+    /// independence. See [`IssuerAffiliation`] for why.
+    #[must_use]
+    pub const fn issuer_affiliation(&self) -> &IssuerAffiliation {
+        &self.issuer_affiliation
     }
 
     /// Returns how the acknowledgement in `adapter.ackDigest` was obtained.

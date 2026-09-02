@@ -1,6 +1,6 @@
 {
-  "description": "Two receipts identical in every member, including adapter.ackDigest, but for adapter.ackProvenance: the first is ISSUER_ASSERTED, the second is THIRD_PARTY. Both digests are well-formed and both receipts are chain-valid. A verifier MUST accept both and MUST report them as different states. Reporting the ISSUER_ASSERTED receipt as a third-party acknowledgement is the failure this vector names.",
-  "expect": "distinguishable",
+  "description": "Two-receipt presentation whose members disagree about issuerAffiliation: seq 0 says the parties are independent, seq 1 says they are affiliated. Every other chain-level check passes, so this isolates the affiliation rule. The presentation is VALID. Affiliation is a claim about the world outside the receipt and the world changes, so a change is an ordinary event rather than a malformed chain, and rejecting it would force an Issuer to start a new chain and destroy the very link the chain exists to carry. A Chain-Verifier MUST surface the change, identified by the chain.seq of the receipt that introduced it, and MUST NOT collapse the presentation to a single affiliation value. Collapsing is what the rule forbids: resolving the disagreement in favour of the newest receipt would let a chain be relabelled after the fact by appending a single receipt, leaving nothing in the record to show the label had changed.",
+  "expect": "surfaced",
   "receipts": [
     {
       "actor": {
@@ -10,7 +10,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
-        "ackProvenance": "ISSUER_ASSERTED",
+        "ackProvenance": "THIRD_PARTY",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -43,7 +43,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:b57f88230dc6ac45eae0bf14f260b63beb93cc931c56bfc9c4624c795fe76a28",
+        "hash": "sha256:7401a69cae90cb5f7944a23102ab5313a2647f022dff01c0ad363f4a18e1e0ee",
         "prevHash": null,
         "seq": 0
       },
@@ -58,7 +58,8 @@
           "start": "2026-10-15T13:30:00Z"
         }
       },
-      "id": "uuid:00000000-0000-4000-8000-0000000000b1",
+      "id": "uuid:00000000-0000-4000-8000-0000000000f0",
+      "issuerAffiliation": "INDEPENDENT",
       "site": {
         "class": "residential",
         "envelope": {
@@ -73,8 +74,7 @@
         "id": "site:res-001"
       },
       "spec": "wilder.pser/0.4",
-      "ts": "2026-10-15T14:00:00Z",
-      "issuerAffiliation": "NOT_DISCLOSED"
+      "ts": "2026-10-15T14:00:00Z"
     },
     {
       "actor": {
@@ -117,9 +117,9 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:e1fdd1826d29cc7ee55f1b3623fe308c55b3418737f19c5d7a8eac3424883bab",
-        "prevHash": null,
-        "seq": 0
+        "hash": "sha256:b4ca3af576ce705ba3e1c8d3c00f0e60ddec5df6ccfe8cdf978a5747b5165c87",
+        "prevHash": "sha256:7401a69cae90cb5f7944a23102ab5313a2647f022dff01c0ad363f4a18e1e0ee",
+        "seq": 1
       },
       "engagement": {
         "envelopeConformance": "WITHIN",
@@ -132,7 +132,8 @@
           "start": "2026-10-15T13:30:00Z"
         }
       },
-      "id": "uuid:00000000-0000-4000-8000-0000000000b2",
+      "id": "uuid:00000000-0000-4000-8000-0000000000f1",
+      "issuerAffiliation": "AFFILIATED",
       "site": {
         "class": "residential",
         "envelope": {
@@ -147,8 +148,14 @@
         "id": "site:res-001"
       },
       "spec": "wilder.pser/0.4",
-      "ts": "2026-10-15T14:00:00Z",
-      "issuerAffiliation": "NOT_DISCLOSED"
+      "ts": "2026-10-15T14:00:00Z"
+    }
+  ],
+  "surfaced": [
+    {
+      "at_seq": 1,
+      "from": "INDEPENDENT",
+      "to": "AFFILIATED"
     }
   ]
 }

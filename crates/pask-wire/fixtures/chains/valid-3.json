@@ -43,7 +43,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:5c05df29d705c6661ede87be64b1467e4fd4e7700600e0276d345dd83938e0db",
+        "hash": "sha256:b24ab0cbeea689690596c8f34192f685a0adcb029f53bed7b3baf9d03e175003",
         "prevHash": null,
         "seq": 0
       },
@@ -59,6 +59,7 @@
         }
       },
       "id": "uuid:00000000-0000-4000-8000-0000000000a0",
+      "issuerAffiliation": "NOT_DISCLOSED",
       "site": {
         "class": "residential",
         "envelope": {
@@ -116,8 +117,8 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:096eba02320fdaad21093a38e91e4cda4068b79a30f5ccedfb84dd6209b69141",
-        "prevHash": "sha256:5c05df29d705c6661ede87be64b1467e4fd4e7700600e0276d345dd83938e0db",
+        "hash": "sha256:fc7946c45da78408e6acd772dd543d7ea64708768a8013fedba5bcefe6431af4",
+        "prevHash": "sha256:b24ab0cbeea689690596c8f34192f685a0adcb029f53bed7b3baf9d03e175003",
         "seq": 1
       },
       "engagement": {
@@ -132,6 +133,7 @@
         }
       },
       "id": "uuid:00000000-0000-4000-8000-0000000000a1",
+      "issuerAffiliation": "NOT_DISCLOSED",
       "site": {
         "class": "residential",
         "envelope": {
@@ -189,8 +191,8 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:591c41b7c1cf8757ec3e7a9e41d238585b19c02905aed0934f0497dff4c1e12d",
-        "prevHash": "sha256:096eba02320fdaad21093a38e91e4cda4068b79a30f5ccedfb84dd6209b69141",
+        "hash": "sha256:996386543b256a4efaa7a02ab0203fcac1536ad5351b83fd732ae76d07fdae06",
+        "prevHash": "sha256:fc7946c45da78408e6acd772dd543d7ea64708768a8013fedba5bcefe6431af4",
         "seq": 2
       },
       "engagement": {
@@ -205,6 +207,7 @@
         }
       },
       "id": "uuid:00000000-0000-4000-8000-0000000000a2",
+      "issuerAffiliation": "NOT_DISCLOSED",
       "site": {
         "class": "residential",
         "envelope": {

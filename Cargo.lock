@@ -932,6 +932,8 @@ dependencies = [
 name = "pask-adapter"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "clap",
  "ed25519-dalek",
  "pask-wire",
  "reqwest",
@@ -992,7 +994,6 @@ dependencies = [
  "anyhow",
  "clap",
  "ed25519-dalek",
- "pask-adapter",
  "pask-wire",
 ]
 

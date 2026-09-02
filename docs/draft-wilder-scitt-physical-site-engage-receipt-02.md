@@ -338,7 +338,7 @@ should be read as a statement about deployed hardware.
     "witnessKey": "key:tee:res-001-witness-01"
   },
   "chain": {
-    "hash": "sha256:96eb8bb3743f07b05067f16d4bea99d170019db5307a87ca78ff019a52984018",
+    "hash": "sha256:d67bb655b9ce091c8add39be6e41d1a4585ac482304b8bcef1548aec7d2c9dd7",
     "prevHash": null,
     "seq": 0
   },
@@ -354,6 +354,7 @@ should be read as a statement about deployed hardware.
     }
   },
   "id": "uuid:00000000-0000-4000-8000-000000000001",
+  "issuerAffiliation": "NOT_DISCLOSED",
   "site": {
     "class": "residential",
     "envelope": {
@@ -390,6 +391,66 @@ form is a URN or a `uuid:` prefix. `id` MUST NOT be reused within an Issuer.
 
 RFC 3339 UTC timestamp at which the Issuer sealed the receipt. This is the
 receipt-issuance time; it MAY differ from `engagement.window.end`.
+
+### `issuerAffiliation` (REQUIRED, string)
+
+States whether the Issuer and the Site Owner are affiliated principals. The
+admissible values are exactly:
+
+- `AFFILIATED`: the Issuer and the Site Owner are the same principal, or are
+  principals under common control, or one controls the other.
+- `INDEPENDENT`: the Issuer and the Site Owner are principals under neither
+  common control nor the control of one by the other.
+- `NOT_DISCLOSED`: the relationship is not stated in the receipt.
+
+The member is REQUIRED because the alternative is worse. An absent member would
+itself have to be assigned a meaning, and every available meaning is wrong: read
+as `INDEPENDENT` it manufactures a disclosure nobody made, and read as
+`AFFILIATED` it accuses an Issuer of a relationship it may not have. Requiring
+the member makes `NOT_DISCLOSED` a stated position rather than an inference drawn
+from silence.
+
+The value states the Issuer's own claim about itself. This profile does not
+define a mechanism by which a Verifier establishes the claim to be true, and a
+Verifier MUST NOT report a verified receipt as evidence that the stated
+relationship holds. What verification establishes is that the claim was made,
+by the Issuer, inside a receipt bound by the signature and the chain, and
+therefore that it cannot later be revised without the revision being visible.
+That is a narrower property than truth and it is the property this member
+carries.
+
+A Verifier MUST NOT read `NOT_DISCLOSED` as `INDEPENDENT`. Silence about a
+relationship is not a denial of one, and a relying party told otherwise has been
+supplied a claim no principal authored. This is the one collapse the member
+exists to prevent, and it is the direction that overstates the receipt.
+
+A Verifier MUST NOT read a value outside the admissible set as `AFFILIATED` and
+MUST NOT normalize it to `NOT_DISCLOSED`. A Verifier that encounters an
+unrecognized value MUST preserve the value as received and MUST surface it to
+the relying party as unrecognized, distinct from all three admissible values.
+This revision does not require a Verifier to reject a receipt on that basis,
+because a value it does not recognize may be defined by a later revision; it
+requires that the Verifier never silently resolve the ambiguity. The value set
+is closed in this revision and is not registry-governed. A later revision that
+adds a value does so additively, without redefining an existing one.
+
+The relationship this member describes is a standing one between two principals
+rather than a property of a single engagement, but standing relationships
+change. Receipts presented as one chain may therefore disagree about it without
+either receipt being defective. The chain-level obligation, which is to surface
+such a change rather than to reject the presentation or to resolve it in favour
+of either value, is stated with the other Chain-Verifier obligations under
+`chain`.
+
+This member is distinct from, and does not substitute for, the manifest
+disclosure required of an Issuer that registers with a Transparency Service it
+operates or that is operated by an affiliated principal
+({{scitt-registration}}). That obligation concerns the relationship between the
+Issuer and the Transparency Service; this member concerns the relationship
+between the Issuer and the Site Owner. An Issuer may be independent of the Site
+Owner and still operate its own Transparency Service, or be affiliated with the
+Site Owner and register with an unaffiliated one. Neither value can be inferred
+from the other.
 
 ### `site` (REQUIRED, object)
 
@@ -599,11 +660,38 @@ does not perform both checks MUST NOT report the presentation as a verified
 chain. These are chain-level obligations; an Issuer producing individual
 receipts is unaffected by them.
 
-A conforming three-receipt chain, together with the sequence-gap and
-broken-link cases these checks are required to reject, is published as test
-data in the reference implementation repository. Implementers are advised to
-confirm that an honest complete chain verifies under their implementation of
-both checks before relying on either.
+A Chain-Verifier MUST additionally compare `issuerAffiliation` across each
+adjacent pair. Where two receipts presented as one chain carry different values,
+the Chain-Verifier MUST surface the change to the relying party, identified by
+the `chain.seq` of the receipt carrying the later value. A change in
+`issuerAffiliation` does not by itself invalidate the presentation, and a
+Chain-Verifier MUST NOT report the presentation as unverified on that basis
+alone.
+
+The two preceding checks are structural. `chain.seq` and `chain.prevHash` are
+wholly under the Issuer's control, so a violation of either admits no honest
+explanation. `issuerAffiliation` is not structural: it states a relationship
+between two principals in the world outside the receipt, and such relationships
+change. An Issuer independent of a Site Owner at one engagement may be acquired
+by that Site Owner before the next. Reporting that as an unverified chain would
+place an ordinary corporate event in the same category as tampering, and the
+only conforming response available to the Issuer would be to begin a new chain,
+which resets `chain.seq` and `chain.prevHash` and so severs the record either
+side of the change. That is the continuity the chain exists to carry.
+
+What a Chain-Verifier MUST NOT do is reduce the presentation to a single
+affiliation value. In particular it MUST NOT adopt the value carried by the
+latest receipt as the value of the chain. Adopting the later value would allow a
+chain to be relabelled after the fact by appending a single receipt, with
+nothing in the presentation showing that the label had previously said something
+else. Each reported value remains attached to the receipts that carry it.
+
+A conforming three-receipt chain, the sequence-gap and broken-link cases these
+checks are required to reject, and a two-receipt presentation whose members
+disagree about `issuerAffiliation` and which is required to verify with the
+change surfaced, are published as test data in the reference implementation
+repository. Implementers are advised to confirm that an honest complete chain
+verifies under their implementation before relying on any of these checks.
 
 ## COSE header requirements {#cose-header}
 
@@ -684,8 +772,13 @@ An Issuer MAY register with a Transparency Service it operates itself, or
 that is operated by a principal affiliated with it. Where it does so, the
 Issuer MUST disclose that relationship in its manifest, and a relying party
 MUST NOT treat such a registration as evidence obtained from outside the
-Issuer for the purposes of {{security}}. Registration with a Transparency
-Service operated by an unaffiliated principal is the only case in which an
+Issuer for the purposes of {{security}}. That obligation is separate from the
+`issuerAffiliation` member of Section 4.1, which states the relationship
+between the Issuer and the Site Owner rather than between the Issuer and the
+Transparency Service; neither can be inferred from the other.
+
+Registration with a Transparency Service operated by an unaffiliated principal
+is the only case in which an
 attached Receipt supplies a reference external to the party whose
 completeness is in question. This profile does not prohibit the affiliated
 case, because a self-operated Transparency Service still binds the Issuer to
@@ -1013,11 +1106,13 @@ meet.
   attached Receipt. Consequently every receipt this implementation has produced
   to date is non-conforming under Section 6 of this document, and no
   end-to-end verification path exists.
-- **The two Chain-Verifier checks of Section 4.1 are implemented** in
+- **All three Chain-Verifier obligations of Section 4.1 are implemented** in
   `pask-wire` and exercised in continuous integration against the conforming
-  and non-conforming chain test data referenced in Section 4.1. This corrects
-  the statement in `-01`, which reported the checks unimplemented and was
-  accurate when filed.
+  and non-conforming chain test data referenced in Section 4.1, including the
+  `issuerAffiliation` comparison added in this revision, which returns the
+  points at which the value changed rather than a pass or fail. This corrects
+  the statement in `-01`, which reported the two checks it defined as
+  unimplemented and was accurate when filed.
 - **Single-receipt structure, COSE encoding, JCS canonicalization, the field
   semantics of Section 4.1 and the attestation binding of Section 4.3 are
   implemented** and exercised in continuous integration. The example figure in
@@ -1079,8 +1174,8 @@ Service.
 
 This revision closes the reviewer-identified gap in the Adapter Write-In,
 states a witness key lifecycle that `-01` did not address, and records one
-scope boundary that `-01` left to internal doctrine. It adds one payload
-member and bumps the profile identifier; it removes nothing.
+scope boundary that `-01` left to internal doctrine. It adds two payload
+members and bumps the profile identifier; it removes nothing.
 
 - **`adapter.ackProvenance` (REQUIRED) is added** and the profile identifier
   and media-type parameter move from `wilder.pser/0.3` to `wilder.pser/0.4`.
@@ -1093,6 +1188,30 @@ member and bumps the profile identifier; it removes nothing.
 - **A Verifier MUST NOT resolve an unrecognized `adapter.ackProvenance` value
   in the receipt's favour.** It is preserved as received and surfaced as
   unrecognized, and is neither read as `THIRD_PARTY` nor normalized to `NONE`.
+- **`issuerAffiliation` (REQUIRED) is added**, stating whether the Issuer and
+  the Site Owner are affiliated principals, with the three values
+  `AFFILIATED`, `INDEPENDENT` and `NOT_DISCLOSED`. `-01` gave a relying party
+  no way to tell from a receipt whether the party that signed it had an
+  interest in what it said, while requiring in {{trust-model}} that the roles
+  not be collapsed. The member is REQUIRED for the same reason
+  `adapter.ackProvenance` is: an absent value would have to be assigned a
+  meaning, and every candidate meaning either manufactures a disclosure or
+  makes an accusation.
+- **A Verifier MUST NOT read `NOT_DISCLOSED` as `INDEPENDENT`**, and MUST NOT
+  read an unrecognized value as `AFFILIATED` or normalize it to
+  `NOT_DISCLOSED`. The profile records the Issuer's claim about itself and
+  defines no mechanism for verifying it; a verified receipt is evidence that
+  the claim was made and bound, not that it is true.
+- **A third Chain-Verifier obligation is added, and it is deliberately not a
+  rejection.** Where receipts presented as one chain carry different
+  `issuerAffiliation` values, the change MUST be surfaced and identified by
+  sequence number, and the presentation remains verifiable. Unlike `chain.seq`
+  and `chain.prevHash`, which are wholly under the Issuer's control and admit
+  no honest violation, affiliation is a relationship in the world outside the
+  receipt and can legitimately change. What is prohibited is reducing a
+  presentation to a single affiliation value, and in particular adopting the
+  latest receipt's value, which is what would permit a chain to be relabelled
+  after the fact by appending one receipt.
 - ***Site Owner* is added to {{terminology}}**, defined by capability rather
   than by title. `-01` used the term in prose at three places in
   {{trust-model}} without defining it, and this revision is the first to assign
@@ -1120,9 +1239,9 @@ member and bumps the profile identifier; it removes nothing.
   brain-computer interface. No member, value, or extension point is defined
   for one.
 - **Two implementation-status statements in `-01` are corrected.** The
-  Chain-Verifier checks are now implemented, and the crate disagreement over
-  a zero-length attestation validity interval is resolved with the rule stated
-  in Section 4.1.
+  Chain-Verifier checks defined by `-01` are now implemented, and the crate
+  disagreement over a zero-length attestation validity interval is resolved
+  with the rule stated in Section 4.1.
 
 ## Changes in -01
 
