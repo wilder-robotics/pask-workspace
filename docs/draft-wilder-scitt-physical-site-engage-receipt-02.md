@@ -74,8 +74,9 @@ from the receipt (SLA credit, insurance underwriting, regulatory audit) are
 the responsibility of the relying party and its policies, not of this profile.
 
 The profile is designed around a three-party trust model in which no single
-party can unilaterally forge or repudiate a receipt: the *site owner* physically
-hosts and controls the TEE hardware (they own the box); the *TEE silicon
+party can unilaterally forge or repudiate a receipt: the *Site Owner* controls
+physical access to the TEE hardware and keeps it running (they can unplug the
+box, and cannot forge what it signs); the *TEE silicon
 vendor* attests the key material inside the TEE through its hardware root of
 trust (silicon vouches for the key); and the *Issuer* writes the vocabulary,
 registers Signed Statements with a Transparency Service, and posts the
@@ -114,9 +115,16 @@ together:
   physically located at the site under the site owner's control. Cloud-hosted
   transparency services can issue strong receipts, but the signing authority
   lives inside the cloud provider's environment; this profile REQUIRES that
-  the authority live on the site owner's premises, attested by the TEE
-  silicon vendor, and neither extractable by the site owner nor by the
-  Issuer.
+  the authority live on the Site Owner's premises, attested by the TEE
+  silicon vendor, and neither extractable by the Site Owner nor by the
+  Issuer. This statement describes direct-witness mode. In delegated-witness
+  mode ({{attestation-binding}}) the key that produces the COSE signature is
+  the Issuer's own and need not be site-resident; what remains site-resident
+  is the TEE that issues the delegation credential, and a relying party
+  evaluating such a receipt obtains a weaker property than the one described
+  here. A Verifier MUST determine which mode applies from the Issuer's
+  manifest before relying on the non-extractability property, and MUST NOT
+  assume direct-witness mode where the manifest does not state it.
 - *Physical-work evidence vocabulary.* The five-artifact schema (Site,
   Actor, Engagement, Attestation, Adapter Write-In) binds the receipt to
   what physically happened, not merely to a software event. This vocabulary
@@ -1056,6 +1064,18 @@ Service.
 # Change log
 
 ## Changes in -02
+- Corrected two internally inconsistent statements about the Site Owner that
+  -00 and -01 both carried. The overview described the Site Owner as owning
+  the hardware, while the trust model described the same party by capability;
+  the overview now uses the capability language, matching the definition added
+  to {{terminology}} in this revision.
+- Bounded the introduction's non-extractability statement to direct-witness
+  mode. -01 stated as a profile-wide REQUIREMENT that the signing authority be
+  neither extractable by the Site Owner nor by the Issuer, while normatively
+  defining a delegated-witness mode in which the Issuer signs with its own key.
+  The statement is now scoped to the mode it describes, the weaker property of
+  the other mode is stated, and a Verifier is required to determine the mode
+  from the manifest rather than assume it.
 
 This revision closes the reviewer-identified gap in the Adapter Write-In,
 states a witness key lifecycle that `-01` did not address, and records one
