@@ -1,7 +1,6 @@
-// SPDX-License-Identifier: AGPL-3.0-only
+// SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
-// pask-wire-cli is licensed AGPL-3.0-only with a commercial exception; see
-// COMMERCIAL-EXCEPTION.md in the workspace root.
+// pask-wire-cli is licensed Apache-2.0. See LICENSING.md.
 
 //! MEM-P1 — Phase 1 CI: every example embedded in the specification is
 //! validated against the reference parser.

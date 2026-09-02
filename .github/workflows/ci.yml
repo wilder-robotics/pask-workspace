@@ -13,6 +13,12 @@
 #                 deliberately not merged with it.
 #   - compliance: PASK-COMPLIANCE-002/003 deny-list grep over the code
 #                 repository surface, plus a self-test of the deny-list.
+#   - license-guard: enforces the mixed-license split recorded in LICENSING.md.
+#                 pask-wire and pask-attest are Apache-2.0; the operational
+#                 crates are AGPL-3.0-only. Fails on a dependency edge from a
+#                 permissive crate onto a copyleft one, an unreviewed
+#                 third-party dependency in a permissive crate, an SPDX header
+#                 that contradicts its crate, or a new member with no side.
 #   - draft:      kramdown-rfc conversion, xml2rfc validation and idnits
 #                 compliance for the Internet-Draft. Runs only when files under
 #                 docs/ change. The draft is authored in Markdown; the RFCXML
@@ -401,6 +407,31 @@ jobs:
                  "beyond the accepted exception. See the report above."
             exit 1
           fi
+
+  license-guard:
+    name: License split
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      # This repository is deliberately not licensed uniformly: pask-wire and
+      # pask-attest are Apache-2.0 so that outside parties can implement the
+      # profile without a copyleft review, while the operational crates stay
+      # AGPL-3.0-only. LICENSING.md is the authoritative map.
+      #
+      # The split is only sound in one direction, and the ways to break it are
+      # ordinary mistakes rather than exotic ones: a new dependency edge, a
+      # copied file that keeps its old SPDX header, a new crate nobody assigned
+      # a side to. None of those look like a licensing change in review, which
+      # is why a human reviewer is the wrong control for them.
+      - name: Enforce the license split
+        run: bash scripts/license_guard.sh
 
   name-guard:
     name: Public Name Rule

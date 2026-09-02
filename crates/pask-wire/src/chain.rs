@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: AGPL-3.0-only
+// SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Wilder Robotics <rob@wilder-robotics.com>
 // pask-wire is licensed AGPL-3.0-only with a commercial exception; see
 // COMMERCIAL-EXCEPTION.md in the workspace root.
