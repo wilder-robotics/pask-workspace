@@ -28,7 +28,7 @@ pub fn signed_receipt_for(adapter_system: &str, adapter_endpoint: &str) -> (Vec<
     let four = format!("sha256:{}", "4".repeat(64));
 
     let input = serde_json::to_vec(&json!({
-        "spec": "wilder.pser/0.3",
+        "spec": "wilder.pser/0.4",
         "id": "test-receipt-1",
         "ts": "2026-07-12T00:00:00Z",
         "site": {
@@ -91,6 +91,7 @@ pub fn signed_receipt_for(adapter_system: &str, adapter_endpoint: &str) -> (Vec<
             "endpoint": adapter_endpoint,
             "postedAt": "2026-07-12T00:05:01Z",
             "ackDigest": four,
+            "ackProvenance": "THIRD_PARTY",
             "mode": "WRITE_ONLY"
         },
         "chain": {

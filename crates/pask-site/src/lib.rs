@@ -3,7 +3,7 @@
 // pask-site is licensed AGPL-3.0-only with a commercial exception; see
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
-//! Reference site producer for the `wilder.pser/0.3` profile.
+//! Reference site producer for the `wilder.pser/0.4` profile.
 
 #![forbid(unsafe_code)]
 

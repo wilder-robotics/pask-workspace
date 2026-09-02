@@ -10,6 +10,8 @@ use std::sync::Arc;
 use ed25519_dalek::{SigningKey, VerifyingKey};
 use serde_json::json;
 
+use pask_wire::AckProvenance;
+
 use crate::{Clock, EvidenceBundle, SiteConfig, SiteError, uuid::deterministic_uuid_v4};
 
 /// Transient inputs for one site engagement.
@@ -31,6 +33,19 @@ pub struct EngagementRequest {
     pub evidence: EvidenceBundle,
     /// Lowercase `sha256:<64 hex>` adapter acknowledgement digest.
     pub adapter_ack_digest: String,
+    /// How the acknowledgement covered by `adapter_ack_digest` was obtained.
+    ///
+    /// This is a per-engagement fact rather than a site setting, which is why it
+    /// lives on the request and not on [`crate::SiteConfig`]. Whether the
+    /// operations layer returned something structured is decided by that
+    /// exchange, and it may differ between two engagements at the same site on
+    /// the same day.
+    ///
+    /// A producer must state it rather than have it inferred. There is no
+    /// default, deliberately: a defaulted value would let a caller ship
+    /// `THIRD_PARTY` without ever having decided it was true, which is the exact
+    /// collapse this member was added to prevent.
+    pub adapter_ack_provenance: AckProvenance,
     /// RFC 3339 UTC adapter-posted timestamp.
     pub adapter_posted_at: String,
     /// Receipt-chain sequence number.
@@ -158,6 +173,7 @@ impl SiteProducer for Ed25519SiteProducer {
                 "endpoint": self.config.adapter_endpoint,
                 "postedAt": request.adapter_posted_at,
                 "ackDigest": request.adapter_ack_digest,
+                "ackProvenance": request.adapter_ack_provenance.as_wire_str(),
                 "mode": "WRITE_ONLY",
             },
             "chain": {

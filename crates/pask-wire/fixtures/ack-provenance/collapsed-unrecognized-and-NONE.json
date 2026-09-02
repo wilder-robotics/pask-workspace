@@ -1,6 +1,6 @@
 {
-  "description": "Two-receipt presentation whose second member is seq 2 rather than seq 1. The Chain-Verifier's seq-contiguity check MUST reject it.",
-  "expect": "rejected",
+  "description": "Two receipts identical but for adapter.ackProvenance: the first carries a value outside the closed set, the second carries the named value NONE. A verifier MUST accept both and MUST report them as different states. Reading the first as NONE, or as THIRD_PARTY, is the failure this vector names.",
+  "expect": "distinguishable",
   "receipts": [
     {
       "actor": {
@@ -10,7 +10,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
-        "ackProvenance": "THIRD_PARTY",
+        "ackProvenance": "READ_BACK_CONFIRMED",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -43,7 +43,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:4f2fe8d9a12216a0a04dac49dae4f64e305bd59d2f9bd350968a4f12e58a1e25",
+        "hash": "sha256:6a53738af39d4193ec959c16e0914c9f735aba3ce3bb1e5cec675ef7741c5d91",
         "prevHash": null,
         "seq": 0
       },
@@ -58,7 +58,7 @@
           "start": "2026-10-15T13:30:00Z"
         }
       },
-      "id": "uuid:00000000-0000-4000-8000-0000000000b0",
+      "id": "uuid:00000000-0000-4000-8000-0000000000a1",
       "site": {
         "class": "residential",
         "envelope": {
@@ -83,7 +83,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
-        "ackProvenance": "THIRD_PARTY",
+        "ackProvenance": "NONE",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -116,9 +116,9 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:19d3b1739ea216bd9fba66346ebef7216211db124c0f4d5af6fe3fc6f591261f",
-        "prevHash": "sha256:4f2fe8d9a12216a0a04dac49dae4f64e305bd59d2f9bd350968a4f12e58a1e25",
-        "seq": 2
+        "hash": "sha256:2bb8d8d60c5802059c5f34c908767d48ebbca3bbae5e99fa7d39957b1e3ce61b",
+        "prevHash": null,
+        "seq": 0
       },
       "engagement": {
         "envelopeConformance": "WITHIN",
@@ -131,7 +131,7 @@
           "start": "2026-10-15T13:30:00Z"
         }
       },
-      "id": "uuid:00000000-0000-4000-8000-0000000000b2",
+      "id": "uuid:00000000-0000-4000-8000-0000000000a2",
       "site": {
         "class": "residential",
         "envelope": {

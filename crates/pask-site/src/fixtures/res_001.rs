@@ -129,6 +129,9 @@ pub fn engagement_request(evidence: EvidenceBundle) -> EngagementRequest {
         envelope_conformance: ENVELOPE_CONFORMANCE.to_owned(),
         evidence,
         adapter_ack_digest: ADAPTER_ACK_DIGEST.to_owned(),
+        // The reference fixture models the case where the operations layer
+        // returned a structured acknowledgement of its own.
+        adapter_ack_provenance: pask_wire::AckProvenance::ThirdParty,
         adapter_posted_at: ADAPTER_POSTED_AT.to_owned(),
         chain_seq: 0,
         chain_prev_hash: None,
