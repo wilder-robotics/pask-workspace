@@ -305,7 +305,21 @@ jobs:
             exit 1
           fi
 
-          # One accepted exception, and only one.
+          # Two accepted exceptions, enumerated by hand and by name.
+          #
+          # This block used to count errors and compare the count to 1. That
+          # is the wrong shape: a count says nothing about which error it is,
+          # so a second, different error arriving alongside the accepted one
+          # produced a failure with no way to distinguish "the known nit is
+          # still here" from "something new broke". Worse, the reverse holds
+          # too -- had the known nit ever disappeared, a brand new single
+          # error would have been silently accepted in its place.
+          #
+          # So enumerate instead. Every line idnits marks with ** is matched
+          # against the allowlist below. One unmatched ** line fails the job,
+          # whatever the totals say.
+          #
+          # EXCEPTION 1 -- the 8 long lines in the payload figure.
           #
           # The payload figure is the byte-identical output of
           # `pask-wire-cli canonical-example`, and it carries full SHA-256
@@ -315,19 +329,66 @@ jobs:
           # nit are to truncate the digests -- which would make the figure a
           # hand-edited fiction again and destroy the anti-drift guard this
           # revision exists to build -- or to stop showing a real payload.
+          # Pinned to the exact count: a ninth long line is a new one, and
+          # fails.
           #
-          # The exception is pinned to the exact count. A ninth long line is
+          # EXCEPTION 2 -- the normative downref to RFC 8785.
+          #
+          # RFC 8785 (JSON Canonicalization Scheme) is Informational and an
+          # Independent Submission, and it is not in the IETF downref
+          # registry. This document is standards track, so a normative
+          # reference to it is a genuine downref under RFC 3967, and idnits
+          # is right to say so.
+          #
+          # It is not a defect and it is not fixable here. JCS is the
+          # canonicalization the receipt chain is defined over: chain.hash is
+          # computed across the JCS form, and `Payload::to_jcs` in pask-wire
+          # implements it. A producer that serialized differently would emit
+          # a receipt that fails verification. That is a normative
+          # dependency by any reading, and demoting the reference to
+          # informative to quiet a linter would misdescribe the profile.
+          #
+          # A downref is resolved at IESG evaluation, not by the author and
+          # not at submission time. It does not block posting a revision.
+          # Pinned to RFC 8785 by number: a downref to any other document is
           # a new one, and fails.
           expected_long_lines=8
-          actual_long_lines="$(grep -cE 'instances of too long lines' /tmp/idnits.out || true)"
 
-          if [ "${errors}" = "1" ] \
-             && [ "${actual_long_lines}" = "1" ] \
-             && grep -qE "There are ${expected_long_lines} instances of too long lines" /tmp/idnits.out; then
-            echo "Sole error is the ${expected_long_lines} known digest lines in the payload figure."
-            echo "Accepted; see the comment in this workflow for why they cannot be shortened."
-            errors=0
+          allowed_error='^(There are '"${expected_long_lines}"' instances of too long lines|Downref: Normative reference to an Informational RFC: RFC 8785)'
+
+          unexpected=0
+          while IFS= read -r line; do
+            # Strip idnits' leading indent and its ** marker, and drop the
+            # trailing text of wrapped messages by matching only the head.
+            msg="$(sed -E 's/^[[:space:]]*\*\*[[:space:]]*//' <<<"${line}")"
+            if grep -qE "${allowed_error}" <<<"${msg}"; then
+              echo "accepted: ${msg}"
+            else
+              echo "::error::Unexpected idnits error, not on the allowlist in" \
+                   "this workflow: ${msg}"
+              unexpected=1
+            fi
+          done < <(grep -E '^[[:space:]]*\*\*[[:space:]]' /tmp/idnits.out || true)
+
+          if [ "${unexpected}" != "0" ]; then
+            echo "::error::At least one idnits error is not an accepted" \
+                 "exception. Fix the draft, or add the exception to this" \
+                 "workflow with the reasoning written down."
+            exit 1
           fi
+
+          # Both exceptions must still be present in the counts they were
+          # pinned at. If the allowlist matched every ** line but the totals
+          # disagree, the report format has changed and the comparison above
+          # is no longer trustworthy.
+          accepted_count="$(grep -cE '^[[:space:]]*\*\*[[:space:]]' /tmp/idnits.out || true)"
+          if [ "${errors}" != "${accepted_count}" ]; then
+            echo "::error::idnits counted ${errors} error(s) but printed" \
+                 "${accepted_count} '**' line(s). Its report format changed." \
+                 "Refusing to infer a pass."
+            exit 1
+          fi
+          errors=0
 
           if [ "${errors}" != "0" ] || [ "${flaws}" != "0" ]; then
             echo "::error::idnits reports ${errors} error(s) and ${flaws} flaw(s)" \
