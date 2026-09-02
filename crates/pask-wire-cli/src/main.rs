@@ -25,6 +25,14 @@ use pask_wire::{Payload, canonical_example, produce_ed25519, verify_ed25519};
 #[derive(Debug, Parser)]
 #[command(name = "pask-wire")]
 #[command(about = "Produce, verify, and emit canonical Pask receipts")]
+// A `push` subcommand used to live here behind an `adapter` feature. It moved
+// to the `pask-adapt` binary when the workspace license was split, so a user
+// who types `pask-wire push` needs to be told where it went rather than left
+// with "unrecognized subcommand".
+#[command(after_help = "Pushing a verified receipt into an operations system \
+moved to the `pask-adapt` binary (cargo run -p pask-adapter --features cli \
+--bin pask-adapt). It is licensed AGPL-3.0-only; this tool is Apache-2.0. \
+See LICENSING.md.")]
 struct Cli {
     #[command(subcommand)]
     command: Command,

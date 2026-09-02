@@ -1,5 +1,8 @@
 # Licensing
 
+*Split settled 2026-09-02. This document describes the licensing of this repository as of that
+date; a draft revision citing it should be read against the repository state of the revision.*
+
 This repository is **not** licensed uniformly. The split is deliberate and follows the
 difference between the crates that *are* the specification made executable and the
 crates that are operational software.
@@ -56,6 +59,23 @@ applying it rather than by matching the count:
 > verifying a receipt independently — is Apache-2.0. Code whose purpose is **operating a
 > deployment** — the site producer, the write-in adapters, the enterprise plumbing — is
 > AGPL-3.0-only with a commercial licensing path.
+
+There is a second reason, and it is the stronger one. A Pask receipt exists for the moment somebody
+outside the vendor has to reconstruct what a machine did on a site. That party is frequently adverse
+to the vendor, and often to everyone else in the chain. They will ask whether they can verify the
+record themselves, without permission from anyone holding an interest in the outcome.
+
+Nothing in any license ever prevented that. The wire format and the verification procedure are
+specified in a published Internet-Draft, and anyone may write a verifier from the document without
+touching this repository at all. What a license controls is whether the *first-party* verifier — the
+one whose agreement with the specification is not in question — comes with conditions attached.
+Under the previous arrangement it did. Under this one it does not:
+
+> **Any party may run `pask-wire-cli verify`, and may modify and redistribute it, under Apache-2.0
+> terms, with no commercial relationship with Wilder and no further permission.**
+
+A verification path available only on terms set by the specification's author is worth
+considerably less in the proceeding where it matters.
 
 Those are different economic products. The protocol should be easy to implement; the operational
 system does not have to be easy to clone. If a future crate is hard to place under that rule, that
@@ -116,11 +136,40 @@ be removed, rewritten, or consented to individually — but each of those is wor
 with the contributor list. The split recorded above was settled on 2026-09-02, while the repository
 had no outside contributors, specifically so that it would not have to be renegotiated later.
 
-## Trademarks
+## Trademarks, and what actually controls conformance
 
 No license in this repository grants any right in the Wilder Robotics name, the Wilder Management
-name, or any product name. Those are addressed separately in [`CONTRIBUTING.md`](CONTRIBUTING.md).
-A copyright license is not a trademark license.
+name, or any product name. Apache-2.0 is explicit about this in section 6, which withholds trademark
+rights except for customary descriptive use. A copyright license is not a trademark license.
+
+It is worth being precise about what that separation does and does not buy, because it is easy to
+ask a trademark to do a job it was not built for. Four different things do four different jobs:
+
+| Instrument | What it does |
+|---|---|
+| The profile document | Defines what conformance *is* |
+| Conformance vectors and test suite | Tests it objectively |
+| The Apache-2.0 implementations | Let anyone verify independently, unconditionally |
+| A trademark or certification mark | Controls who may *represent* something as officially Pask-compatible or certified |
+
+A trademark is not a conformance oracle. Someone may implement the profile badly and still
+accurately describe their code as an implementation of it; what they may not do is present it under
+a protected name or certification mark. Conversely, permission to use such a mark should be made to
+depend on passing the defined conformance requirements — which is what makes the vectors, not the
+mark, the thing that keeps an implementation honest.
+
+Copyleft cannot perform this job either, which is part of why it was the wrong tool to have been
+holding the line. The mark is the follow-on workstream; the vectors are the control.
+
+---
+
+## Publication and protocol versions
+
+These crates are not yet published to crates.io. When they are, the crate version and the protocol
+revision it implements are not the same number and should never be assumed to track each other. Each
+published crate must state the profile revision it implements — the `wilder.pser` profile version
+and the corresponding draft revision — in its manifest metadata and in its documentation, so that
+the mapping is unambiguous to a reader who has only the crate.
 
 ---
 
