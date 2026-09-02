@@ -77,6 +77,7 @@ pub fn site_config() -> SiteConfig {
         envelope_temporal_starts: Some(ENVELOPE_STARTS.to_owned()),
         envelope_temporal_ends: None,
         envelope_geobounds: None,
+        issuer_affiliation: pask_wire::IssuerAffiliation::NotDisclosed,
         actor_id: ACTOR_ID.to_owned(),
         actor_class: ACTOR_CLASS.to_owned(),
         actor_operator: ACTOR_OPERATOR.to_owned(),

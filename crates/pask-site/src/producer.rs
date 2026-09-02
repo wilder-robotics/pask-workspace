@@ -118,6 +118,7 @@ impl SiteProducer for Ed25519SiteProducer {
             "spec": pask_wire::SPEC_VERSION,
             "id": receipt_id,
             "ts": timestamp,
+            "issuerAffiliation": self.config.issuer_affiliation.as_wire_str(),
             "site": {
                 "id": self.config.site_id,
                 "class": self.config.site_class,

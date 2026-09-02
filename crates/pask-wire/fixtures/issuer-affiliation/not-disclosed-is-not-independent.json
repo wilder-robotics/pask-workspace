@@ -1,5 +1,5 @@
 {
-  "description": "Two receipts identical in every member, including adapter.ackDigest, but for adapter.ackProvenance: the first is ISSUER_ASSERTED, the second is THIRD_PARTY. Both digests are well-formed and both receipts are chain-valid. A verifier MUST accept both and MUST report them as different states. Reporting the ISSUER_ASSERTED receipt as a third-party acknowledgement is the failure this vector names.",
+  "description": "Two receipts identical but for issuerAffiliation: the first declines to state the relationship between the Site Owner and the Issuer, the second states that they are independent parties. A verifier MUST accept both and MUST report them as different states. Reading NOT_DISCLOSED as INDEPENDENT is the failure this vector names: silence about a conflict of interest is not a denial of one, and a relying party that treats it as a denial has been told something nobody said.",
   "expect": "distinguishable",
   "receipts": [
     {
@@ -10,7 +10,7 @@
       },
       "adapter": {
         "ackDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
-        "ackProvenance": "ISSUER_ASSERTED",
+        "ackProvenance": "THIRD_PARTY",
         "endpoint": "endpoint:res-001",
         "mode": "WRITE_ONLY",
         "postedAt": "2026-10-15T14:00:05Z",
@@ -43,7 +43,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:b57f88230dc6ac45eae0bf14f260b63beb93cc931c56bfc9c4624c795fe76a28",
+        "hash": "sha256:2951e2e602183a502a90f1bc3fdb18da30467dcfc46989ea20e98e88e2e337c5",
         "prevHash": null,
         "seq": 0
       },
@@ -58,7 +58,8 @@
           "start": "2026-10-15T13:30:00Z"
         }
       },
-      "id": "uuid:00000000-0000-4000-8000-0000000000b1",
+      "id": "uuid:00000000-0000-4000-8000-0000000000e0",
+      "issuerAffiliation": "NOT_DISCLOSED",
       "site": {
         "class": "residential",
         "envelope": {
@@ -73,8 +74,7 @@
         "id": "site:res-001"
       },
       "spec": "wilder.pser/0.4",
-      "ts": "2026-10-15T14:00:00Z",
-      "issuerAffiliation": "NOT_DISCLOSED"
+      "ts": "2026-10-15T14:00:00Z"
     },
     {
       "actor": {
@@ -117,7 +117,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:e1fdd1826d29cc7ee55f1b3623fe308c55b3418737f19c5d7a8eac3424883bab",
+        "hash": "sha256:3d42aae9ce882b3f0d375186c0d4b78d1cd5d44bd601c42b3eaf5721d0176466",
         "prevHash": null,
         "seq": 0
       },
@@ -132,7 +132,8 @@
           "start": "2026-10-15T13:30:00Z"
         }
       },
-      "id": "uuid:00000000-0000-4000-8000-0000000000b2",
+      "id": "uuid:00000000-0000-4000-8000-0000000000e1",
+      "issuerAffiliation": "INDEPENDENT",
       "site": {
         "class": "residential",
         "envelope": {
@@ -147,8 +148,7 @@
         "id": "site:res-001"
       },
       "spec": "wilder.pser/0.4",
-      "ts": "2026-10-15T14:00:00Z",
-      "issuerAffiliation": "NOT_DISCLOSED"
+      "ts": "2026-10-15T14:00:00Z"
     }
   ]
 }

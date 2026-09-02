@@ -19,6 +19,20 @@
 //! does not repeat that work: [`verify_chain`] does NOT re-verify each
 //! receipt's own `chain.hash`, because parsing already did. It only checks
 //! the relationships *between* adjacent receipts in a presentation.
+//!
+//! `-02` adds a third chain-level check, over `issuerAffiliation`. That member
+//! describes a standing relationship between two principals rather than a fact
+//! about one engagement, so two receipts presented as one chain cannot honestly
+//! disagree about it. Where they do, [`verify_chain`] refuses the presentation
+//! and names the disagreement.
+//!
+//! Refusing is the point. The alternative a reader would reach for is to take
+//! the value from the newest receipt, and that is precisely the failure: it lets
+//! a chain be relabelled after the fact by appending one receipt, with nothing
+//! in the record showing that the label used to say something else. Refusal
+//! costs a verifier one presentation and leaves every individual receipt intact
+//! and readable, which is why this check is allowed to be strict where the
+//! unrecognised-value rule in [`crate::IssuerAffiliation`] deliberately is not.
 
 use crate::{Error, Payload, Result};
 
@@ -40,6 +54,9 @@ use crate::{Error, Payload, Result};
 /// - For each adjacent pair, `seq` MUST be contiguous: `seq[i] == seq[i-1] +
 ///   1`.
 /// - For each adjacent pair, `prevHash[i]` MUST equal `Some(hash[i-1])`.
+/// - For each adjacent pair, `issuerAffiliation` MUST be equal. A presentation
+///   whose members disagree about it is refused rather than resolved in favour
+///   of either member.
 ///
 /// # Errors
 ///
@@ -64,6 +81,11 @@ pub fn verify_chain(receipts: &[Payload]) -> Result<()> {
         if receipt.chain_prev_hash() != Some(previous.chain_hash()) {
             return Err(Error::Validation(
                 "chain.prevHash does not match the preceding receipt",
+            ));
+        }
+        if receipt.issuer_affiliation() != previous.issuer_affiliation() {
+            return Err(Error::Validation(
+                "issuerAffiliation changed within a chain",
             ));
         }
         previous = receipt;

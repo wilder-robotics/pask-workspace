@@ -43,4 +43,4 @@ pub use envelope::{produce_es256, verify_es256};
 #[cfg(feature = "alloc")]
 pub use error::{Error, Result};
 #[cfg(feature = "alloc")]
-pub use payload::{AckProvenance, Payload, SPEC_VERSION, canonicalize_json};
+pub use payload::{AckProvenance, IssuerAffiliation, Payload, SPEC_VERSION, canonicalize_json};

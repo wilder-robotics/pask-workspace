@@ -43,7 +43,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:a163b4fdea7c467a62519f379f03a9d5cb8c0b2171ff34529a8fa6838cd1dcfa",
+        "hash": "sha256:95acd84c456ed79c9f374e7573655a727e31618b3163eb56b8e8f949c1025199",
         "prevHash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "seq": 1
       },
@@ -59,6 +59,7 @@
         }
       },
       "id": "uuid:00000000-0000-4000-8000-0000000000d0",
+      "issuerAffiliation": "NOT_DISCLOSED",
       "site": {
         "class": "residential",
         "envelope": {

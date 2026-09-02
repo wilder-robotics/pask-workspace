@@ -22,6 +22,21 @@ pub struct SiteConfig {
     pub envelope_temporal_ends: Option<String>,
     /// Optional envelope geobounds.
     pub envelope_geobounds: Option<String>,
+    /// Whether the Site Owner and the Issuer are affiliated parties.
+    ///
+    /// This is a standing relationship between two principals, not a fact about
+    /// one engagement, which is why it sits here and not on
+    /// [`crate::ReceiptRequest`] alongside `adapter_ack_provenance`. Two
+    /// engagements at the same site on the same day cannot disagree about it,
+    /// and a chain in which the value changes is something a verifier is
+    /// expected to surface rather than absorb.
+    ///
+    /// There is no default, deliberately. The safe value is
+    /// [`pask_wire::IssuerAffiliation::NotDisclosed`] and a caller who wants it
+    /// has to say so, because "nobody thought about it" and "we decline to
+    /// state it" should be the same deliberate act rather than one hiding
+    /// inside the other.
+    pub issuer_affiliation: pask_wire::IssuerAffiliation,
     /// Actor identifier.
     pub actor_id: String,
     /// Actor class as a profile discriminant.

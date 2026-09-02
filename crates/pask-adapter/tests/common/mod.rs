@@ -31,6 +31,7 @@ pub fn signed_receipt_for(adapter_system: &str, adapter_endpoint: &str) -> (Vec<
         "spec": "wilder.pser/0.4",
         "id": "test-receipt-1",
         "ts": "2026-07-12T00:00:00Z",
+        "issuerAffiliation": "NOT_DISCLOSED",
         "site": {
             "id": "RES-001",
             "class": "residential",
