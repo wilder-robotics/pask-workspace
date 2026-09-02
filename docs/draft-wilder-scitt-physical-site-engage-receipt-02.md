@@ -149,7 +149,7 @@ profile, correlated via the SCITT `sub` claim.
 
 {::boilerplate bcp14-tagged}
 
-## Non-goals
+## Non-goals {#non-goals}
 
 This revision does not:
 
@@ -162,6 +162,13 @@ This revision does not:
 - Define the operations-layer schemas the Adapter Write-In targets.
 - Define billing, SLA-credit, or insurance-pricing rules that a relying party
   may derive from a stream of receipts.
+- Attest anything about the internal state, intent, or decision process of a
+  human participant in an engagement, or about signals conveyed by a direct
+  neural or brain-computer interface. This profile records that a bounded
+  physical engagement occurred at a Site and identifies the parties that can
+  attest to it. A direct neural interface is not an engagement performed by an
+  Actor at a Site under {{terminology}}, and this document defines no member,
+  no value, and no extension point for one.
 
 These non-goals are NORMATIVE: implementations and relying parties MUST NOT
 imply the stronger claims from a receipt.
@@ -183,6 +190,17 @@ Site Envelope:
   permitted actor classes, permitted engagement types, geospatial bounds,
   temporal bounds, and referenced site-rule documents. The Site Envelope is
   identified by a stable envelope identifier and a content digest.
+
+Site Owner:
+: The party that controls physical access to the TEE hardware producing
+  receipts for a Site, and that is responsible for that hardware's continued
+  operation there. The Site Owner is defined by those two capabilities and not
+  by title, by legal ownership of the premises, or by any contractual label:
+  the party holding them may or may not be the party named on the deed. The
+  Site Owner is one of the three parties REQUIRED to participate in every
+  receipt under {{trust-model}}. The Site Owner has no capability to author,
+  alter, or suppress the content of a receipt, and none to extract the signing
+  key material.
 
 Actor:
 : The physical entity that performed the engagement -- an autonomous
@@ -503,6 +521,34 @@ in the site's existing workflow.
   structured acknowledgement, the digest is taken over an Issuer-defined
   minimal ack object; the object schema is specified in the Issuer's
   manifest and is bound by the receipt's Merkle inclusion, not published.
+- `adapter.ackProvenance` (REQUIRED, string): identifies which party authored
+  the acknowledgement that `adapter.ackDigest` commits to. `adapter.ackDigest`
+  alone cannot carry this: the digest of an acknowledgement authored by an
+  independent operations layer and the digest of one authored by the Issuer
+  itself are indistinguishable to a Verifier, and the two have materially
+  different evidentiary weight. The admissible values are exactly:
+
+  - `THIRD_PARTY`: the acknowledgement was returned by the operations layer
+    named in `adapter.system`, which is a principal distinct from the Issuer.
+  - `ISSUER_ASSERTED`: the operations layer returned no structured
+    acknowledgement, and the digest is taken over the Issuer-defined minimal
+    ack object described under `adapter.ackDigest`. The Issuer is the author of
+    the acknowledged content.
+  - `NONE`: no acknowledgement was obtained from any party.
+
+  A Verifier MUST NOT read a value outside that set as `THIRD_PARTY`, and MUST
+  NOT normalize it to `NONE`. Doing either reintroduces the collapse this
+  member exists to prevent, in the direction that overstates the receipt. A
+  Verifier that encounters an unrecognized value MUST preserve the value as
+  received and MUST surface it to the relying party as unrecognized, distinct
+  from all three admissible values. This revision does not require a Verifier
+  to reject a receipt on that basis, because a value it does not recognize may
+  be defined by a later revision; it requires that the Verifier never silently
+  resolve the ambiguity in the receipt's favour.
+
+  The value set is closed in this revision and is not registry-governed. A
+  later revision that adds a value does so additively, without redefining an
+  existing one.
 - `adapter.mode` (REQUIRED, string): MUST be `WRITE_ONLY` in this revision.
   Read-in modes are explicitly out of scope; see {{security}}.
 
@@ -694,7 +740,7 @@ Engagement Receipt does NOT attest that:
 
 Relying parties MUST NOT infer these claims from a receipt.
 
-## Equivocation and tail-truncation
+## Equivocation and tail-truncation {#equivocation}
 
 The `chain` field defined in {{payload}} makes *in-band tampering*
 detectable: modification, substitution, reordering, or omission of receipts
@@ -749,7 +795,7 @@ additional security machinery. Implementations that reverse this direction
 in a way that permits the operations layer to modify Issuer or TEE state
 are NOT conforming to this profile.
 
-## TEE compromise
+## TEE compromise {#tee-compromise}
 
 A compromised TEE can produce receipts that are cryptographically valid
 under this profile but describe engagements that did not occur or did not
@@ -759,6 +805,121 @@ identified by `attestation.teeClass`. Relying parties SHOULD consult
 {{RFC9943}} Section 9 for guidance on Issuer participation and key
 management, and the TEE vendor's own security guidance for the specific
 `teeClass`.
+
+## Witness key lifecycle {#key-lifecycle}
+
+A witness key signs inside a TEE that is physically hosted at a Site the
+Issuer may not control. The parties that can act on a suspected compromise of
+such a key are therefore not the same as those that can act on a compromise of
+a key the signer holds itself, and this document states which party may make
+which assertion. This revision addresses assertions about a **specific witness
+key**. Compromise of a TEE class or platform is addressed in {{tee-compromise}}
+and is not a key lifecycle event under this section.
+
+### The two assertion classes {#assertion-classes}
+
+This document defines two distinct assertions about a witness key. They are
+named rather than numbered so that a later revision may define a third without
+redefining either.
+
+- **Cessation.** An assertion that the identified witness key MUST NOT be
+  relied upon to produce further receipts. Cessation is forward-looking only.
+- **Retroactive impeachment.** An assertion that receipts already produced by
+  the identified witness key SHOULD NOT be relied upon, in whole or over a
+  stated interval. Retroactive impeachment reaches backward, and it is the
+  stronger of the two.
+
+Authority over each is asymmetric, and the asymmetry follows the capabilities
+the trust model already grants in {{trust-model}}:
+
+- **Cessation MAY be asserted by the Site Owner or by the Issuer,
+  independently of one another.** Neither party requires the other's
+  concurrence. This grants no new capability: the Site Owner can already stop
+  production of receipts by powering the hardware off or refusing to host it
+  ({{trust-model}}), and an explicit cessation assertion only makes that
+  existing capability legible to a relying party instead of leaving it to be
+  inferred from an absence of receipts.
+- **Retroactive impeachment MAY be asserted by the Issuer only.** The Site
+  Owner controls whether receipts are produced but not their content
+  ({{trust-model}}), and an impeachment is an assertion about content that has
+  already been produced and registered. Extending it to the Site Owner would
+  grant a party with no authorship capability an authority over authored
+  records that the trust model deliberately withholds.
+
+### Scope by attestation-binding mode
+
+The two classes apply in both attestation-binding modes of
+{{attestation-binding}}, and mean different things in each. An implementation
+MUST determine the mode before interpreting an assertion.
+
+- In **direct-witness mode**, `attestation.witnessKey` matches `iss`, so both
+  classes concern a single key and the Site Owner's cessation authority and the
+  Issuer's impeachment authority attach to the same key material.
+- In **delegated-witness mode**, `attestation.witnessKey` is distinct from
+  `iss`. An assertion MUST identify the key it covers. An assertion covering
+  the TEE signing key does not, by itself, assert anything about the Issuer's
+  `iss` key, and an assertion covering `iss` does not, by itself, assert
+  anything about the TEE signing key. A Verifier MUST NOT extend either to the
+  other, and MUST NOT treat an assertion whose covered key cannot be
+  determined as covering both.
+
+### Verifier behaviour {#assertion-verifier}
+
+Neither assertion deletes, invalidates, or suppresses a registered receipt.
+Registration is append-only and this document defines no mechanism by which a
+registered Signed Statement is withdrawn from a Transparency Service. A
+Verifier presented with a receipt for which it holds a relevant assertion:
+
+- MUST surface the assertion to the relying party rather than resolving it
+  internally;
+- MUST identify which party made the assertion;
+- MUST identify which of the two classes was asserted;
+- MUST NOT suppress, discard, or downgrade the receipt on the basis of the
+  assertion alone.
+
+Neither assertion is self-authenticating, and this document does not adjudicate
+a disputed one. Where the Site Owner and the Issuer disagree, the profile
+supplies a detection property and not a remedy, in the same sense as
+{{equivocation}}. Adjudication is a matter for the relying party's own policy
+and for whatever legal or contractual regime governs the parties, and this
+document deliberately declines to make that determination on a relying party's
+behalf.
+
+### No payload member in this revision
+
+This revision defines **no payload member** carrying either assertion. An
+assertion about a witness key is a separate Signed Statement about a key, not a
+field inside a receipt about an engagement, and placing it in the receipt
+payload would require a receipt to be reissued in order to change a fact about
+its signer. Its content type and payload shape are deferred to a subsequent
+revision, and this revision states that they are deferred rather than reserving
+a member for them.
+
+## Revocation decision clock {#revocation-clock}
+
+A receipt validly signed at time T whose witness key becomes subject to an
+assertion at a later time presents an ordering question, and the ordering MUST
+NOT be decided from a timestamp the signer supplied. `ts`,
+`adapter.postedAt`, and `attestation.validity` are all authored by the party
+whose key is in question, and a signer able to forge a signature is able to
+choose those values.
+
+Registration is mandatory in this profile ({{scitt-registration}}), so every
+conforming receipt carries at least one attached Receipt from a Transparency
+Service, obtained from a party other than the signer. A Verifier that orders a
+receipt against an assertion MUST derive the ordering from the registration of
+each, as evidenced by their attached Receipts, and MUST NOT derive it from any
+timestamp inside the receipt payload.
+
+This revision does not define an encoding for a Transparency Service's
+registration time, and does not require a Transparency Service to supply one.
+Where the Verifier cannot establish from the attached Receipts that one
+registration preceded the other, the ordering is **undetermined**, and the
+Verifier MUST surface it as undetermined rather than selecting an order. It
+MUST NOT fall back to a payload timestamp for this purpose, and MUST NOT
+substitute its own local clock. Stating this plainly is deliberate: a relying
+party writing policy against this profile needs to know that the profile
+carries the timebase requirement and does not yet carry the mechanism.
 
 ## Three-party trust model {#trust-model}
 
@@ -844,17 +1005,29 @@ meet.
   attached Receipt. Consequently every receipt this implementation has produced
   to date is non-conforming under Section 6 of this document, and no
   end-to-end verification path exists.
-- **The two Chain-Verifier checks of Section 4.1 are not implemented.**
-  Receipts are validated individually; no code evaluates two or more receipts
-  as one presented chain. The conforming and non-conforming chain test data
-  referenced in Section 4.1 exists; the code that consumes it does not.
+- **The two Chain-Verifier checks of Section 4.1 are implemented** in
+  `pask-wire` and exercised in continuous integration against the conforming
+  and non-conforming chain test data referenced in Section 4.1. This corrects
+  the statement in `-01`, which reported the checks unimplemented and was
+  accurate when filed.
 - **Single-receipt structure, COSE encoding, JCS canonicalization, the field
   semantics of Section 4.1 and the attestation binding of Section 4.3 are
   implemented** and exercised in continuous integration. The example figure in
   Section 4 is emitted by the implementation and asserted byte-identical to it.
-- **A disagreement between crates is unresolved:** `pask-wire` admits
-  `notAfter == notBefore` where `pask-attest` requires strictly greater. This
-  document does not currently state which is correct.
+- **The crate disagreement reported in `-01` is resolved.** `-01` recorded
+  that `pask-wire` admitted `notAfter == notBefore` where `pask-attest`
+  required strictly greater, and that the document did not state which was
+  correct. Section 4.1 of this document now states the rule, and both crates
+  enforce it.
+- **`adapter.ackProvenance` is implemented** in `pask-wire` and `pask-site`,
+  including the requirement that an unrecognized value be preserved as
+  received and surfaced as unrecognized rather than read as `THIRD_PARTY` or
+  normalized to `NONE`. A conformance vector for that case ships with the
+  implementation.
+- **The witness key lifecycle assertions of Section 7.6 are not implemented.**
+  No crate emits, consumes, or orders an assertion about a witness key. The
+  section states normative Verifier behaviour that the implementation does not
+  yet exhibit.
 
 The author is aware of no other implementation of this profile.
 
@@ -880,9 +1053,60 @@ Service.
 
 --- back
 
-# Changes since -00
+# Change log
 
-This revision makes two groups of changes. The first reconciles the profile
+## Changes in -02
+
+This revision closes the reviewer-identified gap in the Adapter Write-In,
+states a witness key lifecycle that `-01` did not address, and records one
+scope boundary that `-01` left to internal doctrine. It adds one payload
+member and bumps the profile identifier; it removes nothing.
+
+- **`adapter.ackProvenance` (REQUIRED) is added** and the profile identifier
+  and media-type parameter move from `wilder.pser/0.3` to `wilder.pser/0.4`.
+  `-01` carried `adapter.ackDigest` with no way for a Verifier to tell an
+  acknowledgement authored by an independent operations layer from one authored
+  by the Issuer under the fallback in that member's own definition. The two are
+  now distinguishable in the receipt rather than in out-of-band context. The
+  member is REQUIRED rather than optional because an absent value would itself
+  have to be assigned a meaning, which reintroduces the collapse.
+- **A Verifier MUST NOT resolve an unrecognized `adapter.ackProvenance` value
+  in the receipt's favour.** It is preserved as received and surfaced as
+  unrecognized, and is neither read as `THIRD_PARTY` nor normalized to `NONE`.
+- ***Site Owner* is added to {{terminology}}**, defined by capability rather
+  than by title. `-01` used the term in prose at three places in
+  {{trust-model}} without defining it, and this revision is the first to assign
+  it a normative capability.
+- **A witness key lifecycle is stated ({{key-lifecycle}})**, defining two named
+  assertion classes. Cessation may be asserted by the Site Owner or the Issuer
+  independently; retroactive impeachment may be asserted by the Issuer only.
+  Neither deletes, invalidates, or suppresses a registered receipt. Both are
+  scoped against the two attestation-binding modes of
+  {{attestation-binding}}, and in delegated-witness mode an assertion MUST
+  identify the key it covers.
+- **No payload member carries either assertion in this revision.** The content
+  type and payload shape of an assertion about a key are deferred, and this
+  revision states the deferral rather than reserving a member.
+- **A revocation decision clock is stated ({{revocation-clock}})**, requiring
+  the ordering of a receipt against an assertion to be derived from
+  registration rather than from any signer-supplied timestamp, and requiring an
+  ordering that cannot be established to be surfaced as undetermined rather
+  than guessed.
+- **Compromise of a TEE class or platform is stated not to be a key lifecycle
+  event** and remains out of scope ({{tee-compromise}}).
+- **A scope boundary is added to {{non-goals}}:** the profile attests nothing
+  about the internal state, intent, or decision process of a human
+  participant, nor about signals conveyed by a direct neural or
+  brain-computer interface. No member, value, or extension point is defined
+  for one.
+- **Two implementation-status statements in `-01` are corrected.** The
+  Chain-Verifier checks are now implemented, and the crate disagreement over
+  a zero-length attestation validity interval is resolved with the rule stated
+  in Section 4.1.
+
+## Changes in -01
+
+This revision made two groups of changes. The first reconciles the profile
 identifier and four attestation members with the reference implementation and
 changes how the example figure in Section 4 is produced. The second corrects
 statements in `-00` that were found to be wrong or unsupported, and adds
@@ -890,7 +1114,7 @@ normative requirements that `-00` implied without stating. Both groups are
 enumerated below. Every normative change in this revision appears in one of
 them.
 
-## Reconciliation with the reference implementation
+### Reconciliation with the reference implementation
 
 - The profile identifier and media-type parameter are `wilder.pser/0.4`. A
   producer built against `wilder.pser/0.2` is rejected on version validation
@@ -916,7 +1140,7 @@ them.
   implementation in its continuous integration. The -00 figure was a schema
   template rendered in a JSON code block and did not parse as JSON.
 
-## Corrections and added normative requirements
+### Corrections and added normative requirements
 
 - The claim that the hash chain detects tail truncation is **withdrawn**. The
   `chain` field does not detect the withholding of the most recent receipts in
