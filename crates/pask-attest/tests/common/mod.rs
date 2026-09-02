@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+
 #![allow(dead_code)]
 
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
