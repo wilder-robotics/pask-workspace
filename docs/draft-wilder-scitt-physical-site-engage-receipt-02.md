@@ -974,3 +974,13 @@ them.
 The author thanks the SCITT WG for RFCs 9942 and 9943, and the authors of
 {{I-D.noa-scitt-ai-agent-receipt}} and {{I-D.mih-scitt-agent-action-capsule}}
 for establishing the SCITT-AI receipt idiom on which this profile builds.
+
+The author thanks GitHub user giskard09 for a detailed public review of the
+`-01` adapter and verifier semantics. That review identified that
+`adapter.ackDigest` was structurally unable to distinguish an acknowledgement
+authored by an independent operations layer from one authored by the Issuer,
+and pressed for the distinction to be carried in the receipt rather than left
+to out-of-band context. The `adapter.ackProvenance` member defined in
+{{payload}} is the result. The requirement that a value outside its closed set
+be surfaced as unrecognized, rather than read as `THIRD_PARTY` or normalized to
+`NONE`, is also his.
