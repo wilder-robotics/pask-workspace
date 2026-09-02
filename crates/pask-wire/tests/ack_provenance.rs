@@ -294,3 +294,67 @@ fn collapsed_unrecognized_and_none_vector_is_committed_and_holds() {
     );
     assert_ne!(unrecognized, &AckProvenance::ThirdParty);
 }
+
+/// The second negative conformance vector, and the one the reviewer's own spec
+/// pattern actually points at.
+///
+/// The first vector pins the boundary of the closed set. This one pins the
+/// distinction *inside* it, which is the distinction the member was added for.
+/// `ISSUER_ASSERTED` and `THIRD_PARTY` differ in exactly one respect that
+/// matters to a reader reconstructing an event: whether anybody outside the
+/// Issuer stood behind the acknowledgement. Both receipts here carry the same
+/// well-formed `adapter.ackDigest` and both are chain-valid, so a verifier that
+/// checked only the digest would accept both and report them identically. That
+/// verifier would be wrong, and no parse-only test catches it.
+#[test]
+fn collapsed_issuer_asserted_and_third_party_vector_is_committed_and_holds() {
+    let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("fixtures/ack-provenance/collapsed-issuer-asserted-and-THIRD_PARTY.json");
+    let text = fs::read_to_string(&path)
+        .unwrap_or_else(|error| panic!("{} is readable: {error}", path.display()));
+    let vector: serde_json::Value = serde_json::from_str(&text).expect("the vector is JSON");
+
+    assert_eq!(
+        vector["expect"], "distinguishable",
+        "this vector asserts a distinction, not an acceptance or a rejection"
+    );
+
+    let receipts = vector["receipts"]
+        .as_array()
+        .expect("the vector carries a receipts array");
+    assert_eq!(
+        receipts.len(),
+        2,
+        "one ISSUER_ASSERTED receipt and one THIRD_PARTY receipt"
+    );
+
+    assert_eq!(
+        receipts[0]["adapter"]["ackDigest"], receipts[1]["adapter"]["ackDigest"],
+        "the digest is deliberately identical, so the digest cannot be what \
+         distinguishes these two receipts"
+    );
+
+    let mut parsed = Vec::new();
+    for receipt in receipts {
+        let bytes = serde_json::to_vec(receipt).expect("receipt re-serializes");
+        parsed.push(
+            Payload::from_json(&bytes)
+                .expect("both receipts in this vector are well-formed and must be accepted"),
+        );
+    }
+
+    let issuer_asserted = parsed[0].adapter_ack_provenance();
+    let third_party = parsed[1].adapter_ack_provenance();
+
+    assert_eq!(issuer_asserted, &AckProvenance::IssuerAsserted);
+    assert_eq!(third_party, &AckProvenance::ThirdParty);
+    assert_ne!(
+        issuer_asserted, third_party,
+        "reporting an Issuer-asserted acknowledgement as third-party is the \
+         failure this vector names"
+    );
+    assert!(
+        !issuer_asserted.is_unrecognized(),
+        "ISSUER_ASSERTED is a named member of the closed set"
+    );
+}
