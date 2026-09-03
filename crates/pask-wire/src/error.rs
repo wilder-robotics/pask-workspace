@@ -23,6 +23,12 @@ pub enum Error {
     Validation(&'static str),
     /// The embedded payload bytes are not their JCS serialization.
     NonCanonicalPayload,
+    /// An attached SCITT Receipt or its inclusion proof is unusable.
+    ///
+    /// Distinct from [`Self::Signature`], which is reserved for a signature
+    /// that was checked and did not verify. A relying party needs to tell a
+    /// Receipt it could not read from one it read and disbelieved.
+    Receipt(&'static str),
 }
 
 impl fmt::Display for Error {
@@ -35,6 +41,7 @@ impl fmt::Display for Error {
             Self::Header(message) => write!(formatter, "protected-header error: {message}"),
             Self::Validation(message) => write!(formatter, "payload validation error: {message}"),
             Self::NonCanonicalPayload => formatter.write_str("payload is not JCS canonical"),
+            Self::Receipt(message) => write!(formatter, "attached receipt error: {message}"),
         }
     }
 }

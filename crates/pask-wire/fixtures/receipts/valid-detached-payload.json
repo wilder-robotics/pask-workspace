@@ -1,0 +1,11 @@
+{
+  "entry": "656e7472792d36",
+  "expect": "verifies",
+  "expectedRoot": "12f4efa8ca23286c700af22893801cff9e72c58ed63a7316c30a87cf17bd5126",
+  "leafIndex": 6,
+  "purpose": "A conforming Receipt over a nine-leaf log, payload detached per RFC 9942 Section 5.2. The verifier reconstructs the root from the proof and checks the Transparency Service signature over it. Nothing here touches a network.",
+  "receipt": "8447a2012719018b01a119018ca12081588c830906845820c8d81ba4fdd46c6c3c73c87b209eeaf944cf511327211f1f9a81586cf7d4d5a458204a136a70087b637e34c3d3daa6cea768b1db13ec475902d2e240b60e3d999c7a5820256b9e8825e5d370a4ae005d0901ea291977e2927f5cf8e3e72660dd09519edb58204e7e5d979498070a56c5fdab1eaa86d30d1f5f903bf245373151191d7ce5c0aaf6584065a00e2a35fc4128ec26317e505a62cba76152d8ff75d9e5a5955d1502b329f8f1dbe1440e5b583dd8cd841273ead938dcaf34d92b286c3438b357fc9b212f0c",
+  "transparencyServiceVerifyingKey": "ea4a6c63e29c520abef5507b132ec5f9954776aebebe7b92421eea691446d22c",
+  "treeSize": 9,
+  "verifiableDataStructure": "RFC9162_SHA256"
+}

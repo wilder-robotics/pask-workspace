@@ -1,0 +1,11 @@
+{
+  "entry": "656e7472792d36",
+  "expect": "rejected",
+  "expectedRoot": "12f4efa8ca23286c700af22893801cff9e72c58ed63a7316c30a87cf17bd5126",
+  "leafIndex": 6,
+  "purpose": "Identical to the valid vector but for vds, which carries the Reserved value 0. A verifier that ignores vds and applies the RFC9162_SHA256 walk anyway accepts this and reports a proof it had no basis to interpret. That is the failure this vector names, and no parse-only test catches it because the bytes are well formed.",
+  "receipt": "8447a2012719018b00a119018ca12081588c830906845820c8d81ba4fdd46c6c3c73c87b209eeaf944cf511327211f1f9a81586cf7d4d5a458204a136a70087b637e34c3d3daa6cea768b1db13ec475902d2e240b60e3d999c7a5820256b9e8825e5d370a4ae005d0901ea291977e2927f5cf8e3e72660dd09519edb58204e7e5d979498070a56c5fdab1eaa86d30d1f5f903bf245373151191d7ce5c0aaf6584089baae274f8dc59305746c967191d9739e0c8c9cdb66de473564a1d2e24e99c6213acd386cb1bd8bc9c81289dfa0dfcf0c6ec3684095b0762f9a3a3f286b7e0e",
+  "transparencyServiceVerifyingKey": "ea4a6c63e29c520abef5507b132ec5f9954776aebebe7b92421eea691446d22c",
+  "treeSize": 9,
+  "verifiableDataStructure": "RFC9162_SHA256"
+}

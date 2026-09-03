@@ -192,12 +192,56 @@ attached Receipt from a Transparency Service. The library produces valid
 `wilder.pser/0.4` payloads and valid signed statements; it does not produce
 Transparent Statements.
 
-This is a declared divergence in the safe direction — the document requires
-more than the code performs — and it is recorded here rather than resolved by
-weakening the requirement. It is closed by implementing registration, not by
-editing the draft.
+This is a declared divergence in the safe direction: the document requires
+more than the code performs. It is recorded here rather than resolved by
+weakening the requirement, and it is closed by implementing registration, not
+by editing the draft.
 
-Reviewed 2026-08-15.
+**Checking a registration is now implemented; performing one is not.** The
+obligation in `-02` "SCITT registration and Receipt attachment" has two halves, and this entry originally
+recorded only the producing half. The reading half is the one a relying party
+actually meets: a relying party MUST NOT accept a receipt as conforming unless
+an attached Receipt verifies. Until `crates/pask-wire/src/receipt.rs` existed,
+no crate could evaluate that sentence either, and `verify_ed25519` returned
+success for a statement carrying no attached Receipt at all, so the library's
+success value said more than the library had checked.
+
+That half is closed. `pask_wire::verify_inclusion` verifies an `RFC9162_SHA256`
+inclusion proof and the Transparency Service signature over the reconstructed
+root, entirely offline, and `pask_wire::attached_receipts` reads the `receipts`
+(394) header while keeping "no Receipt was attached" distinct from "the header
+was present and unreadable". Neither function reports conformance, because
+conformance turns on whether the relying party trusts the Transparency Service
+holding the key, and the library does not know that.
+
+The producing half remains open, and the grep above still returns zero matches.
+This library still does not register statements and still does not emit
+Transparent Statements.
+
+Reviewed 2026-08-15. Revised 2026-09-03 when the reading half was implemented.
+
+## 5.3 The profile does not specify what a SCITT log entry is
+
+RFC 9942 Section 5.2 verification begins by obtaining "the bytes of a candidate
+entry" and applying the inclusion proof to them. RFC 9942 does not say what a
+candidate entry is; that is left to the profile. `-02` does not say either. It
+requires registration in `-02` "SCITT registration and Receipt attachment" and asserts the result is
+checkable offline from the presented bytes and the Transparency Service's
+verification key, but it never pins the byte sequence the Merkle leaf covers.
+
+The consequence is concrete. Two implementations can both follow the profile,
+register with the same Transparency Service, and produce inclusion proofs
+neither can verify against the other, because one hashed the tagged
+`COSE_Sign1` and the other hashed it untagged, or one hashed the Signed
+Statement and the other its payload. Nothing in the document distinguishes
+them, and each would be entitled to believe it conformed.
+
+`pask_wire::verify_inclusion` takes the entry bytes as an explicit argument
+rather than deriving them, so the ambiguity is visible at the call site instead
+of being resolved one way inside a library and mistaken for a specification.
+This is document work and is not closed by code.
+
+Found 2026-09-03 while implementing attached-Receipt verification.
 
 ## 6. Wire format and tooling
 
