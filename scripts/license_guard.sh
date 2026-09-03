@@ -25,7 +25,7 @@
 
 set -uo pipefail
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 echo "license_guard.sh v${VERSION}"
 echo
 
@@ -200,6 +200,38 @@ for c in "${PERMISSIVE_CRATES[@]}"; do
   [[ -f "crates/$c/LICENSE" ]] || fail "crates/$c/LICENSE is missing. A vendored crate directory must be unambiguous on its own."
 done
 echo "   license texts present"
+echo
+
+# ---------------------------------------------------------------------------
+echo "7. No file contradicts its own SPDX line in prose"
+# ---------------------------------------------------------------------------
+# Check 5 reads only the SPDX line. The relicensing on 2026-09-02 flipped that
+# line on 41 files and left the human-readable sentence three lines below it
+# still naming the old license, so 17 files in the permissive crates asserted
+# Apache-2.0 and AGPL-3.0-only at once and check 5 passed them. Two contradictory
+# license statements in a public repository is a defect whether or not a tool
+# objects, so the tool now objects.
+#
+# A file may legitimately name the other side's license when referring to a
+# different crate by name — the CLI signposts the AGPL pask-adapt binary. The
+# test is therefore whether the sentence is about *this* crate.
+prose_checked=0
+for c in "${PERMISSIVE_CRATES[@]}" "${COPYLEFT_CRATES[@]}"; do
+  [[ -d "crates/$c" ]] || continue
+  if printf '%s\n' "${PERMISSIVE_CRATES[@]}" | grep -qx "$c"; then
+    own="$PERMISSIVE_SPDX"; other="$COPYLEFT_SPDX"
+  else
+    own="$COPYLEFT_SPDX"; other="$PERMISSIVE_SPDX"
+  fi
+  while IFS= read -r f; do
+    [[ -n "$f" ]] || continue
+    prose_checked=$((prose_checked + 1))
+    if grep -qE "(^|[^-])\b$c is licensed $other\b" "$f"; then
+      fail "$f declares SPDX $own but its prose says '$c is licensed $other'. Two contradictory license statements in one file."
+    fi
+  done < <(find "crates/$c" -name '*.rs' -not -path '*/target/*' 2>/dev/null)
+done
+echo "   prose checked in $prose_checked source files"
 echo
 
 # ---------------------------------------------------------------------------

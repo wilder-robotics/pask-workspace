@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
-// pask-wire is licensed AGPL-3.0-only with a commercial exception; see
-// COMMERCIAL-EXCEPTION.md in the workspace root.
+// pask-wire is licensed Apache-2.0. No commercial agreement is required to use,
+// modify or redistribute it; see LICENSING.md in the workspace root.
 
 //! Chain-Verifier tests, and the fixture-generation guard described in
 //! `fixtures/chains/README.md`.
