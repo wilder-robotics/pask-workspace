@@ -1,0 +1,11 @@
+{
+  "entry": "656e7472792d36",
+  "expect": "rejected",
+  "expectedRoot": "12f4efa8ca23286c700af22893801cff9e72c58ed63a7316c30a87cf17bd5126",
+  "leafIndex": 6,
+  "purpose": "A 31-byte path element where SHA-256 requires 32. The vector exists because a verifier that copies path elements into a buffer without checking the length is the ordinary way this goes wrong, and the result is a root that depends on uninitialised bytes.",
+  "receipt": "8447a2012719018b01a119018ca12081582583090681581f00000000000000000000000000000000000000000000000000000000000000f6584065a00e2a35fc4128ec26317e505a62cba76152d8ff75d9e5a5955d1502b329f8f1dbe1440e5b583dd8cd841273ead938dcaf34d92b286c3438b357fc9b212f0c",
+  "transparencyServiceVerifyingKey": "ea4a6c63e29c520abef5507b132ec5f9954776aebebe7b92421eea691446d22c",
+  "treeSize": 9,
+  "verifiableDataStructure": "RFC9162_SHA256"
+}
