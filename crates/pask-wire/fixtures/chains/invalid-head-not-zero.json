@@ -17,6 +17,7 @@
         "system": "example.ticketing"
       },
       "attestation": {
+        "bindingMode": "DIRECT_WITNESS",
         "measuredBoot": {
           "chain": "sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1",
           "components": [
@@ -43,7 +44,7 @@
         "witnessKey": "key:tee:res-001-witness-01"
       },
       "chain": {
-        "hash": "sha256:95acd84c456ed79c9f374e7573655a727e31618b3163eb56b8e8f949c1025199",
+        "hash": "sha256:4bf61ce5a95b4c48e805852f4460f78a0e420718a6a9a012dec2689c5af7e0b2",
         "prevHash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "seq": 1
       },
@@ -73,7 +74,7 @@
         },
         "id": "site:res-001"
       },
-      "spec": "wilder.pser/0.4",
+      "spec": "wilder.pser/0.5",
       "ts": "2026-10-15T14:00:00Z"
     }
   ]

@@ -149,6 +149,15 @@ impl SiteProducer for Ed25519SiteProducer {
                 "evidenceDigest": evidence_digest,
             },
             "attestation": {
+                // Not configurable, and deliberately so. This producer signs
+                // with the same key it names as the witness key, which is the
+                // definition of direct-witness mode. Emitting
+                // `DELEGATED_WITNESS` would assert that a TEE issued a
+                // delegation credential authorising a separate issuer key, and
+                // nothing here issues, holds or resolves such a credential. A
+                // configuration switch would let a simulator claim a property
+                // it cannot produce.
+                "bindingMode": "DIRECT_WITNESS",
                 "teeClass": self.config.attestation_tee_class,
                 "measuredBoot": {
                     "chain": self.config.attestation_measured_boot_chain,

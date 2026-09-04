@@ -2,9 +2,9 @@
 
 | | |
 | --- | --- |
-| Applies to | `draft-wilder-scitt-physical-site-engage-receipt-01` and this repository |
+| Applies to | `draft-wilder-scitt-physical-site-engage-receipt-03` (in tree) and this repository |
 | Profile identifier in the implementation | `wilder.pser/0.4` |
-| Last reviewed | 2026-08-15 |
+| Last reviewed | 2026-09-03 |
 | Status | Pre-alpha reference implementation |
 
 This file is maintained alongside the code. It records what the profile and
@@ -27,10 +27,21 @@ safety, insurance, or regulatory-compliance claim.
 
 ### 1.1 The profile identifier is not published in any register
 
-The implementation emits `wilder.pser/0.4`. The document that defines `0.3` is
-`-01`. Until `-01` is posted, the most recent identifier described by a posted
-revision is `wilder.pser/0.2`, and an implementer working from a posted
-document is working from `0.2`.
+The implementation emits `wilder.pser/0.5`, which is defined by the in-tree
+`-03`. The most recently posted revision is `-02`, which defines
+`wilder.pser/0.4`.
+
+So an implementer working from a posted document and an implementer working
+from this tree do not currently agree, and this build rejects on version
+validation every receipt a conforming reader of the posted document would
+produce. That gap closes when `-03` is posted and reopens at every subsequent
+revision. It is the expected state for an unposted revision, not a defect, but
+it is the reason a `0.5` receipt cannot be treated as interoperable with
+anything outside this repository.
+
+Neither identifier is published in any register. The value space is described
+only by the drafts, so nothing outside this repository and those documents
+resolves either string.
 
 ### 1.2 One figure is generated; the rest of the document is prose
 
@@ -49,6 +60,32 @@ placeholders showing member names and value shapes rather than a literal
 instance. A template is not machine-checkable, which is why four attestation
 members came to be described differently by `-00` and by the implementation.
 `-01` reconciles all four and replaces the template with a generated instance.
+
+### 1.3 The binding-mode key check is not implemented
+
+The in-tree `-03` adds `attestation.bindingMode` as a REQUIRED payload member
+with a closed two-value set. That member is implemented: the producer emits it,
+the parser requires it, and validation refuses a value outside the set.
+
+The second half of the requirement is not implemented. `-03` also requires a
+Verifier to reject a receipt asserting `DIRECT_WITNESS` where
+`attestation.witnessKey` and the envelope's `iss` denote different keys. Payload
+validation cannot perform that check, because `iss` is a CWT claim in the COSE
+envelope and is not visible at the payload layer. The check belongs at envelope
+verification and is not written.
+
+The practical effect: this build accepts a receipt claiming direct-witness
+binding while signed by a key other than the one it names as the witness key.
+That is the precise substitution `bindingMode` was added to make detectable, so
+the member currently records the claim without checking it.
+
+Confirm the gap:
+
+```
+rg -n 'binding_mode' crates/pask-wire/src/envelope.rs
+```
+
+Zero matches means this entry still stands.
 
 ---
 

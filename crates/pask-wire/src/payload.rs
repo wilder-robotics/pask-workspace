@@ -14,13 +14,16 @@ use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 use crate::{Error, Result, sha256_prefixed, validate_sha256};
 
 /// Supported PSER profile version.
-pub const SPEC_VERSION: &str = "wilder.pser/0.4";
+pub const SPEC_VERSION: &str = "wilder.pser/0.5";
 
 /// Wire strings for the three named `adapter.ackProvenance` values.
 ///
 /// The value space is a closed set enumerated in the profile document rather
 /// than an IANA registry, so these strings are the whole of it. A conforming
 /// producer MUST emit one of them.
+const BINDING_MODE_DIRECT_WITNESS: &str = "DIRECT_WITNESS";
+const BINDING_MODE_DELEGATED_WITNESS: &str = "DELEGATED_WITNESS";
+
 const ACK_PROVENANCE_THIRD_PARTY: &str = "THIRD_PARTY";
 const ACK_PROVENANCE_ISSUER_ASSERTED: &str = "ISSUER_ASSERTED";
 const ACK_PROVENANCE_NONE: &str = "NONE";
@@ -128,6 +131,7 @@ enum EnvelopeConformance {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct Attestation {
+    binding_mode: BindingMode,
     tee_class: String,
     measured_boot: MeasuredBoot,
     platform_evidence: PlatformEvidence,
@@ -269,6 +273,94 @@ pub enum AckProvenance {
     /// validates, and still presents this member to the reader, for the reasons
     /// in the type-level documentation.
     Unrecognized(String),
+}
+
+/// The attestation-binding mode a receipt was produced under.
+///
+/// # Why this is in the payload
+///
+/// `-02` required a Verifier to obtain this from a document the Issuer
+/// published separately, and simultaneously declined to specify that document.
+/// Two problems followed. The obligation could not be discharged, because there
+/// was nothing to fetch. And even had there been, a per-receipt fact would have
+/// been resolved from a document that describes an Issuer rather than a
+/// receipt, so the introduction's non-extractability property stopped being
+/// checkable from the presented bytes.
+///
+/// The mode was fixed at the instant the receipt was signed and was known to
+/// the signer. Carrying it costs one string.
+///
+/// # Why an unrecognised value is rejected here and preserved in [`AckProvenance`]
+///
+/// The two members answer different questions and the difference is not
+/// stylistic. `adapter.ackProvenance` qualifies a record of something that
+/// already happened, so refusing to parse it destroys the reconstruction the
+/// receipt exists for, and the honest move is to surface the unknown.
+///
+/// `attestation.bindingMode` selects which security property a reader is
+/// entitled to rely on. There is no safe reading of an unrecognised value: it
+/// cannot be treated as direct-witness without asserting a property nobody
+/// claimed, and treating it as delegated-witness invents a delegation
+/// credential to go looking for. So the profile closes the set and this rejects.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum BindingMode {
+    /// The signing key is the TEE signing key. Wire value `DIRECT_WITNESS`.
+    DirectWitness,
+    /// The signing key is the Issuer's own, authorised by a TEE-issued
+    /// delegation credential. Wire value `DELEGATED_WITNESS`.
+    ///
+    /// A reader of such a receipt obtains a weaker property than the
+    /// non-extractability one, and the delegation credential is resolved out of
+    /// band. Nothing in this repository resolves it; see `KNOWN-LIMITATIONS.md`.
+    DelegatedWitness,
+    /// A value outside the closed set, preserved exactly as it appeared.
+    ///
+    /// Retained rather than dropped so a reader can report what was actually
+    /// present. A payload carrying this fails validation.
+    Unrecognized(String),
+}
+
+impl BindingMode {
+    /// Returns the wire string for this value.
+    #[must_use]
+    pub fn as_wire_str(&self) -> &str {
+        match self {
+            Self::DirectWitness => BINDING_MODE_DIRECT_WITNESS,
+            Self::DelegatedWitness => BINDING_MODE_DELEGATED_WITNESS,
+            Self::Unrecognized(raw) => raw,
+        }
+    }
+
+    /// Returns `true` when the value is outside the closed set the profile names.
+    #[must_use]
+    pub const fn is_unrecognized(&self) -> bool {
+        matches!(self, Self::Unrecognized(_))
+    }
+}
+
+impl Serialize for BindingMode {
+    fn serialize<S: serde::Serializer>(
+        &self,
+        serializer: S,
+    ) -> core::result::Result<S::Ok, S::Error> {
+        serializer.serialize_str(self.as_wire_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for BindingMode {
+    fn deserialize<D: serde::Deserializer<'de>>(
+        deserializer: D,
+    ) -> core::result::Result<Self, D::Error> {
+        let raw = String::deserialize(deserializer)?;
+        Ok(match raw.as_str() {
+            BINDING_MODE_DIRECT_WITNESS => Self::DirectWitness,
+            BINDING_MODE_DELEGATED_WITNESS => Self::DelegatedWitness,
+            // Parsed, not accepted. Deserialization keeps the raw string so the
+            // value can be reported; `validate` is what refuses it. Rejecting
+            // here instead would surface as a parse error and lose the value.
+            _ => Self::Unrecognized(raw),
+        })
+    }
 }
 
 impl AckProvenance {
@@ -488,7 +580,7 @@ struct Chain {
 /// point of it. Deserializing first and checking the version afterwards produces
 /// an honest answer only while every revision happens to carry the same members.
 /// The moment a revision requires a member an earlier one did not carry -- which
-/// is exactly what `wilder.pser/0.4` does with `adapter.ackProvenance` -- a
+/// is exactly what `wilder.pser/0.5` does with `adapter.ackProvenance` -- a
 /// receipt from the earlier revision fails on the missing member and the caller
 /// is told a member is absent when the real and far more useful answer is that
 /// the receipt is from a revision this build does not implement. One diagnosis
@@ -529,7 +621,7 @@ where
     Option::<T>::deserialize(deserializer)
 }
 
-/// Strongly typed `wilder.pser/0.4` payload.
+/// Strongly typed `wilder.pser/0.5` payload.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct Payload {
@@ -591,6 +683,11 @@ impl Payload {
 
     /// Returns the witness key identifier used as the CWT issuer by the CLI.
     #[must_use]
+    pub const fn attestation_binding_mode(&self) -> &BindingMode {
+        &self.attestation.binding_mode
+    }
+
+    /// Key identifier of the TEE signing key.
     pub fn witness_key(&self) -> &str {
         &self.attestation.witness_key
     }
@@ -771,6 +868,11 @@ impl Payload {
     fn validate(&self) -> Result<()> {
         if self.spec != SPEC_VERSION {
             return Err(Error::Validation("unsupported spec version"));
+        }
+        // The profile closes this set. See `BindingMode` for why an unknown is
+        // refused here while an unknown `adapter.ackProvenance` is surfaced.
+        if self.attestation.binding_mode.is_unrecognized() {
+            return Err(Error::Validation("unrecognized attestation binding mode"));
         }
         for value in [
             &self.id,

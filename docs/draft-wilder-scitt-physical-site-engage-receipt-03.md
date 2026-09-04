@@ -1,7 +1,7 @@
 ---
 title: "A SCITT Profile for Physical-Site Engagement Receipts"
 abbrev: "Physical-Site Engagement Receipt"
-docname: draft-wilder-scitt-physical-site-engage-receipt-02
+docname: draft-wilder-scitt-physical-site-engage-receipt-03
 category: std
 submissionType: IETF
 ipr: trust200902
@@ -122,9 +122,11 @@ together:
   the Issuer's own and need not be site-resident; what remains site-resident
   is the TEE that issues the delegation credential, and a relying party
   evaluating such a receipt obtains a weaker property than the one described
-  here. A Verifier MUST determine which mode applies from the Issuer's
-  manifest before relying on the non-extractability property, and MUST NOT
-  assume direct-witness mode where the manifest does not state it.
+  here. A Verifier MUST determine which mode applies from
+  `attestation.bindingMode` in the receipt before relying on the
+  non-extractability property, and MUST NOT assume direct-witness mode.
+  A receipt carrying no `attestation.bindingMode` is rejected on version
+  validation under {{payload}} and no mode is inferred for it.
 - *Physical-work evidence vocabulary.* The five-artifact schema (Site,
   Actor, Engagement, Attestation, Adapter Write-In) binds the receipt to
   what physically happened, not merely to a software event. This vocabulary
@@ -246,7 +248,7 @@ Adapter Write-In:
 Physical-Site Engagement Receipt (PSER):
 : A SCITT Signed Statement under this profile, carrying a canonical JSON
   payload conforming to {{payload}}, with the profile identifier
-  `wilder.pser/0.4` and a SCITT Receipt attached as defined in
+  `wilder.pser/0.5` and a SCITT Receipt attached as defined in
   {{RFC9942}}.
 
 Chain-Verifier:
@@ -260,13 +262,13 @@ Chain-Verifier:
 
 # Profile identifier and media types
 
-The profile identifier for this document is `wilder.pser/0.4` and MUST appear
+The profile identifier for this document is `wilder.pser/0.5` and MUST appear
 as the value of the top-level `spec` member of the payload defined in
 {{payload}}.
 
 The COSE `content_type` (protected header label 3, {{RFC9052}}) for a
 Physical-Site Engagement Receipt Statement is
-`application/pser+json; profile=wilder.pser/0.4`. IANA registration of this
+`application/pser+json; profile=wilder.pser/0.5`. IANA registration of this
 media type is requested in {{iana}}.
 
 The `application/scitt-statement+cose` and `application/scitt-receipt+cose`
@@ -312,6 +314,7 @@ should be read as a statement about deployed hardware.
     "system": "example.ticketing"
   },
   "attestation": {
+    "bindingMode": "DIRECT_WITNESS",
     "measuredBoot": {
       "chain": "sha256:98a6efd412bb768ea7f090e8228401c11bc72a7caae44170395445c097d5ffa1",
       "components": [
@@ -338,7 +341,7 @@ should be read as a statement about deployed hardware.
     "witnessKey": "key:tee:res-001-witness-01"
   },
   "chain": {
-    "hash": "sha256:d67bb655b9ce091c8add39be6e41d1a4585ac482304b8bcef1548aec7d2c9dd7",
+    "hash": "sha256:6de1b8b2c641536b35fada1a7ee233c68284cf3788408a7160d5f525c309d2b3",
     "prevHash": null,
     "seq": 0
   },
@@ -368,7 +371,7 @@ should be read as a statement about deployed hardware.
     },
     "id": "site:res-001"
   },
-  "spec": "wilder.pser/0.4",
+  "spec": "wilder.pser/0.5",
   "ts": "2026-10-15T14:00:00Z"
 }
 ~~~
@@ -378,7 +381,7 @@ should be read as a statement about deployed hardware.
 
 ### `spec` (REQUIRED, string)
 
-MUST be `wilder.pser/0.4` for receipts conforming to this document. A verifier
+MUST be `wilder.pser/0.5` for receipts conforming to this document. A verifier
 MUST reject any Statement with a different `spec` value as out of scope of
 this profile.
 
@@ -442,10 +445,11 @@ such a change rather than to reject the presentation or to resolve it in favour
 of either value, is stated with the other Chain-Verifier obligations under
 `chain`.
 
-This member is distinct from, and does not substitute for, the manifest
+This member is distinct from, and does not substitute for, the affiliation
 disclosure required of an Issuer that registers with a Transparency Service it
 operates or that is operated by an affiliated principal
-({{scitt-registration}}). That obligation concerns the relationship between the
+({{scitt-registration}}), which is an Issuer-published fact resolved under
+{{issuer-published}} rather than a member of this payload. That obligation concerns the relationship between the
 Issuer and the Transparency Service; this member concerns the relationship
 between the Issuer and the Site Owner. An Issuer may be independent of the Site
 Owner and still operate its own Transparency Service, or be affiliated with the
@@ -555,6 +559,29 @@ engagement from inside a hardware-rooted, remotely attestable environment.
 - `attestation.witnessKey` (REQUIRED, string): key identifier of the TEE
   signing key. This MAY differ from the Issuer's `iss` when the TEE
   operates as a delegated witness.
+- `attestation.bindingMode` (REQUIRED, string): the attestation-binding mode
+  under which this receipt was produced, as defined in
+  {{attestation-binding}}. The admissible values are exactly:
+
+  - `DIRECT_WITNESS`: the key that produced the COSE signature is the TEE
+    signing key. `attestation.bindingMode` is `DIRECT_WITNESS` only where
+    `attestation.witnessKey` and `iss` denote the same key.
+  - `DELEGATED_WITNESS`: the key that produced the COSE signature is the
+    Issuer's own, and a TEE-issued delegation credential authorizes it.
+
+  A Verifier MUST reject a `bindingMode` value outside that set, and MUST
+  reject a receipt asserting `DIRECT_WITNESS` in which `attestation.witnessKey`
+  and `iss` denote different keys. The value is closed in this revision and is
+  not registry-governed.
+
+  This member is REQUIRED, and carries in the receipt a fact that `-02` required
+  a Verifier to obtain from the Issuer out of band. The mode was fixed at the
+  moment the receipt was signed and was known to the signer; obtaining it from a
+  separately published document made a per-receipt fact depend on a document
+  that describes an Issuer rather than a receipt, and made the weaker of the two
+  properties in {{terminology}} unavailable from the presented bytes. An absent
+  value is not assigned a meaning, because assigning one reintroduces the
+  assumption this member exists to prevent.
 - `attestation.validity` (REQUIRED, object): the interval over which the
   attestation of the producing environment is asserted to hold.
 - `attestation.validity.notBefore` (REQUIRED, string): RFC 3339 UTC
@@ -588,8 +615,13 @@ in the site's existing workflow.
 - `adapter.ackDigest` (REQUIRED, string): JSON-DIGEST of the operations-
   layer's acknowledgement response. If the operations layer returns no
   structured acknowledgement, the digest is taken over an Issuer-defined
-  minimal ack object; the object schema is specified in the Issuer's
-  manifest and is bound by the receipt's Merkle inclusion, not published.
+  minimal ack object. That object is bound by the receipt's Merkle inclusion
+  and is not published, so no Verifier can obtain it and none is required to.
+  This is not a resolution obligation under {{issuer-published}}: a Verifier
+  checks that `adapter.ackProvenance` is `ISSUER_ASSERTED` and treats the
+  acknowledged content as authored by the Issuer. `-02` located the object's
+  schema in an Issuer-published document, which stated an obligation against a
+  document defined to be unfetchable.
 - `adapter.ackProvenance` (REQUIRED, string): identifies which party authored
   the acknowledgement that `adapter.ackDigest` commits to. `adapter.ackDigest`
   alone cannot carry this: the digest of an acknowledgement authored by an
@@ -704,25 +736,72 @@ the CWT Claims header parameter (label 15, {{RFC9597}}), carrying at least:
   claim.
 
 The protected header `content_type` (label 3) MUST be
-`application/pser+json; profile=wilder.pser/0.4`.
+`application/pser+json; profile=wilder.pser/0.5`.
 
 The Signed Statement's payload MUST be the JCS serialization of the JSON
 object defined in {{payload}}. Detached payloads are NOT PERMITTED under
 this revision.
 
+## Resolving Issuer-published facts {#issuer-published}
+
+Two obligations in this profile require a Verifier to obtain a fact the Issuer
+publishes rather than carries in the receipt: the delegation credential of
+{{attestation-binding}}, and the Transparency Service affiliation disclosure of
+{{scitt-registration}}. Both are disclosures about the Issuer. Neither is an
+identity claim, and neither is required to evaluate a receipt produced in
+direct-witness mode by an Issuer registering with an unaffiliated Transparency
+Service.
+
+This revision does not specify a serialization format for these facts, and does
+not define a document that carries them. `-02` referred to an "Issuer's
+manifest" in four normative requirements without defining one, so a Verifier was
+four times required to read something the profile never described. Naming the
+obligations and their resolution behaviour, and leaving the encoding to a
+subsequent revision or companion document, is deliberate: a format fixed before
+any has been deployed is more likely to be repudiated by the next revision than
+refined by it.
+
+An Issuer-published fact is resolved as follows.
+
+- The Issuer MUST make the fact retrievable at a stable identifier under its own
+  control, and that identifier MUST be discoverable from `iss`.
+- A Verifier MAY cache a resolved fact. A cached answer MUST NOT survive a
+  change in the signing key it was resolved for; on such a change the Verifier
+  MUST re-resolve.
+- Where a fact does not resolve, whether because it is unreachable, absent, or
+  unreadable, the fact is **undetermined**.
+
+Undetermined is a third outcome, not a synonym for either answer. A Verifier
+MUST surface an undetermined fact as undetermined. It MUST NOT resolve an
+undetermined fact to whichever value favours the Issuer, and MUST NOT report
+that a fact was absent where it was never successfully retrieved: those two
+states are distinct and a relying party's policy may treat them differently. A
+Verifier MUST NOT reject a receipt solely because an Issuer-published fact is
+undetermined; whether an undetermined fact is disqualifying is a policy question
+for the relying party and is out of scope for this profile. What the profile
+requires is that the relying party be told.
+
+Conformance vectors accompanying this revision MUST include, for each
+Issuer-published fact, at least one case in which resolution fails, and the
+expected outcome of such a case MUST NOT be acceptance.
+
 ## Attestation binding {#attestation-binding}
 
 The `attestation.witnessKey` field carries the identity of the TEE signer.
-This profile permits two attestation-binding modes, which MUST be conveyed
-in the Issuer's manifest and MAY be recorded in the CWT Claims Set:
+This profile permits two attestation-binding modes. The mode under which a
+receipt was produced MUST be carried in that receipt, in
+`attestation.bindingMode` ({{payload}}), and MAY additionally be recorded in
+the CWT Claims Set. It is not obtained from any Issuer-published document:
 
 - *Direct-witness mode:* the Issuer's `iss` key is itself the TEE signer.
   `attestation.witnessKey` matches `iss`.
 - *Delegated-witness mode:* the Issuer's `iss` key is distinct from the
   TEE signer, and the TEE has issued a delegation credential authorizing
   the Issuer to sign this receipt on the TEE's behalf. The delegation
-  credential is bound by the `attestation.sealedEvidence.digest` and MUST
-  be resolvable from the Issuer's manifest.
+  credential is bound by the `attestation.sealedEvidence.digest` and is an
+  Issuer-published fact resolved under {{issuer-published}}. Where it does not
+  resolve, the authorization of the signing key is **undetermined** and the
+  Verifier proceeds as required by that section.
 
 ## Clock basis {#clock-basis}
 
@@ -770,9 +849,12 @@ operation in which no Transparency Service is reachable at issuance time.
 
 An Issuer MAY register with a Transparency Service it operates itself, or
 that is operated by a principal affiliated with it. Where it does so, the
-Issuer MUST disclose that relationship in its manifest, and a relying party
-MUST NOT treat such a registration as evidence obtained from outside the
-Issuer for the purposes of {{security}}. That obligation is separate from the
+Issuer MUST disclose that relationship as an Issuer-published fact resolved
+under {{issuer-published}}, and a relying party MUST NOT treat such a
+registration as evidence obtained from outside the Issuer for the purposes of
+{{security}}. Where the disclosure does not resolve, the standing of the
+registration is **undetermined**; a Verifier MUST NOT resolve it to the
+unaffiliated case, which is the Issuer-favourable one. That obligation is separate from the
 `issuerAffiliation` member of Section 4.1, which states the relationship
 between the Issuer and the Site Owner rather than between the Issuer and the
 Transparency Service; neither can be inferred from the other.
@@ -793,7 +875,7 @@ This document requests the following IANA actions.
 ## Media type registration
 
 Register `application/pser+json` per {{RFC6838}}, with the required
-`profile` parameter and profile value `wilder.pser/0.4`.
+`profile` parameter and profile value `wilder.pser/0.5`.
 
 ## COSE Header Parameters
 
@@ -1032,7 +1114,20 @@ profile revision does not address deployments in which the TEE travels
 with a mobile Actor (for example, a TEE integrated into a mobile robot's
 compute platform), where the party controlling the attester's physical
 platform is distinct from the party controlling the Site. Such on-device
-attester topologies are expected to be addressed in a subsequent revision.
+attester topologies are not addressed here because a prerequisite is not yet
+in place, and naming that prerequisite is more useful than restating the
+deferral.
+
+A travelling TEE is a delegated-witness deployment: the platform is controlled
+by a party other than the Site Owner, so the authorization to sign on the TEE's
+behalf must be evaluated by a Verifier rather than assumed from physical
+custody of the hardware. That evaluation depends on resolving the delegation
+credential, which this revision defines as an Issuer-published fact
+({{issuer-published}}) whose serialization is not yet specified. Until the
+encoding of that fact is fixed, a mobile-attester topology cannot be described
+in a way two implementations would evaluate identically, and specifying the
+topology first would produce a mode that reads as normative and cannot be
+conformed to.
 
 The security posture of this profile REQUIRES that three distinct parties
 participate in every receipt, and that no single party can produce a valid
@@ -1069,12 +1164,39 @@ suppress receipts unilaterally, and no relying party -- insurer, regulator,
 or counterparty -- can distinguish an authentic receipt from a fabricated
 one in that setting.
 
+## Site Owner and Transparency Service as one principal {#site-ts-affiliation}
+
+This profile addresses two affiliation relationships. `issuerAffiliation`
+({{payload}}) states the relationship between the Issuer and the Site Owner. The
+disclosure of {{scitt-registration}} states the relationship between the Issuer
+and the Transparency Service. Neither states the relationship between the Site
+Owner and the Transparency Service, and this revision provides no member and no
+Issuer-published fact that carries it.
+
+The gap is not covered by the other two. An Issuer independent of both the Site
+Owner and the Transparency Service satisfies both existing disclosures, while a
+Site Owner that operates the Transparency Service the Issuer registers with
+still obtains, at the registration step, the ability to suppress or withhold
+entries concerning its own site. The external reference that
+{{scitt-registration}} requires is then external to the Issuer but not to the
+party whose conduct at the site is in question, which is the party a relying
+party is usually evaluating.
+
+A relying party that requires registration evidence external to the Site Owner
+cannot establish that property from a receipt conforming to this revision, and
+MUST obtain the relationship out of band. Stating this is deliberate: a policy
+author reading {{scitt-registration}} could otherwise conclude that an
+unaffiliated-Issuer registration establishes independence from the site, which
+it does not.
+
 ## Identity attribution
 
 Identity attribution above the key level -- linking `iss`, `actor.id`, and
 `site.id` to real-world legal or natural persons -- requires an out-of-band
-identity manifest. This profile does not specify the identity manifest
-format.
+identity binding document. This profile does not specify that document's
+format. `-02` called it an identity manifest, which collided with the unrelated
+Issuer-published facts of {{issuer-published}}; the two were never the same
+document and the shared name implied they were.
 
 ## Privacy
 
@@ -1157,6 +1279,72 @@ Service.
 --- back
 
 # Change log
+
+## Changes in -03
+
+This revision resolves a defect in `-02` in which one undefined noun carried
+four unrelated obligations. `-02` placed four normative requirements on a
+Verifier against "the Issuer's manifest" while stating, in its own identity
+attribution section, that it did not specify that document's format. A Verifier
+was therefore required four times to read a document the profile never
+described. The four obligations were not variants of one thing, and are not
+resolved by defining one document.
+
+It adds one REQUIRED payload member and bumps the profile identifier from
+`wilder.pser/0.4` to `wilder.pser/0.5`. It removes nothing and narrows no
+existing requirement.
+
+- **`attestation.bindingMode` (REQUIRED) is added**, carrying the
+  attestation-binding mode in the receipt. In `-02` a Verifier was required to
+  obtain the mode from an Issuer-published document before it could rely on the
+  non-extractability property stated in the introduction. The mode is a
+  per-receipt fact fixed at signing time and known to the signer, and locating
+  it outside the receipt made a property of the presented bytes depend on a
+  network retrieval. The introduction's requirement now reads against the
+  member. The value set is closed and a `DIRECT_WITNESS` receipt whose
+  `attestation.witnessKey` and `iss` differ is rejected.
+- **The acknowledgement-object obligation is withdrawn as a Verifier
+  requirement** and restated as wording. `-02` located the minimal ack object's
+  schema in the Issuer's manifest in the same sentence that defined the object
+  as bound by Merkle inclusion and not published. A document defined to be
+  unfetchable cannot carry an obligation a Verifier can discharge. No mechanism
+  changes; `adapter.ackProvenance` already distinguishes the case.
+- **{{issuer-published}} is added**, naming the two obligations that are
+  genuine external retrievals and stating how they resolve. Both are disclosures
+  about the Issuer rather than identity claims. The section fixes a stable
+  Issuer-controlled identifier discoverable from `iss`, permits caching, voids a
+  cached answer on a signing-key change, and defines a failure to resolve as
+  **undetermined**.
+- **Undetermined is stated as a third outcome.** A Verifier MUST NOT resolve an
+  undetermined fact to the Issuer-favourable value, MUST NOT report a fact as
+  absent where it was never successfully retrieved, and MUST NOT reject a
+  receipt solely on the ground that a fact is undetermined. This follows the
+  treatment already given to undetermined registration ordering in
+  {{revocation-clock}}. The distinction between a fact checked and found absent
+  and a fact never checked is load-bearing: collapsing the two lets a Verifier
+  report to a relying party something it has no basis to state.
+- **No serialization format is specified for Issuer-published facts.** This
+  revision defines the obligations and their resolution behaviour and defers the
+  encoding. Fixing a format before one has been deployed invites repudiation in
+  the following revision rather than refinement.
+- **Conformance vectors accompanying this revision MUST include a failing
+  resolution case for each Issuer-published fact**, and the expected outcome of
+  such a case MUST NOT be acceptance.
+- **The mobile-attester deferral in {{trust-model}} now names its
+  prerequisite.** `-02` recorded that on-device attester topologies were
+  expected to be addressed in a subsequent revision without stating what they
+  waited on. A travelling TEE is a delegated-witness deployment, so it depends
+  on resolving the delegation credential, whose encoding this revision
+  deliberately leaves open.
+- **{{site-ts-affiliation}} is added**, recording that the profile carries no
+  disclosure of the relationship between the Site Owner and the Transparency
+  Service. An Issuer unaffiliated with both satisfies the two existing
+  disclosures while a Site-Owner-operated Transparency Service retains the
+  ability to withhold entries concerning its own site. The gap is recorded
+  rather than closed.
+- **Editorial: the identity attribution section no longer calls its
+  out-of-band document a manifest.** It was never the same document as the
+  Issuer-published facts above, and the shared name implied it was.
 
 ## Changes in -02
 - Corrected two internally inconsistent statements about the Site Owner that
