@@ -40,10 +40,11 @@
           "notAfter": "2026-10-15T15:00:00Z",
           "notBefore": "2026-10-15T13:00:00Z"
         },
-        "witnessKey": "key:tee:res-001-witness-01"
+        "witnessKey": "key:tee:res-001-witness-01",
+        "bindingMode": "DIRECT_WITNESS"
       },
       "chain": {
-        "hash": "sha256:b57f88230dc6ac45eae0bf14f260b63beb93cc931c56bfc9c4624c795fe76a28",
+        "hash": "sha256:4689b64a3528d5b09494a9e41289b595a141148b28b8eee9ff1b88444ffd5bb6",
         "prevHash": null,
         "seq": 0
       },
@@ -72,7 +73,7 @@
         },
         "id": "site:res-001"
       },
-      "spec": "wilder.pser/0.4",
+      "spec": "wilder.pser/0.5",
       "ts": "2026-10-15T14:00:00Z",
       "issuerAffiliation": "NOT_DISCLOSED"
     },
@@ -114,10 +115,11 @@
           "notAfter": "2026-10-15T15:00:00Z",
           "notBefore": "2026-10-15T13:00:00Z"
         },
-        "witnessKey": "key:tee:res-001-witness-01"
+        "witnessKey": "key:tee:res-001-witness-01",
+        "bindingMode": "DIRECT_WITNESS"
       },
       "chain": {
-        "hash": "sha256:e1fdd1826d29cc7ee55f1b3623fe308c55b3418737f19c5d7a8eac3424883bab",
+        "hash": "sha256:755f38d21f05c2b737efb14a0d0668400ef62a5b28beb22277ad02e640f0f30b",
         "prevHash": null,
         "seq": 0
       },
@@ -146,7 +148,7 @@
         },
         "id": "site:res-001"
       },
-      "spec": "wilder.pser/0.4",
+      "spec": "wilder.pser/0.5",
       "ts": "2026-10-15T14:00:00Z",
       "issuerAffiliation": "NOT_DISCLOSED"
     }

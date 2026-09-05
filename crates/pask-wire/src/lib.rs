@@ -3,7 +3,7 @@
 // pask-wire is licensed Apache-2.0. No commercial agreement is required to use,
 // modify or redistribute it; see LICENSING.md in the workspace root.
 
-//! Producer and verifier for the `wilder.pser/0.4` signed-statement profile.
+//! Producer and verifier for the `wilder.pser/0.5` signed-statement profile.
 
 #![no_std]
 #![forbid(unsafe_code)]
@@ -45,7 +45,9 @@ pub use envelope::{produce_es256, verify_es256};
 #[cfg(feature = "alloc")]
 pub use error::{Error, Result};
 #[cfg(feature = "alloc")]
-pub use payload::{AckProvenance, IssuerAffiliation, Payload, SPEC_VERSION, canonicalize_json};
+pub use payload::{
+    AckProvenance, BindingMode, IssuerAffiliation, Payload, SPEC_VERSION, canonicalize_json,
+};
 #[cfg(feature = "alloc")]
 pub use receipt::{
     AttachedReceipts, INCLUSION_PROOF_LABEL, InclusionProof, RECEIPTS_LABEL, RFC9162_SHA256,

@@ -231,8 +231,8 @@ fn a_receipt_from_an_unimplemented_revision_reports_the_version_not_a_missing_me
 
 #[test]
 fn a_future_revision_is_also_reported_as_a_version_problem() {
-    let newer = MINIMAL_VALID_JCS.replace(SPEC_VERSION, "wilder.pser/0.5");
-    let error = parse_mutated(&newer).expect_err("0.5 is not implemented by this build");
+    let newer = MINIMAL_VALID_JCS.replace(SPEC_VERSION, "wilder.pser/0.6");
+    let error = parse_mutated(&newer).expect_err("0.6 is not implemented by this build");
     assert_eq!(error, Error::Validation("unsupported spec version"));
 }
 
