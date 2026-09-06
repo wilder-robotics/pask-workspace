@@ -408,6 +408,31 @@ jobs:
             exit 1
           fi
 
+  revision-guard:
+    name: Revision consistency
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      # KNOWN-LIMITATIONS.md describes the profile in the present tense, so it
+      # goes stale silently every time a revision lands. It did exactly that on
+      # 2026-09-04: the -03 merge left the file claiming wilder.pser/0.4 while
+      # the code had already moved to 0.5, and left eleven present-tense
+      # references to -01 under a header saying the file applied to -03.
+      #
+      # Neither error is subtle. Both survived because the only control was
+      # somebody remembering during review, and every stale-item failure this
+      # project has logged had that same single feature. A reviewer reading a
+      # diff cannot see that a line nobody touched has become false.
+      - name: Check the revision and profile identifier are consistent
+        run: bash scripts/revision_guard.sh
+
   license-guard:
     name: License split
     runs-on: ubuntu-latest

@@ -3,8 +3,8 @@
 | | |
 | --- | --- |
 | Applies to | `draft-wilder-scitt-physical-site-engage-receipt-03` (in tree) and this repository |
-| Profile identifier in the implementation | `wilder.pser/0.4` |
-| Last reviewed | 2026-09-03 |
+| Profile identifier in the implementation | `wilder.pser/0.5` |
+| Last reviewed | 2026-09-05 |
 | Status | Pre-alpha reference implementation |
 
 This file is maintained alongside the code. It records what the profile and
