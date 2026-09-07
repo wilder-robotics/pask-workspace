@@ -45,10 +45,11 @@ resolves either string.
 
 ### 1.2 One figure is generated; the rest of the document is prose
 
-The Section 4 payload figure in `-01` is emitted by `pask-wire` and asserted
-byte-identical in CI, and every fenced example in the document is now required
-to be accounted for — parsed by the reference parser, or listed with a written
-reason it should not be. That guarantee covers the examples only.
+The Section 4 payload figure in the current revision is emitted by `pask-wire`
+and asserted byte-identical in CI, and every fenced example in the document is
+now required to be accounted for — parsed by the reference parser, or listed
+with a written reason it should not be. That guarantee covers the examples
+only.
 
 The normative member definitions in Section 4.1, the security considerations,
 and the IANA request are maintained by hand and are not mechanically checked
@@ -96,13 +97,13 @@ demonstrated** by this implementation.
 
 ### 2.1 No vendor quote is carried
 
-`attestation` has no `quote` member. `-01` is silent on quote transport rather
-than prohibitive, so a later revision can add it as a pure addition.
+`attestation` has no `quote` member. The profile is silent on quote transport
+rather than prohibitive, so a later revision can add it as a pure addition.
 
 The consequence is worth stating plainly. Without a vendor quote, the
 attestation members in a receipt are asserted by the witness rather than
 evidenced by hardware, and a relying party that wants hardware-rooted evidence
-does not get it from a `-01` receipt. Tracked at
+does not get it from a receipt this profile currently defines. Tracked at
 [#28](https://github.com/wilder-robotics/pask-workspace/issues/28), which
 carries the standing condition that if a later revision does not deliver
 verifiable quotes, the language describing what a receipt is worth has to
@@ -136,25 +137,25 @@ receipt from being presented again.
 
 `attestation.validity` is REQUIRED and carries `notBefore` and `notAfter`.
 Both `pask-wire` and `pask-attest` require `notAfter` to be **strictly** later
-than `notBefore`; an equal-instant interval is rejected by both. `-01` states
-that rule normatively.
+than `notBefore`; an equal-instant interval is rejected by both. The profile
+states that rule normatively.
 
-Neither crate tests a receipt's `ts` against its validity interval, and `-01`
-does not require a Verifier to do so. A relying party that needs the receipt
-timestamp to fall inside the attestation's validity window must enforce that
-itself. Tracked at
+Neither crate tests a receipt's `ts` against its validity interval, and the
+profile does not require a Verifier to do so. A relying party that needs the
+receipt timestamp to fall inside the attestation's validity window must enforce
+that itself. Tracked at
 [#30](https://github.com/wilder-robotics/pask-workspace/issues/30).
 
 ---
 
 ## 4. The TEE Class registry
 
-`-01` requests an IANA registry seeded with `intel.tdx`, `amd.sev-snp`,
+The profile requests an IANA registry seeded with `intel.tdx`, `amd.sev-snp`,
 `arm.cca`, `nvidia.h100-cc`, `nvidia.jetson-thor-cc`, and `aws.nitro-enclave`.
-**The registry does not exist and IANA has allocated nothing.** `-01` says so
-in the document and specifies Specification Required as the registration
-policy, so there is a defined route for a seventh value. There is no allocated
-value to use today.
+**The registry does not exist and IANA has allocated nothing.** The document
+says so and specifies Specification Required as the registration policy, so
+there is a defined route for a seventh value. There is no allocated value to
+use today.
 
 The implementation accepts exactly those six strings and rejects everything
 else, including SKU-level and instruction-set-architecture names. An operator
@@ -203,8 +204,8 @@ is unrelated to receipt chaining.
 
 The consequence is that the in-band tamper detection the profile describes is a
 property of the construction and not a property this implementation checks. The
-Chain-Verifier obligations stated in `-01` Section 4.1 are normative in the
-document and unimplemented here. This is a declared divergence between the
+Chain-Verifier obligations stated in Section 4.1 of the current revision are
+normative in the document and unimplemented here. This is a declared divergence between the
 document and the code, in the direction of the document specifying more than
 the code performs; it is recorded rather than resolved because the profile has
 to define its own core mechanism, and because no two-receipt chain has yet been
@@ -214,8 +215,8 @@ produced in this repository against which a verifier could be tested.
 
 ## 5.2 Nothing in the repository registers with a Transparency Service
 
-`-01` makes registration mandatory: an Issuer MUST register every receipt it
-issues with at least one Transparency Service, and a relying party MUST NOT
+The profile makes registration mandatory: an Issuer MUST register every receipt
+it issues with at least one Transparency Service, and a relying party MUST NOT
 accept an unregistered receipt as conforming.
 
 **No crate in this repository registers anything with any Transparency
@@ -224,9 +225,9 @@ Service.** A grep across `pask-adapter`, `pask-attest`, `pask-site`,
 `register_receipt`, `scitt_register`, and `register(` returns zero matches.
 
 The consequence, stated plainly: **every receipt this reference implementation
-has ever produced is non-conforming under `-01`**, because none carries an
-attached Receipt from a Transparency Service. The library produces valid
-`wilder.pser/0.4` payloads and valid signed statements; it does not produce
+has ever produced is non-conforming under this profile**, because none carries
+an attached Receipt from a Transparency Service. The library produces valid
+`wilder.pser/0.5` payloads and valid signed statements; it does not produce
 Transparent Statements.
 
 This is a declared divergence in the safe direction: the document requires
@@ -235,8 +236,8 @@ weakening the requirement, and it is closed by implementing registration, not
 by editing the draft.
 
 **Checking a registration is now implemented; performing one is not.** The
-obligation in `-02` "SCITT registration and Receipt attachment" has two halves, and this entry originally
-recorded only the producing half. The reading half is the one a relying party
+obligation in "SCITT registration and Receipt attachment" has two halves, and
+this entry originally recorded only the producing half. The reading half is the one a relying party
 actually meets: a relying party MUST NOT accept a receipt as conforming unless
 an attached Receipt verifies. Until `crates/pask-wire/src/receipt.rs` existed,
 no crate could evaluate that sentence either, and `verify_ed25519` returned
@@ -261,10 +262,11 @@ Reviewed 2026-08-15. Revised 2026-09-03 when the reading half was implemented.
 
 RFC 9942 Section 5.2 verification begins by obtaining "the bytes of a candidate
 entry" and applying the inclusion proof to them. RFC 9942 does not say what a
-candidate entry is; that is left to the profile. `-02` does not say either. It
-requires registration in `-02` "SCITT registration and Receipt attachment" and asserts the result is
-checkable offline from the presented bytes and the Transparency Service's
-verification key, but it never pins the byte sequence the Merkle leaf covers.
+candidate entry is; that is left to the profile. This profile does not say
+either. It requires registration in "SCITT registration and Receipt attachment"
+and asserts the result is checkable offline from the presented bytes and the
+Transparency Service's verification key, but it never pins the byte sequence
+the Merkle leaf covers.
 
 The consequence is concrete. Two implementations can both follow the profile,
 register with the same Transparency Service, and produce inclusion proofs
