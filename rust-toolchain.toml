@@ -1,0 +1,7 @@
+[toolchain]
+# The workspace targets Rust 1.88 and edition 2024 (let-else, unsafe-free env
+# APIs). Pinning stable here means every build environment, including Codex,
+# picks up a toolchain that can compile the crate instead of falling back to
+# an older default. The CI job installs stable separately, and this file does
+# not contradict it: stable resolves to 1.88 or newer on current runners.
+channel = "stable"
