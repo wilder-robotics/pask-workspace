@@ -1,0 +1,40 @@
+[package]
+name = "pask-ts-client"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+# This crate is the producing half of SCITT Receipt registration: it takes a
+# Signed Statement produced by pask-wire, submits it to a Transparency Service
+# via SCRAPI, receives a Receipt, and attaches it to form a Transparent
+# Statement. It is the operational counterpart to pask-wire's offline verifier
+# (PR #57). Licensed AGPL-3.0-only because it is an operational crate that
+# talks to live infrastructure, not a spec-side library. See LICENSING.md.
+license = "AGPL-3.0-only"
+repository.workspace = true
+authors.workspace = true
+description = "SCRAPI client that registers Pask Signed Statements with a Transparency Service"
+
+[features]
+# The workspace CI runs `cargo test --workspace --features es256`. Every
+# workspace member must accept the flag so the command resolves, so this crate
+# exposes an empty passthrough. pask-ts-client is Ed25519-only and has no ES256
+# code path to gate.
+default = []
+es256 = []
+
+[dependencies]
+pask-wire = { path = "../pask-wire", default-features = false, features = ["alloc"] }
+coset = { version = "0.4.2", default-features = false }
+ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8", "rand_core"] }
+sha2 = { version = "0.10.9", default-features = false }
+serde = { version = "1.0.219", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0.140", default-features = false, features = ["alloc"] }
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "json"] }
+
+[dev-dependencies]
+pask-wire = { path = "../pask-wire", default-features = false, features = ["alloc", "std"] }
+ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8", "rand_core"] }
+rand_core = { version = "0.6.4", features = ["getrandom"] }
+
+[lints]
+workspace = true

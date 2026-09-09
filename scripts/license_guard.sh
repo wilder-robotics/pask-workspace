@@ -33,7 +33,7 @@ echo
 # The split. Edit here and in LICENSING.md together, never one alone.
 # ---------------------------------------------------------------------------
 PERMISSIVE_CRATES=(pask-wire pask-attest pask-wire-cli)
-COPYLEFT_CRATES=(pask-site pask-adapter)
+COPYLEFT_CRATES=(pask-site pask-adapter pask-ts-client)
 
 PERMISSIVE_SPDX="Apache-2.0"
 COPYLEFT_SPDX="AGPL-3.0-only"

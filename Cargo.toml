@@ -6,6 +6,7 @@ members = [
     "crates/pask-adapter",
     "crates/pask-site",
     "crates/pask-attest",
+    "crates/pask-ts-client",
 ]
 
 [workspace.package]
