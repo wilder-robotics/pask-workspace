@@ -4,21 +4,17 @@
 //! SCRAPI client: submits a Signed Statement to a Transparency Service and
 //! retrieves the resulting Receipt.
 //!
-//! Implements the minimal subset of SCRAPI (draft-ietf-scitt-scrapi) needed
-//! for issue #40:
+//! Implements the SCRAPI v09 flow exposed by scitt-ccf-ledger:
 //!
-//! - `POST /entries` with the Signed Statement as the body, content type
-//!   `application/cose`. Returns 201 with the receipt inline, or 202 with a
-//!   `Location` header to poll.
-//! - `GET {location}` to poll for the receipt when the service returns 202.
+//! - `POST /entries?api-version=2026-03-26` returns 303 with an entry Location.
+//! - `GET /entries/{txid}?api-version=2026-03-26` returns 302 while pending,
+//!   then 200 with the receipt. Redirects are handled explicitly.
 //!
-//! The receipt returned is a raw COSE Receipt (a `COSE_Sign1`, tag 18 or
-//! untagged array) carrying an RFC 9162_SHA256 inclusion proof. It is not
-//! parsed or verified here: verification is the reading half, `pask_wire::
-//! verify_inclusion`, and the two are deliberately separate so production
-//! and verification cannot be mistaken for each other.
+//! Response bytes are returned without parsing or cryptographic verification.
+//! The ledger's receipt proof and signing algorithm may differ from those
+//! supported by `pask_wire::verify_inclusion`.
 
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 /// A client for a SCITT Transparency Service speaking SCRAPI.
 pub struct TsClient {
@@ -26,11 +22,11 @@ pub struct TsClient {
     http: reqwest::blocking::Client,
 }
 
-/// The maximum number of polling attempts when the service returns 202.
-const MAX_POLLS: u32 = 30;
+const API_VERSION: &str = "2026-03-26";
+const POLL_TIMEOUT: Duration = Duration::from_secs(30);
 
 /// The interval between polling attempts.
-const POLL_INTERVAL: Duration = Duration::from_secs(2);
+const POLL_INTERVAL: Duration = Duration::from_secs(1);
 
 /// The user-agent this client identifies itself with.
 const USER_AGENT: &str = "pask-ts-client/0.1";
@@ -47,13 +43,43 @@ impl TsClient {
     ///
     /// Returns an error only if the HTTP client cannot be constructed.
     pub fn new(base_url: &str) -> Result<Self, TsClientError> {
-        let base_url = base_url.trim_end_matches('/').to_owned();
-        let http = reqwest::blocking::Client::builder()
+        Self::build(base_url, reqwest::blocking::Client::builder())
+    }
+
+    /// Creates a client trusting an additional PEM-encoded CA certificate.
+    ///
+    /// The dev ledger's service certificate can be supplied here. TLS
+    /// certificate and hostname verification remain enabled.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the certificate or HTTP client cannot be loaded.
+    pub fn new_with_root_certificate(
+        base_url: &str,
+        certificate_pem: &[u8],
+    ) -> Result<Self, TsClientError> {
+        let certificate =
+            reqwest::Certificate::from_pem(certificate_pem).map_err(TsClientError::HttpClient)?;
+        Self::build(
+            base_url,
+            reqwest::blocking::Client::builder().add_root_certificate(certificate),
+        )
+    }
+
+    fn build(
+        base_url: &str,
+        builder: reqwest::blocking::ClientBuilder,
+    ) -> Result<Self, TsClientError> {
+        let http = builder
+            .redirect(reqwest::redirect::Policy::none())
             .timeout(Duration::from_secs(30))
             .user_agent(USER_AGENT)
             .build()
             .map_err(TsClientError::HttpClient)?;
-        Ok(Self { base_url, http })
+        Ok(Self {
+            base_url: base_url.trim_end_matches('/').to_owned(),
+            http,
+        })
     }
 
     /// Reads `PASK_TS_URL` from the environment and creates a client from it.
@@ -77,15 +103,16 @@ impl TsClient {
     /// Submits a Signed Statement and retrieves the Receipt.
     ///
     /// This is the main entry point. It POSTs the raw COSE_Sign1 bytes to
-    /// `/entries`, then either returns the receipt from a 201 response or
-    /// polls the `Location` header until a 200 or 201 returns the receipt.
+    /// `/entries` with the SCRAPI API version, then polls the transaction
+    /// identified by a 303 Location until a 200 returns the receipt.
+    /// Legacy 202 operation records are not accepted as receipt responses.
     ///
     /// # Errors
     ///
-    /// Returns an error if the service is unreachable, returns a non-2xx
-    /// status, or does not return a receipt within the polling window.
+    /// Returns an error for an unreachable service, an unexpected response,
+    /// an invalid entry Location, or an expired polling window.
     pub fn submit(&self, signed_statement: &[u8]) -> Result<Vec<u8>, TsClientError> {
-        let url = format!("{}/entries", self.base_url);
+        let url = format!("{}/entries?api-version={API_VERSION}", self.base_url);
         let response = self
             .http
             .post(&url)
@@ -95,21 +122,36 @@ impl TsClient {
             .map_err(TsClientError::RequestFailed)?;
 
         let status = response.status();
-        if status == reqwest::StatusCode::CREATED {
-            return response
-                .bytes()
-                .map(|b| b.to_vec())
-                .map_err(TsClientError::ReadBody);
-        }
-        if status == reqwest::StatusCode::ACCEPTED {
+        if status == reqwest::StatusCode::SEE_OTHER {
             let location = response
                 .headers()
                 .get(reqwest::header::LOCATION)
                 .ok_or(TsClientError::NoLocationHeader)?
                 .to_str()
-                .map_err(|_| TsClientError::LocationNotAscii)?
-                .to_owned();
-            return self.poll_for_receipt(&location);
+                .map_err(|_| TsClientError::LocationNotAscii)?;
+            let invalid_location = || TsClientError::UnexpectedStatus {
+                status: status.as_u16(),
+                body: "expected a same-origin Location identifying one /entries/{txid}".to_owned(),
+            };
+            let entry = response
+                .url()
+                .join(location)
+                .map_err(|_| invalid_location())?;
+            let prefix = format!("{}/", response.url().path());
+            let txid = entry
+                .path()
+                .strip_prefix(&prefix)
+                .filter(|id| {
+                    !id.is_empty()
+                        && id
+                            .bytes()
+                            .all(|b| b.is_ascii_alphanumeric() || b".-_".contains(&b))
+                })
+                .ok_or_else(invalid_location)?;
+            if entry.origin() != response.url().origin() || entry.fragment().is_some() {
+                return Err(invalid_location());
+            }
+            return self.poll_for_receipt(txid);
         }
         Err(TsClientError::UnexpectedStatus {
             status: status.as_u16(),
@@ -117,28 +159,49 @@ impl TsClient {
         })
     }
 
-    /// Polls `GET {location}` until the receipt is available.
-    fn poll_for_receipt(&self, location: &str) -> Result<Vec<u8>, TsClientError> {
-        let url = if location.starts_with("http://") || location.starts_with("https://") {
-            location.to_owned()
-        } else {
-            format!("{}{}", self.base_url, location)
-        };
-        for _ in 0..MAX_POLLS {
-            std::thread::sleep(POLL_INTERVAL);
+    /// Polls one entry, bounding both requests and sleeps by one deadline.
+    fn poll_for_receipt(&self, transaction_id: &str) -> Result<Vec<u8>, TsClientError> {
+        let url = format!(
+            "{}/entries/{transaction_id}?api-version={API_VERSION}",
+            self.base_url
+        );
+        let deadline = Instant::now() + POLL_TIMEOUT;
+        loop {
+            let remaining = deadline
+                .checked_duration_since(Instant::now())
+                .filter(|time| !time.is_zero())
+                .ok_or(TsClientError::PollTimeout)?;
             let response = self
                 .http
                 .get(&url)
+                .timeout(remaining)
                 .send()
-                .map_err(TsClientError::RequestFailed)?;
+                .map_err(|error| {
+                    if error.is_timeout() {
+                        TsClientError::PollTimeout
+                    } else {
+                        TsClientError::RequestFailed(error)
+                    }
+                })?;
             let status = response.status();
-            if status == reqwest::StatusCode::OK || status == reqwest::StatusCode::CREATED {
+            if status == reqwest::StatusCode::OK {
                 return response
                     .bytes()
                     .map(|b| b.to_vec())
                     .map_err(TsClientError::ReadBody);
             }
-            if status == reqwest::StatusCode::ACCEPTED {
+            if status == reqwest::StatusCode::FOUND {
+                let delay = response
+                    .headers()
+                    .get(reqwest::header::RETRY_AFTER)
+                    .and_then(|value| value.to_str().ok())
+                    .and_then(|value| value.parse::<u64>().ok())
+                    .map_or(POLL_INTERVAL, Duration::from_secs)
+                    .max(Duration::from_millis(10));
+                if delay >= deadline.saturating_duration_since(Instant::now()) {
+                    return Err(TsClientError::PollTimeout);
+                }
+                std::thread::sleep(delay);
                 continue;
             }
             return Err(TsClientError::UnexpectedStatus {
@@ -146,7 +209,6 @@ impl TsClient {
                 body: response.text().unwrap_or_default(),
             });
         }
-        Err(TsClientError::PollTimeout)
     }
 }
 
@@ -169,7 +231,7 @@ pub enum TsClientError {
     RequestFailed(reqwest::Error),
     /// The response body could not be read.
     ReadBody(reqwest::Error),
-    /// The service returned 202 but no `Location` header.
+    /// The service returned 303 but no `Location` header.
     NoLocationHeader,
     /// The `Location` header was not valid ASCII.
     LocationNotAscii,
@@ -185,13 +247,13 @@ impl std::fmt::Display for TsClientError {
             Self::UrlNotSet => write!(
                 f,
                 "PASK_TS_URL is not set. Set it to the local dev ledger, \
-                 http://127.0.0.1:8000, after running scripts/run-dev-ts.sh"
+                 https://127.0.0.1:8000, after running scripts/run-dev-ts.sh"
             ),
             Self::HttpClient(e) => write!(f, "could not build HTTP client: {e}"),
             Self::RequestFailed(e) => write!(f, "request to transparency service failed: {e}"),
             Self::ReadBody(e) => write!(f, "could not read response body: {e}"),
             Self::NoLocationHeader => {
-                write!(f, "service returned 202 with no Location header")
+                write!(f, "service returned 303 with no Location header")
             }
             Self::LocationNotAscii => write!(f, "Location header was not valid ASCII"),
             Self::PollTimeout => write!(f, "service did not return a receipt in time"),

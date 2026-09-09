@@ -1,122 +1,114 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
 
-//! End-to-end test of the producing half of issue #40.
-//!
-//! This test does not depend on the real `scitt-ccf-ledger`. It runs a mock
-//! Transparency Service in-process that speaks the SCRAPI subset the client
-//! uses: `POST /entries` returns 201 with a COSE Receipt built over a
-//! two-leaf Merkle tree. The client attaches the receipt to the Signed
-//! Statement, and `pask_wire::verify_inclusion` proves the resulting
-//! Transparent Statement carries a valid inclusion proof and signature.
-//!
-//! This is the same proof the real-ledger CI job will run, against a mock
-//! server that produces receipts in the same shape. The two agree on the wire
-//! format because both implement RFC 9942 Section 5.2.
+//! SCRAPI HTTP integration tests. The mock covers the full Pask round trip,
+//! including cryptographic verification. The ignored real-ledger test uses
+//! a pyscitt X.509 statement and checks receipt retrieval only.
 
+use std::io::{BufRead, BufReader, Read, Write};
 use std::net::TcpListener;
 use std::sync::mpsc;
 use std::thread;
+use std::time::Duration;
 
+use coset::{CborSerializable, CoseSign1, TaggedCborSerializable};
 use ed25519_dalek::{SigningKey, VerifyingKey};
-use pask_ts_client::{ReceiptResponse, TwoLeafTree, attach_receipt, build_receipt};
+use pask_ts_client::{
+    ReceiptResponse, TsClient, TsClientError, TwoLeafTree, attach_receipt, build_receipt,
+};
 use pask_wire::attached_receipts;
 use pask_wire::{Payload, produce_ed25519, verify_ed25519, verify_inclusion};
 
-// A minimal HTTP/1.1 server that returns a fixed response. It is not a general
-// HTTP server: it handles exactly one connection per thread, reads the request
-// line and headers, reads the body, and writes a response. This is enough for
-// the SCRAPI subset the client uses.
-
-struct MockTs {
-    ts_signing_key: SigningKey,
-    tx: mpsc::Sender<Vec<u8>>,
+fn http_response(status: &str, headers: &str, body: &[u8]) -> Vec<u8> {
+    let mut response = format!(
+        "HTTP/1.1 {status}\r\n{headers}Content-Length: {}\r\nConnection: close\r\n\r\n",
+        body.len()
+    )
+    .into_bytes();
+    response.extend_from_slice(body);
+    response
 }
 
-impl MockTs {
-    fn handle(&self, body: &[u8]) -> Vec<u8> {
-        let tree = TwoLeafTree::new(body);
-        let receipt =
-            build_receipt(&tree, &self.ts_signing_key).expect("mock must build a receipt");
-        let _ = self.tx.send(body.to_vec());
-        // HTTP/1.1 201 Created, body is the receipt.
-        let response = format!(
-            "HTTP/1.1 201 Created\r\nContent-Type: application/cose\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
-            receipt.len()
-        );
-        let mut full = response.into_bytes();
-        full.extend_from_slice(&receipt);
-        full
-    }
-}
-
-fn spawn_mock_ts(ts_signing_key: SigningKey) -> (String, mpsc::Receiver<Vec<u8>>) {
+// A finite HTTP/1.1 fixture. Every expected request must arrive and complete.
+fn spawn_mock_server(
+    requests: usize,
+    mut respond: impl FnMut(&str, &[u8], &str) -> Vec<u8> + Send + 'static,
+) -> (String, thread::JoinHandle<()>) {
     let listener = TcpListener::bind("127.0.0.1:0").expect("bind");
-    let port = listener.local_addr().expect("addr").port();
-    let (tx, rx) = mpsc::channel::<Vec<u8>>();
-    thread::spawn(move || {
-        for stream in listener.incoming() {
-            let Ok(mut stream) = stream else { break };
-            let ts_signing_key = ts_signing_key.clone();
-            let tx = tx.clone();
-            thread::spawn(move || {
-                let mock = MockTs { ts_signing_key, tx };
-                // Read the request. We only need the body, which follows the
-                // blank line after headers. Read until we have the full body
-                // using Content-Length.
-                let mut buf = Vec::with_capacity(4096);
-                let mut header_end = None;
-                // Read until \r\n\r\n.
-                while header_end.is_none() {
-                    let mut byte = [0u8; 1];
-                    if stream.read_exact(&mut byte).is_err() {
-                        return;
-                    }
-                    buf.push(byte[0]);
-                    if buf.len() >= 4 && &buf[buf.len() - 4..] == b"\r\n\r\n" {
-                        header_end = Some(buf.len());
-                    }
-                    if buf.len() > 65536 {
-                        return;
-                    }
+    let base_url = format!("http://{}", listener.local_addr().expect("address"));
+    let server_url = base_url.clone();
+    let server = thread::spawn(move || {
+        for _ in 0..requests {
+            let (mut stream, _) = listener.accept().expect("accept request");
+            stream
+                .set_read_timeout(Some(Duration::from_secs(5)))
+                .expect("read timeout");
+            let mut reader = BufReader::new(&mut stream);
+            let mut request = String::new();
+            reader.read_line(&mut request).expect("request line");
+            let mut length = 0;
+            let mut content_type = None;
+            loop {
+                let mut line = String::new();
+                assert!(reader.read_line(&mut line).expect("header") > 0);
+                if line == "\r\n" {
+                    break;
                 }
-                let header_end = header_end.unwrap();
-                let headers = String::from_utf8_lossy(&buf[..header_end]).to_string();
-                let content_length: usize = headers
-                    .lines()
-                    .find_map(|line| {
-                        let lower = line.to_ascii_lowercase();
-                        if lower.starts_with("content-length:") {
-                            lower
-                                .trim_start_matches("content-length:")
-                                .trim()
-                                .parse()
-                                .ok()
-                        } else {
-                            None
-                        }
-                    })
-                    .unwrap_or(0);
-                let mut body = buf[header_end..].to_vec();
-                while body.len() < content_length {
-                    let mut chunk = [0u8; 4096];
-                    let n = std::io::Read::read(&mut stream, &mut chunk).unwrap_or(0);
-                    if n == 0 {
-                        break;
-                    }
-                    body.extend_from_slice(&chunk[..n]);
+                let (name, value) = line.split_once(':').expect("header separator");
+                if name.eq_ignore_ascii_case("content-length") {
+                    length = value.trim().parse::<usize>().expect("content length");
                 }
-                let body = body[..content_length].to_vec();
-                let response = mock.handle(&body);
-                let _ = stream.write_all(&response);
-                let _ = stream.shutdown(std::net::Shutdown::Both);
-            });
+                if name.eq_ignore_ascii_case("content-type") {
+                    content_type = Some(value.trim().to_owned());
+                }
+            }
+            assert!(length < 1024 * 1024, "fixture request too large");
+            let mut body = vec![0; length];
+            reader.read_exact(&mut body).expect("request body");
+            if request.starts_with("POST ") {
+                assert_eq!(content_type.as_deref(), Some("application/cose"));
+            }
+            let response = respond(request.trim_end(), &body, &server_url);
+            stream.write_all(&response).expect("response");
         }
     });
-    (format!("http://127.0.0.1:{port}"), rx)
+    (base_url, server)
 }
 
-use std::io::{Read, Write};
+fn spawn_mock_ts(
+    ts_signing_key: SigningKey,
+) -> (String, mpsc::Receiver<Vec<u8>>, thread::JoinHandle<()>) {
+    let (tx, rx) = mpsc::channel();
+    let mut receipt = None;
+    let mut polls = 0;
+    let (base_url, server) = spawn_mock_server(3, move |request, body, _| match request {
+        "POST /entries?api-version=2026-03-26 HTTP/1.1" => {
+            assert!(receipt.is_none(), "submit once");
+            receipt =
+                Some(build_receipt(&TwoLeafTree::new(body), &ts_signing_key).expect("receipt"));
+            tx.send(body.to_vec()).expect("capture submitted statement");
+            http_response("303 See Other", "Location: /entries/test-txid\r\n", &[])
+        }
+        "GET /entries/test-txid?api-version=2026-03-26 HTTP/1.1" => {
+            polls += 1;
+            if polls == 1 {
+                http_response(
+                    "302 Found",
+                    "Location: /entries/test-txid\r\nRetry-After: 0\r\n",
+                    &[],
+                )
+            } else {
+                http_response(
+                    "200 OK",
+                    "Content-Type: application/cose\r\n",
+                    receipt.as_ref().expect("submitted first"),
+                )
+            }
+        }
+        _ => panic!("unexpected request: {request}"),
+    });
+    (base_url, rx, server)
+}
 
 #[test]
 fn end_to_end_round_trip() {
@@ -127,7 +119,7 @@ fn end_to_end_round_trip() {
     let ts_verifying_key = VerifyingKey::from(&ts_key);
 
     // Start the mock TS.
-    let (base_url, _rx) = spawn_mock_ts(ts_key);
+    let (base_url, rx, server) = spawn_mock_ts(ts_key);
 
     // Build a Pask payload from the canonical test vector and produce a Signed
     // Statement. from_json_for_production recomputes chain.hash so the vector
@@ -141,6 +133,8 @@ fn end_to_end_round_trip() {
     // Submit to the mock TS.
     let client = pask_ts_client::TsClient::new(&base_url).expect("build client");
     let receipt: ReceiptResponse = client.submit(&statement).expect("submit");
+    server.join().expect("all three SCRAPI requests completed");
+    assert_eq!(rx.recv().expect("submitted statement"), statement);
 
     // Attach the receipt to form a Transparent Statement.
     let transparent = attach_receipt(&statement, &receipt).expect("attach receipt");
@@ -162,6 +156,108 @@ fn end_to_end_round_trip() {
     // the unprotected header must not invalidate the Issuer's signature.
     let issuer_verifying = VerifyingKey::from(&issuer_key);
     verify_ed25519(&transparent, &issuer_verifying).expect("issuer signature still verifies");
+}
+
+#[test]
+#[ignore = "needs a real scitt-ccf-ledger; run with scripts/run-dev-ts.sh or in CI"]
+fn real_ledger_submit_and_retrieve_receipt() {
+    let Ok(url) = std::env::var("PASK_TS_URL") else {
+        eprintln!("PASK_TS_URL is unset; skipping the real-ledger test");
+        return;
+    };
+    let statement_path = std::env::var("PASK_SIGNED_STATEMENT_PATH")
+        .expect("set PASK_SIGNED_STATEMENT_PATH to a pyscitt signed statement");
+    let service_key_path = std::env::var("PASK_TS_SERVICE_KEY_PATH")
+        .expect("set PASK_TS_SERVICE_KEY_PATH to the dev service certificate");
+    let statement = std::fs::read(statement_path).expect("read signed statement");
+    // The service certificate contains its public key and authenticates TLS.
+    // This does not verify the receipt signature or its inclusion proof.
+    let service_certificate = std::fs::read(service_key_path).expect("read service certificate");
+    let client = TsClient::new_with_root_certificate(&url, &service_certificate).expect("client");
+    let receipt = client
+        .submit(&statement)
+        .expect("submit and retrieve real receipt");
+    assert!(!receipt.is_empty(), "the ledger must return receipt bytes");
+
+    match CoseSign1::from_tagged_slice(&receipt).or_else(|_| CoseSign1::from_slice(&receipt)) {
+        Ok(_) => eprintln!("Retrieved a COSE_Sign1 receipt ({} bytes)", receipt.len()),
+        Err(error) => eprintln!(
+            "Retrieved {} bytes; COSE parsing is advisory: {error}",
+            receipt.len()
+        ),
+    }
+    // CCF's signing algorithm and proof format may differ from pask-wire's.
+    // Full Pask cryptographic verification remains covered by the mock test.
+}
+
+#[test]
+fn submit_rejects_unexpected_status_and_legacy_operation_records() {
+    for status in ["400 Bad Request", "201 Created", "202 Accepted"] {
+        let (url, server) = spawn_mock_server(1, move |_, _, _| {
+            http_response(
+                status,
+                "Content-Type: application/cbor\r\n",
+                b"operation, not a receipt",
+            )
+        });
+        let error = TsClient::new(&url)
+            .expect("client")
+            .submit(b"statement")
+            .unwrap_err();
+        assert!(matches!(error, TsClientError::UnexpectedStatus { .. }));
+        server.join().expect("server");
+    }
+}
+
+#[test]
+fn submit_requires_an_entry_location() {
+    for headers in [
+        "",
+        "Location: /operations/2.3\r\n",
+        "Location: https://example.invalid/entries/2.3\r\n",
+        "Location: /entries/2.3/statement\r\n",
+    ] {
+        let (url, server) = spawn_mock_server(1, move |_, _, _| {
+            http_response("303 See Other", headers, &[])
+        });
+        let error = TsClient::new(&url)
+            .expect("client")
+            .submit(b"statement")
+            .unwrap_err();
+        if headers.is_empty() {
+            assert!(matches!(error, TsClientError::NoLocationHeader));
+        } else {
+            assert!(matches!(
+                error,
+                TsClientError::UnexpectedStatus { status: 303, .. }
+            ));
+        }
+        server.join().expect("server");
+    }
+}
+
+#[test]
+fn polling_accepts_absolute_locations_and_bounds_retry_after() {
+    let mut requests = 0;
+    let (url, server) = spawn_mock_server(2, move |request, _, base_url| {
+        requests += 1;
+        if requests == 1 {
+            http_response(
+                "303 See Other",
+                &format!("Location: {base_url}/entries/2.3\r\n"),
+                &[],
+            )
+        } else {
+            assert_eq!(request, "GET /entries/2.3?api-version=2026-03-26 HTTP/1.1");
+            http_response("302 Found", "Retry-After: 3600\r\n", &[])
+        }
+    });
+    let error = TsClient::new(&url)
+        .expect("client")
+        .submit(b"statement")
+        .unwrap_err();
+    assert!(matches!(error, TsClientError::PollTimeout));
+    server.join().expect("server");
 }
 
 #[test]

@@ -5,6 +5,7 @@
 #
 # Jobs:
 #   - cargo:      Rust build/test matrix (Linux + macOS + Windows).
+#   - ts-integration: advisory real-ledger HTTP test on Linux.
 #   - dco:        Developer Certificate of Origin sign-off check on every
 #                 commit in a PR. Enforces the CONTRIBUTING.md contract.
 #   - name-guard:  Public Name Rule enforcement over tracked files plus
@@ -79,6 +80,102 @@ jobs:
 
       - name: Test ES256 features
         run: cargo test --workspace --features es256
+
+  ts-integration:
+    name: TS Integration
+    needs: cargo
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+    permissions:
+      contents: read
+    env:
+      SCITT_REV: bffdf529185ba7767db5f2cfc4c1898ec8ad3364
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Check out pinned ledger source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: microsoft/scitt-ccf-ledger
+          ref: ${{ env.SCITT_REV }}
+          path: .scitt-source
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: .scitt-source/pyscitt/setup.py
+
+      - name: Install matching pyscitt CLI
+        run: python -m pip install ./.scitt-source/pyscitt
+
+      - name: Install Rust
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          toolchain: stable
+          cache: false
+
+      - name: Select Cargo cache week
+        id: cache-week
+        run: echo "week=$(( $(date -u +%s) / 604800 ))" >> "$GITHUB_OUTPUT"
+
+      # Restore only this seven-day bucket. Older buckets are then eligible
+      # for GitHub's eviction after seven days without access.
+      - name: Cache integration dependencies and build outputs
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-pask-ts-client-${{ steps.cache-week.outputs.week }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-pask-ts-client-${{ steps.cache-week.outputs.week }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}-
+            ${{ runner.os }}-pask-ts-client-${{ steps.cache-week.outputs.week }}-
+
+      - name: Set up BuildKit
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Build and cache the pinned ledger image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .scitt-source
+          file: .scitt-source/docker/Dockerfile
+          load: true
+          tags: pask-scitt-dev:${{ env.SCITT_REV }}
+          build-args: SCITT_VERSION_OVERRIDE=${{ env.SCITT_REV }}
+          cache-from: type=gha,version=2,scope=pask-ts-scitt-${{ env.SCITT_REV }}
+          cache-to: type=gha,version=2,scope=pask-ts-scitt-${{ env.SCITT_REV }},mode=max
+
+      - name: Run dev script
+        env:
+          PASK_SCITT_SOURCE: ${{ github.workspace }}/.scitt-source
+          PASK_TS_WORK_DIR: ${{ runner.temp }}/pask-dev-ts
+        run: ./scripts/run-dev-ts.sh
+
+      - name: Export ledger and fixture paths
+        env:
+          PASK_TS_WORK_DIR: ${{ runner.temp }}/pask-dev-ts
+        run: cat "$PASK_TS_WORK_DIR/github.env" >> "$GITHUB_ENV"
+
+      - name: Run real-ledger test
+        run: |
+          set -euo pipefail
+          : "${PASK_TS_URL:?Dev script did not export the service URL}"
+          : "${PASK_SIGNED_STATEMENT_PATH:?Dev script did not export the fixture}"
+          : "${PASK_TS_SERVICE_KEY_PATH:?Dev script did not export the certificate}"
+          cargo test -p pask-ts-client -- --ignored --nocapture
+
+      - name: Stop dev ledger
+        if: always()
+        run: ./scripts/run-dev-ts.sh --stop
 
   dco:
     name: DCO sign-off
