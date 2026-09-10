@@ -163,18 +163,34 @@ from pathlib import Path
 assert json.loads(Path(sys.argv[1]).read_text())['service_status'] == 'Open', 'Service is not open'
 PY
 
-  openssl genpkey -algorithm Ed25519 -out "$state_dir/issuer-key.pem"
-  openssl req -new -x509 -key "$state_dir/issuer-key.pem" \
-    -out "$state_dir/issuer-cert.pem" -days 365 -subj '/CN=pask-dev' \
-    -addext 'extendedKeyUsage=codeSigning'
-  # did:x509 uses an unpadded base64url digest, not a hex fingerprint.
-  fingerprint=$(openssl x509 -in "$state_dir/issuer-cert.pem" -outform DER \
+  # CCF's verifier uses OpenSSL and does not support Ed25519 in X.509.
+  # ECDSA P-256 (ES256) is the key type the ledger accepts natively.
+  # CCF also requires a certificate chain of at least 2 certs (leaf + CA),
+  # so we generate a CA and a leaf signed by it. Both certs need proper
+  # key usage extensions or CCF rejects the chain.
+  openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 \
+    -out "$state_dir/ca-key.pem"
+  openssl req -new -x509 -key "$state_dir/ca-key.pem" \
+    -out "$state_dir/ca-cert.pem" -days 365 -subj '/CN=pask-dev-ca' \
+    -addext 'keyUsage=keyCertSign,cRLSign' -addext 'basicConstraints=critical,CA:TRUE'
+  openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 \
+    -out "$state_dir/issuer-key.pem"
+  openssl req -new -key "$state_dir/issuer-key.pem" \
+    -out "$state_dir/issuer.csr" -subj '/CN=pask-dev'
+  openssl x509 -req -in "$state_dir/issuer.csr" \
+    -CA "$state_dir/ca-cert.pem" -CAkey "$state_dir/ca-key.pem" -CAcreateserial \
+    -out "$state_dir/issuer-cert.pem" -days 365 \
+    -extfile <(printf 'keyUsage=digitalSignature\nextendedKeyUsage=codeSigning\n')
+  cat "$state_dir/issuer-cert.pem" "$state_dir/ca-cert.pem" > "$state_dir/issuer-chain.pem"
+  # did:x509 fingerprint is of the CA cert, not the leaf.
+  # The verifier checks certs at chain index 1+ (skipping the leaf at 0).
+  fingerprint=$(openssl x509 -in "$state_dir/ca-cert.pem" -outform DER \
     | openssl dgst -sha256 -binary | openssl base64 -A | tr '+/' '-_' | tr -d '=')
   # This is the standard codeSigning EKU, matching the certificate above.
   issuer="did:x509:0:sha256:${fingerprint}::eku:1.3.6.1.5.5.7.3.3"
   printf '%s\n' '{"type":"Claim","name":"pask-ts-client dev test"}' > "$state_dir/statement.json"
   scitt sign --statement "$state_dir/statement.json" --key "$state_dir/issuer-key.pem" \
-    --x5c "$state_dir/issuer-cert.pem" --content-type application/json \
+    --x5c "$state_dir/issuer-chain.pem" --content-type application/json \
     --issuer "$issuer" --out "$state_dir/signed-statement.cose" --uses-cwt
 
   # Plain assignments for GITHUB_ENV; shell-quoted exports for local users.
