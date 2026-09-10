@@ -16,6 +16,7 @@ crates that are operational software.
 | `pask-wire-cli` | **Apache-2.0** | The conformance tool. Produces receipts, verifies them, and emits the canonical example figure carried in the profile document. An implementer must be able to run this against their own implementation without a legal review |
 | `pask-site` | **AGPL-3.0-only** | Deployment and operational machinery. Product surface |
 | `pask-adapter` | **AGPL-3.0-only** | Property-system integrations, and the `pask-adapt` binary that writes a verified receipt into an operations system. Product surface |
+| `pask-ts-client` | **AGPL-3.0-only** | SCRAPI client that submits a Signed Statement to a Transparency Service and retrieves the receipt. Operational: it talks to live infrastructure and is part of the producing path, not the verifiable profile surface |
 
 Full texts: [`LICENSE`](LICENSE) is AGPL-3.0-only. [`LICENSE-APACHE-2.0`](LICENSE-APACHE-2.0) is
 Apache-2.0. Each permissive crate also carries the Apache text in its own directory so that a
