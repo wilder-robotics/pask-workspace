@@ -514,6 +514,10 @@ Binds the receipt to the TEE that observed the engagement. This is the
 mechanism that distinguishes a Physical-Site Engagement Receipt from a bare
 signed timestamp: the sealed evidence attests that the Issuer observed the
 engagement from inside a hardware-rooted, remotely attestable environment.
+Verification of the Signed Statement and its attached Receipt alone does not
+establish hardware provenance. That property additionally depends on obtaining
+and validating the platform attestation evidence and its binding to the
+relevant key under the relying party's trust policy.
 
 - `attestation.teeClass` (REQUIRED, string): TEE class identifier.
   Registry-governed; see {{iana}}. The *TEE Class* registry is REQUESTED by
@@ -847,6 +851,11 @@ registration adds is a reference obtained before verification, not a network
 dependency during it. This revision defines no conforming mode of
 operation in which no Transparency Service is reachable at issuance time.
 
+This revision does not fully specify the candidate-entry byte encoding for
+inclusion-proof verification beyond the requirements inherited from
+{{RFC9943}}, including Section 6.3; interoperable verification therefore
+depends on an agreed entry-encoding convention.
+
 An Issuer MAY register with a Transparency Service it operates itself, or
 that is operated by a principal affiliated with it. Where it does so, the
 Issuer MUST disclose that relationship as an Issuer-published fact resolved
@@ -1104,6 +1113,15 @@ substitute its own local clock. Stating this plainly is deliberate: a relying
 party writing policy against this profile needs to know that the profile
 carries the timebase requirement and does not yet carry the mechanism.
 
+## Correction of a filed record {#correction-envelope}
+
+This revision defines no PSER-specific correction envelope or procedure for
+discovering and linking corrective statements to an earlier registered Signed
+Statement. Subsequent Signed Statements may convey amended or corrected
+information as described in {{RFC9943}}, without rewriting the original
+append-only record. This profile does not specify how a Verifier processes
+such corrections or how a relying party changes its decision in response.
+
 ## Three-party trust model {#trust-model}
 
 The trust model described in this section applies to deployments where
@@ -1217,17 +1235,34 @@ section is intended to assist the IETF in its decision processes in
 progressing drafts to RFCs. This section is to be removed before publishing as
 an RFC.
 
-**Reference implementation.** `pask-workspace`, Rust, five crates
-(`pask-wire`, `pask-attest`, `pask-site`, `pask-adapter`, `pask-wire-cli`).
-Maturity: prototype. Coverage of this profile is partial and the gaps below are
-normative requirements this revision states and the implementation does not yet
-meet.
+**Reference implementation.** `pask-workspace`, Rust, six crates
+(`pask-wire`, `pask-attest`, `pask-site`, `pask-adapter`, `pask-wire-cli`,
+`pask-ts-client`), at commit `9230401` (2026-09-09). Source:
+`https://github.com/wilder-robotics/pask-workspace`. Maturity: prototype.
+Coverage of this profile is partial and the gaps below are normative
+requirements this revision states and the implementation does not yet meet.
+Licensing: `pask-wire`, `pask-attest`, and `pask-wire-cli` are Apache-2.0;
+`pask-site`, `pask-adapter`, and `pask-ts-client` are AGPL-3.0-only.
 
-- **Transparency Service registration is not implemented.** No crate registers
-  a Signed Statement with any Transparency Service, and none consumes an
-  attached Receipt. Consequently every receipt this implementation has produced
-  to date is non-conforming under Section 6 of this document, and no
-  end-to-end verification path exists.
+- **Transparency Service registration is implemented in `pask-ts-client`.**
+  `TsClient::submit` registers a Signed Statement with a SCITT Transparency
+  Service speaking SCRAPI and retrieves the resulting Receipt.
+  `attach_receipt` attaches it to the Signed Statement's unprotected header.
+  Offline receipt verification, including inclusion-proof verification and
+  issuer-signature verification, is implemented in `pask-wire`
+  (`verify_inclusion`, `attached_receipts`, `verify_ed25519`). Mock
+  integration tests exercise the production, registration, attachment, and
+  cryptographic-verification round trip (`end_to_end_round_trip` in
+  `crates/pask-ts-client/tests/e2e.rs`). A separate real-ledger integration
+  test exercises statement submission and receipt retrieval against a
+  `scitt-ccf-ledger` instance; cryptographic verification of the real-ledger
+  receipt is not demonstrated by that test.
+- **The required `DIRECT_WITNESS` key-consistency check is not implemented.**
+  This revision requires a Verifier to reject a receipt asserting
+  `DIRECT_WITNESS` in which `attestation.witnessKey` and the envelope's `iss`
+  denote different keys. The current implementation does not perform that
+  check. Successful verification by the current implementation therefore does
+  not establish compliance with that requirement.
 - **All three Chain-Verifier obligations of Section 4.1 are implemented** in
   `pask-wire` and exercised in continuous integration against the conforming
   and non-conforming chain test data referenced in Section 4.1, including the
@@ -1235,10 +1270,13 @@ meet.
   points at which the value changed rather than a pass or fail. This corrects
   the statement in `-01`, which reported the two checks it defined as
   unimplemented and was accurate when filed.
-- **Single-receipt structure, COSE encoding, JCS canonicalization, the field
-  semantics of Section 4.1 and the attestation binding of Section 4.3 are
-  implemented** and exercised in continuous integration. The example figure in
-  Section 4 is emitted by the implementation and asserted byte-identical to it.
+- **Single-receipt structure, COSE encoding, JCS canonicalization, and the
+  field semantics of Section 4.1 are implemented** and exercised in
+  continuous integration. The example figure in Section 4 is emitted by the
+  implementation and asserted byte-identical to it. The
+  `attestation.bindingMode` member is implemented: the producer emits it, the
+  parser requires it, and validation refuses a value outside the closed set.
+  The envelope-layer key-consistency check described above is not implemented.
 - **The crate disagreement reported in `-01` is resolved.** `-01` recorded
   that `pask-wire` admitted `notAfter == notBefore` where `pask-attest`
   required strictly greater, and that the document did not state which was
