@@ -13,6 +13,7 @@ use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
 use crate::{
     Error, Payload, Result,
     cwt::{CWT_CLAIMS_LABEL, CwtClaims},
+    payload::{SPEC_VERSION, SPEC_VERSION_06},
 };
 
 /// Required protected content type for the profile.
@@ -20,6 +21,19 @@ pub const CONTENT_TYPE: &str = "application/pser+json; profile=wilder.pser/0.5";
 
 /// Content type for the 0.6 profile version.
 pub const CONTENT_TYPE_06: &str = "application/pser+json; profile=wilder.pser/0.6";
+
+/// Returns the required protected content type for the given profile version.
+///
+/// Returns `None` for unsupported versions. Used by both the producer and the
+/// verifier so that version selection is one mapping, not two independent
+/// checks that can disagree.
+fn content_type_for_spec(spec: &str) -> Option<&'static str> {
+    match spec {
+        SPEC_VERSION => Some(CONTENT_TYPE),
+        SPEC_VERSION_06 => Some(CONTENT_TYPE_06),
+        _ => None,
+    }
+}
 
 /// Produces an attached-payload `COSE_Sign1` statement using Ed25519.
 ///
@@ -95,9 +109,15 @@ where
         issuer: issuer.to_owned(),
         subject: payload.site_id().as_bytes().to_vec(),
     };
+    // Select the protected content type from the payload's profile version.
+    // The producer and verifier share one mapping via content_type_for_spec,
+    // so a 0.6 payload always gets a 0.6 header and a 0.5 payload always gets
+    // a 0.5 header.
+    let ct = content_type_for_spec(payload.spec())
+        .ok_or(Error::Validation("unsupported spec version for production"))?;
     let protected = HeaderBuilder::new()
         .algorithm(algorithm)
-        .content_type(CONTENT_TYPE.to_owned())
+        .content_type(ct.to_owned())
         .value(CWT_CLAIMS_LABEL, claims.to_value())
         .build();
     let statement = CoseSign1Builder::new()
@@ -127,42 +147,129 @@ where
     Ok(payload)
 }
 
+/// COSE header label for content type.
+const COSE_LABEL_CONTENT_TYPE: i64 = 3;
+
+/// Parses a `COSE_Sign1` from CBOR bytes.
+///
+/// The content type is read structurally from COSE header label 3 in the
+/// protected header map, not from a raw byte search of the header bytes.
+///
+/// The `coset` crate (0.4.x) enforces that content type text strings contain
+/// exactly one '/' (the MIME type separator). The Pask content type includes
+/// a profile parameter with a second '/' (e.g., "wilder.pser/0.5"), which
+/// fails this check. To work around this, the protected header is parsed
+/// separately as a CBOR map to locate the content type at label 3. If the
+/// content type is found there and contains the profile version separator,
+/// the second '/' in the raw bytes is replaced with '-' so `coset` can parse
+/// the structure. The original bytes are preserved for signature verification
+/// via `protected.original_data`, and the content type is normalized back to
+/// its canonical form after parsing.
+///
+/// A profile string appearing in another protected header field (not label 3)
+/// is not treated as a content type.
+#[allow(clippy::collapsible_if)]
 fn parse_statement(mut encoded: &[u8]) -> Result<CoseSign1> {
     let mut value: Value = coset::cbor::de::from_reader(&mut encoded)
         .map_err(|_| Error::Cose("failed to parse COSE_Sign1 CBOR"))?;
     if !encoded.is_empty() {
         return Err(Error::Cose("trailing bytes after COSE_Sign1"));
     }
+
     let Value::Array(items) = &mut value else {
         return Err(Error::Cose("COSE_Sign1 must be an array"));
     };
-    let Some(Value::Bytes(protected)) = items.first_mut() else {
+    let Some(Value::Bytes(protected_original)) = items.first() else {
         return Err(Error::Cose("COSE_Sign1 protected header must be bytes"));
     };
-    let original = protected.clone();
-    let mut patched_content_type = false;
-    let mut patched_ct_value: Option<&str> = None;
-    for ct in [CONTENT_TYPE, CONTENT_TYPE_06] {
-        if let Some(start) = protected
-            .windows(ct.len())
-            .position(|window| window == ct.as_bytes())
-        {
-            let slash = ct
-                .rfind('/')
-                .expect("the fixed profile content type contains a slash");
-            protected[start + slash] = b'-';
-            patched_content_type = true;
-            patched_ct_value = Some(ct);
-            break;
+    let protected_original = protected_original.clone();
+
+    // Structurally parse the protected header as a CBOR map to locate the
+    // content type at COSE label 3. This is not a raw byte search: we
+    // deserialize the protected header and look at the actual header field.
+    let protected_map: Value = coset::cbor::de::from_reader(&mut &protected_original[..])
+        .map_err(|_| Error::Cose("protected header is not valid CBOR"))?;
+
+    let mut ct_needs_compat = false;
+    let mut ct_normalized: Option<&'static str> = None;
+    let mut ct_label_count = 0;
+
+    if let Value::Map(entries) = &protected_map {
+        for (label, val) in entries {
+            if let Value::Integer(label_int) = label {
+                if i128::from(*label_int) == COSE_LABEL_CONTENT_TYPE as i128 {
+                    ct_label_count += 1;
+                    if let Value::Text(ct_str) = val {
+                        for ct in [CONTENT_TYPE, CONTENT_TYPE_06] {
+                            if ct_str == ct {
+                                // Canonical form with two '/' characters.
+                                // coset rejects this, so we need the
+                                // compatibility step.
+                                ct_needs_compat = true;
+                                ct_normalized = Some(ct);
+                                break;
+                            }
+                            let hyphen_form = ct.replace('/', "-");
+                            if ct_str == &hyphen_form {
+                                // Producer deviation: second '/' already
+                                // encoded as '-'. coset can parse this, but
+                                // we normalize after parsing.
+                                ct_needs_compat = true;
+                                ct_normalized = Some(ct);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+
+    if ct_label_count > 1 {
+        return Err(Error::Header("duplicate content_type in protected header"));
+    }
+
+    // If the content type contains the profile version separator '/', replace
+    // it with '-' in the protected header bytes so coset can parse the
+    // structure. This operates on the actual content type field at label 3,
+    // which we have verified structurally above. A matching string in another
+    // protected field is not affected.
+    if ct_needs_compat {
+        let ct = ct_normalized.expect("checked above");
+        // Replace the second '/' (in the profile version) with '-' in the
+        // raw protected header bytes. The first '/' (MIME type separator) is
+        // preserved so coset's single-'/' check passes.
+        let slash_pos = ct
+            .rfind('/')
+            .expect("content type contains a profile version separator");
+        let ct_bytes = ct.as_bytes();
+
+        if let Value::Array(items) = &mut value {
+            if let Some(Value::Bytes(protected)) = items.first_mut() {
+                // Search for the content type string in the protected header
+                // bytes. This is safe because we have already verified that
+                // the content type is at COSE label 3 in the CBOR map.
+                if let Some(start) = protected
+                    .windows(ct_bytes.len())
+                    .position(|w| w == ct_bytes)
+                {
+                    protected[start + slash_pos] = b'-';
+                }
+            }
+        }
+    }
+
     let mut statement = CoseSign1::from_cbor_value(value)
         .map_err(|_| Error::Cose("failed to parse COSE_Sign1 structure"))?;
-    if patched_content_type {
-        statement.protected.original_data = Some(original);
-        statement.protected.header.content_type =
-            Some(ContentType::Text(patched_ct_value.expect("checked above").to_owned()));
+
+    // Restore the original protected header bytes for signature verification
+    // and normalize the content type to its canonical form (with '/').
+    if ct_needs_compat {
+        let ct = ct_normalized.expect("checked above");
+        statement.protected.original_data = Some(protected_original);
+        statement.protected.header.content_type = Some(ContentType::Text(ct.to_owned()));
     }
+
     Ok(statement)
 }
 
@@ -175,11 +282,16 @@ fn validate_headers(
     if header.alg != Some(Algorithm::Assigned(expected_algorithm)) {
         return Err(Error::Header("unexpected or missing signing algorithm"));
     }
-    // Accept both 0.5 and 0.6 content types.
-    let ct_ok = header.content_type == Some(ContentType::Text(CONTENT_TYPE.to_string()))
-        || header.content_type == Some(ContentType::Text(CONTENT_TYPE_06.to_string()));
-    if !ct_ok {
-        return Err(Error::Header("unexpected or missing content_type"));
+    // Require exact agreement between the payload's profile version and the
+    // protected content type. A 0.6 payload must carry a 0.6 header, and a
+    // 0.5 payload must carry a 0.5 header. The verifier does not accept a
+    // mismatch even when both versions are individually supported.
+    let expected_ct = content_type_for_spec(payload.spec())
+        .ok_or(Error::Validation("unsupported spec version"))?;
+    if header.content_type != Some(ContentType::Text(expected_ct.to_string())) {
+        return Err(Error::Header(
+            "protected content_type does not match payload spec version",
+        ));
     }
     let mut claim_values = header
         .rest
@@ -206,7 +318,10 @@ fn validate_headers(
     // with either identifier or that genuine TEE hardware produced the
     // signature.
     if payload.spec() == crate::payload::SPEC_VERSION_06
-        && matches!(payload.attestation_binding_mode(), crate::BindingMode::DirectWitness)
+        && matches!(
+            payload.attestation_binding_mode(),
+            crate::BindingMode::DirectWitness
+        )
         && claims.issuer != payload.witness_key()
     {
         return Err(Error::Header(
