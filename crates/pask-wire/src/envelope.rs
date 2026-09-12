@@ -18,6 +18,9 @@ use crate::{
 /// Required protected content type for the profile.
 pub const CONTENT_TYPE: &str = "application/pser+json; profile=wilder.pser/0.5";
 
+/// Content type for the 0.6 profile version.
+pub const CONTENT_TYPE_06: &str = "application/pser+json; profile=wilder.pser/0.6";
+
 /// Produces an attached-payload `COSE_Sign1` statement using Ed25519.
 ///
 /// # Errors
@@ -138,21 +141,27 @@ fn parse_statement(mut encoded: &[u8]) -> Result<CoseSign1> {
     };
     let original = protected.clone();
     let mut patched_content_type = false;
-    if let Some(start) = protected
-        .windows(CONTENT_TYPE.len())
-        .position(|window| window == CONTENT_TYPE.as_bytes())
-    {
-        let slash = CONTENT_TYPE
-            .rfind('/')
-            .expect("the fixed profile content type contains a slash");
-        protected[start + slash] = b'-';
-        patched_content_type = true;
+    let mut patched_ct_value: Option<&str> = None;
+    for ct in [CONTENT_TYPE, CONTENT_TYPE_06] {
+        if let Some(start) = protected
+            .windows(ct.len())
+            .position(|window| window == ct.as_bytes())
+        {
+            let slash = ct
+                .rfind('/')
+                .expect("the fixed profile content type contains a slash");
+            protected[start + slash] = b'-';
+            patched_content_type = true;
+            patched_ct_value = Some(ct);
+            break;
+        }
     }
     let mut statement = CoseSign1::from_cbor_value(value)
         .map_err(|_| Error::Cose("failed to parse COSE_Sign1 structure"))?;
     if patched_content_type {
         statement.protected.original_data = Some(original);
-        statement.protected.header.content_type = Some(ContentType::Text(CONTENT_TYPE.to_owned()));
+        statement.protected.header.content_type =
+            Some(ContentType::Text(patched_ct_value.expect("checked above").to_owned()));
     }
     Ok(statement)
 }
@@ -166,7 +175,10 @@ fn validate_headers(
     if header.alg != Some(Algorithm::Assigned(expected_algorithm)) {
         return Err(Error::Header("unexpected or missing signing algorithm"));
     }
-    if header.content_type != Some(ContentType::Text(CONTENT_TYPE.to_string())) {
+    // Accept both 0.5 and 0.6 content types.
+    let ct_ok = header.content_type == Some(ContentType::Text(CONTENT_TYPE.to_string()))
+        || header.content_type == Some(ContentType::Text(CONTENT_TYPE_06.to_string()));
+    if !ct_ok {
         return Err(Error::Header("unexpected or missing content_type"));
     }
     let mut claim_values = header
@@ -185,6 +197,21 @@ fn validate_headers(
     }
     if claims.subject.as_slice() != payload.site_id().as_bytes() {
         return Err(Error::Header("CWT sub does not match site.id"));
+    }
+    // Issue #66: Under wilder.pser/0.6, when bindingMode is DIRECT_WITNESS,
+    // attestation.witnessKey and the protected CWT `iss` value MUST be textually
+    // equal. This check does not apply to DELEGATED_WITNESS mode or to earlier
+    // profile versions. It establishes only a naming convention; it does not
+    // establish that the signature-verification key is authentically associated
+    // with either identifier or that genuine TEE hardware produced the
+    // signature.
+    if payload.spec() == crate::payload::SPEC_VERSION_06
+        && matches!(payload.attestation_binding_mode(), crate::BindingMode::DirectWitness)
+        && claims.issuer != payload.witness_key()
+    {
+        return Err(Error::Header(
+            "DIRECT_WITNESS witnessKey and CWT iss must be textually equal under wilder.pser/0.6",
+        ));
     }
     if statement.unprotected.alg.is_some()
         || statement.unprotected.content_type.is_some()
