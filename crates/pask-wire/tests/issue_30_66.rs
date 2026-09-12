@@ -34,7 +34,8 @@ use ed25519_dalek::{Signer, SigningKey};
 
 use pask_wire::{
     BindingMode, CONTENT_TYPE, CONTENT_TYPE_06, Error, Payload, SPEC_VERSION, SPEC_VERSION_06,
-    produce_ed25519, testvectors::MINIMAL_VALID_PAYLOAD, verify_ed25519,
+    canonicalize_json, produce_ed25519, sha256_prefixed, testvectors::MINIMAL_VALID_PAYLOAD,
+    verify_ed25519,
 };
 
 /// Returns the minimal valid payload with spec set to 0.6.
@@ -502,4 +503,429 @@ fn profile_string_in_unrelated_field_not_treated_as_content_type() {
         matches!(error, Error::Header(msg) if msg.contains("content_type does not match")),
         "expected content type mismatch failure, got: {error}"
     );
+}
+
+// ---------------------------------------------------------------------------
+// M-02 regression: identical content type string in an unrelated field
+// must not be confused with the label-3 value. The structural parser
+// patches only the entry at COSE label 3, never a substring found elsewhere.
+// ---------------------------------------------------------------------------
+
+#[test]
+fn identical_ct_string_before_label_3_not_confused() {
+    let payload = parse_06(&minimal_06()).expect("0.6 payload parses");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    // Build a protected header where an unrelated field (label 99) carries
+    // the same content type string as label 3, placed BEFORE label 3 in the
+    // CBOR map. The parser must patch only label 3, not label 99.
+    let cwt_claims = Value::Map(vec![
+        (
+            Value::Integer(1i64.into()),
+            Value::Text(payload.witness_key().to_string()),
+        ),
+        (
+            Value::Integer(2i64.into()),
+            Value::Bytes(payload.site_id().as_bytes().to_vec()),
+        ),
+    ]);
+    let protected_map = Value::Map(vec![
+        (Value::Integer(1i64.into()), Value::Integer((-8i64).into())),
+        (
+            Value::Integer(99i64.into()),
+            Value::Text(CONTENT_TYPE_06.to_string()),
+        ),
+        (
+            Value::Integer(3i64.into()),
+            Value::Text(CONTENT_TYPE_06.to_string()),
+        ),
+        (Value::Integer(15i64.into()), cwt_claims),
+    ]);
+
+    let statement =
+        build_statement_with_raw_protected(protected_map, &payload, payload.witness_key(), &key);
+    let verified = verify_ed25519(&statement, &key.verifying_key())
+        .expect("must not confuse label 99 with label 3");
+    assert_eq!(verified, payload);
+}
+
+#[test]
+fn identical_ct_string_after_label_3_not_confused() {
+    let payload = parse_06(&minimal_06()).expect("0.6 payload parses");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    // Same regression but with the unrelated field AFTER label 3.
+    let cwt_claims = Value::Map(vec![
+        (
+            Value::Integer(1i64.into()),
+            Value::Text(payload.witness_key().to_string()),
+        ),
+        (
+            Value::Integer(2i64.into()),
+            Value::Bytes(payload.site_id().as_bytes().to_vec()),
+        ),
+    ]);
+    let protected_map = Value::Map(vec![
+        (Value::Integer(1i64.into()), Value::Integer((-8i64).into())),
+        (
+            Value::Integer(3i64.into()),
+            Value::Text(CONTENT_TYPE_06.to_string()),
+        ),
+        (
+            Value::Integer(99i64.into()),
+            Value::Text(CONTENT_TYPE_06.to_string()),
+        ),
+        (Value::Integer(15i64.into()), cwt_claims),
+    ]);
+
+    let statement =
+        build_statement_with_raw_protected(protected_map, &payload, payload.witness_key(), &key);
+    let verified = verify_ed25519(&statement, &key.verifying_key())
+        .expect("must not confuse label 99 with label 3");
+    assert_eq!(verified, payload);
+}
+
+#[test]
+fn hyphen_form_content_type_at_label_3_rejected() {
+    let payload = parse_06(&minimal_06()).expect("0.6 payload parses");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    // The hyphen form replaces only the profile-version slash, leaving one
+    // slash so coset accepts it. validate_headers must reject it as an
+    // unsupported on-wire spelling.
+    let hyphen_ct = CONTENT_TYPE_06.replace("wilder.pser/0.6", "wilder.pser-0.6");
+    let cwt_claims = Value::Map(vec![
+        (
+            Value::Integer(1i64.into()),
+            Value::Text(payload.witness_key().to_string()),
+        ),
+        (
+            Value::Integer(2i64.into()),
+            Value::Bytes(payload.site_id().as_bytes().to_vec()),
+        ),
+    ]);
+    let protected_map = Value::Map(vec![
+        (Value::Integer(1i64.into()), Value::Integer((-8i64).into())),
+        (Value::Integer(3i64.into()), Value::Text(hyphen_ct)),
+        (Value::Integer(15i64.into()), cwt_claims),
+    ]);
+
+    let statement =
+        build_statement_with_raw_protected(protected_map, &payload, payload.witness_key(), &key);
+    let error = verify_ed25519(&statement, &key.verifying_key())
+        .expect_err("hyphen form must be rejected as unsupported");
+    assert!(
+        matches!(error, Error::Header(msg) if msg.contains("content_type does not match")),
+        "expected content type mismatch, got: {error}"
+    );
+}
+
+// ---------------------------------------------------------------------------
+// Signed verifier tests: timestamp containment through verify_ed25519.
+// These use a test-only builder that signs raw canonical payload bytes,
+// including payloads with out-of-window timestamps that
+// from_json_for_production would reject but the verifier must also reject
+// through parse_canonical.
+// ---------------------------------------------------------------------------
+
+/// Computes the correct chain hash for a payload JSON string and returns
+/// the canonical bytes with the hash inserted. Used to create deliberately
+/// non-conforming 0.6 input (e.g., out-of-window timestamps).
+fn canonical_payload_with_correct_hash(payload_json: &str) -> Vec<u8> {
+    let mut value: serde_json::Value =
+        serde_json::from_str(payload_json).expect("payload JSON must parse");
+
+    // Remove hash, canonicalize, compute correct hash.
+    if let Some(chain) = value.get_mut("chain").and_then(|v| v.as_object_mut()) {
+        chain.remove("hash");
+    }
+    let json_no_hash = serde_json::to_vec(&value).expect("must serialize");
+    let canonical_no_hash = canonicalize_json(&json_no_hash).expect("must canonicalize");
+    let chain_hash = sha256_prefixed(&canonical_no_hash);
+
+    // Insert correct hash and canonicalize the complete payload.
+    if let Some(chain) = value.get_mut("chain").and_then(|v| v.as_object_mut()) {
+        chain.insert("hash".to_string(), serde_json::Value::String(chain_hash));
+    }
+    let json_with_hash = serde_json::to_vec(&value).expect("must serialize");
+    canonicalize_json(&json_with_hash).expect("must canonicalize")
+}
+
+/// Builds a signed COSE_Sign1 from raw payload JSON, computing the correct
+/// chain hash. The content type and algorithm are set explicitly so version
+/// mismatch tests can pair a 0.6 payload with a 0.5 header.
+fn build_signed_from_json(
+    payload_json: &str,
+    content_type: &str,
+    issuer: &str,
+    key: &SigningKey,
+) -> Vec<u8> {
+    let canonical = canonical_payload_with_correct_hash(payload_json);
+    let value: serde_json::Value =
+        serde_json::from_str(payload_json).expect("payload JSON must parse");
+    let site_id = value
+        .get("site")
+        .and_then(|v| v.get("id"))
+        .and_then(|v| v.as_str())
+        .expect("site.id must be present");
+
+    let cwt_claims = Value::Map(vec![
+        (Value::Integer(1i64.into()), Value::Text(issuer.to_string())),
+        (
+            Value::Integer(2i64.into()),
+            Value::Bytes(site_id.as_bytes().to_vec()),
+        ),
+    ]);
+    let protected = HeaderBuilder::new()
+        .algorithm(iana::Algorithm::EdDSA)
+        .content_type(content_type.to_string())
+        .value(15, cwt_claims)
+        .build();
+    let statement = CoseSign1Builder::new()
+        .protected(protected)
+        .payload(canonical)
+        .create_signature(&[], |data| key.sign(data).to_bytes().to_vec())
+        .build();
+    statement.to_vec().expect("statement must serialize")
+}
+
+#[test]
+fn signed_0_5_out_of_window_ts_not_rejected_on_containment() {
+    // 0.5 does not enforce timestamp containment. Even with ts outside the
+    // validity window, the verifier must accept (subject to other checks).
+    let json_05 = MINIMAL_VALID_PAYLOAD.replace(
+        "\"ts\": \"2026-10-15T14:00:00Z\"",
+        "\"ts\": \"2026-10-15T12:00:00Z\"",
+    );
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    // Extract witness key from the JSON for the CWT iss.
+    let value: serde_json::Value = serde_json::from_str(&json_05).expect("must parse");
+    let witness_key = value
+        .get("attestation")
+        .and_then(|v| v.get("witnessKey"))
+        .and_then(|v| v.as_str())
+        .expect("witnessKey must be present");
+
+    let statement = build_signed_from_json(&json_05, CONTENT_TYPE, witness_key, &key);
+    let verified =
+        verify_ed25519(&statement, &key.verifying_key()).expect("0.5 must not enforce containment");
+    assert_eq!(verified.spec(), SPEC_VERSION);
+}
+
+#[test]
+fn signed_0_6_out_of_window_ts_rejected_for_containment() {
+    // 0.6 must reject an out-of-window timestamp through parse_canonical.
+    let json_06 = with_ts("2026-10-15T12:00:00Z");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+    let witness_key = value
+        .get("attestation")
+        .and_then(|v| v.get("witnessKey"))
+        .and_then(|v| v.as_str())
+        .expect("witnessKey must be present");
+
+    let statement = build_signed_from_json(&json_06, CONTENT_TYPE_06, witness_key, &key);
+    let error = verify_ed25519(&statement, &key.verifying_key())
+        .expect_err("0.6 must reject out-of-window ts");
+    let msg = format!("{error}");
+    assert!(
+        msg.contains("validity") || msg.contains("containment") || msg.contains("outside"),
+        "expected containment failure, got: {msg}"
+    );
+}
+
+#[test]
+fn signed_0_6_at_not_before_endpoint_passes() {
+    // Inclusive lower bound: ts == notBefore must pass.
+    let json_06 = with_ts("2026-10-15T13:00:00Z");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+    let witness_key = value
+        .get("attestation")
+        .and_then(|v| v.get("witnessKey"))
+        .and_then(|v| v.as_str())
+        .expect("witnessKey must be present");
+
+    let statement = build_signed_from_json(&json_06, CONTENT_TYPE_06, witness_key, &key);
+    let verified =
+        verify_ed25519(&statement, &key.verifying_key()).expect("0.6 at notBefore must pass");
+    assert_eq!(verified.spec(), SPEC_VERSION_06);
+}
+
+#[test]
+fn signed_0_6_at_not_after_endpoint_passes() {
+    // Inclusive upper bound: ts == notAfter must pass.
+    let json_06 = with_ts("2026-10-15T15:00:00Z");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+    let witness_key = value
+        .get("attestation")
+        .and_then(|v| v.get("witnessKey"))
+        .and_then(|v| v.as_str())
+        .expect("witnessKey must be present");
+
+    let statement = build_signed_from_json(&json_06, CONTENT_TYPE_06, witness_key, &key);
+    let verified =
+        verify_ed25519(&statement, &key.verifying_key()).expect("0.6 at notAfter must pass");
+    assert_eq!(verified.spec(), SPEC_VERSION_06);
+}
+
+#[test]
+fn signed_0_6_just_before_interval_rejected() {
+    // One second before notBefore: must be rejected.
+    let json_06 = with_ts("2026-10-15T12:59:59Z");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+    let witness_key = value
+        .get("attestation")
+        .and_then(|v| v.get("witnessKey"))
+        .and_then(|v| v.as_str())
+        .expect("witnessKey must be present");
+
+    let statement = build_signed_from_json(&json_06, CONTENT_TYPE_06, witness_key, &key);
+    let error = verify_ed25519(&statement, &key.verifying_key())
+        .expect_err("0.6 just before interval must be rejected");
+    let msg = format!("{error}");
+    assert!(
+        msg.contains("validity") || msg.contains("containment") || msg.contains("outside"),
+        "expected containment failure, got: {msg}"
+    );
+}
+
+#[test]
+fn signed_0_6_just_after_interval_rejected() {
+    // One second after notAfter: must be rejected.
+    let json_06 = with_ts("2026-10-15T15:00:01Z");
+    let key = SigningKey::generate(&mut rand_core::OsRng);
+
+    let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+    let witness_key = value
+        .get("attestation")
+        .and_then(|v| v.get("witnessKey"))
+        .and_then(|v| v.as_str())
+        .expect("witnessKey must be present");
+
+    let statement = build_signed_from_json(&json_06, CONTENT_TYPE_06, witness_key, &key);
+    let error = verify_ed25519(&statement, &key.verifying_key())
+        .expect_err("0.6 just after interval must be rejected");
+    let msg = format!("{error}");
+    assert!(
+        msg.contains("validity") || msg.contains("containment") || msg.contains("outside"),
+        "expected containment failure, got: {msg}"
+    );
+}
+
+// ---------------------------------------------------------------------------
+// ES256 coverage: version match, version mismatch, and containment under
+// wilder.pser/0.6 with ECDSA P-256 signatures.
+// ---------------------------------------------------------------------------
+
+#[cfg(feature = "es256")]
+mod es256_tests {
+    use super::*;
+    use p256::ecdsa::SigningKey as Es256SigningKey;
+    use p256::elliptic_curve::rand_core::OsRng as P256OsRng;
+
+    fn build_signed_es256(
+        payload_json: &str,
+        content_type: &str,
+        issuer: &str,
+        key: &Es256SigningKey,
+    ) -> Vec<u8> {
+        use p256::ecdsa::signature::Signer as _;
+
+        let canonical = canonical_payload_with_correct_hash(payload_json);
+        let value: serde_json::Value =
+            serde_json::from_str(payload_json).expect("payload JSON must parse");
+        let site_id = value
+            .get("site")
+            .and_then(|v| v.get("id"))
+            .and_then(|v| v.as_str())
+            .expect("site.id must be present");
+
+        let cwt_claims = Value::Map(vec![
+            (Value::Integer(1i64.into()), Value::Text(issuer.to_string())),
+            (
+                Value::Integer(2i64.into()),
+                Value::Bytes(site_id.as_bytes().to_vec()),
+            ),
+        ]);
+        let protected = HeaderBuilder::new()
+            .algorithm(iana::Algorithm::ES256)
+            .content_type(content_type.to_string())
+            .value(15, cwt_claims)
+            .build();
+        let statement = CoseSign1Builder::new()
+            .protected(protected)
+            .payload(canonical)
+            .create_signature(&[], |data| {
+                let sig: p256::ecdsa::Signature = key.sign(data);
+                sig.to_bytes().to_vec()
+            })
+            .build();
+        statement.to_vec().expect("statement must serialize")
+    }
+
+    #[test]
+    fn es256_0_6_version_match_passes() {
+        let json_06 = minimal_06();
+        let key = Es256SigningKey::random(&mut P256OsRng);
+
+        let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+        let witness_key = value
+            .get("attestation")
+            .and_then(|v| v.get("witnessKey"))
+            .and_then(|v| v.as_str())
+            .expect("witnessKey must be present");
+
+        let statement = build_signed_es256(&json_06, CONTENT_TYPE_06, witness_key, &key);
+        let verified = pask_wire::verify_es256(&statement, key.verifying_key())
+            .expect("ES256 0.6 version match must pass");
+        assert_eq!(verified.spec(), SPEC_VERSION_06);
+    }
+
+    #[test]
+    fn es256_version_mismatch_06_payload_05_header_rejected() {
+        let json_06 = minimal_06();
+        let key = Es256SigningKey::random(&mut P256OsRng);
+
+        let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+        let witness_key = value
+            .get("attestation")
+            .and_then(|v| v.get("witnessKey"))
+            .and_then(|v| v.as_str())
+            .expect("witnessKey must be present");
+
+        // 0.6 payload paired with a 0.5 content type header.
+        let statement = build_signed_es256(&json_06, CONTENT_TYPE, witness_key, &key);
+        let _ = pask_wire::verify_es256(&statement, key.verifying_key())
+            .expect_err("version mismatch must be rejected");
+    }
+
+    #[test]
+    fn es256_0_6_out_of_window_ts_rejected_for_containment() {
+        let json_06 = with_ts("2026-10-15T12:00:00Z");
+        let key = Es256SigningKey::random(&mut P256OsRng);
+
+        let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
+        let witness_key = value
+            .get("attestation")
+            .and_then(|v| v.get("witnessKey"))
+            .and_then(|v| v.as_str())
+            .expect("witnessKey must be present");
+
+        let statement = build_signed_es256(&json_06, CONTENT_TYPE_06, witness_key, &key);
+        let error = pask_wire::verify_es256(&statement, key.verifying_key())
+            .expect_err("0.6 out-of-window ts must be rejected");
+        let msg = format!("{error}");
+        assert!(
+            msg.contains("validity") || msg.contains("containment") || msg.contains("outside"),
+            "expected containment failure, got: {msg}"
+        );
+    }
 }

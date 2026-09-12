@@ -40,6 +40,7 @@ time = { version = "=0.3.47", default-features = false, features = ["parsing"], 
 coset = { version = "0.4.2", default-features = false }
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["rand_core"] }
 rand_core = { version = "0.6.4", features = ["getrandom"] }
+serde_json = { version = "1.0.140", default-features = false, features = ["alloc", "float_roundtrip"] }
 
 [lints]
 workspace = true

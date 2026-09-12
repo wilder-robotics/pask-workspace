@@ -160,14 +160,16 @@ const COSE_LABEL_CONTENT_TYPE: i64 = 3;
 /// a profile parameter with a second '/' (e.g., "wilder.pser/0.5"), which
 /// fails this check. To work around this, the protected header is parsed
 /// separately as a CBOR map to locate the content type at label 3. If the
-/// content type is found there and contains the profile version separator,
-/// the second '/' in the raw bytes is replaced with '-' so `coset` can parse
-/// the structure. The original bytes are preserved for signature verification
-/// via `protected.original_data`, and the content type is normalized back to
-/// its canonical form after parsing.
+/// content type is found there and is a supported type, a temporary parsing
+/// copy is created where only the label-3 value has the second '/' replaced
+/// with '-' so `coset` can parse the structure. The original bytes are
+/// preserved for signature verification via `protected.original_data`, and
+/// the content type is normalized back to its canonical form after parsing.
 ///
 /// A profile string appearing in another protected header field (not label 3)
-/// is not treated as a content type.
+/// is not treated as a content type and is not modified by the compatibility
+/// adaptation. The patch is applied to the structurally identified label-3
+/// value only, never to a substring found by searching the whole header.
 #[allow(clippy::collapsible_if)]
 fn parse_statement(mut encoded: &[u8]) -> Result<CoseSign1> {
     let mut value: Value = coset::cbor::de::from_reader(&mut encoded)
@@ -187,37 +189,39 @@ fn parse_statement(mut encoded: &[u8]) -> Result<CoseSign1> {
     // Structurally parse the protected header as a CBOR map to locate the
     // content type at COSE label 3. This is not a raw byte search: we
     // deserialize the protected header and look at the actual header field.
-    let protected_map: Value = coset::cbor::de::from_reader(&mut &protected_original[..])
+    // Trailing data after the map is rejected.
+    let mut protected_reader = &protected_original[..];
+    let protected_map: Value = coset::cbor::de::from_reader(&mut protected_reader)
         .map_err(|_| Error::Cose("protected header is not valid CBOR"))?;
+    if !protected_reader.is_empty() {
+        return Err(Error::Cose("trailing data in protected header"));
+    }
 
     let mut ct_needs_compat = false;
     let mut ct_normalized: Option<&'static str> = None;
     let mut ct_label_count = 0;
+    let mut ct_wrong_type = false;
 
     if let Value::Map(entries) = &protected_map {
         for (label, val) in entries {
             if let Value::Integer(label_int) = label {
                 if i128::from(*label_int) == COSE_LABEL_CONTENT_TYPE as i128 {
                     ct_label_count += 1;
-                    if let Value::Text(ct_str) = val {
-                        for ct in [CONTENT_TYPE, CONTENT_TYPE_06] {
-                            if ct_str == ct {
-                                // Canonical form with two '/' characters.
-                                // coset rejects this, so we need the
-                                // compatibility step.
+                    match val {
+                        Value::Text(ct_str) => {
+                            if ct_str == CONTENT_TYPE {
                                 ct_needs_compat = true;
-                                ct_normalized = Some(ct);
-                                break;
-                            }
-                            let hyphen_form = ct.replace('/', "-");
-                            if ct_str == &hyphen_form {
-                                // Producer deviation: second '/' already
-                                // encoded as '-'. coset can parse this, but
-                                // we normalize after parsing.
+                                ct_normalized = Some(CONTENT_TYPE);
+                            } else if ct_str == CONTENT_TYPE_06 {
                                 ct_needs_compat = true;
-                                ct_normalized = Some(ct);
-                                break;
+                                ct_normalized = Some(CONTENT_TYPE_06);
                             }
+                            // Other text values at label 3 are not patched.
+                            // coset may accept or reject them; validate_headers
+                            // will reject them as unsupported.
+                        }
+                        _ => {
+                            ct_wrong_type = true;
                         }
                     }
                 }
@@ -228,33 +232,48 @@ fn parse_statement(mut encoded: &[u8]) -> Result<CoseSign1> {
     if ct_label_count > 1 {
         return Err(Error::Header("duplicate content_type in protected header"));
     }
+    if ct_wrong_type {
+        return Err(Error::Header("content_type must be a text string"));
+    }
 
-    // If the content type contains the profile version separator '/', replace
-    // it with '-' in the protected header bytes so coset can parse the
-    // structure. This operates on the actual content type field at label 3,
-    // which we have verified structurally above. A matching string in another
-    // protected field is not affected.
+    // If the content type at label 3 is a supported type with two slashes,
+    // create a temporary parsing copy where only the label-3 value is patched
+    // (second '/' replaced with '-') so coset can parse the structure.
+    // The original bytes are preserved for signature verification.
+    // This modifies the structurally identified label-3 value only, never a
+    // substring found by searching the whole header.
     if ct_needs_compat {
         let ct = ct_normalized.expect("checked above");
-        // Replace the second '/' (in the profile version) with '-' in the
-        // raw protected header bytes. The first '/' (MIME type separator) is
-        // preserved so coset's single-'/' check passes.
         let slash_pos = ct
             .rfind('/')
             .expect("content type contains a profile version separator");
-        let ct_bytes = ct.as_bytes();
+
+        // Clone the protected header map and patch only the label-3 value.
+        let mut patched_map = protected_map.clone();
+        if let Value::Map(entries) = &mut patched_map {
+            for (label, val) in entries.iter_mut() {
+                if let Value::Integer(label_int) = label {
+                    if i128::from(*label_int) == COSE_LABEL_CONTENT_TYPE as i128 {
+                        if let Value::Text(ct_str) = val {
+                            if ct_str == ct {
+                                ct_str.replace_range(slash_pos..=slash_pos, "-");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Serialize the patched map and replace the protected header bytes
+        // in the outer COSE_Sign1 array. Only the label-3 value was changed;
+        // all other fields preserve their original encoding.
+        let mut patched_bytes = Vec::new();
+        coset::cbor::ser::into_writer(&patched_map, &mut patched_bytes)
+            .map_err(|_| Error::Cose("failed to serialize patched protected header"))?;
 
         if let Value::Array(items) = &mut value {
             if let Some(Value::Bytes(protected)) = items.first_mut() {
-                // Search for the content type string in the protected header
-                // bytes. This is safe because we have already verified that
-                // the content type is at COSE label 3 in the CBOR map.
-                if let Some(start) = protected
-                    .windows(ct_bytes.len())
-                    .position(|w| w == ct_bytes)
-                {
-                    protected[start + slash_pos] = b'-';
-                }
+                *protected = patched_bytes;
             }
         }
     }
