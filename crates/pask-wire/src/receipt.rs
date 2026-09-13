@@ -344,10 +344,34 @@ fn read_receipts_array(value: &Value) -> AttachedReceipts {
     }
     let mut receipts = Vec::with_capacity(items.len());
     for item in items {
-        let mut encoded = Vec::new();
-        if coset::cbor::ser::into_writer(item, &mut encoded).is_err() {
-            return AttachedReceipts::Malformed("a receipts element could not be re-encoded");
-        }
+        let encoded = match item {
+            // RFC 9942 Section 4.3 / RFC 9943 Section 7: attached receipts
+            // are byte strings containing encoded Receipt objects.
+            // Extract the byte-string contents directly and preserve them
+            // for later validation.
+            Value::Bytes(b) => b.clone(),
+            // Compatibility: accept a bare COSE_Sign1 array or a tag-18
+            // tagged COSE_Sign1 and re-serialize it to bytes. This path
+            // exists for the pask-ts-client sender, which stores decoded
+            // receipt Values rather than byte strings. It is not the
+            // RFC-prescribed wire form. See issue #70.
+            Value::Array(_) | Value::Tag(18, _) => {
+                let mut buf = Vec::new();
+                if coset::cbor::ser::into_writer(item, &mut buf).is_err() {
+                    return AttachedReceipts::Malformed(
+                        "a receipts element could not be re-encoded",
+                    );
+                }
+                buf
+            }
+            // Any other CBOR type (scalar, map, tag other than 18) is not a
+            // valid receipt representation.
+            _ => {
+                return AttachedReceipts::Malformed(
+                    "a receipts element is not a byte string, array, or tag-18 value",
+                );
+            }
+        };
         receipts.push(encoded);
     }
     AttachedReceipts::Present(receipts)

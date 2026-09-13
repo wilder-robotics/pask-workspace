@@ -22,6 +22,8 @@ mod cwt;
 #[cfg(feature = "alloc")]
 mod digest;
 #[cfg(feature = "alloc")]
+mod entry;
+#[cfg(feature = "alloc")]
 mod envelope;
 #[cfg(feature = "alloc")]
 mod error;
@@ -38,6 +40,8 @@ pub use canonical_example::canonical_example;
 pub use chain::{AffiliationChange, ChainReport, verify_chain};
 #[cfg(feature = "alloc")]
 pub use digest::{sha256_prefixed, validate_sha256};
+#[cfg(feature = "alloc")]
+pub use entry::{candidate_leaf_hash, derive_candidate_entry};
 #[cfg(feature = "alloc")]
 pub use envelope::{CONTENT_TYPE, CONTENT_TYPE_06, produce_ed25519, verify_ed25519};
 #[cfg(feature = "es256")]
