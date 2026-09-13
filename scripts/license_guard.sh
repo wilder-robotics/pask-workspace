@@ -54,9 +54,10 @@ COPYLEFT_SPDX="AGPL-3.0-only"
 #   rand_core        MIT OR Apache-2.0
 #   anyhow           MIT OR Apache-2.0
 #   clap             MIT OR Apache-2.0
+#   hex              MIT OR Apache-2.0 (dev-dependency for test assertions)
 PERMISSIVE_DEP_ALLOWLIST=(
   coset ryu-js ed25519-dalek p256 serde serde_json sha2 time thiserror
-  proptest rand_core anyhow clap
+  proptest rand_core anyhow clap hex
 )
 
 if [[ ! -f Cargo.toml || ! -d crates ]]; then
