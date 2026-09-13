@@ -39,14 +39,15 @@ pub use chain::{AffiliationChange, ChainReport, verify_chain};
 #[cfg(feature = "alloc")]
 pub use digest::{sha256_prefixed, validate_sha256};
 #[cfg(feature = "alloc")]
-pub use envelope::{CONTENT_TYPE, produce_ed25519, verify_ed25519};
+pub use envelope::{CONTENT_TYPE, CONTENT_TYPE_06, produce_ed25519, verify_ed25519};
 #[cfg(feature = "es256")]
 pub use envelope::{produce_es256, verify_es256};
 #[cfg(feature = "alloc")]
 pub use error::{Error, Result};
 #[cfg(feature = "alloc")]
 pub use payload::{
-    AckProvenance, BindingMode, IssuerAffiliation, Payload, SPEC_VERSION, canonicalize_json,
+    AckProvenance, BindingMode, IssuerAffiliation, Payload, SPEC_VERSION, SPEC_VERSION_06,
+    canonicalize_json, is_supported_spec,
 };
 #[cfg(feature = "alloc")]
 pub use receipt::{

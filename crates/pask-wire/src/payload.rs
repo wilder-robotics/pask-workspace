@@ -16,6 +16,15 @@ use crate::{Error, Result, sha256_prefixed, validate_sha256};
 /// Supported PSER profile version.
 pub const SPEC_VERSION: &str = "wilder.pser/0.5";
 
+/// Profile version carrying the timestamp containment requirement.
+pub const SPEC_VERSION_06: &str = "wilder.pser/0.6";
+
+/// Returns true when the given spec string is a supported profile version.
+#[must_use]
+pub fn is_supported_spec(spec: &str) -> bool {
+    spec == SPEC_VERSION || spec == SPEC_VERSION_06
+}
+
 /// Wire strings for the three named `adapter.ackProvenance` values.
 ///
 /// The value space is a closed set enumerated in the profile document rather
@@ -604,7 +613,7 @@ fn check_spec_version(bytes: &[u8]) -> Result<()> {
     // A document too malformed to yield a `spec` string is not a version
     // problem. Say nothing and let the full parse produce the real diagnosis.
     if let Ok(probe) = serde_json::from_slice::<SpecOnly>(bytes)
-        && probe.spec != SPEC_VERSION
+        && !is_supported_spec(&probe.spec)
     {
         return Err(Error::Validation("unsupported spec version"));
     }
@@ -673,6 +682,12 @@ impl Payload {
     pub fn to_jcs(&self) -> Result<Vec<u8>> {
         let value = serde_json::to_value(self).map_err(|error| Error::Json(error.to_string()))?;
         canonicalize_value(&value)
+    }
+
+    /// Returns the profile version string.
+    #[must_use]
+    pub fn spec(&self) -> &str {
+        &self.spec
     }
 
     /// Returns the stable site identifier used as the CWT subject.
@@ -866,7 +881,7 @@ impl Payload {
     }
 
     fn validate(&self) -> Result<()> {
-        if self.spec != SPEC_VERSION {
+        if !is_supported_spec(&self.spec) {
             return Err(Error::Validation("unsupported spec version"));
         }
         // The profile closes this set. See `BindingMode` for why an unknown is
@@ -941,6 +956,21 @@ impl Payload {
             return Err(Error::Validation(
                 "attestation validity notAfter must be strictly later than notBefore",
             ));
+        }
+        // Issue #30: Under wilder.pser/0.6, the Verifier MUST check that
+        // the receipt-issuance timestamp `ts` falls within the attestation
+        // validity interval [notBefore, notAfter] using inclusive endpoints.
+        // This check does not apply to wilder.pser/0.5, whose profile does not
+        // require timestamp containment. A separately identified local policy
+        // may perform an additional check without changing the historical
+        // profile contract.
+        if self.spec == SPEC_VERSION_06 {
+            let ts = validate_utc(&self.ts)?;
+            if ts < validity_start || ts > validity_end {
+                return Err(Error::Validation(
+                    "receipt-issuance timestamp is outside the attestation validity interval",
+                ));
+            }
         }
         validate_sha256(&self.adapter.ack_digest)?;
         match (self.chain.seq, self.chain.prev_hash.as_deref()) {
