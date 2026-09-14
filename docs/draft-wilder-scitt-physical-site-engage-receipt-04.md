@@ -1,7 +1,7 @@
 ---
 title: "A SCITT Profile for Physical-Site Engagement Receipts"
 abbrev: "Physical-Site Engagement Receipt"
-docname: draft-wilder-scitt-physical-site-engage-receipt-03
+docname: draft-wilder-scitt-physical-site-engage-receipt-04
 category: std
 submissionType: IETF
 ipr: trust200902
@@ -27,13 +27,16 @@ author:
 
 normative:
   RFC8785:
+  RFC8949:
   RFC9052:
+  RFC9162:
   RFC9597:
   RFC9942:
   RFC9943:
 
 informative:
   RFC7942:
+  RFC9334:
   I-D.noa-scitt-ai-agent-receipt:
     title: A SCITT Profile for AI-Agent Action Receipts
     author:
@@ -248,7 +251,7 @@ Adapter Write-In:
 Physical-Site Engagement Receipt (PSER):
 : A SCITT Signed Statement under this profile, carrying a canonical JSON
   payload conforming to {{payload}}, with the profile identifier
-  `wilder.pser/0.5` and a SCITT Receipt attached as defined in
+  `wilder.pser/0.6` and a SCITT Receipt attached as defined in
   {{RFC9942}}.
 
 Chain-Verifier:
@@ -262,13 +265,19 @@ Chain-Verifier:
 
 # Profile identifier and media types
 
-The profile identifier for this document is `wilder.pser/0.5` and MUST appear
+The profile identifier for this document is `wilder.pser/0.6` and MUST appear
 as the value of the top-level `spec` member of the payload defined in
-{{payload}}.
+{{payload}}. The media type parameter `profile` carries the same value.
+
+A receipt declaring `wilder.pser/0.5` remains subject to the published
+requirements of that earlier profile version. An implementation supporting
+both profile versions evaluates each receipt under its declared version's
+requirements. Unknown or unsupported versions are reported as unsupported,
+not treated as known versions with failed checks.
 
 The COSE `content_type` (protected header label 3, {{RFC9052}}) for a
 Physical-Site Engagement Receipt Statement is
-`application/pser+json; profile=wilder.pser/0.5`. IANA registration of this
+`application/pser+json; profile=wilder.pser/0.6`. IANA registration of this
 media type is requested in {{iana}}.
 
 The `application/scitt-statement+cose` and `application/scitt-receipt+cose`
@@ -288,15 +297,12 @@ digest this profile specifies over the rest of the object. Normative member
 definitions are in Section 4.1; where this example and Section 4.1 disagree,
 Section 4.1 governs.
 
-This figure is emitted by the reference implementation and asserted
-byte-identical to it in that implementation's continuous integration. It is
-not maintained by hand.
-
-Its values are illustrative. The digests are placeholders, the identifiers are
+This figure is illustrative. Its digests are placeholders, the identifiers are
 synthetic, and the `teeClass` value is one conforming registry entry chosen so
-the example round-trips. This profile does not prefer, presume, or depend on
-any particular confidential-compute environment, and no value in this figure
-should be read as a statement about deployed hardware.
+the example round-trips. The `chain.hash` value is computed over the
+canonicalized payload with `chain.hash` absent. This profile does not prefer,
+presume, or depend on any particular confidential-compute environment, and no
+value in this figure should be read as a statement about deployed hardware.
 
 ~~~ json
 {
@@ -341,7 +347,7 @@ should be read as a statement about deployed hardware.
     "witnessKey": "key:tee:res-001-witness-01"
   },
   "chain": {
-    "hash": "sha256:6de1b8b2c641536b35fada1a7ee233c68284cf3788408a7160d5f525c309d2b3",
+    "hash": "sha256:9c5e4ef37e741d096118adfdb1fe46dcd72dd0f6960a11888d7a1815cf817e1e",
     "prevHash": null,
     "seq": 0
   },
@@ -371,7 +377,7 @@ should be read as a statement about deployed hardware.
     },
     "id": "site:res-001"
   },
-  "spec": "wilder.pser/0.5",
+  "spec": "wilder.pser/0.6",
   "ts": "2026-10-15T14:00:00Z"
 }
 ~~~
@@ -381,9 +387,12 @@ should be read as a statement about deployed hardware.
 
 ### `spec` (REQUIRED, string)
 
-MUST be `wilder.pser/0.5` for receipts conforming to this document. A verifier
-MUST reject any Statement with a different `spec` value as out of scope of
-this profile.
+MUST be `wilder.pser/0.6` for receipts conforming to this document. A
+verifier MUST reject a Statement with a `spec` value outside the supported
+set as out of scope of this profile. An implementation supporting multiple
+profile versions evaluates each receipt under its declared version's
+requirements. A receipt declaring `wilder.pser/0.5` remains subject to the
+published requirements of that earlier profile version.
 
 ### `id` (REQUIRED, string)
 
@@ -394,6 +403,19 @@ form is a URN or a `uuid:` prefix. `id` MUST NOT be reused within an Issuer.
 
 RFC 3339 UTC timestamp at which the Issuer sealed the receipt. This is the
 receipt-issuance time; it MAY differ from `engagement.window.end`.
+
+For a receipt declaring `wilder.pser/0.6`, the Verifier MUST check
+`notBefore <= ts <= notAfter` using parsed instants and inclusive endpoints.
+The comparison checks whether the asserted receipt-issuance timestamp lies
+within the asserted attestation-validity interval. It does not independently
+establish the actual time of issuance or whether the engagement occurred
+within that interval. A timestamp at either endpoint passes this check only;
+it does not establish overall receipt conformance.
+
+This containment requirement does not apply to a receipt declaring
+`wilder.pser/0.5`. An implementation supporting both profile versions
+evaluates each under its declared version's requirements. A verifier-selected
+clock-skew tolerance MUST NOT alter the profile's containment interval.
 
 ### `issuerAffiliation` (REQUIRED, string)
 
@@ -522,18 +544,15 @@ relevant key under the relying party's trust policy.
 - `attestation.teeClass` (REQUIRED, string): TEE class identifier.
   Registry-governed; see {{iana}}. The *TEE Class* registry is REQUESTED by
   this document and has NOT yet been allocated by IANA. Until allocation, the
-  admissible values are exactly the initial values listed in {{iana}}:
-  `intel.tdx`, `amd.sev-snp`, `arm.cca`, `nvidia.h100-cc`,
-  `nvidia.jetson-thor-cc`, `aws.nitro-enclave`. A Verifier MUST reject a
-  `teeClass` value outside that set.
+  admissible values are exactly the initial values listed in {{iana}}.
+  A Verifier MUST reject a `teeClass` value outside that set.
 
-  A confidential-compute environment absent from that set is not
-  accommodated by this revision, and an implementer on such an environment
-  has no conforming value to emit. The extension route is the registration
-  policy in {{iana}}: "Specification Required". A new value is added by
-  publishing a specification that defines the `platformEvidence` format the
-  class admits, and requesting registration against it. Once the registry is
-  allocated, that route does not require a revision of this document.
+  These descriptions identify the environments named by the existing values.
+  They do not, by themselves, define a complete evidence-format binding or
+  establish implementation support. Evidence encoding, versioning, trust
+  inputs, and appraisal requirements are addressed by the applicable evidence
+  specification and the profile's attestation model
+  (`attestation.platformEvidence`, {{payload}}).
 - `attestation.platformEvidence` (REQUIRED, object): reference to the
   platform-native attestation document, in a format defined by the TEE
   class. The document itself MAY be conveyed by reference (URI + digest) or
@@ -563,6 +582,21 @@ relevant key under the relying party's trust policy.
 - `attestation.witnessKey` (REQUIRED, string): key identifier of the TEE
   signing key. This MAY differ from the Issuer's `iss` when the TEE
   operates as a delegated witness.
+
+  Under the `wilder.pser/0.6` DIRECT_WITNESS naming convention,
+  `attestation.witnessKey` and the protected CWT `iss` value MUST be
+  textually equal. A successful comparison establishes this naming
+  convention only. It does not establish that the signature-verification
+  key is authentically associated with either identifier or that genuine
+  TEE hardware produced the signature. This convention does not require a
+  global one-to-one mapping between all issuer identifiers and keys,
+  prohibit key rotation, or redefine issuer identity as key material. The
+  actual DIRECT_WITNESS relationship still concerns the key that produced
+  the signature and the TEE signing key. Authenticated key association and
+  hardware provenance require their respective evidence and trust
+  mechanisms; they are not supplied by label equality. This naming
+  restriction MUST NOT be silently applied as a changed conformance rule
+  for `wilder.pser/0.5`.
 - `attestation.bindingMode` (REQUIRED, string): the attestation-binding mode
   under which this receipt was produced, as defined in
   {{attestation-binding}}. The admissible values are exactly:
@@ -595,8 +629,13 @@ relevant key under the relying party's trust policy.
   later than `notBefore`; a Verifier MUST reject a receipt whose `notAfter` is
   equal to or precedes its `notBefore`. A zero-length interval asserts
   validity for an instant of zero duration and has no legitimate producer.
-  This revision does not
-  require a Verifier to test `ts` against the interval.
+  For a receipt declaring `wilder.pser/0.6`, a Verifier MUST reject the
+  receipt when the asserted `ts` is outside the asserted `[notBefore,
+  notAfter]` interval, using parsed instants and inclusive endpoints. This
+  checks consistency of the recorded instants, not independently established
+  real-world issuance time. The published `wilder.pser/0.5` profile did not
+  require timestamp containment; that historical requirement remains
+  unchanged.
 
 ### `adapter` (REQUIRED, object)
 
@@ -740,7 +779,7 @@ the CWT Claims header parameter (label 15, {{RFC9597}}), carrying at least:
   claim.
 
 The protected header `content_type` (label 3) MUST be
-`application/pser+json; profile=wilder.pser/0.5`.
+`application/pser+json; profile=wilder.pser/0.6`.
 
 The Signed Statement's payload MUST be the JCS serialization of the JSON
 object defined in {{payload}}. Detached payloads are NOT PERMITTED under
@@ -797,15 +836,55 @@ receipt was produced MUST be carried in that receipt, in
 `attestation.bindingMode` ({{payload}}), and MAY additionally be recorded in
 the CWT Claims Set. It is not obtained from any Issuer-published document:
 
-- *Direct-witness mode:* the Issuer's `iss` key is itself the TEE signer.
-  `attestation.witnessKey` matches `iss`.
+- *Direct-witness mode:* the signing key associated with the Issuer identified
+  by `iss` is the TEE signing key. Under `wilder.pser/0.6`,
+  `attestation.witnessKey` and the protected CWT `iss` value MUST be textually
+  equal under the naming convention defined in this profile. That comparison
+  establishes identifier consistency only; it does not establish authenticated
+  association with the key used to verify the signature or genuine hardware
+  provenance. The published `wilder.pser/0.5` requirement to reject a
+  DIRECT_WITNESS receipt whose identifiers denote different keys remains part
+  of that earlier profile. The new 0.6 string comparison neither changes the
+  earlier profile nor supplies the missing authenticated-key-association
+  mechanism. The reference implementation's broader assurance limitation is
+  recorded in {{impl-status}}.
 - *Delegated-witness mode:* the Issuer's `iss` key is distinct from the
   TEE signer, and the TEE has issued a delegation credential authorizing
   the Issuer to sign this receipt on the TEE's behalf. The delegation
   credential is bound by the `attestation.sealedEvidence.digest` and is an
   Issuer-published fact resolved under {{issuer-published}}. Where it does not
   resolve, the authorization of the signing key is **undetermined** and the
-  Verifier proceeds as required by that section.
+  Verifier proceeds as required by that section. Delegated signing does not
+  itself establish evidence appraisal.
+
+## Evidence model and external appraisal {#evidence-model}
+
+This revision retains the existing attestation payload structure and introduces
+neither an `attestation.quote` member nor an `attestationResult` member. The
+payload carries references, digests, and attestation-related claims;
+`measuredBoot` also carries the listed component measurements. The existing
+allowance for the platform attestation document to be supplied by reference or
+inline in the enclosing Signed Statement's unprotected header is unchanged.
+
+A relying party may appraise obtained Evidence itself or use a separate
+Verifier channel. A digest commits to particular evidence bytes; it is not, by
+itself, a retrieval address, a retrieval mechanism, or evidence appraisal.
+Obtaining evidence whose digest matches a receipt is distinct from validating
+that evidence and its binding to the relevant key.
+
+An entity performs the RATS Verifier role only when it appraises Evidence
+using the applicable trust inputs and appraisal policy and produces an
+Attestation Result. A single entity may perform several roles, but their
+combination must be stated rather than inferred from the signing mode.
+
+Verification of the Signed Statement and attached Receipt alone does not
+establish hardware provenance. The choice of any additional in-receipt
+Attestation Result representation remains open. Its format, authentication,
+evidence/key binding, freshness, and failure behavior are not specified by this
+revision. Option D (retain evidence references and additionally support an
+optional Attestation Result) is a future design direction, not an added -04
+payload member. These functional distinctions follow the RATS role definitions
+({{RFC9334}}).
 
 ## Clock basis {#clock-basis}
 
@@ -851,10 +930,94 @@ registration adds is a reference obtained before verification, not a network
 dependency during it. This revision defines no conforming mode of
 operation in which no Transparency Service is reachable at issuance time.
 
-This revision does not fully specify the candidate-entry byte encoding for
-inclusion-proof verification beyond the requirements inherited from
-{{RFC9943}}, including Section 6.3; interoperable verification therefore
-depends on an agreed entry-encoding convention.
+This revision specifies the candidate-entry byte encoding for inclusion-proof
+verification. For this profile, the presented object MUST be a COSE_Sign1 with
+four array elements: protected-header byte string, unprotected-header map,
+attached-payload byte string, and signature byte string. The payload MUST be
+present as a byte string; a null payload indicating detached content is not
+permitted. The input may be an untagged COSE_Sign1 or a COSE_Sign1 wrapped
+in tag 18. Other tag wrappers are not accepted by this derivation.
+
+The verifier derives the candidate entry as the untagged four-element array
+`[P, {}, M, S]`, where P, M, and S are the original protected-header, payload,
+and signature byte-string contents. The candidate entry MUST use the core
+deterministic encoding requirements of {{RFC8949}}, Section 4.2.1, for the
+outer array, empty map, and byte-string framing. The contents of P, M, and S
+are preserved unchanged; this requirement does not instruct the verifier to
+parse and reserialize those contents. The outer array is definite-length, the
+empty map is encoded as `0xa0`, and the three byte strings use the shortest
+definite-length encodings of their lengths.
+
+This derivation MUST preserve P, M, and S by content. It MUST NOT parse and
+reserialize their contents to construct the candidate entry. The original
+outer CBOR length encodings and any permitted outer tag are not preserved.
+These derivation rules do not waive separate COSE header, signature, payload,
+or profile validation. Parsing a header for validation is distinct from
+rewriting its bytes for hashing. This follows RFC 9943 Section 6.3, which
+requires the unprotected header of a Signed Statement to be set to an empty
+map before inclusion in the Statement Sequence.
+
+Transmitted envelopes use COSE tag 18 ({{RFC9052}}), and attached receipts are
+encoded as byte strings containing tagged Receipt objects per {{RFC9942}}
+Section 4.3. The untagged candidate entry is a profile-internal representation
+used for hashing; it is not the transmitted wire form. A Transparency Service
+that hashes a different representation (for example, the tag-18 form) cannot
+satisfy this profile unless it commits to the candidate-entry representation
+specified here. This is the profile imposing a requirement on a party it does
+not control: an existing TS that hashes the tagged form cannot satisfy the
+profile without adaptation.
+
+A Transparency Service used to satisfy this profile's inclusion requirement
+MUST issue a Receipt whose inclusion proof commits to the candidate-entry
+representation specified in this section. The applicable registration path
+and the verifier MUST use the same derivation and serialization rule.
+Emptying the unprotected map alone does not establish agreement on the
+remaining serialized bytes. The service's internal storage format is not
+prescribed, but the candidate-entry bytes against which its proof verifies
+are prescribed. Registration and verification alignment MUST be demonstrated
+by byte-exact fixtures, including derivation from the presented Transparent
+Statement without access to retained producer-side bytes.
+
+Attaching, removing, or modifying receipts in the unprotected header does
+not change the candidate entry: `candidate_entry(S) ==
+candidate_entry(attach_receipt(S, R))` for any receipt R. This is the
+property that makes inclusion proofs portable: the proof covers the
+registered statement, not whatever receipts happen to be attached to it at
+verification time.
+
+The profile's inclusion requirement is satisfied only when at least one
+attached Receipt has both a valid Transparency Service signature under an
+accepted service key and a valid inclusion proof for the derived candidate
+entry. A Receipt that is invalid, unsupported, or associated with an
+untrusted service does not count toward that requirement. A structurally
+parseable additional Receipt whose cryptographic verification fails MUST NOT,
+solely by its presence, defeat another attached Receipt that satisfies the
+inclusion requirement. A separately identified local policy may impose
+stricter acceptance conditions. This rule does not relax validation of the
+enclosing COSE structure or malformed attachment containers. Receipt
+signature verification, inclusion-proof verification, and issuer-signature
+verification are separate checks. Satisfying the inclusion requirement does
+not establish full PSER conformance; every other applicable profile
+requirement still applies. An absent proof and an invalid, unsupported, or
+untrusted proof are not reported as successful inclusion.
+
+For `RFC9162_SHA256`, the leaf hash is
+`SHA256(0x00 || candidate_entry)`, using the leaf construction in
+{{RFC9162}}, Section 2.1.1. Receipt representation and verification follow
+the applicable `RFC9162_SHA256` procedures in {{RFC9942}}. This formula is
+not applied by default to another or unknown VDS. Verification of another
+supported VDS uses that VDS's specified procedure. This paragraph does not
+add a PSER-wide prohibition on other SCITT VDS types. The current reference
+implementation's support is limited to RFC9162_SHA256; unsupported VDS
+values are reported as unsupported and cannot count as successfully verified
+evidence.
+
+This specification does not prescribe how a Transparency Service stores the
+entry internally. Interoperability requires only that the inclusion proof
+verifies when the verifier uses the candidate entry derived from the
+presented Transparent Statement.
+
+## Registration with an affiliated Transparency Service
 
 An Issuer MAY register with a Transparency Service it operates itself, or
 that is operated by a principal affiliated with it. Where it does so, the
@@ -884,7 +1047,14 @@ This document requests the following IANA actions.
 ## Media type registration
 
 Register `application/pser+json` per {{RFC6838}}, with the required
-`profile` parameter and profile value `wilder.pser/0.5`.
+`profile` parameter identifying the applicable PSER profile version.
+This document specifies the value `wilder.pser/0.6`. The value
+`wilder.pser/0.5` identifies the profile specified by published revision
+`-03` and retains that revision's requirements.
+
+A version-shaped value does not by itself identify a supported profile.
+Unknown or unsupported values are reported as unsupported and are not
+interpreted using the rules of another version.
 
 ## COSE Header Parameters
 
@@ -908,6 +1078,32 @@ policy "Specification Required":
 3. *TEE Class* -- values of `attestation.teeClass`.
    Initial values: `intel.tdx`, `amd.sev-snp`, `arm.cca`,
    `nvidia.h100-cc`, `nvidia.jetson-thor-cc`, `aws.nitro-enclave`.
+
+   These descriptions identify the environments named by the existing
+   values. They do not, by themselves, define a complete evidence-format
+   binding or establish implementation support.
+
+   - `intel.tdx`: Intel Trust Domain Extensions, a VM-level isolation
+     primitive.
+   - `amd.sev-snp`: AMD Secure Encrypted Virtualization with Secure Nested
+     Paging, a VM-level isolation primitive.
+   - `arm.cca`: Arm Confidential Compute Architecture, a hardware
+     isolation framework.
+   - `nvidia.h100-cc`: NVIDIA H100 in Confidential Computing mode, a
+     device-level isolation primitive.
+   - `nvidia.jetson-thor-cc`: existing product-named identifier associated
+     with NVIDIA Jetson Thor. Retained provisionally and unchanged; this
+     profile does not establish the exact confidential-compute capability,
+     evidence format, or appraisal binding represented by this value.
+   - `aws.nitro-enclave`: AWS Nitro Enclave, a cloud-provider isolation
+     primitive.
+
+   A confidential-compute environment absent from the admissible set is not
+   conforming and is not silently folded into an existing value. The
+   registry is the route by which one becomes conforming, and its
+   governance is stated above. This revision clarifies existing identifiers
+   with descriptive context. It does not add, remove, or rename any value,
+   and it does not resolve the evidence-format question for any value.
 
 4. *Sealed Evidence Encoding* -- values of
    `attestation.sealedEvidence.encoding`.
@@ -976,6 +1172,15 @@ mismatch carries. Those are matters for the relying party's own policy. A
 relying party that reproduces this section in a contract, underwriting rule,
 or adjudication SHOULD state its own remedy; this document supplies a
 detection property, not a remedy.
+
+## Corrective statements {#correction-security}
+
+This revision does not define an interoperable corrective-statement wire format
+or impose correction-related requirements on `wilder.pser/0.6` conformance. An
+informative corrective-statement design is recorded in {{correction-envelope}}
+for discussion. A correction does not reset the original's
+`attestation.validity` interval. Conflicting corrections are surfaced, not
+resolved. No automatic winning history is computed.
 
 ## Adapter Write-In is write-only in this revision
 
@@ -1113,15 +1318,6 @@ substitute its own local clock. Stating this plainly is deliberate: a relying
 party writing policy against this profile needs to know that the profile
 carries the timebase requirement and does not yet carry the mechanism.
 
-## Correction of a filed record {#correction-envelope}
-
-This revision defines no PSER-specific correction envelope or procedure for
-discovering and linking corrective statements to an earlier registered Signed
-Statement. Subsequent Signed Statements may convey amended or corrected
-information as described in {{RFC9943}}, without rewriting the original
-append-only record. This profile does not specify how a Verifier processes
-such corrections or how a relying party changes its decision in response.
-
 ## Three-party trust model {#trust-model}
 
 The trust model described in this section applies to deployments where
@@ -1226,71 +1422,67 @@ publish only the Signed Statement's Receipt to a public Transparency
 Service, following the guidance in {{RFC9943}} Section 6.2 for sensitive
 Statements.
 
-# Implementation status
+# Implementation status {#impl-status}
 
 This section records the status of known implementations of the protocol
-defined by this specification at the time of posting, and is based on a
-proposal described in {{RFC7942}}. The description of implementations in this
-section is intended to assist the IETF in its decision processes in
-progressing drafts to RFCs. This section is to be removed before publishing as
-an RFC.
+defined by this specification and follows the approach described in
+{{RFC7942}}. It is intended to assist review of the specification and does
+not imply IETF endorsement. This section is to be removed before publication
+as an RFC.
 
-**Reference implementation.** `pask-workspace`, Rust, six crates
-(`pask-wire`, `pask-attest`, `pask-site`, `pask-adapter`, `pask-wire-cli`,
-`pask-ts-client`), at commit `9230401` (2026-09-09). Source:
-`https://github.com/wilder-robotics/pask-workspace`. Maturity: prototype.
-Coverage of this profile is partial and the gaps below are normative
-requirements this revision states and the implementation does not yet meet.
-Licensing: `pask-wire`, `pask-attest`, and `pask-wire-cli` are Apache-2.0;
+**Reference implementation.** `pask-workspace`, maintained by Wilder Robotics,
+is a prototype Rust workspace with six crates: `pask-wire`, `pask-attest`,
+`pask-site`, `pask-adapter`, `pask-wire-cli`, and `pask-ts-client`. Source:
+`https://github.com/wilder-robotics/pask-workspace`.
+
+The implementation assessment is based on merged source through commit
+`83d4b56e49a3b09d088bddd0802c81b73ac34664`, which incorporates the changes from
+PRs #68 and #69. The source revision containing this draft additionally
+provides a `wilder.pser/0.6` example generator and tests that compare the
+active draft's payload figure byte-for-byte with its output. The existing
+`wilder.pser/0.5` generator and regression fixtures are retained.
+
+**Version support and implemented checks.** The implementation supports
+`wilder.pser/0.5` and `wilder.pser/0.6`. It selects and checks the protected
+content type against the declared payload version. For 0.6, it implements
+receipt-issuance timestamp containment within the recorded attestation
+validity interval and the DIRECT_WITNESS exact-string identifier convention.
+Those additional checks are not imposed retroactively on 0.5.
+
+Candidate-entry derivation preserves the contents of the protected-header,
+payload, and signature byte strings and constructs the deterministic
+untagged outer array `[P, {}, M, S]`. The implementation also provides
+RFC9162_SHA256 leaf hashing and inclusion-proof/signature verification, and
+reads attached Receipts in byte-string form. Its reader additionally accepts
+specified legacy forms for compatibility; accepting those forms does not
+establish transmitted-envelope conformance.
+
+Receipt-chain verification checks the relationships between presented
+payloads and reports affiliation changes. Submission code exists in
+`pask-ts-client`. A test-only recipient path exercises derivation, Receipt
+extraction, and proof selection with controlled keys and independent expected
+vectors. It is not an exported application-level aggregate verifier.
+
+**Remaining limitations.** The implementation does not establish authenticated
+association between the signature-verification key and the claimed witness
+or Issuer identifiers for either supported version. The 0.6 label comparison
+does not close the historical 0.5 key-association gap or establish hardware
+provenance. Vendor-evidence appraisal and the witness-key lifecycle assertions
+remain incomplete. Timestamp containment checks recorded-time consistency,
+not independently established real-world issuance time.
+
+Sender wire-format handling and full SCITT Receipt-envelope/claims validation
+remain tracked as issues #70 and #71, respectively. Application-facing
+aggregate verification and complete cryptographic interoperability against
+an independent Transparency Service remain open. The disclosed test paths do
+not establish production readiness or complete profile conformance.
+
+Corrective-statement production and verification are not implemented. The
+informative appendix records a design for discussion, not a frozen corrective
+wire format or an implemented feature ({{correction-envelope}}).
+
+**Licensing.** `pask-wire`, `pask-attest`, and `pask-wire-cli` are Apache-2.0.
 `pask-site`, `pask-adapter`, and `pask-ts-client` are AGPL-3.0-only.
-
-- **Transparency Service registration is implemented in `pask-ts-client`.**
-  `TsClient::submit` registers a Signed Statement with a SCITT Transparency
-  Service speaking SCRAPI and retrieves the resulting Receipt.
-  `attach_receipt` attaches it to the Signed Statement's unprotected header.
-  Offline receipt verification, including inclusion-proof verification and
-  issuer-signature verification, is implemented in `pask-wire`
-  (`verify_inclusion`, `attached_receipts`, `verify_ed25519`). Mock
-  integration tests exercise the production, registration, attachment, and
-  cryptographic-verification round trip (`end_to_end_round_trip` in
-  `crates/pask-ts-client/tests/e2e.rs`). A separate real-ledger integration
-  test exercises statement submission and receipt retrieval against a
-  `scitt-ccf-ledger` instance; cryptographic verification of the real-ledger
-  receipt is not demonstrated by that test.
-- **The required `DIRECT_WITNESS` key-consistency check is not implemented.**
-  This revision requires a Verifier to reject a receipt asserting
-  `DIRECT_WITNESS` in which `attestation.witnessKey` and the envelope's `iss`
-  denote different keys. The current implementation does not perform that
-  check. Successful verification by the current implementation therefore does
-  not establish compliance with that requirement.
-- **All three Chain-Verifier obligations of Section 4.1 are implemented** in
-  `pask-wire` and exercised in continuous integration against the conforming
-  and non-conforming chain test data referenced in Section 4.1, including the
-  `issuerAffiliation` comparison added in this revision, which returns the
-  points at which the value changed rather than a pass or fail. This corrects
-  the statement in `-01`, which reported the two checks it defined as
-  unimplemented and was accurate when filed.
-- **Single-receipt structure, COSE encoding, JCS canonicalization, and the
-  field semantics of Section 4.1 are implemented** and exercised in
-  continuous integration. The example figure in Section 4 is emitted by the
-  implementation and asserted byte-identical to it. The
-  `attestation.bindingMode` member is implemented: the producer emits it, the
-  parser requires it, and validation refuses a value outside the closed set.
-  The envelope-layer key-consistency check described above is not implemented.
-- **The crate disagreement reported in `-01` is resolved.** `-01` recorded
-  that `pask-wire` admitted `notAfter == notBefore` where `pask-attest`
-  required strictly greater, and that the document did not state which was
-  correct. Section 4.1 of this document now states the rule, and both crates
-  enforce it.
-- **`adapter.ackProvenance` is implemented** in `pask-wire` and `pask-site`,
-  including the requirement that an unrecognized value be preserved as
-  received and surfaced as unrecognized rather than read as `THIRD_PARTY` or
-  normalized to `NONE`. A conformance vector for that case ships with the
-  implementation.
-- **The witness key lifecycle assertions of Section 7.6 are not implemented.**
-  No crate emits, consumes, or orders an assertion about a witness key. The
-  section states normative Verifier behaviour that the implementation does not
-  yet exhibit.
 
 The author is aware of no other implementation of this profile.
 
@@ -1316,7 +1508,188 @@ Service.
 
 --- back
 
+# Corrective Statements (Informative) {#correction-envelope}
+
+This appendix is informative and records a corrective-statement design for
+discussion. It does not define an interoperable corrective-statement wire format
+or impose additional requirements on `wilder.pser/0.6` engagement receipts. The
+corrective content type, versioning, and signed-statement reference encodings
+remain unresolved. No correction implementation or completeness of correction
+discovery is claimed.
+
+A correction is a SCITT Signed Statement registered with a Transparency Service.
+It is not a PSER engagement receipt. It carries its own `content_type`, distinct
+from `application/pser+json; profile=wilder.pser/0.6`. It does not carry the
+PSER `spec` member. It has its own versioning arrangement.
+
+The correction payload would carry:
+
+- **`target`** (required, string): identifies the original signed assertion
+  being corrected. Encoding is not frozen in this revision. The reference
+  encoding is unresolved and coordinated with issue #67. The reference
+  mechanism must work for both engagement receipts and corrective statements.
+- **`kind`** (required, string): the kind of corrective assertion. Admissible
+  values:
+  - `AMENDMENT`: the signer asserts that its own earlier statement was wrong,
+    incomplete, or should no longer be relied upon. Same `iss` as the original
+    is allowed. If a different `iss` is used, continuity or authorization must
+    be established before the verifier reports it as that issuer's amendment.
+  - `CHALLENGE`: the signer disputes another issuer's identified statement.
+    Different `iss` is expected. Different issuer identifiers do not establish
+    organizational independence or authority.
+  - `CORROBORATION`: the signer supports a specified amendment or challenge.
+    NOT labeled "independent support." Independence is reported separately when
+    supported by evidence or policy.
+- **`content`** (required, object): the corrective assertion. Would carry:
+  - `summary` (required, string): human-readable description of what is being
+    corrected.
+  - `fields` (optional, array): specific payload fields of the original that
+    are disputed or amended.
+- **`ts`** (required, string): RFC 3339 UTC timestamp at which the correction
+  was signed.
+- **`amends`** (optional, object): identifies a specific earlier correction
+  being withdrawn or replaced. Would carry:
+  - `ref` (required, string): reference to the earlier correction. Same
+    encoding as `target`.
+  - `operation` (required, string): `WITHDRAW` or `REPLACE`.
+  - Withdrawal and replacement authority is checked against the statement
+    being changed (the earlier correction), not just against the original
+    receipt. Both `WITHDRAW` and `REPLACE` operations require this check. A
+    claimed withdrawal or replacement is attributable as an action by the
+    earlier statement's issuer only when that identity or authorization
+    relationship is established. Otherwise it remains another party's
+    assertion about that statement.
+- **`supports`** (required for `CORROBORATION`, string): reference to a
+  specific amendment or challenge being corroborated. Same encoding as
+  `target`. Every `CORROBORATION` identifies the specific statement it
+  supports.
+
+The signer declares the kind. The verifier reports which identity and
+relationship checks were established. The relying party assigns evidentiary
+weight. No universal different-`iss` requirement applies. Same-`iss` amendments
+are allowed. Different issuer identifiers do not establish organizational
+independence or authority.
+
+In this proposed model, a `CHALLENGE` would be evaluated against the public key
+of the statement being challenged. Where both relevant signatures have been
+successfully verified and a supported comparison establishes that the
+verification keys are the same, the verifier would report that the declared
+`CHALLENGE` fails the proposed distinct-key/kind-consistency condition. It would
+preserve the signed declared kind and report the reason separately. The
+statement's signature and any inclusion proof may still verify; the
+kind-consistency failure would not rewrite either signed record, silently
+convert the `CHALLENGE` to an `AMENDMENT`, or automatically invalidate the
+original. It would not determine the truth of the disputed facts.
+
+Kind consistency and its supporting key-relationship result would appear as
+explicit, machine-readable findings in the primary result for each evaluated
+corrective statement, and a failure or unestablished required relationship would
+be visible in the main report summary. They would not be available only as
+optional metadata. A broad summary that a correction is verified would not
+conceal a failed or unestablished required kind-consistency check. When a
+referenced statement, a successful signature verification, or the required
+comparison inputs are unavailable, the relationship would be reported as
+unestablished with a reason, not as different keys or as a successful
+consistency result. Issuer-signature, inclusion, kind-consistency, authority,
+original-statement, and local-policy findings would remain distinguishable.
+
+For `CORROBORATION`, the verifier would report the signing-key relationship to
+the statement named by `supports` and to the original anchor separately. Reuse
+of the supported statement's key would not count as an additional distinct-key
+source. Reuse of the original anchor's key alone would not force amendment
+classification. Different keys would not, by themselves, establish
+organizational independence.
+
+These paragraphs describe proposed reporting behavior. They do not finalize an
+output schema, field names, diagnostic-code registry, or corrective-statement
+wire format, and do not add a correction-processing requirement to
+`wilder.pser/0.6` engagement receipts.
+
+An illustrative reporting example, not a specified schema:
+
+~~~
+Corrective statement C1, challenging original O1
+Declared kind: CHALLENGE
+C1 signature: verified
+O1 signature: verified
+C1 inclusion evidence: verified under accepted service key
+Signing-key relationship C1/O1: same verified public key
+Kind consistency: failed - same-key CHALLENGE
+Organizational independence: not established by these checks
+Effect on O1: no automatic invalidation or modification
+Local policy: evaluated separately
+~~~
+
+When O1 is unavailable, the key relationship and required kind consistency are
+unestablished with a reason. That is not portrayed as "different keys" or a
+successful challenge. These are proposed reporting examples, not claims that
+correction verification is implemented.
+
+The verifier evaluates presented statements and their direct references. It does
+not recursively discover corrections. It does not compute a "winning" history.
+Where processing limits or missing references prevent a relationship from being
+checked, the verifier reports that limitation rather than inventing a final
+disposition. Availability, verification, and search coverage are reported as
+distinct questions. No automatic winning history is computed.
+
+This design is presented as a proposal. Reference encoding for `target`,
+`amends`, and `supports` is not frozen and is coordinated with issue #67. The
+reference implementation does not produce or verify correction records.
+Discovery of corrections from an original receipt is not specified in this
+revision. "Original-only" means no correction was presented; it does not mean
+no correction exists. A correction does not reset the original's
+`attestation.validity` interval. A correction's `ts` is not constrained by the
+original's validity window.
+
 # Change log
+
+## Changes in -04
+
+This revision introduces `wilder.pser/0.6` as the profile version carrying the
+timestamp containment requirement and the DIRECT_WITNESS identifier-consistency
+convention. `wilder.pser/0.5` retains its published meaning; its profile does
+not require timestamp containment or the naming convention. A receipt
+declaring `wilder.pser/0.5` is not subject to these rules, regardless of when
+it was produced.
+
+This revision specifies the candidate-entry byte encoding for inclusion-proof
+verification, replacing the -03 disclosure that deferred this to an agreed
+convention. The candidate entry is the untagged four-element array `[P, {}, M,
+S]` derived from the presented Transparent Statement. Registration and
+verification alignment is required, not assumed. Transmitted envelopes use COSE
+tag 18; the untagged candidate entry is a profile-internal representation. A
+Transparency Service that hashes a different representation cannot satisfy this
+profile unless it commits to the candidate-entry representation specified here.
+
+The at-least-one-trusted-proof acceptance rule is specified: the profile's
+inclusion requirement is satisfied only when at least one attached Receipt has
+both a valid Transparency Service signature under an accepted service key and a
+valid inclusion proof for the derived candidate entry. A structurally parseable
+additional Receipt whose cryptographic verification fails does not defeat
+another attached Receipt that satisfies the requirement. The aggregate
+verification logic exists only as a test helper; application integration remains
+open.
+
+The TEE Class registry descriptions are clarified with informative context.
+No values are added, removed, or renamed. The evidence-format question for each
+value remains unresolved.
+
+This revision does not introduce an `attestationResult` member into the
+normative payload. The evidence-model question remains open. The complete
+explanation of retained evidence mechanisms, external appraisal, and the
+digest-versus-retrieval distinction is incorporated. Delegated signing does not
+itself establish evidence appraisal.
+
+This revision presents the corrective statement design as an informative
+appendix proposal. The correction payload type, signing rule, correction kinds,
+relationship model, processing rule, and verifier behavior are defined.
+Reference encoding for `target`, `amends`, and `supports` is not frozen and is
+coordinated with issue #67. The reference implementation does not produce or
+verify correction records. Every `CORROBORATION` identifies the specific
+statement it supports. Same-key `CHALLENGE` inconsistency is reported
+separately. Withdrawal and replacement authority is checked against the
+statement being changed. A correction does not reset the original's
+`attestation.validity` interval.
 
 ## Changes in -03
 

@@ -461,9 +461,29 @@ jobs:
           # not at submission time. It does not block posting a revision.
           # Pinned to RFC 8785 by number: a downref to any other document is
           # a new one, and fails.
+          #
+          # EXCEPTION 3 -- the normative downref to RFC 9162.
+          #
+          # RFC 9162 (Certificate Transparency Version 2.0) is Experimental.
+          # This document is standards track, so a normative reference to it is
+          # a genuine downref under RFC 3967, and idnits is right to say so.
+          #
+          # The profile uses RFC9162_SHA256 tree construction through COSE
+          # Receipts (RFC 9942). The leaf hash formula is defined in RFC 9162
+          # Section 2.1.1 and referenced normatively in the candidate-entry
+          # section of this draft. This is a genuine normative dependency:
+          # a producer that used a different leaf-hash construction would emit
+          # a receipt whose inclusion proof fails verification. Demoting the
+          # reference to informative to quiet a linter would misdescribe the
+          # profile.
+          #
+          # A downref is resolved at IESG evaluation, not by the author and
+          # not at submission time. It does not block posting a revision.
+          # Pinned to RFC 9162 by number: a downref to any other document is
+          # a new one, and fails.
           expected_long_lines=8
 
-          allowed_error='^(There are '"${expected_long_lines}"' instances of too long lines|Downref: Normative reference to an Informational RFC: RFC 8785)'
+          allowed_error='^(There are '"${expected_long_lines}"' instances of too long lines|Downref: Normative reference to an Informational RFC: RFC 8785|Downref: Normative reference to an Experimental RFC: RFC 9162)'
 
           unexpected=0
           while IFS= read -r line; do
@@ -486,7 +506,7 @@ jobs:
             exit 1
           fi
 
-          # Both exceptions must still be present in the counts they were
+          # All three exceptions must still be present in the counts they were
           # pinned at. If the allowlist matched every ** line but the totals
           # disagree, the report format has changed and the comparison above
           # is no longer trustworthy.

@@ -37,3 +37,23 @@ pub fn canonical_example() -> Result<String> {
         serde_json::from_slice(&canonical).map_err(|error| Error::Json(error.to_string()))?;
     serde_json::to_string_pretty(&value).map_err(|error| Error::Json(error.to_string()))
 }
+
+/// Emits the canonical example instance for the 0.6 profile, pretty-printed.
+///
+/// Same construction as [`canonical_example`] but starts from the 0.5 minimal
+/// vector with `spec` changed to `wilder.pser/0.6`. Uses
+/// [`Payload::from_json_for_production`] so the `chain.hash` is recomputed
+/// for the 0.6 JCS form rather than inherited from the 0.5 vector.
+///
+/// # Errors
+///
+/// Returns an error if the 0.6 payload fails validation (including the
+/// timestamp containment check) or cannot be serialized.
+pub fn canonical_example_06() -> Result<String> {
+    let input_06 = MINIMAL_VALID_JCS.replace("wilder.pser/0.5", "wilder.pser/0.6");
+    let payload = Payload::from_json_for_production(input_06.as_bytes())?;
+    let canonical = payload.to_jcs()?;
+    let value: serde_json::Value =
+        serde_json::from_slice(&canonical).map_err(|error| Error::Json(error.to_string()))?;
+    serde_json::to_string_pretty(&value).map_err(|error| Error::Json(error.to_string()))
+}
