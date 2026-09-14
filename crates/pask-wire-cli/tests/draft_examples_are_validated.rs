@@ -43,16 +43,22 @@ struct ExplainedBlock {
     reason: &'static str,
 }
 
-/// Empty as of `-01`: the document carries exactly one example and it is the
-/// payload figure, which parses. Entries get added here only with a reason
-/// somebody would sign their name to.
-const EXPLAINED_BLOCKS: &[ExplainedBlock] = &[];
+/// Blocks the parser is not expected to accept, with the reason.
+///
+/// `marker` is a distinctive substring of the block's body. `reason` is why
+/// the reference parser is not the right judge of it.
+const EXPLAINED_BLOCKS: &[ExplainedBlock] = &[ExplainedBlock {
+    info: "",
+    marker: "Corrective statement C1, challenging original O1",
+    reason: "Illustrative reporting example, not a JSON payload. Plain-text diagram \
+                 of a proposed correction-envelope report, not a specified schema.",
+}];
 
 /// The number of fenced blocks the document is known to contain.
 ///
 /// Pinned deliberately. A new example should make somebody update this line
 /// and, in doing so, decide which of the three accounting routes it takes.
-const EXPECTED_BLOCK_COUNT: usize = 1;
+const EXPECTED_BLOCK_COUNT: usize = 2;
 
 struct Block {
     /// The fence info string: `json`, `aasvg`, or empty.

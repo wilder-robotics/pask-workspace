@@ -62,20 +62,24 @@ fn figure_body(draft: &str) -> &str {
 #[test]
 fn draft_payload_figure_is_byte_identical_to_the_emitted_example() {
     let draft = fs::read_to_string(draft_path()).expect("the profile document is readable");
-    let emitted = pask_wire::canonical_example().expect("the canonical example emits");
+    let body = figure_body(&draft);
+
+    // The active draft targets 0.6; validate against the 0.6 generator.
+    // The 0.5 generator and fixtures are preserved separately.
+    let emitted = pask_wire::canonical_example_06().expect("the 0.6 canonical example emits");
 
     assert_eq!(
-        figure_body(&draft),
-        emitted,
+        body, emitted,
         "the profile document's payload figure has drifted from the reference \
-         implementation. Regenerate it with `cargo run -p pask-wire-cli -- canonical-example` \
-         rather than editing the document."
+         implementation. Regenerate it from `pask_wire::canonical_example_06()` \
+         in `crates/pask-wire/src/canonical_example.rs`. \
+         Do not edit the figure by hand."
     );
 }
 
 #[test]
 fn the_emitted_example_is_parseable_json() {
-    let emitted = pask_wire::canonical_example().expect("the canonical example emits");
+    let emitted = pask_wire::canonical_example_06().expect("the 0.6 canonical example emits");
     pask_wire::Payload::from_json(emitted.as_bytes())
-        .expect("the emitted example validates as a payload");
+        .expect("the emitted 0.6 example validates as a payload");
 }
