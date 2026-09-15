@@ -403,8 +403,7 @@ fn verify_inclusion_with_fixed_fixture() {
     let result = verify_inclusion(&expected.receipt, &entry, &ts_verifying);
     assert!(
         result.is_ok(),
-        "verify_inclusion must succeed with the fixed fixture: {:?}",
-        result
+        "verify_inclusion must succeed with the fixed fixture: {result:?}"
     );
 }
 
@@ -437,7 +436,7 @@ fn receipt_reader_accepts_byte_string_rfc_form() {
             assert_eq!(receipts.len(), 1);
             assert_eq!(receipts[0], expected.receipt);
         }
-        _ => panic!("expected Present, got {:?}", result),
+        _ => panic!("expected Present, got {result:?}"),
     }
 }
 
@@ -457,7 +456,7 @@ fn receipt_reader_accepts_bare_array_legacy_form() {
             assert_eq!(receipts.len(), 1);
             assert_eq!(receipts[0], expected.receipt);
         }
-        _ => panic!("expected Present, got {:?}", result),
+        _ => panic!("expected Present, got {result:?}"),
     }
 }
 
@@ -482,7 +481,7 @@ fn receipt_reader_rejects_scalar_element() {
                 "expected malformed error about invalid receipt type, got: {msg}"
             );
         }
-        _ => panic!("expected Malformed, got {:?}", result),
+        _ => panic!("expected Malformed, got {result:?}"),
     }
 }
 
@@ -502,7 +501,7 @@ fn receipt_reader_rejects_map_element() {
     let result = attached_receipts(&statement).unwrap();
     match result {
         AttachedReceipts::Malformed(_) => {}
-        _ => panic!("expected Malformed for map receipt, got {:?}", result),
+        _ => panic!("expected Malformed for map receipt, got {result:?}"),
     }
 }
 
@@ -526,7 +525,7 @@ fn receipt_reader_rejects_wrong_tag() {
     let result = attached_receipts(&statement).unwrap();
     match result {
         AttachedReceipts::Malformed(_) => {}
-        _ => panic!("expected Malformed for wrong tag, got {:?}", result),
+        _ => panic!("expected Malformed for wrong tag, got {result:?}"),
     }
 }
 
@@ -827,8 +826,7 @@ fn issuer_signature_verifies() {
     let result = verify_ed25519(&expected.raw_statement, &issuer_verifying);
     assert!(
         result.is_ok(),
-        "issuer signature must verify on the raw statement: {:?}",
-        result
+        "issuer signature must verify on the raw statement: {result:?}"
     );
 }
 
@@ -843,8 +841,7 @@ fn issuer_signature_preserved_after_attachment() {
     let result = verify_ed25519(&expected.final_statement, &issuer_verifying);
     assert!(
         result.is_ok(),
-        "issuer signature must verify on the final statement after attachment: {:?}",
-        result
+        "issuer signature must verify on the final statement after attachment: {result:?}"
     );
 }
 

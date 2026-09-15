@@ -174,7 +174,7 @@ fn main() {
         "inclusion_path_hex: {}",
         path.iter().map(hex::encode).collect::<Vec<_>>().join(",")
     );
-    println!("tree_size: {}", tree_size);
-    println!("leaf_index: {}", leaf_index);
+    println!("tree_size: {tree_size}");
+    println!("leaf_index: {leaf_index}");
     println!("=== END EXPORT ===");
 }

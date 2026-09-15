@@ -243,9 +243,23 @@ specified in the -04 working draft.
 
 Full envelope/claims validation above generic inclusion verification remains
 tracked separately in
-[#71](https://github.com/wilder-robotics/pask-workspace/issues/71). The
-pask-ts-client sender byte-string wrapping problem remains tracked in
-[#70](https://github.com/wilder-robotics/pask-workspace/issues/70).
+[#71](https://github.com/wilder-robotics/pask-workspace/issues/71).
+The local sender repair for
+[#70](https://github.com/wilder-robotics/pask-workspace/issues/70) emits tag-18
+statements with byte-string-wrapped tagged Receipts, preserving encoded Receipt
+bytes and signed P/M/S contents. It checks COSE container/header structure,
+not Receipt claims, proofs, signatures, service trust, or hardware evidence.
+Untagged statement input is explicit compatibility with local producers;
+output is tagged. Untagged Receipts and decoded legacy existing attachments
+are refused rather than silently upgraded. The reader retains read-only legacy
+attachment compatibility; reading is not full Receipt validation.
+The attachment sender validates the outer statement and the container/header structure of each supplied encoded Receipt. The attachment reader validates the outer statement and attachment-container structure, but extracts byte-string Receipt contents without validating their inner envelope. Duplicate labels, cross-map overlap, and trailing-data checks therefore apply at the layers described here, not uniformly to every issuer or Receipt verification API. Full inner-Receipt validation and service-trust checks remain #71 work.
+The sender also refuses to append when receipts are protected.
+`TsClient::submit` remains a byte-transparent HTTP transport, not an envelope
+normalizer. Callers must tag current untagged local producer output before
+submission; tagging the later attached output does not fix a prior untagged
+request. The local mock exercises explicit tagged submission and commitment to
+the derived candidate; agreement by an independent service remains unproven.
 Application-facing aggregate verification, published specification status, and
 external-service interoperability remain separate from the implemented
 candidate-entry derivation and test-only aggregate verification. Issues #70
@@ -254,6 +268,8 @@ and #71 remain open until their own criteria are satisfied.
 Reviewed 2026-08-15. Revised 2026-09-03 when the reading half was implemented.
 Revised 2026-09-13 when the submission path and candidate-entry derivation
 were described against the actual merged source.
+Revised 2026-09-14 for the local #70 sender and coordinated reader repair.
+Controlled cryptographic fixtures are not SCITT-claims conformance evidence.
 
 ## 5.3 The candidate-entry byte encoding is specified (-04)
 
@@ -279,9 +295,9 @@ another attached Receipt that satisfies the requirement.
 implemented. The receipt reader (`crates/pask-wire/src/receipt.rs`) reads and
 extracts byte-string-wrapped SCITT Receipt per RFC 9942 Section 4.3. Full
 envelope/claims validation above generic inclusion verification remains tracked
-in [#71](https://github.com/wilder-robotics/pask-workspace/issues/71). The
-pask-ts-client sender byte-string wrapping problem remains tracked in
-[#70](https://github.com/wilder-robotics/pask-workspace/issues/70).
+in [#71](https://github.com/wilder-robotics/pask-workspace/issues/71).
+The local [#70](https://github.com/wilder-robotics/pask-workspace/issues/70)
+sender repair and its compatibility boundaries are described in §5.2.
 
 The candidate-entry derivation and test-only aggregate verification are
 distinguished from application-level aggregate verification, published
