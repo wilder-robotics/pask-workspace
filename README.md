@@ -30,7 +30,7 @@ For security disclosures, see [SECURITY.md](./SECURITY.md).
 
 This repository is the code home for the reference producer and verifier of
 **Physical-Site Engagement Receipts** as defined in
-[`docs/draft-wilder-scitt-physical-site-engage-receipt-02.md`](docs/draft-wilder-scitt-physical-site-engage-receipt-02.md).
+[`docs/draft-wilder-scitt-physical-site-engage-receipt-04.md`](docs/draft-wilder-scitt-physical-site-engage-receipt-04.md).
 
 Physical-Site Engagement Receipts are a profile of the IETF SCITT
 architecture ([RFC 9943](https://datatracker.ietf.org/doc/rfc9943/)) that
@@ -44,7 +44,7 @@ posted into the operations layer the site already runs.
 
 Conformance test vectors for the wire format are available in this
 reference implementation under
-[`crates/pask-wire/tests/`](crates/pask-wire/tests/). Extraction of the
+[`crates/pask-wire/fixtures/`](crates/pask-wire/fixtures/). Extraction of the
 vectors into an independent conformance suite is planned for a future
 revision of this specification once the wire-format schema stabilizes.
 
@@ -53,7 +53,7 @@ revision of this specification once the wire-format schema stabilizes.
 ```
 pask-workspace/
 ├── docs/
-│   └── draft-wilder-scitt-physical-site-engage-receipt-02.md   ← authoritative spec
+│   └── draft-wilder-scitt-physical-site-engage-receipt-04.md   ← authoritative spec
 ├── .github/workflows/ci.yml                                        ← CI (Rust)
 ├── LICENSE                                                         ← AGPL-3.0-only
 ├── COMMERCIAL-EXCEPTION.md                                         ← commercial licensing terms
@@ -113,11 +113,12 @@ claims. Test vectors, unit tests, and CI-verified conformance to the
 embedded specification only.
 
 Scope of that conformance, stated precisely: this library produces and
-validates `wilder.pser/0.4` payloads and signed statements, and it verifies an
-attached SCITT Receipt offline. It does **not** register statements with a
-SCITT Transparency Service, and therefore does not produce Transparent
-Statements. Because the draft makes registration mandatory, receipts produced
-by this library are **not conforming receipts** under it.
+validates `wilder.pser/0.5` and `wilder.pser/0.6` payloads and signed
+statements, and it verifies an attached SCITT Receipt offline. It does
+**not** register statements with a SCITT Transparency Service, and
+therefore does not produce Transparent Statements. Because the draft
+makes registration mandatory, receipts produced by this library are
+**not conforming receipts** under it.
 
 The two halves are worth keeping apart. Verifying an attached Receipt is
 implemented: `verify_inclusion` checks an `RFC9162_SHA256` inclusion proof and
