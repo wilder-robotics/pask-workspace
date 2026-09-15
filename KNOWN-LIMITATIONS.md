@@ -339,6 +339,24 @@ through V5 met (§8).
 
 ---
 
+## Outer-statement subject type and SCITT conformance
+
+Current outer engagement statements encode CWT `sub` (claim 2) as a CBOR
+byte string, and the current reader requires that type. RFC 9943 requires
+the CWT Subject claim; RFC 8392 defines its StringOrURI value as CBOR text.
+Therefore, successful verification of these statements does not establish
+full SCITT Signed Statement conformance.
+
+A compatibility/version decision and implementation tests are required
+before changing producer or reader behavior. Existing signed bytes must
+not be silently converted. This gap is separate from the completed
+candidate-entry scope of #67, the outgoing attachment repair in #70,
+and inner-Receipt validation in #71.
+
+References: [RFC 9943 section 6](https://www.rfc-editor.org/rfc/rfc9943.html#section-6),
+[RFC 8392](https://www.rfc-editor.org/rfc/rfc8392.html),
+[subject-type compatibility issue #76](https://github.com/wilder-robotics/pask-workspace/issues/76).
+
 ## Reporting
 
 If you find a limitation that is not recorded here, please open an issue. An
