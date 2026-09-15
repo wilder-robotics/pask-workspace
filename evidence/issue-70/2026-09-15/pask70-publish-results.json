@@ -1,0 +1,119 @@
+[
+  {
+    "command": "rustup run stable cargo fmt --all -- --check",
+    "cwd": "/home/user/workspace/pask-review-sep14",
+    "duration_seconds": 0.155,
+    "end": "2026-09-15T16:46:56.279442+00:00",
+    "env": {
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0",
+      "CARGO_TARGET_DIR": "/home/user/workspace/pask71prep-isolated-stable-final-target",
+      "CARGO_TERM_COLOR": "never"
+    },
+    "exit": 0,
+    "log": "/home/user/workspace/pask70-publish-fmt.log",
+    "log_sha256": "76504b6b955c204ba84f2beddd1cbfdce1bbdb467d6af34b6c290102d7d8c9ac",
+    "name": "fmt",
+    "source_tree": "1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17",
+    "start": "2026-09-15T16:46:56.124512+00:00",
+    "test_summary_count": 0,
+    "test_totals": null
+  },
+  {
+    "command": "rustup run stable cargo clippy --workspace --all-targets --all-features -- -D warnings",
+    "cwd": "/home/user/workspace/pask-review-sep14",
+    "duration_seconds": 3.283,
+    "end": "2026-09-15T16:46:59.562750+00:00",
+    "env": {
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0",
+      "CARGO_TARGET_DIR": "/home/user/workspace/pask71prep-isolated-stable-final-target",
+      "CARGO_TERM_COLOR": "never"
+    },
+    "exit": 0,
+    "log": "/home/user/workspace/pask70-publish-clippy.log",
+    "log_sha256": "c2426c8c146bc449368b0262d9ab3c36c81d3d3b8ae8f98ad12b1edda31d1ef5",
+    "name": "clippy",
+    "source_tree": "1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17",
+    "start": "2026-09-15T16:46:56.280107+00:00",
+    "test_summary_count": 0,
+    "test_totals": null
+  },
+  {
+    "command": "rustup run stable cargo build --workspace --all-features",
+    "cwd": "/home/user/workspace/pask-review-sep14",
+    "duration_seconds": 0.185,
+    "end": "2026-09-15T16:46:59.749745+00:00",
+    "env": {
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0",
+      "CARGO_TARGET_DIR": "/home/user/workspace/pask71prep-isolated-stable-final-target",
+      "CARGO_TERM_COLOR": "never"
+    },
+    "exit": 0,
+    "log": "/home/user/workspace/pask70-publish-build.log",
+    "log_sha256": "9aba99a687d97c0d5a681dc132d28cb04eb1f57d110b603158fb8c3f08bc32c3",
+    "name": "build",
+    "source_tree": "1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17",
+    "start": "2026-09-15T16:46:59.564532+00:00",
+    "test_summary_count": 0,
+    "test_totals": null
+  },
+  {
+    "command": "rustup run stable cargo test --workspace --locked",
+    "cwd": "/home/user/workspace/pask-review-sep14",
+    "duration_seconds": 15.669,
+    "end": "2026-09-15T16:47:15.419182+00:00",
+    "env": {
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0",
+      "CARGO_TARGET_DIR": "/home/user/workspace/pask71prep-isolated-stable-final-target",
+      "CARGO_TERM_COLOR": "never"
+    },
+    "exit": 0,
+    "log": "/home/user/workspace/pask70-publish-test-default.log",
+    "log_sha256": "5e4dcd7fc5b0480ecdf972bb3f9068e5e135e8602865166aa2e3d50332db926d",
+    "name": "test-default",
+    "source_tree": "1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17",
+    "start": "2026-09-15T16:46:59.750160+00:00",
+    "test_summary_count": 53,
+    "test_totals": {
+      "failed": 0,
+      "filtered_out": 0,
+      "ignored": 2,
+      "measured": 0,
+      "passed": 274
+    }
+  },
+  {
+    "command": "rustup run stable cargo test --workspace --features es256 --locked",
+    "cwd": "/home/user/workspace/pask-review-sep14",
+    "duration_seconds": 15.731,
+    "end": "2026-09-15T16:47:31.152644+00:00",
+    "env": {
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_DEV_DEBUG": "0",
+      "CARGO_PROFILE_TEST_DEBUG": "0",
+      "CARGO_TARGET_DIR": "/home/user/workspace/pask71prep-isolated-stable-final-target",
+      "CARGO_TERM_COLOR": "never"
+    },
+    "exit": 0,
+    "log": "/home/user/workspace/pask70-publish-test-es256.log",
+    "log_sha256": "95e2421316ff4653e0d90c88644191b77f3a57ab121a0d48ba24b966870202df",
+    "name": "test-es256",
+    "source_tree": "1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17",
+    "start": "2026-09-15T16:47:15.421710+00:00",
+    "test_summary_count": 53,
+    "test_totals": {
+      "failed": 0,
+      "filtered_out": 0,
+      "ignored": 2,
+      "measured": 0,
+      "passed": 280
+    }
+  }
+]

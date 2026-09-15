@@ -1,0 +1,37 @@
+START=2026-09-15T16:46:56.280107+00:00
+CWD=/home/user/workspace/pask-review-sep14
+SOURCE_TREE=1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17
+COMMAND=rustup run stable cargo clippy --workspace --all-targets --all-features -- -D warnings
+ENV={"CARGO_INCREMENTAL": "0", "CARGO_PROFILE_DEV_DEBUG": "0", "CARGO_PROFILE_TEST_DEBUG": "0", "CARGO_TARGET_DIR": "/home/user/workspace/pask71prep-isolated-stable-final-target", "CARGO_TERM_COLOR": "never"}
+RUSTFLAGS=<unset>
+CARGO_ENCODED_RUSTFLAGS=<unset>
+rustc 1.98.1 (48a229cea 2026-09-01)
+binary: rustc
+commit-hash: 48a229ceaefd4985c50990b14116b6d856af0985
+commit-date: 2026-09-01
+host: x86_64-unknown-linux-gnu
+release: 1.98.1
+LLVM version: 22.1.8
+cargo 1.98.1 (797e8a9bc 2026-08-05)
+release: 1.98.1
+commit-hash: 797e8a9bca276c1c9f9f738d2a20f484fa4eea9d
+commit-date: 2026-08-05
+host: x86_64-unknown-linux-gnu
+libgit2: 1.9.4 (sys:0.21.0 vendored)
+libcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)
+ssl: OpenSSL 3.6.3 9 Jun 2026
+os: Ubuntu 26.4.0 (resolute) [64-bit]
+clippy 0.1.98 (48a229ceae 2026-09-01)
+rustfmt 1.9.0-stable (48a229ceae 2026-09-01)
+    Checking proptest v1.11.0
+    Checking pask-ts-client v0.1.0 (/home/user/workspace/pask-review-sep14/crates/pask-ts-client)
+    Checking pask-site v0.1.0 (/home/user/workspace/pask-review-sep14/crates/pask-site)
+    Checking pask-wire v0.1.0 (/home/user/workspace/pask-review-sep14/crates/pask-wire)
+    Checking pask-attest v0.1.0 (/home/user/workspace/pask-review-sep14/crates/pask-attest)
+    Checking pask-adapter v0.1.0 (/home/user/workspace/pask-review-sep14/crates/pask-adapter)
+    Checking pask-wire-cli v0.1.0 (/home/user/workspace/pask-review-sep14/crates/pask-wire-cli)
+    Finished `dev` profile [unoptimized] target(s) in 3.23s
+
+EXIT=0
+DURATION_SECONDS=3.283
+END=2026-09-15T16:46:59.562750+00:00

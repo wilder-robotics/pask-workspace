@@ -293,13 +293,17 @@ impl AttachedReceipts {
 ///
 /// The header may appear in either the protected or the unprotected map per
 /// RFC 9942 Section 5.1. This reads the unprotected map, where
-/// `-02` "SCITT registration and Receipt attachment" places it, and then the protected map. Placement in
+/// `-02` "SCITT registration and Receipt attachment" places it, or the protected map. Placement in
 /// the unprotected map is what allows a Receipt to be attached after signing
 /// without invalidating the Issuer's signature.
 ///
 /// This parses the envelope structurally and does not verify the Issuer
 /// signature. Reading a header is not accepting a statement, and the two steps
 /// are kept separate so that neither can be mistaken for the other.
+/// Tag-18 transmitted statements and legacy untagged statements are accepted.
+/// Header maps must be well formed, with unique integer/text labels and no
+/// label shared between protected and unprotected maps. Ambiguous headers are
+/// rejected, never resolved by selecting the first occurrence.
 ///
 /// # Errors
 ///
@@ -316,19 +320,54 @@ pub fn attached_receipts(statement: &[u8]) -> Result<AttachedReceipts> {
         return Err(Error::Cose("trailing bytes after COSE_Sign1"));
     }
     let items = cose_sign1_items(&value).ok_or(Error::Cose("COSE_Sign1 must be an array"))?;
-    let [protected, unprotected, _payload, _signature] = items else {
-        return Err(Error::Cose("COSE_Sign1 must carry exactly four elements"));
+    let [
+        Value::Bytes(protected),
+        Value::Map(unprotected),
+        Value::Bytes(_),
+        Value::Bytes(_),
+    ] = items
+    else {
+        return Err(Error::Cose(
+            "COSE_Sign1 must carry protected bytes, unprotected map, payload bytes, signature bytes",
+        ));
     };
-
-    if let Some(found) = map_entry(unprotected, RECEIPTS_LABEL) {
-        return Ok(read_receipts_array(found));
+    let header = if protected.is_empty() {
+        Value::Map(Vec::new())
+    } else {
+        let mut cursor = protected.as_slice();
+        let header: Value = coset::cbor::de::from_reader(&mut cursor)
+            .map_err(|_| Error::Cose("protected header is not valid CBOR"))?;
+        if !cursor.is_empty() {
+            return Err(Error::Cose("trailing bytes in protected header"));
+        }
+        header
+    };
+    let Value::Map(protected) = &header else {
+        return Err(Error::Cose("protected header must encode a map"));
+    };
+    for map in [protected, unprotected] {
+        for (index, (key, _)) in map.iter().enumerate() {
+            if !matches!(key, Value::Integer(_) | Value::Text(_)) {
+                return Err(Error::Cose("COSE header labels must be integers or text"));
+            }
+            if map[..index].iter().any(|(other, _)| key == other) {
+                return Err(Error::Cose("duplicate COSE header label"));
+            }
+        }
     }
-    let Value::Bytes(protected) = protected else {
-        return Err(Error::Cose("COSE_Sign1 protected header must be bytes"));
-    };
-    let mut cursor = protected.as_slice();
-    if let Ok(header) = coset::cbor::de::from_reader::<Value, _>(&mut cursor)
-        && let Some(found) = map_entry(&header, RECEIPTS_LABEL)
+    if protected
+        .iter()
+        .any(|(key, _)| unprotected.iter().any(|(other, _)| key == other))
+    {
+        return Err(Error::Cose(
+            "header label occurs in both protected and unprotected maps",
+        ));
+    }
+
+    if let Some((_, found)) = unprotected
+        .iter()
+        .chain(protected)
+        .find(|(key, _)| signed(key) == Some(RECEIPTS_LABEL))
     {
         return Ok(read_receipts_array(found));
     }
@@ -352,10 +391,24 @@ fn read_receipts_array(value: &Value) -> AttachedReceipts {
             Value::Bytes(b) => b.clone(),
             // Compatibility: accept a bare COSE_Sign1 array or a tag-18
             // tagged COSE_Sign1 and re-serialize it to bytes. This path
-            // exists for the pask-ts-client sender, which stores decoded
-            // receipt Values rather than byte strings. It is not the
-            // RFC-prescribed wire form. See issue #70.
+            // exists for historical pask-ts-client output. The repaired
+            // sender emits only byte strings and refuses to append to these
+            // legacy arrays. This read-only compatibility path is not the
+            // RFC-prescribed wire form or a byte-preservation guarantee.
             Value::Array(_) | Value::Tag(18, _) => {
+                let Some(
+                    [
+                        Value::Bytes(_),
+                        Value::Map(_),
+                        Value::Bytes(_) | Value::Null,
+                        Value::Bytes(_),
+                    ],
+                ) = cose_sign1_items(item)
+                else {
+                    return AttachedReceipts::Malformed(
+                        "a legacy receipts element is not a COSE_Sign1 container",
+                    );
+                };
                 let mut buf = Vec::new();
                 if coset::cbor::ser::into_writer(item, &mut buf).is_err() {
                     return AttachedReceipts::Malformed(

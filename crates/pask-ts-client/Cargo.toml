@@ -17,10 +17,10 @@ description = "SCRAPI client that registers Pask Signed Statements with a Transp
 [features]
 # The workspace CI runs `cargo test --workspace --features es256`. Every
 # workspace member must accept the flag so the command resolves, so this crate
-# exposes an empty passthrough. pask-ts-client is Ed25519-only and has no ES256
-# code path to gate.
+# forwards the flag for issuer round-trip tests. The mock TS's Receipt
+# signature remains Ed25519; attachment itself is algorithm-independent.
 default = []
-es256 = []
+es256 = ["pask-wire/es256"]
 
 [dependencies]
 pask-wire = { path = "../pask-wire", default-features = false, features = ["alloc"] }
