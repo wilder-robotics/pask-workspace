@@ -8,7 +8,7 @@
 //! so a test fixture can produce receipts that verify under
 //! [`pask_wire::verify_inclusion`] without depending on the real ledger.
 //!
-//! The receipt is a `COSE_Sign1` with:
+//! The receipt is a tag-18 `COSE_Sign1` with:
 //!
 //! - Protected header: `vds` (395) = `1` (RFC9162_SHA256).
 //! - Unprotected header: `vdp` (396) = `{ -1 => [ inclusion_proof ] }`, where
@@ -18,6 +18,9 @@
 //! - Signature: Ed25519 over the `Sig_structure` of the protected header and
 //!   the reconstructed root, matching what `pask_wire::verify_inclusion`
 //!   reconstructs.
+//!
+//! This is a minimal cryptographic test fixture, not a SCITT-conforming
+//! claims envelope or an authenticated Transparency Service identity (#71).
 
 use coset::cbor::Value;
 use pask_wire::{INCLUSION_PROOF_LABEL, RFC9162_SHA256, VDP_LABEL, VDS_LABEL, leaf_hash};
@@ -143,7 +146,7 @@ pub fn build_receipt(
         Value::Bytes(signature.to_vec()),
     ]);
     let mut encoded = Vec::new();
-    coset::cbor::ser::into_writer(&receipt, &mut encoded)
+    coset::cbor::ser::into_writer(&Value::Tag(18, Box::new(receipt)), &mut encoded)
         .map_err(|_| ReceiptBuildError::EncodeReceipt)?;
     Ok(encoded)
 }

@@ -84,8 +84,12 @@ fn spawn_mock_ts(
     let (base_url, server) = spawn_mock_server(3, move |request, body, _| match request {
         "POST /entries?api-version=2026-03-26 HTTP/1.1" => {
             assert!(receipt.is_none(), "submit once");
+            assert_eq!(body.first(), Some(&0xd2), "transmitted tag 18");
+            // Controlled service agreement: register the profile candidate,
+            // not the tagged request body. This is not external-service proof.
+            let entry = pask_wire::derive_candidate_entry(body).expect("candidate entry");
             receipt =
-                Some(build_receipt(&TwoLeafTree::new(body), &ts_signing_key).expect("receipt"));
+                Some(build_receipt(&TwoLeafTree::new(&entry), &ts_signing_key).expect("receipt"));
             tx.send(body.to_vec()).expect("capture submitted statement");
             http_response("303 See Other", "Location: /entries/test-txid\r\n", &[])
         }
@@ -127,8 +131,13 @@ fn end_to_end_round_trip() {
     let payload =
         Payload::from_json_for_production(pask_wire::testvectors::MINIMAL_VALID_PAYLOAD.as_bytes())
             .expect("parse payload");
-    let statement = produce_ed25519(&payload, "did:wilder:example.test", &issuer_key)
+    let local_statement = produce_ed25519(&payload, "did:wilder:example.test", &issuer_key)
         .expect("produce statement");
+    // Explicit caller adaptation of legacy local producer output, before the
+    // actual HTTP submit. No test helper strips tags to make a verifier pass.
+    assert_eq!(local_statement.first(), Some(&0x84));
+    let mut statement = vec![0xd2];
+    statement.extend_from_slice(&local_statement);
 
     // Submit to the mock TS.
     let client = pask_ts_client::TsClient::new(&base_url).expect("build client");
@@ -147,8 +156,9 @@ fn end_to_end_round_trip() {
     assert_eq!(found.len(), 1, "expected exactly one receipt");
 
     // The inclusion proof must verify under the TS key.
+    let entry = pask_wire::derive_candidate_entry(&transparent).expect("derive received entry");
     let verified =
-        verify_inclusion(&found[0], &statement, &ts_verifying_key).expect("verify inclusion");
+        verify_inclusion(&found[0], &entry, &ts_verifying_key).expect("verify inclusion");
     assert_eq!(verified.tree_size, 2, "two-leaf tree");
     assert_eq!(verified.leaf_index, 0);
 

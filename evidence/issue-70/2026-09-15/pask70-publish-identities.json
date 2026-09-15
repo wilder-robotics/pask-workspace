@@ -1,0 +1,16 @@
+{
+  "cargo_lock_sha256": "38e066f2f9414d442682ab5b7575068800f0b0e2c67fa19223f4523c8c0a4bc7",
+  "changed_from_frozen": [
+    "crates/pask-ts-client/tests/issue_70.rs"
+  ],
+  "frozen_cleanup_archive_sha256": "d72a1664d3e5103bc352d40972ae4ce7d14e7b847a807a2c89499e027878602e",
+  "frozen_cleanup_tree": "3dea2681214792abd3700bdcef46ff862b8a7a5a",
+  "head": "51dde6de80af2fc6aa661f88dbe0bc227848888e",
+  "length_assertion_retained": true,
+  "new_source_tree": "1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17",
+  "newdelta_sha256": "023c72894dc65a3a13ad7efc7bab71ddfb97c33487c674ee3b324051f827df22",
+  "source_archive_sha256": "cc5ce49f9b9f47c135b87b1653a0c1b60c91039e7d81c2518d833e616545e11e",
+  "source_content_map_sha256": "575cb7b5f62372cedf928cc4763ef4623b23a2ef82f40415c9c1b4a86e880d0d",
+  "source_manifest_sha256": "ce37e4901132ff3926731d63ce5334f001144d118006a3b9e4e03725c60dc0c9",
+  "source_path_count": 163
+}

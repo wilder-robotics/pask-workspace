@@ -13,6 +13,13 @@
 //! Response bytes are returned without parsing or cryptographic verification.
 //! The ledger's receipt proof and signing algorithm may differ from those
 //! supported by `pask_wire::verify_inclusion`.
+//!
+//! Submission is byte-transparent: callers must supply the transmitted tag-18
+//! Signed Statement. In particular, current untagged local producer output
+//! needs an explicit tag-18 wrapper before submission; `attach_receipt` only
+//! constructs the later Transparent Statement. The service must commit to the
+//! profile's candidate-entry bytes, not the tagged HTTP request body. Neither
+//! adaptation nor service agreement is inferred by this transport.
 
 use std::time::{Duration, Instant};
 
@@ -106,6 +113,9 @@ impl TsClient {
     /// `/entries` with the SCRAPI API version, then polls the transaction
     /// identified by a 303 Location until a 200 returns the receipt.
     /// Legacy 202 operation records are not accepted as receipt responses.
+    /// The caller must provide the transmitted tag-18 envelope. This method
+    /// sends bytes unchanged; current untagged local producer output needs an
+    /// explicit tag-18 wrapper before this call, not after registration.
     ///
     /// # Errors
     ///
