@@ -151,6 +151,8 @@ where
 const COSE_LABEL_CONTENT_TYPE: i64 = 3;
 
 /// Parses a `COSE_Sign1` from CBOR bytes.
+/// Accepts the transmitted tag-18 form and, separately, legacy untagged local
+/// producer output. Other tags and nested wrappers are rejected.
 ///
 /// The content type is read structurally from COSE header label 3 in the
 /// protected header map, not from a raw byte search of the header bytes.
@@ -177,6 +179,10 @@ fn parse_statement(mut encoded: &[u8]) -> Result<CoseSign1> {
     if !encoded.is_empty() {
         return Err(Error::Cose("trailing bytes after COSE_Sign1"));
     }
+    value = match value {
+        Value::Tag(18, inner) => *inner,
+        other => other,
+    };
 
     let Value::Array(items) = &mut value else {
         return Err(Error::Cose("COSE_Sign1 must be an array"));

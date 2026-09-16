@@ -1,0 +1,626 @@
+START=2026-09-15T16:46:59.750160+00:00
+CWD=/home/user/workspace/pask-review-sep14
+SOURCE_TREE=1bb6d99f2d3e13ee62f8067c99d4f5ab55b76e17
+COMMAND=rustup run stable cargo test --workspace --locked
+ENV={"CARGO_INCREMENTAL": "0", "CARGO_PROFILE_DEV_DEBUG": "0", "CARGO_PROFILE_TEST_DEBUG": "0", "CARGO_TARGET_DIR": "/home/user/workspace/pask71prep-isolated-stable-final-target", "CARGO_TERM_COLOR": "never"}
+RUSTFLAGS=<unset>
+CARGO_ENCODED_RUSTFLAGS=<unset>
+rustc 1.98.1 (48a229cea 2026-09-01)
+binary: rustc
+commit-hash: 48a229ceaefd4985c50990b14116b6d856af0985
+commit-date: 2026-09-01
+host: x86_64-unknown-linux-gnu
+release: 1.98.1
+LLVM version: 22.1.8
+cargo 1.98.1 (797e8a9bc 2026-08-05)
+release: 1.98.1
+commit-hash: 797e8a9bca276c1c9f9f738d2a20f484fa4eea9d
+commit-date: 2026-08-05
+host: x86_64-unknown-linux-gnu
+libgit2: 1.9.4 (sys:0.21.0 vendored)
+libcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)
+ssl: OpenSSL 3.6.3 9 Jun 2026
+os: Ubuntu 26.4.0 (resolute) [64-bit]
+clippy 0.1.98 (48a229ceae 2026-09-01)
+rustfmt 1.9.0-stable (48a229ceae 2026-09-01)
+   Compiling pask-ts-client v0.1.0 (/home/user/workspace/pask-review-sep14/crates/pask-ts-client)
+    Finished `test` profile [unoptimized] target(s) in 0.57s
+     Running unittests src/lib.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/pask_adapter-6fd6fd0bd0077f61)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/buildium_mapping.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/buildium_mapping-f0cab2c35be46b2f)
+
+running 2 tests
+test adapter_mismatch_on_wrong_system ... ok
+test payload_shape_conforms_to_spec ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/credential_missing.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/credential_missing-5c63ecac212c9d7e)
+
+running 1 test
+test short_circuits_after_verify ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/idempotency.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/idempotency-f11065166209dc1d)
+
+running 1 test
+test dedup_prevents_double_post ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/propertymeld_stub.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/propertymeld_stub-fcd17080f6d49f76)
+
+running 1 test
+test returns_partner_agreement_required ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/retry_backoff.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/retry_backoff-927aec123f0cd1b0)
+
+running 4 tests
+test last_retryable_error_is_preserved ... ok
+test server_error_exhaustion_becomes_dead_letter ... ok
+test rate_limit_then_success ... ok
+test transport_failure_exhaustion_becomes_dead_letter ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/verify_before_push.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/verify_before_push-35db49f2f2ac1b33)
+
+running 2 tests
+test rejects_tampered_receipt ... ok
+test accepts_valid_receipt ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/write_only_invariant.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/write_only_invariant-7b0791edb5923bae)
+
+running 2 tests
+test mode_defense_in_depth ... ignored, pask-wire currently rejects every non-WRITE_ONLY mode
+test only_post_and_health_get ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/lib.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/pask_attest-e2ddf3021f76d893)
+
+running 1 test
+test clock::tests::formats_known_instants ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/attestation_seal_token.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/attestation_seal_token-7cc444e1cf3663e6)
+
+running 2 tests
+test attestation_cannot_be_deserialized_from_json ... ok
+test attestation_has_no_public_constructor ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/clock_injection.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/clock_injection-cb8909f0a77fa0f3)
+
+running 2 tests
+test verifier_never_reads_wall_clock ... ok
+test two_verifiers_with_different_clocks_disagree ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/error_variants_distinct.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/error_variants_distinct-72a3fe6ea12ec727)
+
+running 1 test
+test all_error_variants_have_distinct_display ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/measured_boot_chain.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/measured_boot_chain-117489ddf99fdbbe)
+
+running 4 tests
+test empty_components_with_correct_chain_ok ... ok
+test chain_matches_components_ok ... ok
+test reordered_components_fail_chain ... ok
+test tampered_component_digest_fails_chain ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/mock_verifier.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/mock_verifier-33d23ad6bdff85c6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/quote_frame_parsing.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/quote_frame_parsing-8803e878575840bf)
+
+running 7 tests
+test oversize_frame_rejected ... ok
+test random_bytes_never_parse_ok ... ok
+test truncated_frame_rejected ... ok
+test well_formed_frame_parses_ok ... ok
+test wrong_spec_version_byte_rejected ... ok
+test zero_length_signature_rejected ... ok
+test quote_parser_round_trip ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.25s
+
+     Running tests/signature_verification.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/signature_verification-a1059a7b8cfb1b6a)
+
+running 4 tests
+test tampered_jcs_bytes_fail_signature ... ok
+test signature_from_wrong_key_but_known_id_returns_invalid_signature ... ok
+test unknown_witness_key_id_returns_unknown_root_of_trust ... ok
+test valid_signature_and_known_key_verifies ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/tee_class_rejects_sku.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/tee_class_rejects_sku-2fa3cec7432f52c8)
+
+running 7 tests
+test accepts_exactly_the_registry_seed ... ok
+test rejects_case_variants ... ok
+test rejects_empty_string ... ok
+test rejects_h200_sku ... ok
+test rejects_instruction_set_architectures ... ok
+test rejects_orin_sku ... ok
+test rejects_versioned_tdx_sku ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/tee_class_roundtrip.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/tee_class_roundtrip-9d6b9103b450238e)
+
+running 2 tests
+test every_class_display_parses_back ... ok
+test arbitrary_string_from_str_is_error_or_known ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/validity_window.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/validity_window-56b37f3563314078)
+
+running 6 tests
+test not_yet_valid_returns_clock_skew ... ok
+test expired_returns_expired_evidence ... ok
+test within_skew_after_not_after_ok ... ok
+test within_skew_before_not_before_ok ... ok
+test within_window_ok ... ok
+test validity_window_boundary_conditions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.26s
+
+     Running unittests src/lib.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/pask_site-f593b3659e0238bb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/end_to_end.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/end_to_end-6fc6a95f53691d1c)
+
+running 1 test
+test end_to_end_produce_verify_push ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/end_to_end_dedup.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/end_to_end_dedup-31afcf85b0326a0e)
+
+running 1 test
+test end_to_end_dedup_returns_already_pushed_on_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/end_to_end_deterministic.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/end_to_end_deterministic-3723d4f5fc0cfa4c)
+
+running 1 test
+test end_to_end_twice_produces_identical_bytes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/evidence_hashing.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/evidence_hashing-f8357256a172bc50)
+
+running 2 tests
+test sorted_files_produce_stable_digest ... ok
+test evidence_digest_matches_jcs_sha256 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/producer_deterministic.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/producer_deterministic-7b06b4cab382587c)
+
+running 1 test
+test two_produces_return_identical_bytes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/producer_rejects_invalid_config.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/producer_rejects_invalid_config-b6def31224753079)
+
+running 2 tests
+test evidence_engagement_id_mismatch_is_rejected ... ok
+test empty_site_id_is_rejected ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/producer_signs_valid_receipt.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/producer_signs_valid_receipt-a70382662a23e755)
+
+running 1 test
+test produces_verifiable_receipt ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/reference_site_verify_before_push.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/reference_site_verify_before_push-1ab8c8546fa1baba)
+
+running 1 test
+test reference_site_uses_verify_before_push ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/lib.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/pask_ts_client-2e4f73f77aa9bd92)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/e2e.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/e2e-1ac59f0608d6fadc)
+
+running 9 tests
+test attach_receipt_rejects_non_cose_statement ... ok
+test attach_receipt_rejects_non_cbor_receipt ... ok
+test from_env_fails_without_url ... ok
+test from_env_succeeds_when_set ... ok
+test polling_accepts_absolute_locations_and_bounds_retry_after ... ok
+test real_ledger_submit_and_retrieve_receipt ... ignored, needs a real scitt-ccf-ledger; run with scripts/run-dev-ts.sh or in CI
+test submit_rejects_unexpected_status_and_legacy_operation_records ... ok
+test submit_requires_an_entry_location ... ok
+test end_to_end_round_trip ... ok
+
+test result: ok. 8 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/issue_70.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/issue_70-15ffdd2c5f5dc709)
+
+running 23 tests
+test attachment_success_does_not_validate_signatures_proofs_or_claims ... ok
+test duplicate_valid_receipts_arrays_are_not_resolved_by_first_match ... ok
+test exact_wire_matches_handwritten_noncanonical_receipt_bytes ... ok
+test existing_unprotected_evidence_is_not_discarded ... ok
+test independent_signed_vector_matches_actual_sender_and_verifiers ... ok
+test legacy_decoded_attachments_remain_readable_but_are_not_upgraded_by_sender ... ok
+test legacy_untagged_statement_input_is_explicitly_emitted_tagged ... ok
+test multiple_attachments_preserve_every_prior_encoded_byte_and_order ... ok
+test noncanonical_signed_protected_contents_are_not_reserialized ... ok
+test noncanonical_signed_receipt_survives_repeated_attachment_and_inclusion_verification ... ok
+test protected_only_receipts_are_read_but_sender_refuses_to_create_ambiguity ... ok
+test rejects_duplicate_and_overlapping_receipt_headers ... ok
+test rejects_duplicate_integer_text_and_receipts_header_keys ... ok
+test rejects_empty_nonarray_and_mixed_existing_attachment_containers ... ok
+test rejects_header_label_overlap_including_protected_unprotected_receipts ... ok
+test rejects_malformed_new_and_existing_encoded_receipts_without_repair ... ok
+test rejects_malformed_protected_headers_even_when_unprotected_receipts_exist ... ok
+test rejects_non_label_header_map_keys ... ok
+test rejects_unsupported_nested_wrappers_and_trailing_statement_data ... ok
+test rejects_wrong_arity_and_non_bstr_signed_elements ... ok
+test bad_additional_signature_is_preserved_and_does_not_replace_good_receipt ... ok
+test tagged_ed25519_v05_actual_sender_reader_signature_and_inclusion ... ok
+test tagged_ed25519_v06_actual_sender_reader_signature_and_inclusion ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running unittests src/lib.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/pask_wire-ab2bcec64d782485)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ack_provenance.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/ack_provenance-63d168ca96100dfb)
+
+running 13 tests
+test a_future_revision_is_also_reported_as_a_version_problem ... ok
+test a_document_too_malformed_to_carry_a_version_still_gets_its_real_diagnosis ... ok
+test a_receipt_from_an_unimplemented_revision_reports_the_version_not_a_missing_member ... ok
+test a_null_value_is_rejected_rather_than_treated_as_an_absence ... ok
+test an_unrecognized_value_is_accepted_and_reported_as_unrecognized ... ok
+test an_unrecognized_value_round_trips_byte_identically ... ok
+test collapsed_issuer_asserted_and_third_party_vector_is_committed_and_holds ... ok
+test an_unrecognized_value_is_not_read_as_third_party_and_not_normalized_to_none ... ok
+test collapsed_unrecognized_and_none_vector_is_committed_and_holds ... ok
+test the_member_is_required ... ok
+test lowercase_and_whitespace_variants_are_unrecognized_rather_than_repaired ... ok
+test the_three_named_values_are_distinguishable_from_each_other ... ok
+test the_three_named_values_each_round_trip_to_their_exact_wire_string ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/chain.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/chain-131f1f9a15bdbe33)
+
+running 8 tests
+test broken_link_fixture_is_rejected_by_per_receipt_validation_before_verify_chain_runs ... ok
+test chain_level_link_check_rejects_a_mismatched_prev_hash_that_still_parses ... ok
+test empty_slice_is_rejected ... ok
+test head_not_zero_is_rejected_with_the_specific_error ... ok
+test seq_gap_is_rejected_with_the_specific_error ... ok
+test single_receipt_chain_at_seq_zero_verifies ... ok
+test valid_three_receipt_chain_verifies ... ok
+test committed_fixtures_are_byte_identical_to_the_generator ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/cose_independent.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/cose_independent-2c785edcef7d3790)
+
+running 1 test
+test coset_directly_verifies_ed25519_statement ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/issue_30_66.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/issue_30_66-4ad276198b2a56c0)
+
+running 30 tests
+test containment_fails_when_ts_precedes_not_before ... ok
+test containment_fails_when_ts_exceeds_not_after ... ok
+test containment_not_required_under_0_5 ... ok
+test containment_passes_at_inclusive_lower_bound ... ok
+test containment_passes_at_inclusive_upper_bound ... ok
+test containment_passes_when_ts_is_inside_interval ... ok
+test direct_witness_mismatch_not_checked_under_0_5 ... ok
+test delegated_witness_with_mismatched_identifiers_passes ... ok
+test direct_witness_with_mismatched_identifiers_fails ... ok
+test direct_witness_with_matching_identifiers_passes ... ok
+test duplicate_content_type_rejected ... ok
+test hyphen_form_content_type_at_label_3_rejected ... ok
+test identical_ct_string_after_label_3_not_confused ... ok
+test identical_ct_string_before_label_3_not_confused ... ok
+test otherwise_valid_fixture_fails_containment_under_0_6 ... ok
+test missing_content_type_rejected ... ok
+test producer_05_payload_carries_05_content_type ... ok
+test producer_06_payload_carries_06_content_type ... ok
+test profile_string_in_unrelated_field_not_treated_as_content_type ... ok
+test signed_0_5_out_of_window_ts_not_rejected_on_containment ... ok
+test signed_0_6_at_not_after_endpoint_passes ... ok
+test signed_0_6_just_after_interval_rejected ... ok
+test signed_0_6_at_not_before_endpoint_passes ... ok
+test signed_0_6_just_before_interval_rejected ... ok
+test signed_0_6_out_of_window_ts_rejected_for_containment ... ok
+test version_agreement_05_05_passes ... ok
+test version_agreement_06_06_passes ... ok
+test version_mismatch_05_payload_06_header_rejected ... ok
+test version_mismatch_06_payload_05_header_rejected ... ok
+test wrong_content_type_rejected ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/issue_67.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/issue_67-4198b63b33ffa791)
+
+running 34 tests
+test nv_empty_input_rejected ... ok
+test nv_detached_payload_rejected ... ok
+test nv_invalid_cbor_rejected ... ok
+test nv_non_array_rejected ... ok
+test nv_payload_integer_rejected ... ok
+test nv_protected_header_integer_rejected ... ok
+test nv_signature_integer_rejected ... ok
+test nv_three_element_array_rejected ... ok
+test nv_trailing_bytes_rejected ... ok
+test nv_unprotected_header_array_rejected ... ok
+test nv_unprotected_header_bytes_rejected ... ok
+test nv_unprotected_header_integer_rejected ... ok
+test nv_unprotected_header_null_rejected ... ok
+test nv_unprotected_header_text_rejected ... ok
+test nv_unsupported_tag_rejected ... ok
+test tv10_short_signature_1byte_bstr ... ok
+test tv10_leaf_hash ... ok
+test tv1_leaf_hash ... ok
+test tv1_standard_untagged ... ok
+test tv1_receipts_share_leaf_hash ... ok
+test tv2_tag_18_wrapped ... ok
+test tv3_one_receipt_acceptance_invariant ... ok
+test tv4_two_receipts_acceptance_invariant ... ok
+test tv5_differs_from_tv1 ... ok
+test tv5_leaf_hash ... ok
+test tv5_tampered_payload ... ok
+test tv6_leaf_hash ... ok
+test tv6_short_protected_header_1byte_bstr ... ok
+test tv7_leaf_hash ... ok
+test tv7_protected_header_len_10_1byte_bstr ... ok
+test tv8_leaf_hash ... ok
+test tv9_empty_payload_1byte_bstr ... ok
+test tv8_protected_header_len_25_2byte_bstr ... ok
+test tv9_leaf_hash ... ok
+
+test result: ok. 34 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/issue_67_integration.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/issue_67_integration-941188fcffb26482)
+
+running 32 tests
+test candidate_entry_from_final_statement_matches_independent_derivation ... ok
+test candidate_entry_from_raw_statement_matches_independent_derivation ... ok
+test byte_string_receipt_round_trip ... ok
+test inclusion_path_matches_independent_derivation ... ok
+test final_statement_derivation_independent_of_receipts ... ok
+test issuer_signature_preserved_after_attachment ... ok
+test issuer_signature_rejects_tampered_payload ... ok
+test issuer_signature_rejects_tampered_protected_header ... ok
+test issuer_signature_rejects_tampered_signature ... ok
+test invalid_then_valid_attachment_order ... ok
+test issuer_signature_verifies ... ok
+test leaf_hash_matches_independent_derivation ... ok
+test merkle_root_matches_independent_derivation ... ok
+test producer_and_recipient_derivation_consistency ... ok
+test receipt_reader_accepts_bare_array_legacy_form ... ok
+test receipt_reader_accepts_byte_string_rfc_form ... ok
+test receipt_reader_rejects_map_element ... ok
+test receipt_reader_rejects_scalar_element ... ok
+test receipt_reader_rejects_wrong_tag ... ok
+test round_trip_produce_verify_inclusion ... ok
+test unsupported_then_valid_attachment_order ... ok
+test unsupported_vds_returns_vds_error ... ok
+test verify_from_final_statement_no_receipts ... ok
+test verify_from_final_statement_no_verified_proof_under_wrong_key ... ok
+test valid_then_invalid_attachment_order ... ok
+test verify_from_final_statement_succeeds ... ok
+test verify_from_final_statement_only_invalid_proof ... ok
+test verify_inclusion_rejects_tampered_signature ... ok
+test verify_from_final_statement_unsupported_vds ... ok
+test verify_inclusion_rejects_wrong_entry ... ok
+test verify_inclusion_with_fixed_fixture ... ok
+test verify_inclusion_rejects_wrong_root_in_receipt ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/issuer_affiliation.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/issuer_affiliation-333620a8c80da8af)
+
+running 8 tests
+test a_missing_member_is_refused_rather_than_defaulted ... ok
+test a_chain_that_agrees_about_affiliation_reports_no_change ... ok
+test an_unrecognized_value_is_surfaced_as_unrecognized_and_keeps_its_string ... ok
+test changed_within_a_chain_vector_is_committed_and_is_surfaced ... ok
+test not_disclosed_is_not_independent_vector_is_committed_and_holds ... ok
+test not_disclosed_is_reported_as_undisclosed_and_never_as_independent ... ok
+test the_three_named_values_are_distinguishable_from_each_other ... ok
+test the_three_named_values_each_round_trip_to_their_exact_wire_string ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/jcs_vectors.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/jcs_vectors-4fead0495ad8b62f)
+
+running 1 test
+test rfc_8785_vectors_match_byte_for_byte ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/malformed.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/malformed-8b4e9150722b2c35)
+
+running 10 tests
+test attestation_quote_is_not_part_of_the_wire_surface ... ok
+test cwt_subject_must_equal_site_id_bytes ... ok
+test content_type_must_be_present_and_exact ... ok
+test malformed_json_is_rejected ... ok
+test mismatched_chain_hash_is_rejected ... ok
+test every_required_field_is_rejected_when_absent ... ok
+test package_payload_mutations_are_rejected ... ok
+test noncanonical_payload_bytes_are_rejected ... ok
+test zero_length_attestation_validity_is_rejected ... ok
+test tampered_signature_is_rejected ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/receipt.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/receipt-00fe76df5aee8d67)
+
+running 24 tests
+test a_leaf_index_at_or_past_the_tree_size_is_refused ... ok
+test a_malformed_wire_proof_is_refused_with_a_reason ... ok
+test a_negative_tree_size_is_not_read_as_a_large_unsigned_one ... ok
+test a_path_longer_than_the_tree_permits_is_refused ... ok
+test a_path_that_ends_before_the_root_is_refused ... ok
+test a_proof_for_the_wrong_leaf_reconstructs_a_different_root ... ok
+test a_detached_payload_receipt_verifies_offline ... ok
+test a_receipt_missing_its_vdp_map_is_refused_with_a_reason ... ok
+test a_receipt_missing_its_vds_is_refused_rather_than_defaulted ... ok
+test a_receipt_presented_with_the_wrong_entry_does_not_verify ... ok
+test a_receipt_signed_by_a_different_transparency_service_does_not_verify ... ok
+test a_receipts_header_in_the_protected_map_is_also_found ... ok
+test a_root_disagreeing_with_the_attached_payload_names_the_proof_not_the_key ... ok
+test a_single_entry_tree_has_the_leaf_hash_as_its_root ... ok
+test a_statement_with_no_receipts_header_reports_absent ... ok
+test a_proof_reconstructs_the_root_for_every_leaf_of_every_tree_size_to_thirty_three ... ok
+test a_tagged_receipt_and_an_untagged_receipt_both_decode ... ok
+test a_usable_proof_is_found_even_when_an_unusable_one_precedes_it ... ok
+test a_wire_proof_round_trips_with_tree_size_before_leaf_index ... ok
+test absent_and_malformed_are_reported_as_different_states ... ok
+test an_unsupported_verifiable_data_structure_is_refused_rather_than_assumed ... ok
+test an_attached_payload_receipt_verifies_offline ... ok
+test bytes_that_are_not_a_cose_sign1_are_refused ... ok
+test attached_receipts_round_trip_through_the_header_and_verify ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/receipt_fixtures.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/receipt_fixtures-ed2a7f261bbbf917)
+
+running 2 tests
+test committed_fixtures_are_byte_identical_to_the_generator ... ok
+test every_vector_produces_the_outcome_it_advertises ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/roundtrip.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/roundtrip-f70ba956546ba868)
+
+running 1 test
+test produce_serialize_parse_verify_round_trip ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/main.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/pask_wire_cli-58c20008bc427812)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli_binary.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/cli_binary-9718616897f87bd4)
+
+running 3 tests
+test bad_subcommand_fails_with_usable_message ... ok
+test help_succeeds ... ok
+test canonical_example_matches_library_bytes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/draft_example_is_generated.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/draft_example_is_generated-456b300c9b55b808)
+
+running 2 tests
+test draft_payload_figure_is_byte_identical_to_the_emitted_example ... ok
+test the_emitted_example_is_parseable_json ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/draft_examples_are_validated.rs (/home/user/workspace/pask71prep-isolated-stable-final-target/debug/deps/draft_examples_are_validated-6bbcee22292b225e)
+
+running 4 tests
+test no_backtick_fences_have_appeared ... ok
+test no_explanation_outlives_the_block_it_explained ... ok
+test every_json_example_validates_against_the_reference_parser ... ok
+test the_document_carries_the_expected_number_of_examples ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pask_adapter
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pask_attest
+
+running 12 tests
+test crates/pask-attest/src/attestation.rs - attestation::Attestation (line 22) ... ok
+test crates/pask-attest/src/attestation.rs - attestation::AttestationClaims (line 113) ... ok
+test crates/pask-attest/src/error.rs - error::AttestationError (line 8) ... ok
+test crates/pask-attest/src/measured_boot.rs - measured_boot::BootComponent (line 12) ... ok
+test crates/pask-attest/src/measured_boot.rs - measured_boot::MeasuredBoot (line 41) ... ok
+test crates/pask-attest/src/platform_evidence.rs - platform_evidence::PlatformEvidence (line 10) ... ok
+test crates/pask-attest/src/sealed_evidence.rs - sealed_evidence::SealedEvidence (line 10) ... ok
+test crates/pask-attest/src/tee_class.rs - tee_class::TeeClass (line 19) ... ok
+test crates/pask-attest/src/validity.rs - validity::ValidityWindow (line 16) ... ok
+test crates/pask-attest/src/verifier.rs - verifier::AttestationVerifier (line 26) ... ok
+test crates/pask-attest/src/verifier.rs - verifier::Ed25519RootOfTrust (line 50) ... ok
+test crates/pask-attest/src/witness_key.rs - witness_key::WitnessKeyId (line 8) ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+all doctests ran in 0.28s; merged doctests compilation took 0.27s
+   Doc-tests pask_site
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pask_ts_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pask_wire
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+EXIT=0
+DURATION_SECONDS=15.669
+END=2026-09-15T16:47:15.419182+00:00
