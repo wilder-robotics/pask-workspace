@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Small test harness; frozen producer/recipient sources are never rewritten.
+"""Small isolated test harness; recipient source remains unchanged.
 
 Executed ONLY inside the proposed network-none container, not in local checks.
 Clean means no deliberately injected gap/rollback, NOT a coverage-pass claim.
@@ -32,30 +32,40 @@ def process_metrics():
 
 
 def graph(node):
-    from rclpy.action.graph import get_action_names_and_types
-    topics = node.get_topic_names_and_types()
-    endpoints = {}
-    for name, _ in topics:
-        endpoints[name] = {}
-        for kind, getter in (("publishers", node.get_publishers_info_by_topic),
-                             ("subscriptions", node.get_subscriptions_info_by_topic)):
-            endpoints[name][kind] = [
-                {"node_name": x.node_name, "node_namespace": x.node_namespace,
-                 "topic_type": x.topic_type,
-                 "endpoint_gid": list(x.endpoint_gid),
-                 "qos": {"reliability": str(x.qos_profile.reliability),
-                         "durability": str(x.qos_profile.durability),
-                         "history": str(x.qos_profile.history),
-                         "depth": x.qos_profile.depth}}
-                for x in getter(name)]
-    result = {"topics": topics, "services": node.get_service_names_and_types(),
-              "actions": get_action_names_and_types(node), "endpoints": endpoints,
-              "monotonic_ns": time.monotonic_ns()}
-    allowed = {"/demo/movement", "/demo/control_mode", "/demo/diagnostics",
-               "/parameter_events"}
-    if set(n for n, _ in topics) - allowed or result["services"] or result["actions"]:
-        raise RuntimeError("unexpected graph endpoints; no runtime continuation")
-    return result
+    from pask_ros2_local_demo import node as frozen
+    return frozen.checked_graph(node, "/out/graph-qos-snapshots.json", "collect/probe")
+
+
+def publisher_class(frozen, case):
+    """The actual clean/missing-stream publisher; also used by offline smoke."""
+    class ContinuousPublisher(frozen.Publisher):
+        def emit(self):
+            t = self.tick
+            stamp = t * frozen.NS // 10
+            msg = frozen.PoseStamped()
+            msg.header.stamp.sec, msg.header.stamp.nanosec = divmod(stamp, frozen.NS)
+            msg.header.frame_id = "map"
+            msg.pose.position.x, msg.pose.orientation.w = t * 0.01, 1.0
+            frozen.publish_observation(self, "/demo/movement", msg)
+            if t % 5 == 0:
+                if case != "missing-stream":
+                    mode = frozen.String()
+                    mode.data = "assisted" if t >= 60 else "autonomous"
+                    frozen.publish_observation(self, "/demo/control_mode", mode)
+                diag = frozen.DiagnosticArray()
+                diag.header.stamp.sec, diag.header.stamp.nanosec = divmod(stamp, frozen.NS)
+                status = frozen.DiagnosticStatus()
+                status.level = b"\x02" if t == 60 else b"\x00"
+                status.name, status.message = "simulated-inspection", "test stimulus"
+                status.hardware_id = "SIMULATED-NOT-TEE"
+                diag.status = [status]
+                frozen.publish_observation(self, "/demo/diagnostics", diag)
+            self.tick += 1
+            frozen.marker("published_tick", tick=t, case=case, source_stamp_ns=stamp)
+            if self.tick > 120:
+                self.done = True
+                self.timer.cancel()
+    return ContinuousPublisher
 
 
 def role(args):
@@ -66,54 +76,31 @@ def role(args):
     class ObservedCollector(frozen.Collector):
         def receive(self, topic, cls, data):
             # These hashes are of the original callback bytes, before parsing.
-            print(json.dumps({"raw_callback": topic, "bytes": len(data),
-                              "sha256": sha(bytes(data))}), flush=True)
+            count = getattr(self, "_raw_logs", 0)
+            if count < 256:
+                print(json.dumps({"raw_callback": topic, "bytes": len(data),
+                                  "sha256": sha(bytes(data)), "monotonic_ns": time.monotonic_ns(),
+                                  "clock": "CLOCK_MONOTONIC"}), flush=True)
+            elif count == 256:
+                frozen.marker("raw_callback_logging_capped", limit=256,
+                              note="capture unchanged; later callback log entries suppressed")
+            self._raw_logs = count + 1
             super().receive(topic, cls, data)
 
-    class ContinuousPublisher(frozen.Publisher):
-        def emit(self):
-            # Test stimulus only: unlike frozen scenario, no rollback or gap.
-            t = self.tick
-            stamp = t * frozen.NS // 10
-            msg = frozen.PoseStamped()
-            msg.header.stamp.sec, msg.header.stamp.nanosec = divmod(stamp, frozen.NS)
-            msg.header.frame_id = "map"
-            msg.pose.position.x, msg.pose.orientation.w = t * 0.01, 1.0
-            self.outputs["/demo/movement"].publish(msg)
-            if t % 5 == 0:
-                if args.case != "missing-stream":
-                    mode = frozen.String()
-                    mode.data = "assisted" if t >= 60 else "autonomous"
-                    self.outputs["/demo/control_mode"].publish(mode)
-                diag = frozen.DiagnosticArray()
-                diag.header.stamp.sec, diag.header.stamp.nanosec = divmod(stamp, frozen.NS)
-                status = frozen.DiagnosticStatus()
-                status.level = 2 if t == 60 else 0
-                status.name, status.message = "simulated-inspection", "test stimulus"
-                status.hardware_id = "SIMULATED-NOT-TEE"
-                diag.status = [status]
-                self.outputs["/demo/diagnostics"].publish(diag)
-            self.tick += 1
-            print(json.dumps({"published_tick": t, "case": args.case,
-                              "source_stamp_ns": stamp}), flush=True)
-            if self.tick > 120:
-                self.done = True
-                self.timer.cancel()
-
     rclpy.init()
-    node = (ObservedCollector() if args.role == "collect" else
-            frozen.Publisher() if args.case == "scenario" else ContinuousPublisher())
+    node = None
     snapshots = []
     began = time.monotonic()
     deadline = began + (17 if args.role == "collect" else 15)
     next_graph = began + 2
     try:
+        node = (ObservedCollector() if args.role == "collect" else
+                frozen.Publisher() if args.case == "scenario" else publisher_class(frozen, args.case)())
         while time.monotonic() < deadline and not getattr(node, "done", False):
             rclpy.spin_once(node, timeout_sec=0.05)
             if args.role == "collect" and time.monotonic() >= next_graph:
                 snapshot = graph(node)
                 snapshots.append(snapshot)
-                write("/out/graph-qos-snapshots.json", snapshots)
                 next_graph += 1
         if args.role == "collect":
             write("/out/raw-callback-counts.json", node.local_sequences)
@@ -122,12 +109,12 @@ def role(args):
                    "limits": node.capture.limits,
                    "quality_reason_counts": dict(node.capture.reasons),
                    "note": "measured application queue, NOT DDS internal queue occupancy"})
-            node.export("/out/final-bundle", versions)
             expected_topics = set(frozen.TYPES)
             if not any(all(snapshot["endpoints"].get(t, {}).get("publishers")
                            and snapshot["endpoints"].get(t, {}).get("subscriptions")
                            for t in expected_topics) for snapshot in snapshots):
                 raise RuntimeError("no graph snapshot establishes publisher/subscriber endpoints")
+            node.export("/out/final-bundle", versions)
         else:
             print(json.dumps({"publisher_finished": node.done, "ticks": node.tick,
                               "case": args.case,
@@ -135,14 +122,38 @@ def role(args):
                               if args.case == "missing-stream" else None}), flush=True)
             if not node.done:
                 raise RuntimeError("publisher deadline before all fixture ticks")
+    except BaseException as exc:
+        def partial_state():
+            if args.role != "collect" or node is None:
+                return
+            path = Path("/out/partial-debug")
+            path.mkdir(exist_ok=True)
+            write(path / "collector-state.json",
+                  {"status": "partial failed capture; NOT a final export",
+                   "monotonic_ns": time.monotonic_ns(), "clock": "CLOCK_MONOTONIC",
+                   "callback_counts": node.local_sequences,
+                   "callback_log_entries_suppressed": max(0, getattr(node, "_raw_logs", 0) - 256),
+                   "queue_high_water": node.capture.high_water, "queue_limits": node.capture.limits,
+                   "quality_reason_counts": {str(k)[:128]: v for k, v in
+                                             list(node.capture.reasons.items())[:32]},
+                   "quality_counts_truncated": len(node.capture.reasons) > 32,
+                   "primary_error": repr(exc)[:256],
+                   "raw_CDR_exported": False})
+        frozen.cleanup_preserving_error(exc, [
+            ("failure_marker", lambda: frozen.marker("process_exception", role=args.role,
+                                                     error=repr(exc))),
+            ("partial_collector_state", partial_state)])
+        raise
     finally:
-        write("/out/" + args.role + "-resources.json",
-              process_metrics() | {"elapsed_seconds": time.monotonic() - began})
-        node.destroy_node()
-        rclpy.shutdown()
+        frozen.cleanup_preserving_error(sys.exc_info()[1], [
+            ("resources", lambda: write("/out/" + args.role + "-resources.json",
+                                        process_metrics() | {"elapsed_seconds": time.monotonic() - began})),
+            ("destroy_node", lambda: node.destroy_node() if node is not None else None),
+            ("shutdown", rclpy.shutdown)])
 
 
 def capture(args):
+    from pask_ros2_local_demo import node as frozen
     commands = {}
     children = []
     try:
@@ -150,22 +161,194 @@ def capture(args):
             command = [sys.executable, "-u", __file__, name, "--case", args.case]
             commands[name] = {"argv": command}
             log = open("/out/" + name + ".log", "w")
-            p = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
+            try:
+                p = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
+            except BaseException as exc:
+                commands[name]["start_error"] = repr(exc)[:256]
+                frozen.cleanup_preserving_error(exc, [(name + "_log_close", log.close)])
+                raise
             children.append((name, p, log))
+            frozen.marker("child_started", role=name, child_pid=p.pid)
             if name == "collect":
                 time.sleep(1)
         for name, p, _ in children:
             commands[name]["exit_code"] = p.wait(timeout=23)
+            commands[name]["exit_observed_monotonic_ns"] = time.monotonic_ns()
+            commands[name]["time_note"] = "parent wait observation, not exact fault time"
+            frozen.marker("child_exit_observed", role=name, exit_code=p.returncode)
         if any(v["exit_code"] != 0 for v in commands.values()):
             raise RuntimeError("publisher/collector integration failure; see original logs")
     finally:
+        primary = sys.exc_info()[1]
+        actions = []
         for name, p, log in children:
-            if p.poll() is None:
-                p.kill()
-                p.wait()
-            commands[name]["exit_code"] = p.returncode
-            log.close()
-        write("/out/process-commands.json", commands)
+            def stop(name=name, p=p):
+                if p.poll() is None:
+                    p.kill()
+                    p.wait(timeout=3)
+                commands[name]["exit_code"] = p.returncode
+                commands[name].setdefault("exit_observed_monotonic_ns", time.monotonic_ns())
+                commands[name]["time_note"] = "parent observation, not exact fault time"
+            actions.extend([(name + "_stop", stop), (name + "_log_close", log.close)])
+        actions.append(("process_results", lambda: write("/out/process-commands.json", commands)))
+        frozen.cleanup_preserving_error(primary, actions)
+
+
+def smoke(args):
+    """PENDING matching ROS runtime: real generated CDR, actual emit/receive code.
+
+    A sink replaces transport only for focused trigger checks; the later capture
+    must still prove publisher/subscriber callbacks, bags and recipient results.
+    """
+    import importlib
+    import inspect
+    from types import SimpleNamespace
+    import xml.etree.ElementTree as ET
+    import rclpy
+    from rclpy.serialization import serialize_message, deserialize_message
+    from ament_index_python.packages import get_package_share_directory
+    from pask_ros2_local_demo import node as frozen
+    versions = frozen.environment()
+    out = Path("/out")
+    installed = out / "installed-contract"
+    installed.mkdir()
+    inventory = []
+    total = 0
+
+    def preserve(label, source):
+        nonlocal total
+        source = Path(source)
+        size = source.stat().st_size
+        if size > 160000 or total + size > 512000:
+            raise RuntimeError("installed source evidence budget exceeded")
+        raw = source.read_bytes()
+        (installed / label).write_bytes(raw)
+        total += size
+        inventory.append({"file": label, "installed_path": str(source),
+                          "bytes": size, "sha256": sha(raw)})
+        write(out / "installed-contract-inventory.json", inventory)
+
+    for module, label in (
+            ("rclpy.node", "rclpy-node.py"),
+            ("rclpy.parameter", "rclpy-parameter.py"),
+            ("rclpy.action.graph", "rclpy-action-graph.py"),
+            ("rclpy.type_description_service", "rclpy-type-description-service.py"),
+            ("diagnostic_msgs.msg._diagnostic_status", "diagnostic-status.py"),
+            ("diagnostic_msgs.msg._diagnostic_array", "diagnostic-array.py")):
+        preserve(label, inspect.getsourcefile(importlib.import_module(module)))
+    for package, expected in (("diagnostic_msgs", "5.3.8"), ("rosidl_generator_py", "0.22.2"),
+                              ("rclpy", "7.1.12")):
+        share = Path(get_package_share_directory(package))
+        xml = share / "package.xml"
+        preserve(package + "-package.xml", xml)
+        if ET.parse(xml).findtext("version") != expected:
+            raise RuntimeError("installed message/generator/rclpy contract version mismatch")
+    share = Path(get_package_share_directory("diagnostic_msgs"))
+    for name in ("DiagnosticStatus.msg", "DiagnosticStatus.idl", "DiagnosticArray.msg",
+                 "DiagnosticArray.idl"):
+        preserve(name, share / "msg" / name)
+    preserve("msg-support.c.em", Path(get_package_share_directory("rosidl_generator_py")) /
+             "resource" / "_msg_support.c.em")
+    support = importlib.import_module("diagnostic_msgs.diagnostic_msgs_s__rosidl_typesupport_c")
+    digest = hashlib.sha256()
+    with open(support.__file__, "rb") as f:
+        for block in iter(lambda: f.read(65536), b""):
+            digest.update(block)
+    write(out / "generated-type-support.json",
+          {"installed_binary": support.__file__, "sha256": digest.hexdigest(),
+           "DiagnosticStatus_fields": frozen.DiagnosticStatus.get_fields_and_field_types(),
+           "default_level_type": type(frozen.DiagnosticStatus().level).__name__,
+           "default_level_repr": repr(frozen.DiagnosticStatus().level),
+           "note": "installed Python source, schema, generator template and extension hash; not generated C source"})
+    checks = []
+
+    class Sink:
+        limits = {"record_bytes": 65536}
+
+        def __init__(self):
+            self.records, self.errors = [], []
+
+        def submit(self, record):
+            self.records.append(record)
+
+        def issue(self, *args, **kwargs):
+            self.errors.append((args, kwargs))
+
+    sink = Sink()
+    collector = SimpleNamespace(capture=sink, started=time.monotonic_ns(),
+                                local_sequences={t: 0 for t in frozen.TYPES})
+
+    def roundtrip(topic, message, trigger):
+        frozen.marker("smoke_serializing", topic=topic)
+        raw = serialize_message(message)
+        decoded = deserialize_message(raw, type(message))
+        assert serialize_message(decoded) == raw
+        count = len(sink.records)
+        frozen.Collector.receive(collector, topic, type(message), raw)
+        assert not sink.errors and len(sink.records) == count + 1
+        assert sink.records[-1]["raw"] == raw and sink.records[-1]["trigger"] is trigger
+        checks.append({"topic": topic, "bytes": len(raw), "sha256": sha(raw),
+                       "actual_receive_trigger": trigger})
+        write(out / "smoke-progress.json", checks)
+
+    roundtrip("/demo/movement", frozen.PoseStamped(), False)
+    mode = frozen.String()
+    mode.data = "smoke"
+    roundtrip("/demo/control_mode", mode, False)
+    for levels in ([], [0], [1], [2], [3], [0, 1], [0, 2], [2, 0]):
+        message = frozen.DiagnosticArray()
+        for level in levels:
+            status = frozen.DiagnosticStatus()
+            status.level = bytes((level,))
+            message.status.append(status)
+        roundtrip("/demo/diagnostics", message, any(v >= 2 for v in levels))
+    for invalid in (0, True, bytearray(b"\x02"), "", b"", b"\x00\x02", None):
+        try:
+            frozen.diagnostic_level_number(invalid)
+        except TypeError:
+            pass
+        else:
+            raise AssertionError("malformed diagnostic accepted")
+    # Invoke BOTH real emit implementations at normal and trigger ticks. Sinks
+    # run real serialize/deserialize/Collector.receive without a DDS assertion.
+    for case in ("scenario", "clean", "missing-stream"):
+        cls = frozen.Publisher if case == "scenario" else publisher_class(frozen, case)
+        for tick in (0, 60):
+            published = []
+
+            class Output:
+                def __init__(self, topic):
+                    self.topic = topic
+
+                def publish(self, message):
+                    published.append(self.topic)
+                    roundtrip(self.topic, message,
+                              self.topic == "/demo/diagnostics" and tick == 60)
+
+            instance = SimpleNamespace(tick=tick, done=False,
+                                       outputs={t: Output(t) for t in frozen.TYPES})
+            cls.emit(instance)
+            assert set(published) == set(frozen.TYPES) - (
+                {"/demo/control_mode"} if case == "missing-stream" else set())
+    # Exercise supported overrides in the actual controlled constructors.
+    # No spin/publish and no services/actions invoked; graph policy remains strict.
+    nodes = []
+    rclpy.init()
+    try:
+        nodes.append(frozen.Publisher())
+        nodes.append(frozen.Collector())
+        time.sleep(1)
+        for node in nodes:
+            assert node.get_parameter("start_type_description_service").value is False
+            frozen.checked_graph(node, out / "smoke-graph.json", "smoke/" + node.get_name())
+    finally:
+        frozen.cleanup_preserving_error(sys.exc_info()[1],
+                                         [("destroy", n.destroy_node) for n in nodes] +
+                                         [("shutdown", rclpy.shutdown)])
+    write(out / "smoke-result.json",
+          {"status": "passed", "versions": versions, "checks": checks,
+           "scope": "real installed CDR roundtrips, actual emit/receive with test sinks; "
+                    "controlled constructors and strict graph; full DDS capture still required"})
 
 
 def reopen(args):
@@ -227,11 +410,11 @@ def reopen(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("role", choices=["capture", "collect", "publish", "reopen"])
+    parser.add_argument("role", choices=["capture", "collect", "publish", "reopen", "smoke"])
     parser.add_argument("--case", choices=["clean", "scenario", "missing-stream"], default="clean")
     args = parser.parse_args()
     try:
-        (capture if args.role == "capture" else reopen if args.role == "reopen" else role)(args)
+        ({"capture": capture, "reopen": reopen, "smoke": smoke}.get(args.role, role))(args)
     except Exception:
         traceback.print_exc()
         raise SystemExit(1)

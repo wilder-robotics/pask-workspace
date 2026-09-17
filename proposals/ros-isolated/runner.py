@@ -12,12 +12,13 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 import time
 import traceback
 
 HERE = Path(__file__).resolve().parent
-PAYLOAD_SHA256 = "118918f7aa03fd63db147ba620e4043d1887ad590875d544d0c6821046542cea"
+PAYLOAD_SHA256 = "0287d56f6fab31372aba9d435788f29184276f9af6d16b65536453bf0ed50c51"
 DOCKERFILE_SHA256 = "484196d9293712b1031264dca0e39d2be83cfa891bb27457fb0255baf5bb8dbe"
 CAPTURE_IMAGE = "pask-ros-proposal:capture"
 RECIPIENT_IMAGE = "pask-ros-proposal:recipient"
@@ -143,16 +144,45 @@ def runtime(name, image, output, argv, mounts=(), seconds=60, accept=(0,)):
                                 timeout=12).strip()})
             time.sleep(1)
         else:
-            command(name + "-timeout-kill", ["docker", "kill", container])
-            raise RuntimeError(name + ": runtime deadline; no retry")
+            deadline_error = RuntimeError(name + ": runtime deadline; no retry")
+            try:
+                command(name + "-timeout-kill", ["docker", "kill", container])
+            except Exception as exc:
+                deadline_error.add_note("timeout kill also failed: " + str(exc)[:256])
+            raise deadline_error
     finally:
-        write(output / "resource-samples.json", samples)
-        command(name + "-console", ["docker", "logs", container])
-        final = json.loads(command(name + "-inspect-after", ["docker", "inspect", container]))[0]
-        write(output / "container-result.json",
-              {"state": final["State"], "host_config": final["HostConfig"],
-               "mounts": final["Mounts"], "network": final["NetworkSettings"],
-               "elapsed_seconds": time.monotonic() - start})
+        primary = sys.exc_info()[1]
+        evidence_errors = []
+        final = None
+        for label, action in (
+                ("resources", lambda: write(output / "resource-samples.json", samples)),
+                ("console", lambda: command(name + "-console", ["docker", "logs", container]))):
+            try:
+                action()
+            except Exception as exc:
+                evidence_errors.append(f"{label}: {type(exc).__name__}: {str(exc)[:256]}")
+        try:
+            final = json.loads(command(name + "-inspect-after", ["docker", "inspect", container]))[0]
+            write(output / "container-result.json",
+                  {"state": final["State"], "host_config": final["HostConfig"],
+                   "mounts": final["Mounts"], "network": final["NetworkSettings"],
+                   "elapsed_seconds": time.monotonic() - start})
+        except Exception as exc:
+            evidence_errors.append(f"inspection: {type(exc).__name__}: {str(exc)[:256]}")
+        if evidence_errors:
+            try:
+                write(output / "evidence-errors.json",
+                      {"primary_error": repr(primary), "secondary_errors": evidence_errors,
+                       "container_state": final["State"] if final is not None else None})
+            except Exception as exc:
+                try:
+                    print(json.dumps({"evidence_errors": evidence_errors,
+                                      "error_record_write_failed": str(exc)[:256],
+                                      "primary_error": repr(primary)}), flush=True)
+                except Exception:
+                    pass  # A broken diagnostic stream cannot replace primary.
+            if primary is None:
+                raise RuntimeError(name + ": incomplete runtime evidence; " + "; ".join(evidence_errors))
     if final["State"]["OOMKilled"] or final["State"]["ExitCode"] not in accept:
         raise RuntimeError(f"{name}: container integration failure {final['State']}")
     return final["State"]["ExitCode"]
@@ -206,6 +236,11 @@ def build(source):
 
 
 def test(source):
+    global STAGE
+    STAGE = "offline-serialization-smoke"
+    runtime("serialization-smoke", CAPTURE_IMAGE, OUT / "serialization-smoke",
+            ros_argv("smoke"), [(HERE / "probe.py", "/probe.py")])
+    STAGE = "isolated-runtime"
     results = {}
     for case in ("clean", "scenario", "missing-stream"):
         capture_out = OUT / ("capture-" + case)
@@ -275,12 +310,15 @@ def main():
         STAGE = "networked-dependency-build"
         build(source)
         STAGE = "isolated-runtime"
-        outcome["ROS_runtime"] = "attempted; consult per-container/process statuses"
+        outcome["ROS_runtime"] = "smoke/capture attempt; callbacks not implied; consult per-container/process statuses"
         test(source)
         outcome["status"] = "expected-test-outcomes-met"
     except Exception as exc:
         outcome["error"] = str(exc)
-        (OUT / "failure-traceback.txt").write_text(traceback.format_exc())
+        try:
+            (OUT / "failure-traceback.txt").write_text(traceback.format_exc())
+        except Exception as log_exc:
+            outcome["failure_record_error"] = str(log_exc)[:256]
     finally:
         outcome["last_stage"] = STAGE
         for name in CONTAINERS:
@@ -294,7 +332,11 @@ def main():
             p.stat().st_size for p in OUT.rglob("*") if p.is_file())
         if outcome["evidence_bytes_before_summary"] > 20 * 1024**2:
             outcome["status"] = "evidence-size-budget-exceeded"
-        write(OUT / "attempt-summary.json", outcome)
+        try:
+            write(OUT / "attempt-summary.json", outcome)
+        except Exception as log_exc:
+            outcome["status"] = "evidence-preservation-failed"
+            outcome["summary_write_error"] = str(log_exc)[:256]
         print(json.dumps(outcome, sort_keys=True), flush=True)
     return 0 if outcome["status"] == "expected-test-outcomes-met" else 1
 
