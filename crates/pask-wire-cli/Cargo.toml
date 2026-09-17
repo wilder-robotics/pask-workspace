@@ -1,6 +1,6 @@
 [package]
 name = "pask-wire-cli"
-version.workspace = true
+version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 # Apache-2.0, not the workspace AGPL-3.0-only default. This binary is a
@@ -9,6 +9,9 @@ rust-version.workspace = true
 # LICENSING.md.
 license = "Apache-2.0"
 repository.workspace = true
+documentation = "https://docs.rs/pask-wire-cli"
+keywords = ["cose", "scitt", "conformance", "cli", "receipts"]
+categories = ["command-line-utilities", "cryptography"]
 authors.workspace = true
 description = "Command-line conformance tool: produce, verify, and emit canonical Pask receipts"
 
@@ -20,7 +23,7 @@ es256 = ["pask-wire/es256"]
 anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8"] }
-pask-wire = { path = "../pask-wire", features = ["std"] }
+pask-wire = { version = "0.1.0", path = "../pask-wire", features = ["std"] }
 
 [lints]
 workspace = true

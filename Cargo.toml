@@ -14,8 +14,9 @@ version = "0.1.0"
 edition = "2024"
 rust-version = "1.88"
 license = "AGPL-3.0-only"
-repository = "https://github.com/actionrob/pask-workspace"
-authors = ["Wilder Robotics"]
+homepage = "https://pask-witness.com"
+repository = "https://github.com/wilder-robotics/pask-workspace"
+authors = ["Wilder Management Inc. (dba Wilder Robotics) <rob@wilder-robotics.com>"]
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

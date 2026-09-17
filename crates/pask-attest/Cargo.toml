@@ -1,14 +1,18 @@
 [package]
 name = "pask-attest"
-version.workspace = true
+version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
-# Relicensed 2026-09-02 per Rob's ruling: the spec-side crates are permissive so
-# outside parties can implement this profile without a copyleft review. The
-# operational crates (pask-site, pask-adapter, pask-wire-cli) remain AGPL-3.0-only.
+# Apache-2.0, not the workspace AGPL-3.0-only default. The spec-side crates
+# (pask-wire, pask-attest, pask-wire-cli) are permissive so outside parties can
+# implement and independently verify this profile without a copyleft review. The
+# deployment crates (pask-site, pask-adapter) remain AGPL-3.0-only.
 # See LICENSING.md at the repository root.
 license = "Apache-2.0"
 repository.workspace = true
+documentation = "https://docs.rs/pask-attest"
+keywords = ["attestation", "tee", "scitt", "cose", "robotics"]
+categories = ["cryptography", "encoding"]
 authors.workspace = true
 description = "TEE attestation verification and typed claims for Pask receipts"
 
@@ -18,7 +22,7 @@ mock = []
 
 [dependencies]
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["std"] }
-pask-wire = { path = "../pask-wire", features = ["std"] }
+pask-wire = { version = "0.1.0", path = "../pask-wire", features = ["std"] }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 thiserror = "2.0.12"
