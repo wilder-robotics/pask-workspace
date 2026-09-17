@@ -1,14 +1,18 @@
 [package]
 name = "pask-wire"
-version.workspace = true
+version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
-# Relicensed 2026-09-02 per Rob's ruling: the spec-side crates are permissive so
-# outside parties can implement this profile without a copyleft review. The
-# operational crates (pask-site, pask-adapter, pask-wire-cli) remain AGPL-3.0-only.
+# Apache-2.0, not the workspace AGPL-3.0-only default. The spec-side crates
+# (pask-wire, pask-attest, pask-wire-cli) are permissive so outside parties can
+# implement and independently verify this profile without a copyleft review. The
+# deployment crates (pask-site, pask-adapter) remain AGPL-3.0-only.
 # See LICENSING.md at the repository root.
 license = "Apache-2.0"
 repository.workspace = true
+documentation = "https://docs.rs/pask-wire"
+keywords = ["cose", "scitt", "receipts", "robotics", "attestation"]
+categories = ["cryptography", "encoding", "no-std"]
 authors.workspace = true
 description = "SCITT-native COSE receipt library for Physical-Site Engagement Receipts (Pask wire format v0.1)"
 
