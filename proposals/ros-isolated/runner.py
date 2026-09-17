@@ -17,8 +17,8 @@ import time
 import traceback
 
 HERE = Path(__file__).resolve().parent
-PAYLOAD_SHA256 = "bd5688d0acd239d4e044e1a7b1f989b7be87531d0ec933f40dc120a0beff085e"
-DOCKERFILE_SHA256 = "64fb8e1e11ebf31798c71057cf59346524a29246a1adbd50088b8279920c46ed"
+PAYLOAD_SHA256 = "118918f7aa03fd63db147ba620e4043d1887ad590875d544d0c6821046542cea"
+DOCKERFILE_SHA256 = "484196d9293712b1031264dca0e39d2be83cfa891bb27457fb0255baf5bb8dbe"
 CAPTURE_IMAGE = "pask-ros-proposal:capture"
 RECIPIENT_IMAGE = "pask-ros-proposal:recipient"
 OUT = Path(os.environ.get("PASK_ROS_OUT", "/tmp/pask-ros-evidence"))
