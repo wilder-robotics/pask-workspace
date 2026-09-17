@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: Apache-2.0
+# LOCAL PROPOSAL: publishing this file / opening its draft PR needs approval.
+name: Isolated ROS proposal (one authorized attempt)
+"on":
+  pull_request:
+    types: [opened]
+    paths:
+      - .github/workflows/ros-isolated-proposal.yml
+      - proposals/ros-isolated/**
+permissions:
+  contents: read
+concurrency:
+  group: isolated-ros-proposal-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  isolated-ros:
+    # Publication and opening this one named draft PR require explicit approval.
+    if: >-
+      github.event.repository.private == false &&
+      github.event.pull_request.draft == true &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'test/isolated-ros-once' &&
+      github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out only the approved head
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # existing ci.yml pin
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout: proposals/ros-isolated
+      - name: Build dependencies, then run isolated evidence tests once
+        timeout-minutes: 26
+        env:
+          PASK_ROS_OUT: ${{ runner.temp }}/pask-ros-evidence
+        run: python3 proposals/ros-isolated/runner.py
+      - name: Emit bounded evidence to job logs (no artifact storage)
+        if: always()
+        env:
+          PASK_ROS_OUT: ${{ runner.temp }}/pask-ros-evidence
+        run: |
+          python3 - <<'PYLOG'
+          import base64, hashlib, io, json, os, tarfile
+          from pathlib import Path
+          root = Path(os.environ["PASK_ROS_OUT"])
+          if not root.is_dir():
+              raise SystemExit("No evidence directory; no runtime pass established")
+          buf = io.BytesIO()
+          with tarfile.open(fileobj=buf, mode="w:gz") as tar:
+              for p in sorted(root.rglob("*")):
+                  if p.is_symlink():
+                      raise SystemExit("Refuse symlink evidence")
+                  if p.is_file():
+                      tar.add(p, arcname=str(p.relative_to(root)), recursive=False)
+          raw = buf.getvalue()
+          if len(raw) > 4 * 1024**2:
+              raise SystemExit("Compressed evidence exceeds 4MiB log limit; no full preservation claim")
+          text = base64.b64encode(raw).decode("ascii")
+          chunks = [text[i:i+48000] for i in range(0, len(text), 48000)]
+          print("PASK_ROS_EVIDENCE_BEGIN " + json.dumps({"sha256": hashlib.sha256(raw).hexdigest(), "gzip_bytes": len(raw), "chunks": len(chunks)}), flush=True)
+          for n, chunk in enumerate(chunks):
+              print(f"PASK_ROS_EVIDENCE_CHUNK {n:04d} {chunk}", flush=True)
+          print("PASK_ROS_EVIDENCE_END", flush=True)
+          PYLOG
