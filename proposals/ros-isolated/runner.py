@@ -18,7 +18,7 @@ import time
 import traceback
 
 HERE = Path(__file__).resolve().parent
-PAYLOAD_SHA256 = "0287d56f6fab31372aba9d435788f29184276f9af6d16b65536453bf0ed50c51"
+PAYLOAD_SHA256 = "3370bfc0557f53ce25a48b0d967b5ba89548d75a36ee8080dd27238a2035aab4"
 DOCKERFILE_SHA256 = "484196d9293712b1031264dca0e39d2be83cfa891bb27457fb0255baf5bb8dbe"
 CAPTURE_IMAGE = "pask-ros-proposal:capture"
 RECIPIENT_IMAGE = "pask-ros-proposal:recipient"
@@ -286,13 +286,23 @@ def test(source):
         if case == "missing-stream":
             missing = window["streams"]["/demo/control_mode"]
             assert counts["/demo/control_mode"] == 0 and missing["actual_bounds_ns"] is None
-            assert missing["observed_median_interval_ns"] is None
-            assert any(g["kind"] == "stream_unavailable" for g in missing["gaps"])
+            assert missing["in_window_count"] == 0
+            assert "stream_unavailable" in missing["gaps"]
             assert results[case]["findings"]["timing_coverage"]["status"] == "failed"
+        # Prospective dev/2 contract: a realistic clean collector-clock pass,
+        # preserved gap/missing-stream negatives, independent source/time findings.
+        findings = results[case]["findings"]
+        assert window["coverage_policy"] == "collector-monotonic-sampled-bracket/1"
+        assert findings["collector_sampled_coverage"]["status"] == (
+            "passed" if case == "clean" else "failed")
+        assert findings["source_clock_anomalies"]["status"] == (
+            "failed" if case == "scenario" else "passed")
+        assert findings["real_world_time"]["status"] == "unestablished"
+        assert findings["application_policy"]["status"] == "unestablished"
     write(OUT / "test-expectations.json",
           {"cases": results, "status": "expected outcomes met",
-           "clean_means": "no deliberately injected gap/rollback; not full timing coverage",
-           "timing_coverage_pass_required": False,
+           "clean_means": "named dev/2 collector sampled coverage; not real-world time assurance",
+           "timing_coverage_pass_required": "clean collector sampled coverage only",
            "recipient": "separate image/process, delivered local verifier; not independent implementation",
            "core_binding": "unestablished; separate workstream",
            "PSER_and_hardware": "not established; software test only"})
