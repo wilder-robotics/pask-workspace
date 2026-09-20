@@ -20,6 +20,7 @@ description = "SCITT-native COSE receipt library for Physical-Site Engagement Re
 default = []
 alloc = [
     "dep:coset",
+    "dep:fluent-uri",
     "dep:ed25519-dalek",
     "dep:serde",
     "dep:ryu-js",
@@ -31,6 +32,7 @@ es256 = ["alloc", "dep:p256"]
 std = ["alloc"]
 
 [dependencies]
+fluent-uri = { version = "0.4.1", default-features = false, features = ["alloc"], optional = true }
 coset = { version = "0.4.2", default-features = false, optional = true }
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8"], optional = true }
 p256 = { version = "0.13.2", default-features = false, features = ["ecdsa"], optional = true }

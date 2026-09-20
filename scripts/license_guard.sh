@@ -55,9 +55,11 @@ COPYLEFT_SPDX="AGPL-3.0-only"
 #   anyhow           MIT OR Apache-2.0
 #   clap             MIT OR Apache-2.0
 #   hex              MIT OR Apache-2.0 (dev-dependency for test assertions)
+#   fluent-uri       MIT (0.4.1; reviewed 2026-09-16; pask-wire/alloc)
+#                    Notices: crates/pask-wire/THIRD-PARTY-NOTICES.txt
 PERMISSIVE_DEP_ALLOWLIST=(
   coset ryu-js ed25519-dalek p256 serde serde_json sha2 time thiserror
-  proptest rand_core anyhow clap hex
+  proptest rand_core anyhow clap hex fluent-uri
 )
 
 if [[ ! -f Cargo.toml || ! -d crates ]]; then
@@ -219,7 +221,7 @@ echo "7. No file contradicts its own SPDX line in prose"
 prose_checked=0
 for c in "${PERMISSIVE_CRATES[@]}" "${COPYLEFT_CRATES[@]}"; do
   [[ -d "crates/$c" ]] || continue
-  if printf '%s\n' "${PERMISSIVE_CRATES[@]}" | grep -qx "$c"; then
+  if in_list "$c" "${PERMISSIVE_CRATES[@]}"; then
     own="$PERMISSIVE_SPDX"; other="$COPYLEFT_SPDX"
   else
     own="$COPYLEFT_SPDX"; other="$PERMISSIVE_SPDX"

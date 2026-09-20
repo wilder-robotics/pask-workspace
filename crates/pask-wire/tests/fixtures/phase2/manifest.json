@@ -1,0 +1,57 @@
+{
+  "generator": "cbor2 canonical outer serialization, recursive hashlib RFC9162 tree, cryptography Ed25519",
+  "hashes": {
+    "candidate.cbor": "2886982d2daf7358ef8a95c39d7f245934e4a021eb59b296e995c7fd6b9e17fe",
+    "receipt-protected.bin": "879fb3679048f2373c4875c0aa9ac2b20ee503253adf708a787a1be299535546",
+    "rotated-detached.cbor": "a2f20aae967dbd5d6f3d73453c78ed7a775a28b23537bc927b6838d20f3a65ff",
+    "rotated-key.bin": "c945cbf2a5602002141e2fb9d17054d6ca069951df73f49d1f8aca87f9878f60",
+    "service-key.bin": "65b60673d6ed884bf01c2c222d82ada0740f29ac3355d6a925c81f17f47a27b8",
+    "statement.cbor": "3c87d3bed540f53e4f5db0cc77f79eec3246aab789229ddd64df6b0f00af2fe7",
+    "tree2-leaf0-attached.cbor": "c7c5eb987aa53aaf1d7f9374f06136ba9d1c9cb8a48c44e9d084fcdd27b56399",
+    "tree2-leaf0-detached.cbor": "b0121766825e5bf52b5822e9be732dec924d40c48bdde081513e2cd20ed42154",
+    "tree2-leaf0-root.bin": "04c63bbb006e50746c9283b9216cc284cd9adaa2c2958429495762b06e229774",
+    "tree5-leaf0-attached.cbor": "98a28ceb313c3f19fd554eecc1f0fd270177840b647685714166dfdc073e393f",
+    "tree5-leaf0-detached.cbor": "b440ea3c9321e87d532798a99ca0a3956fca9cf9116c9a44e3bc2ecdffc28564",
+    "tree5-leaf0-root.bin": "4b245276190c90409c6fd321a77d80adca70db2ef20af8bb43fa17d21f052259",
+    "tree5-leaf2-attached.cbor": "d5a007fdeb2773381c2ae07beb5882e4c9096c340c8552d17ab7f88a1cf6a07a",
+    "tree5-leaf2-detached.cbor": "6fb040c1ae92a405730c2d33844e71ec0616f29adcbd08a12cf8acfded1bdf8a",
+    "tree5-leaf2-root.bin": "fb9067e709b55544f9b4c0619841fb9ec4cb4fc3cdeeeb5ac1fae66631a73761",
+    "tree5-leaf4-attached.cbor": "e016033d47f5ea64ae9242451171985c7b91f83365592cace37f2195a9d36d84",
+    "tree5-leaf4-detached.cbor": "badbc98cd4f19bdbcb719dcfe452041915a8f639a406d400f1641641ccfaaa21",
+    "tree5-leaf4-root.bin": "a87e9614dc08289d98914bf6122b1988596f487a74571c0f49dc269af255c4d5",
+    "tree8-leaf7-attached.cbor": "4fe8b5d9bc356ade7ca9791c0315fc97e04b4d908b00cf976f7ab8e227be3479",
+    "tree8-leaf7-detached.cbor": "00de85766569913ba3df8fd48dd7157c61d16307043664e6503049729bc1f558",
+    "tree8-leaf7-root.bin": "6ae4f136a41214894fe2f3921c17da7187f272a1812fd555fbb8b4a5d61adff7",
+    "tree9-leaf8-attached.cbor": "9bf326a8875df1d637ca8ba84a80164ab4f3a9276cc7d4d30a6a014d1031caf9",
+    "tree9-leaf8-detached.cbor": "e4e9946fb5cea257d435db5b106591c05dcd8785775936acb3e0adfa6d4df1ed",
+    "tree9-leaf8-root.bin": "47ca1b8dc85e56626c436ade81cc51bbfcac26058eb49a5ffdad7f81f397348c"
+  },
+  "independent_of": "Rust candidate encoder, Rust root reconstruction and Rust Ed25519 verifier",
+  "origin": "LOCAL SYNTHETIC SIMULATION; no real service authentication or registration",
+  "public_test_seeds_hex": [
+    "0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20",
+    "2122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f40",
+    "4142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f60"
+  ],
+  "references": [
+    "https://www.rfc-editor.org/rfc/rfc9162.html#section-2.1",
+    "https://www.rfc-editor.org/rfc/rfc9942.html#section-5.2",
+    "https://www.rfc-editor.org/rfc/rfc9052.html#section-4.4"
+  ],
+  "roots": {
+    "tree2-leaf0": "ac5364c9e234d4efb8068de6b2e4150c7281c61f9f2ee6d0d5626de37aff2212",
+    "tree5-leaf0": "7820b294bb4445f30c9ad0358e754722d79c6b7bdfbf9973f2ccafcb4614a567",
+    "tree5-leaf2": "d943fd2f72d8f7df53d0a00c96ad82f389bfdcfe1b2b879a594e699dc847d100",
+    "tree5-leaf4": "e6bcbe675e1665b4665f02f686a76aba1e6d565c16c371e6b85fd029f385ef10",
+    "tree8-leaf7": "4131489fd4544989ecabd2b165af771ddb1fdae703687fec3dffd02e15c30711",
+    "tree9-leaf8": "f02c377d7f7bb637963b5502ebce08015d994380a798b9e8a9278e73db72f6b7"
+  },
+  "signatures": {
+    "tree2-leaf0": "9e89ed8dd98b9fe5a23147191a9b221ff65ac50b597811fa624480e342a5e46c8795aa66d795b1129cfd65fce0a1eecc9a3de8b0dc64bd2dfd82c789d2206d0a",
+    "tree5-leaf0": "6fc17606caf94e69ff2ea93a81682eccad7c78fc0c6928e77c58038dd347d428159e476754b98e28c3e377615fd18df63d5464ab028dbbcd5a106ca27afdd90e",
+    "tree5-leaf2": "c98f68434fb3ee0693c87cbf36bcc28fbee41c0eb3465049c1779a2cc87a578a7eacf9d30904a657e3b75aef98b018d8e6d3e2abd80175700d7c83e5f260520a",
+    "tree5-leaf4": "863eafc51c4b61f46041cc88e1e44bb34068205721d0d969f2abf6d19572167ea0e572cd6872ddf415bf65fecb18412f4713bbeb7c774ba25ccab3f5a7a3260b",
+    "tree8-leaf7": "e89aa29edb79cc4596731ed7224af4611103b96123a010d35604ca7f4eeec4e240903c8f7c0e5e19efa814ddfe7f1e43687416d43c4826bd5dc793388d1c690b",
+    "tree9-leaf8": "4fd385628cfc8119bd0b196d395e06c9e6f0474f5cdbb552dbe847ef9717c2ec4dd96d900c7725a5871249908766dcb2f3e65d1149d270ebec6bcca86198580b"
+  }
+}
