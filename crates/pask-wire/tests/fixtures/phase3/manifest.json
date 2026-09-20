@@ -1,0 +1,15 @@
+{
+  "origin": "PUBLIC SOFTWARE TEST seeds 0x11*32 and 0x1d*32; simulated provisioning, not real authenticated origins",
+  "independence": "Python cbor2/hashlib/cryptography; no Rust producer/verifier helpers",
+  "files": {
+    "statement.cbor": "1ec5eceaf581e49d00ea7bdd0121eb7d2bb0147d55b0df5998ffbe38379e0a91",
+    "candidate.cbor": "43a7009563c0a7e246f50df93f2870ac5b3a0f7b57e0ce629d5855cd3b42c1dc",
+    "root.bin": "178150aaeeeff3e06dc67db961bc3fe092d96afbefbde5d00f2eaa7ed89f8b77",
+    "issuer-key.bin": "10ba682c8ad13513971e8b56881aab8bd702bb807796eca81932c735a94d6e6d",
+    "service-key.bin": "9a19fc9f345c9fde2858f0d175570612fed076877902cfe67d20e0f0a15b9d9f",
+    "attached-receipt.cbor": "b92eeeaa0e73b90dd11f1e8ade1d7c4866fa823b2bfdae405a5a9995a040ede5",
+    "attached-transparent.cbor": "5b1d1dedc6f68c5f6e7ba93ae3d72eab2d5cde041914b28f89f32963ae862889",
+    "detached-receipt.cbor": "3175047fed5102d14677f3afe9f484abe3c2854b3b37bc151e0bae4f41984735",
+    "detached-transparent.cbor": "3421d08cb6ee895143dcd12444d05011c5ee1a073ebb596ec56262a0380dcb72"
+  }
+}

@@ -59,3 +59,32 @@ pub use receipt::{
     Receipt, VDP_LABEL, VDS_LABEL, VerifiedInclusion, attached_receipts, leaf_hash,
     verify_inclusion,
 };
+
+#[cfg(feature = "alloc")]
+mod receipt_cbor;
+#[cfg(feature = "alloc")]
+mod receipt_inspection;
+#[cfg(feature = "alloc")]
+pub use receipt_inspection::{
+    EnvelopeReport, InspectionFinding, InspectionLimits, InspectionPolicy, InspectionStatus,
+    UnauthenticatedReceiptClaims, inspect_scitt_receipt,
+};
+
+#[cfg(feature = "alloc")]
+mod receipt_verification;
+#[cfg(feature = "alloc")]
+pub use receipt_verification::{
+    BindingProvenance, ProofVerification, ReceiptVerificationPolicy, ReceiptVerificationReport,
+    RotationPolicy, TrustInputOrigin, TsKeyAssociation, TsPublicKey, TsTrustContext,
+    VerificationLimits, VerifyingKeyEvidence, verify_scitt_receipt,
+};
+
+#[cfg(feature = "alloc")]
+mod transparent_statement;
+#[cfg(feature = "alloc")]
+pub use transparent_statement::{
+    DigestTarget, ExpectedDigest, IssuerKeyInput, OuterStatementReport, ReceiptContainerState,
+    SOFTWARE_SITE_CONTENT_TYPE, StatementApplicationPolicy, StatementReceiptOutcome,
+    StatementVerificationInputs, SubjectMapping, SubjectPolicy, TransparentStatementPolicy,
+    TransparentStatementReport, inspect_transparent_statement, verify_transparent_statement,
+};

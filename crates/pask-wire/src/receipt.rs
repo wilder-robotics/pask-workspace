@@ -456,6 +456,10 @@ impl Receipt {
     /// Returns [`Error::Receipt`] if the bytes are not a four-element
     /// `COSE_Sign1`, if the protected header is absent or does not carry an
     /// integer `vds`, or if no inclusion proof can be read from the `vdp` map.
+    /// Duplicate keys (including nested claims/proof maps and unknown labels)
+    /// and trailing protected CBOR are rejected before header lookup. This
+    /// generic parser remains a compatibility/crypto primitive, not the tagged
+    /// text-claim inspection API [`crate::inspect_scitt_receipt`].
     pub fn from_cose_sign1(receipt: &[u8]) -> Result<Self> {
         let mut cursor = receipt;
         let value: Value = coset::cbor::de::from_reader(&mut cursor)
@@ -463,6 +467,7 @@ impl Receipt {
         if !cursor.is_empty() {
             return Err(Error::Receipt("trailing bytes after receipt"));
         }
+        crate::receipt_inspection::check_unique_maps(&value).map_err(Error::Receipt)?;
         let items =
             cose_sign1_items(&value).ok_or(Error::Receipt("receipt must be a COSE_Sign1 array"))?;
         let [protected, unprotected, payload, signature] = items else {
@@ -478,6 +483,16 @@ impl Receipt {
         let mut cursor = protected_raw.as_slice();
         let header: Value = coset::cbor::de::from_reader(&mut cursor)
             .map_err(|_| Error::Receipt("receipt protected header is not valid CBOR"))?;
+        if !cursor.is_empty() {
+            return Err(Error::Receipt("trailing bytes in receipt protected header"));
+        }
+        crate::receipt_inspection::check_unique_maps(&header).map_err(Error::Receipt)?;
+        let Value::Map(_) = &header else {
+            return Err(Error::Receipt("receipt protected header must encode a map"));
+        };
+        let Value::Map(_) = unprotected else {
+            return Err(Error::Receipt("receipt unprotected header must be a map"));
+        };
         let vds = map_entry(&header, VDS_LABEL)
             .and_then(signed)
             .ok_or(Error::Receipt("receipt protected header must carry vds"))?;
