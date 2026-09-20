@@ -1,0 +1,115 @@
+{
+  "main_base": "b20a68e61092fbfeb67e6086488ca6acf4899596",
+  "experiment_head": "6a2b0d828a3a63bb76b058d982bcd333773af24c",
+  "experiment_tree": "d572501143794ffc1e1eaba6adbec3d98008e506",
+  "files": [
+    {
+      "path": "LICENSE",
+      "source": "reviewed frozen payload/LICENSE",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "bundle.py",
+      "source": "reviewed frozen payload/bundle.py",
+      "source_sha256": "556ae146791ca46ef09ee0e3101eeb5ade96207671e18e0ebf5799e9452392c2",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "provision_trust.py",
+      "source": "reviewed frozen payload/provision_trust.py",
+      "source_sha256": "89f1983107ee5e6e36385989d6c1516448f73264c11ac7e93c83763ae5af8b3c",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "recipient.py",
+      "source": "reviewed frozen payload/recipient.py",
+      "source_sha256": "00c668857ba33cf14059a5b0b1ead08ce9318e26fe31aede31ca609f54a16f5b",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/Dockerfile",
+      "source": "reviewed frozen payload/ros_package/Dockerfile",
+      "source_sha256": "484196d9293712b1031264dca0e39d2be83cfa891bb27457fb0255baf5bb8dbe",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/package.xml",
+      "source": "reviewed frozen payload/ros_package/package.xml",
+      "source_sha256": "a6708aea703450d1015127ccac645405b249e073774858303f6dfc375f814076",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/pask_ros2_local_demo/__init__.py",
+      "source": "reviewed frozen payload/ros_package/pask_ros2_local_demo/__init__.py",
+      "source_sha256": "6c6ec57de9f82ef42d82760f144a4571cb16b3cd6de33aaa7aa9fd65e8ab1fa1",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/pask_ros2_local_demo/node.py",
+      "source": "reviewed frozen payload/ros_package/pask_ros2_local_demo/node.py",
+      "source_sha256": "45d73737eb1ef2dad8e1581c1973313b1843c645ecf2880e456919fd61e36ba7",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/resource/pask_ros2_local_demo",
+      "source": "reviewed frozen payload/ros_package/resource/pask_ros2_local_demo",
+      "source_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/run-isolated.sh",
+      "source": "reviewed frozen payload/ros_package/run-isolated.sh",
+      "source_sha256": "84f0a445206369f76d4d13e6506517296e7e566b31755b97628e9f9e2459464f",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/setup.cfg",
+      "source": "reviewed frozen payload/ros_package/setup.cfg",
+      "source_sha256": "ab017cf3c2c24b68f65a718addaa6097c85d5f751d8a0e2000c60218985f294b",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "ros_package/setup.py",
+      "source": "reviewed frozen payload/ros_package/setup.py",
+      "source_sha256": "16023eedfd164fe6ab275896ca01df08489651c1424679a11772cd570708f027",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "probe.py",
+      "source": "6a2b0d828a3a63bb76b058d982bcd333773af24c:proposals/ros-isolated/probe.py",
+      "source_sha256": "22c7636f65a8194988858a163427d2b90858b032cb6efe66f45d91a81bd4fb6b",
+      "relationship": "byte-identical"
+    },
+    {
+      "path": "runtime.py",
+      "source": "6a2b0d828a3a63bb76b058d982bcd333773af24c:proposals/ros-isolated/runner.py",
+      "source_sha256": "795b9b0f758dbb59a16e83dbf024193250f78c37ab3b9593b3baddd78d9312de",
+      "relationship": "six functions exact source segments; integration header corrected by RINT-01 to import sys; no hosted preflight/main/unpack",
+      "candidate_sha256": "6b7d62095eeca4aac06172c583995746f10be9cdb6dc7d3e8d855d0ccddfcc6f",
+      "rint01": "Only production repair is module-level import sys. Previous integration package preserved; helper function hashes unchanged. Actual-module boundary-mocked regression added.",
+      "functions": {
+        "write": "8060bfec51d0530db80388ebf4ada2ba8a4df1721d7edd098c12f79ae11878bd",
+        "command": "2ae8a1f7e7c2f01aa0691dcd1deae2fbc9a28fcb6e86d8c2a14677077f4e48e6",
+        "runtime": "cb41532ab1e0673da53da0a86cb82d7f9f0ef0346729e70f01f513fc9d3246f3",
+        "ros_argv": "1c6652578b317b93cac2cbb5f4c91068bcb5fd683a7e2dbbf25617ab3b3a7cc9",
+        "build": "bb20772faa3e6f77a9ee7f2693b029316520d48547a5496878fdb6da1ca90834",
+        "test": "7a9d9e067c91734691a9990ef7deff6008534c68616949e3c631347ec2e63853"
+      }
+    },
+    {
+      "path": "tests/test_smoke.py",
+      "source": "Pask_ROS_Local_Smoke_Correction.zip:test_smoke.py",
+      "source_sha256": "1764ecbf47cdecf87754967f89b8d20cbb4d9e81a68fe7eac30007ca87371e28",
+      "relationship": "test harness path adaptation only; no test assertions changed",
+      "candidate_sha256": "0501e002b76e5f17a867c15fc44f1f4e3e4d9540e05cfc2737184b02ab6fffd6"
+    },
+    {
+      "path": "tests/test_local_runtime.py",
+      "source": "Pask_ROS_Local_Smoke_Correction.zip:test_local_runtime.py",
+      "source_sha256": "e9f8b5bd5d1cae31ab87c45a064ca819d12ad7bec3add8063216dc9a5bef0d96",
+      "relationship": "test harness path adaptation only; no test assertions changed",
+      "candidate_sha256": "ce6556ce952306e1730de4bb4ff4ec4e9fd9071981da1d4f906e00224cf5f433"
+    }
+  ]
+}

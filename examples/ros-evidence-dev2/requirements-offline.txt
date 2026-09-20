@@ -1,0 +1,2 @@
+# Offline replay/test environment only, not the ROS image dependency policy.
+cryptography==50.0.1
