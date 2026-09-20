@@ -1,0 +1,125 @@
+{
+  "version": "ros-ci-exact-source/1",
+  "repository": "wilder-robotics/pask-workspace",
+  "commit": "f3f8576fa3f77c3ac029fd1ce070907dc3292d55",
+  "tree": "750a376fbc0dd7ac0f82a6c43c2970c8dc5c3452",
+  "files": {
+    "examples/ros-evidence-dev2/.dockerignore": {
+      "sha256": "e2c6902e62aad97105bcdd30511fb3e6fc8b1e67e971da207f7d60c9ccf832fb",
+      "sizeBytes": 68
+    },
+    "examples/ros-evidence-dev2/.gitignore": {
+      "sha256": "04b0c419144cac48505bde7a68608409e2d779597cb993154b0f4e09854e86b0",
+      "sizeBytes": 46
+    },
+    "examples/ros-evidence-dev2/CI_PROPOSAL.md": {
+      "sha256": "0b25d46330598f2bb63ae48fc976d7d4b632d9b99adeaad52e14085e9a475630",
+      "sizeBytes": 3203
+    },
+    "examples/ros-evidence-dev2/CONTRACT.md": {
+      "sha256": "e9f670d302705420f46a83289ee8eb797f480a1e829a5cf9a198faf5e941351c",
+      "sizeBytes": 4270
+    },
+    "examples/ros-evidence-dev2/LICENSE": {
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sizeBytes": 11358
+    },
+    "examples/ros-evidence-dev2/README.md": {
+      "sha256": "4582ffbef886d8cc17f3011f8d1bb460e3a3b43b4dbf4aca67f25e816c7f6b8b",
+      "sizeBytes": 8919
+    },
+    "examples/ros-evidence-dev2/SOURCE_MAP.json": {
+      "sha256": "b7f67f3993fd77f701c6066ffa110a8fd9c19ef50290aaad9f9d298d34d27416",
+      "sizeBytes": 5498
+    },
+    "examples/ros-evidence-dev2/bundle.py": {
+      "sha256": "556ae146791ca46ef09ee0e3101eeb5ade96207671e18e0ebf5799e9452392c2",
+      "sizeBytes": 23374
+    },
+    "examples/ros-evidence-dev2/fixtures.py": {
+      "sha256": "ba68e56f55439bb56fbbfb99cbd9f144dcbc07ab054d5acd04d8a0c1bb66be72",
+      "sizeBytes": 2045
+    },
+    "examples/ros-evidence-dev2/fixtures/INDEX.json": {
+      "sha256": "ff745b7e5b425dff2e69a11d90c697a2f503dd646e21591c691e4e2ab09e1fcf",
+      "sizeBytes": 133332
+    },
+    "examples/ros-evidence-dev2/fixtures/actual-five.tar.gz": {
+      "sha256": "02e9ed6e022caa619f2750457c3909f749d381c92d894f9b6693035490ac0521",
+      "sizeBytes": 108331
+    },
+    "examples/ros-evidence-dev2/local_run.py": {
+      "sha256": "959cbfa9337f1cd88a5eee39de33304539677882eaad6705a51aab09090309a2",
+      "sizeBytes": 7954
+    },
+    "examples/ros-evidence-dev2/probe.py": {
+      "sha256": "22c7636f65a8194988858a163427d2b90858b032cb6efe66f45d91a81bd4fb6b",
+      "sizeBytes": 35918
+    },
+    "examples/ros-evidence-dev2/provision_trust.py": {
+      "sha256": "89f1983107ee5e6e36385989d6c1516448f73264c11ac7e93c83763ae5af8b3c",
+      "sizeBytes": 1224
+    },
+    "examples/ros-evidence-dev2/recipient.py": {
+      "sha256": "00c668857ba33cf14059a5b0b1ead08ce9318e26fe31aede31ca609f54a16f5b",
+      "sizeBytes": 34801
+    },
+    "examples/ros-evidence-dev2/requirements-offline.txt": {
+      "sha256": "51da21f945668151d75cddfb4ff0264ae76336c67f7ce00f922497bac71069a3",
+      "sizeBytes": 98
+    },
+    "examples/ros-evidence-dev2/ros_package/Dockerfile": {
+      "sha256": "484196d9293712b1031264dca0e39d2be83cfa891bb27457fb0255baf5bb8dbe",
+      "sizeBytes": 1598
+    },
+    "examples/ros-evidence-dev2/ros_package/package.xml": {
+      "sha256": "a6708aea703450d1015127ccac645405b249e073774858303f6dfc375f814076",
+      "sizeBytes": 739
+    },
+    "examples/ros-evidence-dev2/ros_package/pask_ros2_local_demo/__init__.py": {
+      "sha256": "6c6ec57de9f82ef42d82760f144a4571cb16b3cd6de33aaa7aa9fd65e8ab1fa1",
+      "sizeBytes": 38
+    },
+    "examples/ros-evidence-dev2/ros_package/pask_ros2_local_demo/node.py": {
+      "sha256": "45d73737eb1ef2dad8e1581c1973313b1843c645ecf2880e456919fd61e36ba7",
+      "sizeBytes": 18715
+    },
+    "examples/ros-evidence-dev2/ros_package/resource/pask_ros2_local_demo": {
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "sizeBytes": 1
+    },
+    "examples/ros-evidence-dev2/ros_package/run-isolated.sh": {
+      "sha256": "84f0a445206369f76d4d13e6506517296e7e566b31755b97628e9f9e2459464f",
+      "sizeBytes": 445
+    },
+    "examples/ros-evidence-dev2/ros_package/setup.cfg": {
+      "sha256": "ab017cf3c2c24b68f65a718addaa6097c85d5f751d8a0e2000c60218985f294b",
+      "sizeBytes": 109
+    },
+    "examples/ros-evidence-dev2/ros_package/setup.py": {
+      "sha256": "16023eedfd164fe6ab275896ca01df08489651c1424679a11772cd570708f027",
+      "sizeBytes": 676
+    },
+    "examples/ros-evidence-dev2/runtime.py": {
+      "sha256": "6b7d62095eeca4aac06172c583995746f10be9cdb6dc7d3e8d855d0ccddfcc6f",
+      "sizeBytes": 13394
+    },
+    "examples/ros-evidence-dev2/tests/test_local_runtime.py": {
+      "sha256": "ce6556ce952306e1730de4bb4ff4ec4e9fd9071981da1d4f906e00224cf5f433",
+      "sizeBytes": 20367
+    },
+    "examples/ros-evidence-dev2/tests/test_offline.py": {
+      "sha256": "b2b9eab48e833c84eebc8476ece0ccb4873b8b427ccf249a439ae82ac74e3272",
+      "sizeBytes": 11906
+    },
+    "examples/ros-evidence-dev2/tests/test_runtime_module.py": {
+      "sha256": "2bb6c03ba6a11b4c84885745530589a49c5e785ecaa82eb7bc8ff66845970dce",
+      "sizeBytes": 8399
+    },
+    "examples/ros-evidence-dev2/tests/test_smoke.py": {
+      "sha256": "0501e002b76e5f17a867c15fc44f1f4e3e4d9540e05cfc2737184b02ab6fffd6",
+      "sizeBytes": 22679
+    }
+  },
+  "status": "PINNED"
+}
