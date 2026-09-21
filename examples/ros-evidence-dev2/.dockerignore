@@ -1,0 +1,6 @@
+*
+!bundle.py
+!ros_package/
+!ros_package/**
+**/__pycache__/
+**/*.pyc
