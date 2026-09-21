@@ -1,0 +1,54 @@
+name: ROS dev2 separately authorized one-attempt integration
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  contents: read
+concurrency:
+  group: ros-integration-once
+  cancel-in-progress: false
+jobs:
+  integration:
+    if: >-
+      github.run_attempt == 1 &&
+      github.event.action == 'opened' &&
+      github.event.pull_request.draft == true &&
+      github.repository == 'wilder-robotics/pask-workspace' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.base.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'test/ros-integration-once' &&
+      github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      # Exact source-review commit; no moving branch or merge ref.
+      ROS_SOURCE_COMMIT: f3f8576fa3f77c3ac029fd1ce070907dc3292d55
+    steps:
+      - name: Immutable PR-head harness, never the merge ref
+        timeout-minutes: 1
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: harness
+          persist-credentials: false
+      - name: Exact corrected source, independent of harness changes
+        timeout-minutes: 1
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ env.ROS_SOURCE_COMMIT }}
+          path: ros-source
+          persist-credentials: false
+      - name: Bounded adapter, one execution and no retries
+        timeout-minutes: 26
+        run: >-
+          python3 -B harness/tools/ros-ci/runner.py run
+          --source "$GITHUB_WORKSPACE/ros-source"
+          --state "$RUNNER_TEMP/pask-ros-ci-state"
+      - name: Bounded recovery and indexed log transport
+        if: ${{ always() }}
+        timeout-minutes: 2
+        run: >-
+          python3 -B harness/tools/ros-ci/runner.py recover
+          --source "$GITHUB_WORKSPACE/ros-source"
+          --state "$RUNNER_TEMP/pask-ros-ci-state"
