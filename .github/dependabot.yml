@@ -8,7 +8,7 @@
 #   - github-actions: pinned Action SHAs in .github/workflows/
 #
 # Grouping strategy: group all minor + patch updates per ecosystem into a single
-# weekly PR to reduce reviewer load. Major-version bumps are opened as
+# monthly PR to reduce reviewer load. Major-version bumps are opened as
 # individual PRs because they usually need manual review anyway.
 #
 # For pask-conformance-vectors, use the same file but drop the `cargo` block
@@ -21,8 +21,7 @@ updates:
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
       time: "07:00"
       timezone: "America/Chicago"
     open-pull-requests-limit: 5
@@ -43,8 +42,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
       time: "07:00"
       timezone: "America/Chicago"
     open-pull-requests-limit: 5
