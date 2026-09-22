@@ -2,10 +2,10 @@
 
 | | |
 | --- | --- |
-| Applies to | `draft-wilder-scitt-physical-site-engage-receipt-04` (in tree) and this repository |
+| Applies to | `draft-wilder-scitt-physical-site-engage-receipt-04` (posted 2026-09-14) and this repository |
 | Profile identifier in the implementation | `wilder.pser/0.5` (`SPEC_VERSION`); `wilder.pser/0.6` is also supported |
-| Working-draft target | `wilder.pser/0.6`, specified by the in-tree -04 working draft |
-| Last reviewed | 2026-09-13 |
+| Profile target of the current posted revision | `wilder.pser/0.6`, specified by `-04` |
+| Last reviewed | 2026-09-22 |
 | Status | Pre-alpha reference implementation |
 
 This file is maintained alongside the code. It records what the profile and
@@ -29,14 +29,14 @@ safety, insurance, or regulatory-compliance claim.
 ### 1.1 The profile identifier is not published in any register
 
 The implementation supports `wilder.pser/0.5` (`SPEC_VERSION` in the code) and
-`wilder.pser/0.6` (also supported). The in-tree active draft is `-04`, which
-defines `wilder.pser/0.6`. The most recently posted revision is `-03`, which
-defines `wilder.pser/0.5`. The posted `-02` defines `wilder.pser/0.4`.
+`wilder.pser/0.6` (also supported). The most recently posted revision is `-04`,
+posted 2026-09-14, which defines `wilder.pser/0.6`. The posted `-03` defines
+`wilder.pser/0.5` and the posted `-02` defines `wilder.pser/0.4`.
 
-So an implementer working from a posted document and an implementer working
-from this tree share `0.5` in common. The difference is additional support for
-the unpublished `0.6` working contract in this tree, not automatic
-incompatibility with `0.5`.
+So an implementer working from the current posted document and an implementer
+working from this tree share `0.6`, and both also have `0.5` available. `0.6` is
+no longer an unpublished working contract; `-04` publishes it. An implementer
+still on `-03` shares `0.5` with this tree.
 
 Neither identifier is published in any register. The value space is described
 only by the drafts, so nothing outside this repository and those documents
@@ -45,7 +45,7 @@ resolves either string.
 Supported versions, example output, published specification status, and
 interoperable deployment evidence are separate concerns. The code emits 0.5
 and 0.6 payloads; the generated example figure in the working draft uses 0.6;
-the posted specification is `-03` (0.5); and no receipt produced by this
+the current posted specification is `-04` (0.6); and no receipt produced by this
 implementation has been registered with a production Transparency Service.
 
 ### 1.2 One figure is generated; the rest of the document is prose
