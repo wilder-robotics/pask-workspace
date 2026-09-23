@@ -11,10 +11,12 @@ rust-version.workspace = true
 license = "Apache-2.0"
 repository.workspace = true
 documentation = "https://docs.rs/pask-wire"
+homepage.workspace = true
+readme = "README.md"
 keywords = ["cose", "scitt", "receipts", "robotics", "attestation"]
 categories = ["cryptography", "encoding", "no-std"]
 authors.workspace = true
-description = "SCITT-native COSE receipt library for Physical-Site Engagement Receipts (Pask wire format v0.1)"
+description = "SCITT-native COSE receipt library for Physical-Site Engagement Receipts; implements the wilder.pser/0.5 and 0.6 profiles"
 
 [features]
 default = []
