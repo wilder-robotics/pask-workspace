@@ -11,7 +11,8 @@
 //! observe that three of its attestation members no longer matched the code.
 //!
 //! If this test fails, do not edit the document by hand. Run
-//! `cargo run -p pask-wire-cli -- canonical-example` and paste the output.
+//! the library's `pask_wire::canonical_example_06()` generator. The CLI's
+//! `canonical-example` command intentionally continues to emit the 0.5 example.
 
 use std::{fs, path::PathBuf};
 

@@ -14,6 +14,11 @@ repository.workspace = true
 authors.workspace = true
 description = "SCRAPI client that registers Pask Signed Statements with a Transparency Service"
 
+# Not published to crates.io: this crate is AGPL-3.0-only and is operated rather than
+# distributed through the registry. A Cargo guard only. It does not change licensing,
+# repository visibility, or reserve the name.
+publish = false
+
 [features]
 # The workspace CI runs `cargo test --workspace --features es256`. Every
 # workspace member must accept the flag so the command resolves, so this crate

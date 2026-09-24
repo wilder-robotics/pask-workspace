@@ -3,7 +3,16 @@
 // pask-wire is licensed Apache-2.0. No commercial agreement is required to use,
 // modify or redistribute it; see LICENSING.md in the workspace root.
 
-//! Producer and verifier for the `wilder.pser/0.5` signed-statement profile.
+//! Specified producer and verifier processing for Physical-Site Engagement Receipts
+//! under `wilder.pser/0.5` and `wilder.pser/0.6`.
+//!
+//! Package names (`pask-*`), profile versions (`wilder.pser/<version>`) and
+//! Internet-Draft revision numbers identify different things and are versioned
+//! independently of one another.
+//!
+//! Passing the implemented checks does not establish complete profile conformance,
+//! authenticated ownership of a supplied key, or that a physical event occurred.
+//! The crate README describes the supported processing and remaining limits.
 
 #![no_std]
 #![forbid(unsafe_code)]
