@@ -18,6 +18,12 @@ categories = ["cryptography", "encoding", "no-std"]
 authors.workspace = true
 description = "SCITT-native COSE receipt library for Physical-Site Engagement Receipts; implements the wilder.pser/0.5 and 0.6 profiles"
 
+# docs.rs builds with default features. This crate's default is `[]`, which would
+# document almost nothing, so name the documented surface explicitly. This changes the
+# documentation build only; library default features and no_std support are unchanged.
+[package.metadata.docs.rs]
+features = ["alloc", "es256"]
+
 [features]
 default = []
 alloc = [
