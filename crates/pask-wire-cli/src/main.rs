@@ -23,7 +23,7 @@ use ed25519_dalek::{
 use pask_wire::{Payload, canonical_example, produce_ed25519, verify_ed25519};
 
 #[derive(Debug, Parser)]
-#[command(name = "pask-wire-cli")]
+#[command(name = "pask-wire-cli", bin_name = "pask-wire-cli")]
 #[command(about = "Produce, verify, and emit canonical Pask receipts")]
 // A `push` subcommand used to live here behind an `adapter` feature. It moved
 // to the `pask-adapt` binary when the workspace license was split, so a user
@@ -123,4 +123,70 @@ fn read_verifying_key(path: &PathBuf) -> Result<VerifyingKey> {
         .with_context(|| format!("failed to read public key {}", path.display()))?;
     VerifyingKey::from_public_key_pem(&public_key_pem)
         .map_err(|error| anyhow::anyhow!("invalid Ed25519 public key: {error}"))
+}
+
+#[cfg(test)]
+mod usage_contract_tests {
+    use super::Cli;
+    use clap::{Parser, error::ErrorKind};
+
+    // Exercise the real derived parser with either runtime filename spelling.
+    // This is not a replacement for the executable tests on native Windows.
+    fn assert_canonical_usage(error: &clap::Error, subcommand: Option<&str>) {
+        let text = error.to_string();
+        let usage = text
+            .lines()
+            .find_map(|line| line.strip_prefix("Usage: "))
+            .unwrap_or_else(|| panic!("missing usage line in parser output:\n{text}"));
+        let mut words = usage.split_whitespace();
+        assert_eq!(words.next(), Some("pask-wire-cli"), "{text}");
+        if let Some(subcommand) = subcommand {
+            assert_eq!(words.next(), Some(subcommand), "{text}");
+        }
+    }
+
+    #[test]
+    fn help_uses_canonical_invocation_for_both_argv0_spellings() {
+        let cases: &[(&[&str], Option<&str>)] = &[
+            (&["--help"], None),
+            (&["verify", "--help"], Some("verify")),
+            (&["produce", "--help"], Some("produce")),
+            (&["canonical-example", "--help"], Some("canonical-example")),
+        ];
+        for program in ["pask-wire-cli", "pask-wire-cli.exe"] {
+            for &(args, subcommand) in cases {
+                let argv = std::iter::once(program).chain(args.iter().copied());
+                let error = Cli::try_parse_from(argv)
+                    .expect_err("help must terminate parsing before command execution");
+                assert_eq!(error.kind(), ErrorKind::DisplayHelp, "{program} {args:?}");
+                assert_canonical_usage(&error, subcommand);
+            }
+        }
+    }
+
+    #[test]
+    fn errors_use_canonical_invocation_for_both_argv0_spellings() {
+        let cases: &[(&[&str], Option<&str>, ErrorKind)] = &[
+            (
+                &["verify"],
+                Some("verify"),
+                ErrorKind::MissingRequiredArgument,
+            ),
+            (
+                &["produce"],
+                Some("produce"),
+                ErrorKind::MissingRequiredArgument,
+            ),
+            (&["not-a-command"], None, ErrorKind::InvalidSubcommand),
+        ];
+        for program in ["pask-wire-cli", "pask-wire-cli.exe"] {
+            for (args, subcommand, kind) in cases {
+                let argv = std::iter::once(program).chain(args.iter().copied());
+                let error = Cli::try_parse_from(argv)
+                    .expect_err("invalid arguments must not reach command execution");
+                assert_eq!(&error.kind(), kind, "{program} {args:?}");
+                assert_canonical_usage(&error, *subcommand);
+            }
+        }
+    }
 }
