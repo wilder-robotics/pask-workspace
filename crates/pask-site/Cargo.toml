@@ -8,6 +8,11 @@ repository.workspace = true
 authors.workspace = true
 description = "Reference site producer for the wilder.pser/0.4 profile"
 
+# Not published to crates.io: this crate is AGPL-3.0-only and is operated rather than
+# distributed through the registry. A Cargo guard only. It does not change licensing,
+# repository visibility, or reserve the name.
+publish = false
+
 [features]
 default = []
 es256 = ["pask-wire/es256", "pask-adapter/es256"]
