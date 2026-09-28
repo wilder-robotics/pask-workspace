@@ -6,7 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 authors.workspace = true
-description = "Reference site producer for the wilder.pser/0.4 profile"
+description = "Reference site producer for the wilder.pser/0.5 profile"
 
 # Not published to crates.io: this crate is AGPL-3.0-only and is operated rather than
 # distributed through the registry. A Cargo guard only. It does not change licensing,
