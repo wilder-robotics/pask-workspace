@@ -1,0 +1,15 @@
+[package]
+name = "snp-witness"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+pask-attest = "=0.1.0"
+pask-wire = { version = "=0.1.0", features = ["std"] }
+ed25519-dalek = { version = "2.2.0", default-features = false, features = ["std", "pem", "pkcs8", "rand_core"] }
+rand_core = { version = "0.6", features = ["getrandom"] }
+sha2 = "0.10"
+serde_json = "1.0"
+hex = "0.4"
+time = { version = "0.3", features = ["formatting", "parsing"] }

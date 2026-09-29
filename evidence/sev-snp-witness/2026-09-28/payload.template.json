@@ -1,0 +1,79 @@
+{
+ "spec": "wilder.pser/0.6",
+ "id": "uuid:7d3a1c2e-0000-4000-8000-20260928snp01",
+ "ts": "2026-09-29T03:07:38Z",
+ "issuerAffiliation": "AFFILIATED",
+ "site": {
+  "id": "site:exp-snp-gcp-01",
+  "class": "other",
+  "envelope": {
+   "id": "env:exp-snp-gcp-01:2026-09",
+   "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+   "geobounds": null,
+   "temporal": {
+    "starts": "2026-09-01T00:00:00Z",
+    "ends": null
+   }
+  }
+ },
+ "actor": {
+  "id": "actor:exp-snp-witness-vm",
+  "class": "AUTONOMOUS",
+  "operator": "operator:wilder-robotics"
+ },
+ "engagement": {
+  "id": "eng:exp-snp-gcp-01:20260929-0320",
+  "type": "attestation-experiment",
+  "window": {
+   "start": "2026-09-29T03:00:00Z",
+   "end": "2026-09-29T03:20:00Z"
+  },
+  "outcomeClass": "COMPLETED",
+  "envelopeConformance": "WITHIN",
+  "evidenceDigest": "sha256:9c4ef150a026016781da966496db75acffa25f8e81f4b3964c9b219e2411bc0d"
+ },
+ "attestation": {
+  "bindingMode": "DIRECT_WITNESS",
+  "teeClass": "amd.sev-snp",
+  "measuredBoot": {
+   "chain": "sha256:bc33d819656a37e819cbbe4454a52ab929b83657c798547933896972f11764aa",
+   "components": [
+    {
+     "digest": "sha256:91d976078ece9aaa44b086f659829439019a8855ea36e0600e59f34216a5dc96",
+     "name": "snp.launch-measurement"
+    },
+    {
+     "digest": "sha256:0059029d33deb692e98cecaf4764ee791fa69c21b8448823df40a64836ce12c1",
+     "name": "snp.report-id"
+    }
+   ]
+  },
+  "platformEvidence": {
+   "digest": "sha256:9c4ef150a026016781da966496db75acffa25f8e81f4b3964c9b219e2411bc0d",
+   "encoding": "opaque/1"
+  },
+  "sealedEvidence": {
+   "digest": "sha256:d4a09365480fb8387310e64241bb5b7f36e81bb702580560c6417e87a3f56173",
+   "encoding": "opaque/1",
+   "sizeBytes": 10240
+  },
+  "validity": {
+   "notAfter": "2026-09-29T07:07:22Z",
+   "notBefore": "2026-09-29T02:07:22Z"
+  },
+  "witnessKey": "key:tee:snp-gcp-20260928-witness-01"
+ },
+ "adapter": {
+  "system": "none.experiment",
+  "endpoint": "endpoint:none",
+  "mode": "WRITE_ONLY",
+  "postedAt": "2026-09-29T03:20:05Z",
+  "ackDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "ackProvenance": "THIRD_PARTY"
+ },
+ "chain": {
+  "seq": 0,
+  "prevHash": null,
+  "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+ }
+}

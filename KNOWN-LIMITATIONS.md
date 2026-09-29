@@ -332,6 +332,55 @@ were described against the actual merged source.
 Revised 2026-09-14 for the local #70 sender and coordinated reader repair.
 Controlled cryptographic fixtures are not SCITT-claims conformance evidence.
 
+## 5.2a AMD SEV-SNP test configuration
+
+For testing, Pask registers with a self-hosted scitt-ccf-ledger instance and
+runs its witness in an AMD SEV-SNP confidential VM. These are the
+configurations we use to find out what Pask can and cannot do with real
+hardware and a real log; they are not requirements of the profile, not
+recommendations, and not the only conforming options. Results, including what
+did not work, are published in KNOWN-LIMITATIONS.
+
+On 2026-09-29 (UTC) a witness key was generated inside an AMD SEV-SNP
+confidential virtual machine, an attestation report (version 5, VMPL 0,
+1,184 bytes) was requested whose REPORT_DATA field carries SHA-512 of that
+key's public half in SubjectPublicKeyInfo form, the report and its AMD
+ARK/ASK/VCEK chain were verified with snpguest v0.10.0 and independently,
+and one `wilder.pser/0.6` statement was signed with that key using the
+published `pask-wire-cli` 0.1.0. The `wilder.attest/0.1` quote wrapping the
+evidence digests was verified with the published `pask-attest` 0.1.0. The
+transcript and tools are under `evidence/sev-snp-witness/2026-09-28/`.
+
+What worked: the published crates verified the quote and the statement; a
+wrong key, an unknown witness identifier, a non-registry `teeClass` string,
+and an out-of-window clock were each rejected with a distinct error.
+
+What did not work, and is recorded as a limitation:
+
+- `pask-attest` 0.1.0 does not parse or appraise SEV-SNP reports. It accepts
+  `amd.sev-snp` as a class label and an opaque SHA-256 digest of evidence.
+  A report with one altered byte was rejected by snpguest and by an
+  independent signature check, but a quote carrying that report's digest
+  would verify identically under `pask-attest`. The crate cannot reject
+  synthetic evidence.
+- `pask-attest` 0.1.0 does not require the evidence bytes to be present or
+  resolvable. The same quote verified with no evidence on disk. The crate
+  cannot detect absent evidence.
+- The REPORT_DATA binding, the evidence manifest layout, and the derivation
+  of measured-boot components from two report fields are experiment
+  conventions. They are not defined by this profile or any draft revision.
+- No approved boot-image baseline exists; no claim about the guest image's
+  security state is made. One provider, one VM, one processor family, one
+  point in time. This does not establish hardware key custody for any
+  deployed Pask issuer.
+
+Published: the command transcript and the helper tool used. Kept private:
+the raw attestation report, certificate chain, evidence manifest, sealed
+bundle, and the cloud and hardware identifiers they contain. Nothing about
+this configuration alters the -05 freeze or the crates.io 0.1.0 release.
+
+Recorded 2026-09-29.
+
 ## 5.3 The candidate-entry byte encoding is specified (-04)
 
 RFC 9942 Section 5.2 verification begins by obtaining "the bytes of a candidate
