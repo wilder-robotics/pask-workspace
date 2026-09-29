@@ -260,6 +260,67 @@ normalizer. Callers must tag current untagged local producer output before
 submission; tagging the later attached output does not fix a prior untagged
 request. The local mock exercises explicit tagged submission and commitment to
 the derived candidate; agreement by an independent service remains unproven.
+
+**Test configurations.** For testing, Pask registers with a self-hosted
+scitt-ccf-ledger instance and runs its witness in an AMD SEV-SNP confidential
+VM. These are the configurations we use to find out what Pask can and cannot
+do with real hardware and a real log; they are not requirements of the
+profile, not recommendations, and not the only conforming options. Results,
+including what did not work, are published in KNOWN-LIMITATIONS.
+
+**CCF ledger receipts are retrieved but not verified.** First real-ledger
+observation, recorded 2026-09-28 and tracked in
+[#100](https://github.com/wilder-robotics/pask-workspace/issues/100).
+
+*What was tested.* A self-hosted `scitt-ccf-ledger` at pinned revision
+`bffdf529185ba7767db5f2cfc4c1898ec8ad3364`, started by `scripts/run-dev-ts.sh`
+on a Linux GitHub Actions runner, against `pask-workspace` at the tree of
+main `9ba85f1` (the `pask-wire` 0.1.0 release). The pyscitt-signed statement
+was registered by `TsClient::submit` and the returned receipt bytes were saved
+unmodified.
+
+*What happened.* The statement registered and a 508-byte tag-18 `COSE_Sign1`
+receipt came back: `alg` ES384, protected `vds` (395) = `2`, a CWT claims map
+(15) with `iss` `127.0.0.1:8000`, `sub` `scitt.ccf.signature.v1` and `iat`,
+a `ccf.v1` map carrying the transaction id, an unprotected `vdp` (396) map
+whose `-1` entry holds one byte-string-wrapped CCF inclusion proof, and a
+detached payload. That is the shape described by
+`draft-ietf-scitt-receipts-ccf-profile-05`. The VDS value `2`
+(`CCF_LEDGER_SHA256`) is taken from that draft; it is requested by the draft
+and is not yet in the IANA Verifiable Data Structure registry, which at the
+time of writing lists only values `0` and `1`. Pask does not count this
+receipt as verified inclusion:
+
+- `pask_wire::inspect_scitt_receipt` reports `support` =
+  `Unsupported` / `ccf_profile_not_implemented` and leaves signature and
+  inclusion `NotEvaluated`. It also reports `required_claims` =
+  `Failed` / `uri_syntax`, because the CCF `iss` value is a host:port string
+  rather than a URI.
+- `pask_wire::verify_inclusion` returns
+  `attached receipt error: inclusion proof must be a CBOR array`. The RFC 9162
+  proof-shape check runs before the VDS check on that path, so the low-level
+  verifier names the proof shape rather than the unsupported VDS. Both paths
+  refuse; neither path runs the RFC 9162 walk over CCF proof bytes.
+
+*Reproduce.* From a Linux host with Docker, Python 3.12+, and the pinned
+pyscitt CLI installed:
+
+```sh
+export PASK_TS_WORK_DIR=/tmp/pask-dev-ts
+./scripts/run-dev-ts.sh
+set -a; . "$PASK_TS_WORK_DIR/github.env"; set +a
+cargo test -p pask-ts-client -- --ignored --nocapture
+CCF_EVIDENCE_OUT=/tmp/ccf-evidence \
+  cargo run --manifest-path evidence/issue-100/2026-09-28/tool/Cargo.toml
+./scripts/run-dev-ts.sh --stop
+```
+
+The captured receipt, signed statement, service certificate, verifier output
+and logs are under `evidence/issue-100/2026-09-28/` with a `SHA256SUMS`
+manifest. The evidence tool is not a workspace member and changes no verifier
+behaviour. This entry will be revised when CCF receipt verification lands
+(#100); until then the reference verifier's registration coverage is
+`RFC9162_SHA256` only.
 Application-facing aggregate verification, published specification status, and
 external-service interoperability remain separate from the implemented
 candidate-entry derivation and test-only aggregate verification. Issues #70

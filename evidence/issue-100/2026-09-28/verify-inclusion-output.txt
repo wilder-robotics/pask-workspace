@@ -1,0 +1,2 @@
+Receipt::from_cose_sign1: Err(attached receipt error: inclusion proof must be a CBOR array)
+verify_inclusion: Err(attached receipt error: inclusion proof must be a CBOR array)

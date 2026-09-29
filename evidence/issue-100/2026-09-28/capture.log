@@ -1,0 +1,28 @@
+receipt_bytes=508
+receipt_sha256=a6cd5abbdc6c73a0d4dceeeba8bdffbb891697088c0c331de0642a3be5c6144a
+statement_sha256=af83b0267d4e07965d518057999211b1e6b9b3ec963e5badb5aeb2a319ee9f89
+service_cert_sha256=b660f2093dbd4c23600a14f70ed1f0d2c5d12e94e045766acd512f576fa5bb8e
+first_byte=0xd2 (0xd2 = tag 18 COSE_Sign1)
+cose_sign1_parse=ok
+protected.alg=Some(Assigned(ES384))
+protected.kid_len=64
+protected.x5chain_present=false
+protected[Int(15)]=map{1, 2, 6}
+protected[Int(395)]=int 2
+protected[Text("ccf.v1")]=map{"txid"}
+unprotected[Int(396)]=map{-1}
+payload=detached
+signature_len=96
+
+--- verify_inclusion ---
+Receipt::from_cose_sign1: Err(attached receipt error: inclusion proof must be a CBOR array)
+verify_inclusion: Err(attached receipt error: inclusion proof must be a CBOR array)
+
+--- inspect_scitt_receipt ---
+policy_id=pask71-local-ed25519-rfc9162/1
+structure=InspectionFinding { status: Passed, code: "checked", detail: "Passed only this inspection dimension; unauthenticated.", evidence_refs: ["encoded_receipt"] }
+required_claims=InspectionFinding { status: Failed, code: "uri_syntax", detail: "Rejected in the named dimension; consult policy and exact input bytes.", evidence_refs: ["encoded_receipt"] }
+support=InspectionFinding { status: Unsupported, code: "ccf_profile_not_implemented", detail: "Not implemented by the initial Ed25519/RFC9162 policy; no crypto or trust finding follows.", evidence_refs: ["encoded_receipt"] }
+ts_signature=InspectionFinding { status: NotEvaluated, code: "outside_phase1", detail: "Phase 1 does not evaluate cryptography, trust, subject correspondence or application acceptance.", evidence_refs: ["encoded_receipt"] }
+inclusion=InspectionFinding { status: NotEvaluated, code: "outside_phase1", detail: "Phase 1 does not evaluate cryptography, trust, subject correspondence or application acceptance.", evidence_refs: ["encoded_receipt"] }
+unauthenticated_claims=None

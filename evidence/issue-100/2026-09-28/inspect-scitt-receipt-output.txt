@@ -1,0 +1,7 @@
+policy_id=pask71-local-ed25519-rfc9162/1
+structure=InspectionFinding { status: Passed, code: "checked", detail: "Passed only this inspection dimension; unauthenticated.", evidence_refs: ["encoded_receipt"] }
+required_claims=InspectionFinding { status: Failed, code: "uri_syntax", detail: "Rejected in the named dimension; consult policy and exact input bytes.", evidence_refs: ["encoded_receipt"] }
+support=InspectionFinding { status: Unsupported, code: "ccf_profile_not_implemented", detail: "Not implemented by the initial Ed25519/RFC9162 policy; no crypto or trust finding follows.", evidence_refs: ["encoded_receipt"] }
+ts_signature=InspectionFinding { status: NotEvaluated, code: "outside_phase1", detail: "Phase 1 does not evaluate cryptography, trust, subject correspondence or application acceptance.", evidence_refs: ["encoded_receipt"] }
+inclusion=InspectionFinding { status: NotEvaluated, code: "outside_phase1", detail: "Phase 1 does not evaluate cryptography, trust, subject correspondence or application acceptance.", evidence_refs: ["encoded_receipt"] }
+unauthenticated_claims=None

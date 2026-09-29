@@ -1,0 +1,111 @@
+# Evidence capture for issue #100 (CCF VDS receipt verification).
+#
+# Manual only. Runs the same pinned scitt-ccf-ledger the CI `ts-integration`
+# job uses, runs the ignored real-ledger test unchanged, then runs the
+# evidence-capture tool under evidence/issue-100/ to save the retrieved
+# receipt bytes, the submitted statement, the service certificate, and the
+# unchanged verifier's exact output. Artifacts are uploaded; nothing is
+# committed by this workflow. Branch-only; not intended for main.
+name: CCF interop evidence (issue 100)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Capture CCF receipt evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SCITT_REV: bffdf529185ba7767db5f2cfc4c1898ec8ad3364
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Choose working directories
+        run: |
+          echo "PASK_TS_WORK_DIR=$RUNNER_TEMP/pask-dev-ts" >> "$GITHUB_ENV"
+          echo "CCF_EVIDENCE_OUT=$RUNNER_TEMP/ccf-evidence" >> "$GITHUB_ENV"
+
+      - name: Record source revision
+        run: |
+          mkdir -p "$CCF_EVIDENCE_OUT"
+          {
+            echo "pask_workspace_sha=$(git rev-parse HEAD)"
+            echo "pask_workspace_tree=$(git rev-parse HEAD^{tree})"
+            echo "scitt_ccf_ledger_rev=$SCITT_REV"
+            echo "captured_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "runner=$RUNNER_OS $ImageOS"
+          } | tee "$CCF_EVIDENCE_OUT/provenance.txt"
+
+      - name: Check out pinned ledger source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: microsoft/scitt-ccf-ledger
+          ref: ${{ env.SCITT_REV }}
+          path: .scitt-source
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install matching pyscitt CLI
+        run: python -m pip install ./.scitt-source/pyscitt
+
+      - name: Install Rust
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          toolchain: stable
+          cache: false
+
+      - name: Set up BuildKit
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Build the pinned ledger image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .scitt-source
+          file: .scitt-source/docker/Dockerfile
+          load: true
+          tags: pask-scitt-dev:${{ env.SCITT_REV }}
+          build-args: SCITT_VERSION_OVERRIDE=${{ env.SCITT_REV }}
+          cache-from: type=gha,version=2,scope=pask-ts-scitt-${{ env.SCITT_REV }}
+
+      - name: Run dev script
+        env:
+          PASK_SCITT_SOURCE: ${{ github.workspace }}/.scitt-source
+        run: ./scripts/run-dev-ts.sh 2>&1 | tee "$CCF_EVIDENCE_OUT/run-dev-ts.log"
+
+      - name: Export ledger and fixture paths
+        run: cat "$PASK_TS_WORK_DIR/github.env" >> "$GITHUB_ENV"
+
+      - name: Run the ignored real-ledger test, unchanged
+        run: |
+          set -euo pipefail
+          : "${PASK_TS_URL:?}" "${PASK_SIGNED_STATEMENT_PATH:?}" "${PASK_TS_SERVICE_KEY_PATH:?}"
+          cargo test -p pask-ts-client -- --ignored --nocapture 2>&1 | tee "$CCF_EVIDENCE_OUT/real-ledger-test.log"
+
+      - name: Capture receipt and verifier output
+        run: |
+          set -euo pipefail
+          cargo run -q --manifest-path evidence/issue-100/2026-09-28/tool/Cargo.toml 2>&1 | tee "$CCF_EVIDENCE_OUT/capture.log"
+          (cd "$CCF_EVIDENCE_OUT" && sha256sum * > SHA256SUMS && cat SHA256SUMS)
+
+      - name: Stop dev ledger
+        if: always()
+        run: ./scripts/run-dev-ts.sh --stop
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ccf-interop-evidence-${{ github.sha }}
+          path: ${{ env.CCF_EVIDENCE_OUT }}
+          if-no-files-found: error

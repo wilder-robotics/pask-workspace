@@ -1,0 +1,5 @@
+pask_workspace_sha=4c2084ae746d37ed3d1d539edd9ec8e783ac003f
+pask_workspace_tree=2042e8dc7c1e505616b927d02d875e2d4197d378
+scitt_ccf_ledger_rev=bffdf529185ba7767db5f2cfc4c1898ec8ad3364
+captured_utc=2026-09-28T23:26:06Z
+runner=Linux ubuntu24

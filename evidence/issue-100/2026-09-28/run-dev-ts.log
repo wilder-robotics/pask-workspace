@@ -1,0 +1,36 @@
+-- Generating identity private key and certificate for participant "member0"...
+Identity curve: secp384r1
+Identity private key generated at:   member0_privk.pem
+Identity certificate generated at:   member0_cert.pem (to be registered in CCF)
+-- Generating RSA encryption key pair for participant "member0"...
+writing RSA key
+Encryption private key generated at:  member0_enc_privk.pem
+Encryption public key generated at:   member0_enc_pubk.pem (to be registered in CCF)
+[32m2026-09-28 23:26:33.039[0m | [1mINFO    [0m | [36mpyscitt.client[0m:[36madvance[0m:[36m141[0m - [1mAdvancing clock by 1 seconds[0m
+[32m2026-09-28 23:26:33.058[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mPOST /gov/members/state-digests/865d72176148bad61f813d549cbcc8e66f530a6b4023a0ecf3affe0300ed3188:update 200[0m
+[32m2026-09-28 23:26:33.058[0m | [1mINFO    [0m | [36mpyscitt.client[0m:[36madvance[0m:[36m141[0m - [1mAdvancing clock by 1 seconds[0m
+[32m2026-09-28 23:26:33.061[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mPOST /gov/members/state-digests/865d72176148bad61f813d549cbcc8e66f530a6b4023a0ecf3affe0300ed3188:ack 204[0m
+[32m2026-09-28 23:26:33.062[0m | [1mINFO    [0m | [36mpyscitt.client[0m:[36madvance[0m:[36m141[0m - [1mAdvancing clock by 1 seconds[0m
+[32m2026-09-28 23:26:33.072[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mPOST /gov/members/proposals:create 200[0m
+[32m2026-09-28 23:26:33.072[0m | [1mINFO    [0m | [36mpyscitt.client[0m:[36madvance[0m:[36m141[0m - [1mAdvancing clock by 1 seconds[0m
+[32m2026-09-28 23:26:33.082[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mPOST /gov/members/proposals/d198bc398486822a15a4f01b490bc09a438d6217d5f7210b5279e0388038c192/ballots/865d72176148bad61f813d549cbcc8e66f530a6b4023a0ecf3affe0300ed3188:submit 200[0m
+[32m2026-09-28 23:26:33.084[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mGET /node/network/nodes 200[0m
+[32m2026-09-28 23:26:33.086[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mGET node/network 200[0m
+[32m2026-09-28 23:26:33.087[0m | [1mINFO    [0m | [36mpyscitt.client[0m:[36madvance[0m:[36m141[0m - [1mAdvancing clock by 1 seconds[0m
+[32m2026-09-28 23:26:33.096[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mPOST /gov/members/proposals:create 200[0m
+[32m2026-09-28 23:26:33.097[0m | [1mINFO    [0m | [36mpyscitt.client[0m:[36madvance[0m:[36m141[0m - [1mAdvancing clock by 1 seconds[0m
+[32m2026-09-28 23:26:33.109[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mPOST /gov/members/proposals/ee89b38f7f81e5d116f5c317ea905a804fa72496657a9d3fe434db9b768aba6e/ballots/865d72176148bad61f813d549cbcc8e66f530a6b4023a0ecf3affe0300ed3188:submit 200[0m
+[32m2026-09-28 23:26:33.111[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mGET /node/network/nodes 200[0m
+[32m2026-09-28 23:26:33.113[0m | [34m[1mDEBUG   [0m | [36mpyscitt.client[0m:[36mrequest[0m:[36m497[0m - [34m[1mGET /node/network 200[0m
+Activating member credentials...
+Configuring service...
+Opening service...
+Certificate request self-signature ok
+subject=CN = pask-dev
+Writing /home/runner/work/_temp/pask-dev-ts/signed-statement.cose
+
+run-dev-ts.sh v1.0.0: service ready at https://127.0.0.1:8000
+export PASK_TS_URL=https://127.0.0.1:8000
+export PASK_SIGNED_STATEMENT_PATH=/home/runner/work/_temp/pask-dev-ts/signed-statement.cose
+export PASK_TS_SERVICE_KEY_PATH=/home/runner/work/_temp/pask-dev-ts/service_cert.pem
+Stop with: ./scripts/run-dev-ts.sh --stop
