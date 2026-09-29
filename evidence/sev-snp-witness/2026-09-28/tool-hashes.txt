@@ -1,0 +1,2 @@
+7d666dfb0b99412e261feb49ed4bbeba8fe3ae0e77debba4d3579f05a78440f9  /home/sa_115809154345706172731/pask-snp-witness-20260928/tool/target/release/snp-witness
+a109ddc1eccd99eda97d1749edc73d1fbd48bed70ccede4dac063176a262715a  /home/sa_115809154345706172731/pask-snp-witness-20260928/li/bin/pask-wire-cli

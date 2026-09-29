@@ -1,0 +1,11 @@
+321b979aabd230e7c758c8adc97ddcacc879481eaa9d27c438aa117bce26e0bb  evidence/sev-snp-witness/2026-09-28/README.md
+fd15bbb5b62d31908bb865c2025394f700acf767857a953b63ce05dd2df54019  evidence/sev-snp-witness/2026-09-28/payload.template.json
+43c477e51640791829c081744c08f77bd10285ef9a3098d37ac710dde4bd7306  evidence/sev-snp-witness/2026-09-28/run_witness.sh
+e77c3a76c493cb46feb16cfc97e1e56b89cbe8a91755a48d3569b8ba5a2786c7  evidence/sev-snp-witness/2026-09-28/tool-hashes.txt
+8733d225b515f504441866a79d5a68330e6065ae4d2c3a00921c6b8b51c1448f  evidence/sev-snp-witness/2026-09-28/transcript.log
+4dbaef5ae8a4aadaa7080c08600116da1a77b59b15c4ce3bd7c36c5de62a30e2  evidence/sev-snp-witness/2026-09-28/validity.txt
+4d270113dfc2120b48fdef2dd25e5ecb25fd8893205e267f9b50cb51eaf1eca8  evidence/sev-snp-witness/2026-09-28/witness-quote.claims.json
+b71896cdc8cb5ade3d62bbc2a3d848d7155efe9d6b402040b4e416f8d61a8fdc  evidence/sev-snp-witness/2026-09-28/witness.pub.pem
+381aaa7d5e632f08419186fa89958e4f2c58f9dd7d5f5e61645d712c353f05ef  evidence/sev-snp-witness/2026-09-28/tool/Cargo.lock
+e76a608be8d23ddc6a2a53a13de22628bd081132488ff00c232c0b5d09de2251  evidence/sev-snp-witness/2026-09-28/tool/Cargo.toml
+a87c448783669b12f6f56c2f3253bf677e03c724e15bc91b6d295cfe48192e52  evidence/sev-snp-witness/2026-09-28/tool/src/main.rs

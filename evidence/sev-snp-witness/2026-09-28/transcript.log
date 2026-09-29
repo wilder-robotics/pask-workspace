@@ -1,0 +1,110 @@
+=== STEP 0 environment
+Tue Sep 29 04:24:01 UTC 2026
+Linux [vm-hostname redacted] 7.0.0-1011-gcp #11~24.04.1-Ubuntu SMP PREEMPT Tue Aug 11 20:14:48 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+rustc 1.88.0 (6b00bc388 2025-06-23)
+cargo 1.88.0 (873a06493 2025-05-10)
+snpguest 0.10.0
+crw------- 1 root root 10, 260 Sep 29 04:16 /dev/sev-guest
+=== STEP 1 build helper from published crates
+   Compiling pask-attest v0.1.0
+   Compiling snp-witness v0.1.0 (/home/[user]/pask-snp-witness-20260928/tool)
+    Finished `release` profile [optimized] target(s) in 21.23s
+├── ed25519-dalek v2.2.0
+├── pask-attest v0.1.0
+├── pask-wire v0.1.0
+warning: be sure to add `/home/[user]/pask-snp-witness-20260928/li/bin` to your PATH to be able to run the installed binaries
+7d666dfb0b99412e261feb49ed4bbeba8fe3ae0e77debba4d3579f05a78440f9  /home/[user]/pask-snp-witness-20260928/tool/target/release/snp-witness
+a109ddc1eccd99eda97d1749edc73d1fbd48bed70ccede4dac063176a262715a  /home/[user]/pask-snp-witness-20260928/li/bin/pask-wire-cli
+=== STEP 2 generate witness key inside the VM
+witness.pub raw hex: 15172f8e738fe8f57e772be98718ec97f430547309b2067d27dca15165a70703
+(openssl 3.0 on this image cannot parse PKCS8 v2 Ed25519 keys; pask-wire-cli does, see step 6)
+=== STEP 3 REPORT_DATA (EXP-SNP-RD-1) and SNP report
+REPORT_DATA (EXP-SNP-RD-1) = sha512(spki-der) = a32a1253babd1903824dad32c0007a7c70cda69d525c93f295064c618dea3fc457baf80a6d6057357101c8f15ade80bba4b8417fdbbb2a73a19e8bd4b24d5a64
+-rw-r--r-- 1 [user] root 1184 Sep 29 04:24 report.bin
+helper-decode version 5
+helper-decode report_data a32a1253babd1903824dad32c0007a7c70cda69d525c93f295064c618dea3fc457baf80a6d6057357101c8f15ade80bba4b8417fdbbb2a73a19e8bd4b24d5a64
+helper-decode measurement 21199b36f500cc26a5d26c92c699fe2820ce217458bf219be18efd761f636b4145fdecbd7249c4b566797b4afd339546
+helper-decode report_id 0bdaf39a1ce43be94690f0a297a143e816d4539da38ac7ee4072162acae14a85
+--- snpguest display (Report Data / Measurement / Report ID excerpts)
+Report Data:
+A3 2A 12 53 BA BD 19 03 82 4D AD 32 C0 00 7A 7C
+70 CD A6 9D 52 5C 93 F2 95 06 4C 61 8D EA 3F C4
+57 BA F8 0A 6D 60 57 35 71 01 C8 F1 5A DE 80 BB
+A4 B8 41 7F DB BB 2A 73 A1 9E 8B D4 B2 4D 5A 64
+Measurement:
+21 19 9B 36 F5 00 CC 26 A5 D2 6C 92 C6 99 FE 28
+20 CE 21 74 58 BF 21 9B E1 8E FD 76 1F 63 6B 41
+45 FD EC BD 72 49 C4 B5 66 79 7B 4A FD 33 95 46
+Report ID:
+0B DA F3 9A 1C E4 3B E9 46 90 F0 A2 97 A1 43 E8
+16 D4 53 9D A3 8A C7 EE 40 72 16 2A CA E1 4A 85
+REPORT_DATA_MATCH=yes
+=== STEP 4 AMD certificate chain
+total 12
+-rw-rw-r-- 1 [user] [user] 2277 Sep 29 04:24 ark.pem
+-rw-rw-r-- 1 [user] [user] 2325 Sep 29 04:24 ask.pem
+-rw-rw-r-- 1 [user] [user] 1887 Sep 29 04:24 vcek.pem
+The AMD ARK was self-signed!
+The AMD ASK was signed by the AMD ARK!
+The VCEK was signed by the AMD ASK!
+Reported TCB Boot Loader from certificate matches the attestation report.
+Reported TCB TEE from certificate matches the attestation report.
+Reported TCB SNP from certificate matches the attestation report.
+Reported TCB Microcode from certificate matches the attestation report.
+VEK signed the Attestation Report!
+Reported TCB Boot Loader from certificate matches the attestation report.
+Reported TCB TEE from certificate matches the attestation report.
+Reported TCB SNP from certificate matches the attestation report.
+Reported TCB Microcode from certificate matches the attestation report.
+VEK signed the Attestation Report!
+Report Data verified successfully.
+=== STEP 5 evidence manifest (EXP-SNP-EV-1) and sealed tar (EXP-SNP-SE-1)
+6e2c497ef366794776a18b7715110400a392847ece0ac3b3a7afc9121a3d21f1  snp-evidence.json
+34cd38c72be28c8d4529f868c864333c3bdc4ef12c9637f88928f279e800874a  snp-sealed.tar
+=== STEP 6 wilder.attest/0.1 quote, pask-attest verify, signed statement
+report version 5; quote written: 865 bytes; quote sha256 sha256:58695644069e95363b4c5655a72eae482e98577f2b4382c8d3dcac18bc705c6d
+platformEvidence.digest = sha256:6e2c497ef366794776a18b7715110400a392847ece0ac3b3a7afc9121a3d21f1
+sealedEvidence.digest   = sha256:34cd38c72be28c8d4529f868c864333c3bdc4ef12c9637f88928f279e800874a (20480 bytes)
+RESULT: VERIFIED teeClass=amd.sev-snp witnessKey=key:tee:snp-gcp-20260928-witness-01 platformEvidence=sha256:6e2c497ef366794776a18b7715110400a392847ece0ac3b3a7afc9121a3d21f1 sealedEvidence=20480B
+-rw-rw-r-- 1 [user] [user] 2150 Sep 29 04:24 witness-statement.cbor
+3de8c46cad9c62a29d67f07aadc007a8ad10278b980991430c1e917442064799  witness-statement.cbor
+128b388f80524f69faf854970d28525ca0595023173dd06fd555438b90550f1a  witness-statement.verified.json
+=== STEP 7 negative fixtures (wrong key, unknown identifier, non-registry class, expired clock, synthetic report)
+report version 5; quote written: 868 bytes; quote sha256 sha256:cb578fbc6358660e6ce02ba4c16fb5c0a742309844c738767f3bdcb6b31b18c0
+platformEvidence.digest = sha256:6e2c497ef366794776a18b7715110400a392847ece0ac3b3a7afc9121a3d21f1
+sealedEvidence.digest   = sha256:34cd38c72be28c8d4529f868c864333c3bdc4ef12c9637f88928f279e800874a (20480 bytes)
+--- in-VM verifier shape
+RESULT: VERIFIED teeClass=amd.sev-snp witnessKey=key:tee:snp-gcp-20260928-witness-01 platformEvidence=sha256:6e2c497ef366794776a18b7715110400a392847ece0ac3b3a7afc9121a3d21f1 sealedEvidence=20480B
+RESULT: REJECTED InvalidSignature
+RESULT: REJECTED UnknownRootOfTrust
+RESULT: REJECTED UnsupportedTeeClass("amd.sev-snp-v1")
+RESULT: REJECTED ExpiredEvidence { not_after: SystemTime { tv_sec: 1790666688, tv_nsec: 0 }, now: SystemTime { tv_sec: 1798761600, tv_nsec: 0 } }
+--- synthetic report under snpguest (expect failure)
+Reported TCB Boot Loader from certificate matches the attestation report.
+Reported TCB TEE from certificate matches the attestation report.
+Reported TCB SNP from certificate matches the attestation report.
+Reported TCB Microcode from certificate matches the attestation report.
+ERROR: VEK did NOT sign the Attestation Report!
+Error: VEK did NOT sign the Attestation Report!
+SYNTHETIC_REJECTED rc=1
+Reported TCB Boot Loader from certificate matches the attestation report.
+Reported TCB TEE from certificate matches the attestation report.
+Reported TCB SNP from certificate matches the attestation report.
+Reported TCB Microcode from certificate matches the attestation report.
+VEK signed the Attestation Report!
+ERROR: Report Data did not match:
+ expected a32a1253babd1903824dad32c0007a7c70cda69d525c93f295064c618dea3fc457baf80a6d6057357101c8f15ade80bba4b8417fdbbb2a73a19e8bd4b24d5a64
+ got 65e5d8e5d1812b42fc28bfde72032049181f2a1087933752c650e5d5fc5ecc0cc40097d48757d2cd1637bf71f79d77f5df4f8e03b177c226f2397b3f8b735458
+Error: Report Data did not match:
+ expected a32a1253babd1903824dad32c0007a7c70cda69d525c93f295064c618dea3fc457baf80a6d6057357101c8f15ade80bba4b8417fdbbb2a73a19e8bd4b24d5a64
+ got 65e5d8e5d1812b42fc28bfde72032049181f2a1087933752c650e5d5fc5ecc0cc40097d48757d2cd1637bf71f79d77f5df4f8e03b177c226f2397b3f8b735458
+KEY_MISMATCH_REJECTED rc=1
+Error: receipt verification failed
+
+Caused by:
+    signature error
+RECEIPT_WRONG_KEY_REJECTED rc=1
+=== hashes
+26 SHA256SUMS
+Tue Sep 29 04:24:48 UTC 2026
+RUN_COMPLETE
