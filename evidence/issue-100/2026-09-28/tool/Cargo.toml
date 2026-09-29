@@ -1,0 +1,20 @@
+# Evidence-capture tool for issue #100. Not a workspace member and not a
+# published crate. It submits the dev-script statement to the local pinned
+# scitt-ccf-ledger, saves the bare receipt bytes, and records exactly what
+# pask-wire 0.1.0 (main 9ba85f1) says about that receipt. No verifier code
+# is changed or added here.
+[package]
+name = "ccf-interop-capture"
+version = "0.0.0"
+edition = "2024"
+publish = false
+license = "AGPL-3.0-only"
+
+[workspace]
+
+[dependencies]
+pask-ts-client = { path = "../../../../crates/pask-ts-client" }
+pask-wire = { path = "../../../../crates/pask-wire", default-features = false, features = ["alloc", "std"] }
+coset = { version = "0.4.2", default-features = false }
+ed25519-dalek = { version = "2.2.0", default-features = false }
+sha2 = { version = "0.10.9", default-features = false }
