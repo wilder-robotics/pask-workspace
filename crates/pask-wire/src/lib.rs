@@ -52,7 +52,7 @@ mod receipt;
 pub mod testvectors;
 
 #[cfg(feature = "alloc")]
-pub use canonical_example::{canonical_example, canonical_example_06};
+pub use canonical_example::{canonical_example, canonical_example_06, canonical_example_07};
 #[cfg(feature = "alloc")]
 pub use chain::{AffiliationChange, ChainReport, verify_chain};
 #[cfg(feature = "alloc")]

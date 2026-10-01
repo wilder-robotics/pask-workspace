@@ -1031,6 +1031,7 @@ dependencies = [
  "clap",
  "ed25519-dalek",
  "pask-wire",
+ "serde_json",
 ]
 
 [[package]]

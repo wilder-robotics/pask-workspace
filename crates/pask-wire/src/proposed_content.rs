@@ -156,14 +156,35 @@ fn header_hash(header: &ContentHeader<'_>, count: usize) -> Result<Hash, Content
     ]))
 }
 
-// Bound bytes and syntactic nesting before serde allocates the parsed tree.
-// This does not validate JSON syntax; the subsequent parser must consume all input.
+// Check an integer-form token by its original decimal digits, before serde can
+// represent an overflowing i64/u64 token as f64. This is not a JSON parser:
+// malformed number tokens are still rejected by the subsequent complete parse.
+fn integer_token_is_supported(token: &[u8]) -> bool {
+    const MAX_DIGITS: &[u8] = b"9007199254740991";
+    let digits = token.strip_prefix(b"-").unwrap_or(token);
+    if digits.is_empty()
+        || !digits.iter().all(u8::is_ascii_digit)
+        || (digits.len() > 1 && digits[0] == b'0')
+    {
+        // Fraction/exponent forms and invalid syntax are not integer tokens.
+        // They remain subject to the parser, finite-number and JCS checks.
+        return true;
+    }
+    digits.len() < MAX_DIGITS.len()
+        || (digits.len() == MAX_DIGITS.len() && digits <= MAX_DIGITS)
+}
+
+// Bound bytes, nesting and lexical integer magnitude before serde allocates the
+// parsed tree. Quoted digits are not number tokens. This does not validate JSON
+// syntax; the subsequent parser must consume all input. No bytes are rewritten.
 fn raw_preflight(bytes: &[u8]) -> Result<(), ContentError> {
     if bytes.len() > MAX_FACT_BYTES {
         return Err(ContentError::FactByteLimit);
     }
     let (mut depth, mut string, mut escaped) = (0usize, false, false);
-    for &b in bytes {
+    let mut offset = 0;
+    while offset < bytes.len() {
+        let b = bytes[offset];
         if string {
             if escaped {
                 escaped = false;
@@ -184,9 +205,22 @@ fn raw_preflight(bytes: &[u8]) -> Result<(), ContentError> {
                 b'}' | b']' => {
                     depth = depth.checked_sub(1).ok_or(ContentError::InvalidFactJson)?;
                 }
+                b'-' | b'0'..=b'9' => {
+                    let start = offset;
+                    while offset < bytes.len()
+                        && matches!(bytes[offset], b'0'..=b'9' | b'-' | b'+' | b'.' | b'e' | b'E')
+                    {
+                        offset += 1;
+                    }
+                    if !integer_token_is_supported(&bytes[start..offset]) {
+                        return Err(ContentError::UnsupportedNumber);
+                    }
+                    continue;
+                }
                 _ => {}
             }
         }
+        offset += 1;
     }
     Ok(())
 }
