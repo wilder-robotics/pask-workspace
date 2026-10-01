@@ -2892,7 +2892,8 @@ receipt's clock basis. Measured by a device, never typed.
   "value": {
     "maxLength": 32,
     "pattern":
-"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$",
+"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+,
     "type": "string"
   }
 }
@@ -3974,7 +3975,8 @@ produced it, or its accuracy.
         "maxLength": 32,
         "nullable": true,
         "pattern":
-"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$",
+"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+,
         "type": "string"
       },
       "referencePoint": {

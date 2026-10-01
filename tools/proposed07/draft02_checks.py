@@ -19,13 +19,23 @@ def require(ok, detail):
         raise ValueError(detail)
 
 
+VOCABULARY_SOURCE_COLUMNS = 69  # Pinned renderer adds three columns.
+
+
 def display_json(value):
     output = []
     for line in json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2).splitlines():
-        if len(line) > 72:
+        if len(line) > VOCABULARY_SOURCE_COLUMNS:
             key, sep, token = line.partition(': ')
-            require(bool(sep) and len(key + ':') <= 72 and len(token) <= 72, 'long unsplittable token')
-            output.extend([key + ':', token])
+            require(bool(sep) and len(key) < VOCABULARY_SOURCE_COLUMNS, 'long unsplittable key')
+            output.append(key + ':')
+            if len(token) > VOCABULARY_SOURCE_COLUMNS:
+                require(token.endswith(','), 'long unsplittable token')
+                value_token = token[:-1]
+                require(len(value_token) <= VOCABULARY_SOURCE_COLUMNS, 'long unsplittable token')
+                output.extend([value_token, ','])
+            else:
+                output.append(token)
         else:
             output.append(line)
     return '\n'.join(output)
@@ -100,6 +110,11 @@ def check(text):
     long_lines = [(ident, i+1, len(line)) for ident, _, body, _ in rows
                   for i, line in enumerate(body.splitlines()) if len(line) > 72]
     require(len(long_lines) == 8 and all(i[0] == 'payload-example' for i in long_lines), 'new long artwork')
+    nonpayload_overflow = [(ident, i + 1, len(line)) for ident, _, body, _ in rows
+                           if ident != 'payload-example'
+                           for i, line in enumerate(body.splitlines())
+                           if len(line) > VOCABULARY_SOURCE_COLUMNS]
+    require(not nonpayload_overflow, 'new artwork exceeds reserved renderer margin')
     anchors = re.findall(r'\{#([^}]+)\}|\{: #([^}]+)\}', text)
     anchors = [a or b for a,b in anchors]
     require(len(anchors) == len(set(anchors)), 'duplicate anchors')
@@ -108,7 +123,9 @@ def check(text):
     require(not unresolved, 'unresolved cross references ' + repr(unresolved))
     return {'blocks': len(rows), 'complete_rows': len(order), 'long_artwork_lines': len(long_lines),
             'new_example_jcs_sha256': hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
-            'draft_sha256': hashlib.sha256(text.encode()).hexdigest()}
+            'draft_sha256': hashlib.sha256(text.encode()).hexdigest(),
+            'nonpayload_source_columns': VOCABULARY_SOURCE_COLUMNS,
+            'reserved_renderer_margin': 3}
 
 
 def integer_oracle(token):

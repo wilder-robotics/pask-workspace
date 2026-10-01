@@ -170,8 +170,7 @@ fn integer_token_is_supported(token: &[u8]) -> bool {
         // They remain subject to the parser, finite-number and JCS checks.
         return true;
     }
-    digits.len() < MAX_DIGITS.len()
-        || (digits.len() == MAX_DIGITS.len() && digits <= MAX_DIGITS)
+    digits.len() < MAX_DIGITS.len() || (digits.len() == MAX_DIGITS.len() && digits <= MAX_DIGITS)
 }
 
 // Bound bytes, nesting and lexical integer magnitude before serde allocates the
@@ -208,7 +207,10 @@ fn raw_preflight(bytes: &[u8]) -> Result<(), ContentError> {
                 b'-' | b'0'..=b'9' => {
                     let start = offset;
                     while offset < bytes.len()
-                        && matches!(bytes[offset], b'0'..=b'9' | b'-' | b'+' | b'.' | b'e' | b'E')
+                        && matches!(
+                            bytes[offset],
+                            b'0'..=b'9' | b'-' | b'+' | b'.' | b'e' | b'E'
+                        )
                     {
                         offset += 1;
                     }

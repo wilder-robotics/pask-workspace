@@ -12,8 +12,8 @@ fn main() {
 
 #[cfg(feature = "alloc")]
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let example = pask_wire::canonical_example_07()
-        .map_err(|error| io::Error::other(error.to_string()))?;
+    let example =
+        pask_wire::canonical_example_07().map_err(|error| io::Error::other(error.to_string()))?;
     let mut stdout = io::stdout().lock();
     stdout.write_all(example.as_bytes())?;
     stdout.write_all(b"\n")?;

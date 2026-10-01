@@ -5,14 +5,13 @@
 #![cfg(feature = "alloc")]
 
 use pask_wire::proposed_content::{
-    CONSTRUCTION, ContentError, ContentHeader, DisclosedFact, SCOPE, SaltedFact,
-    prepare_content, verify_content_disclosures,
+    CONSTRUCTION, ContentError, ContentHeader, DisclosedFact, SCOPE, SaltedFact, prepare_content,
+    verify_content_disclosures,
 };
 use serde_json::json;
 use sha2::{Digest, Sha256};
 
-const VOCAB: &str =
-    "sha256:030cd709841fc057ba76f2568d44401b36d8ce823369756e11e2989309d4468d";
+const VOCAB: &str = "sha256:030cd709841fc057ba76f2568d44401b36d8ce823369756e11e2989309d4468d";
 
 fn header() -> ContentHeader<'static> {
     ContentHeader {
@@ -30,7 +29,14 @@ fn raw_fact(value: &str) -> Vec<u8> {
 }
 
 fn rejection(record: &[u8]) -> Option<ContentError> {
-    prepare_content(&header(), &[SaltedFact { record, salt: [1; 32] }]).err()
+    prepare_content(
+        &header(),
+        &[SaltedFact {
+            record,
+            salt: [1; 32],
+        }],
+    )
+    .err()
 }
 
 #[test]
@@ -51,11 +57,16 @@ fn safe_integer_endpoints_and_zero_are_supported() {
 #[test]
 fn adjacent_and_parser_overflow_integer_tokens_are_unsupported() {
     for value in [
-        "9007199254740992", "-9007199254740992",
-        "9223372036854775807", "9223372036854775808",
-        "-9223372036854775808", "-9223372036854775809",
-        "18446744073709551615", "18446744073709551616",
-        "100000000000000000000", "-100000000000000000000",
+        "9007199254740992",
+        "-9007199254740992",
+        "9223372036854775807",
+        "9223372036854775808",
+        "-9223372036854775808",
+        "-9223372036854775809",
+        "18446744073709551615",
+        "18446744073709551616",
+        "100000000000000000000",
+        "-100000000000000000000",
     ] {
         assert_eq!(
             rejection(&raw_fact(value)),
@@ -69,7 +80,10 @@ fn adjacent_and_parser_overflow_integer_tokens_are_unsupported() {
 fn very_long_integer_tokens_use_the_same_bounded_rejection() {
     for sign in ["", "-"] {
         let value = format!("{sign}{}", "9".repeat(4096));
-        assert_eq!(rejection(&raw_fact(&value)), Some(ContentError::UnsupportedNumber));
+        assert_eq!(
+            rejection(&raw_fact(&value)),
+            Some(ContentError::UnsupportedNumber)
+        );
     }
 }
 
@@ -79,7 +93,10 @@ fn nested_arrays_and_extra_fields_do_not_bypass_the_bound() {
         "[0,100000000000000000000]",
         r#"{"a":[{"b":-100000000000000000000}]}"#,
     ] {
-        assert_eq!(rejection(&raw_fact(value)), Some(ContentError::UnsupportedNumber));
+        assert_eq!(
+            rejection(&raw_fact(value)),
+            Some(ContentError::UnsupportedNumber)
+        );
     }
     let extra = br#"{"assertedBy":"site-policy","basis":"declared","extra":100000000000000000000,"name":"sample.fact","value":0}"#;
     assert_eq!(rejection(extra), Some(ContentError::UnsupportedNumber));
@@ -124,7 +141,9 @@ fn noncanonical_forms_still_do_not_become_passing_facts() {
 
 #[test]
 fn malformed_numbers_are_not_accepted_by_the_preflight() {
-    for value in ["-", "+1", "01", "-01", "1e", "1e+", "1.", "1..0", "--1", "NaN", "Infinity"] {
+    for value in [
+        "-", "+1", "01", "-01", "1e", "1e+", "1.", "1..0", "--1", "NaN", "Infinity",
+    ] {
         assert!(rejection(&raw_fact(value)).is_some(), "{value}");
     }
 }
@@ -142,16 +161,29 @@ fn correctly_computed_hostile_root_cannot_bypass_fact_number_check() {
     let record = raw_fact("100000000000000000000");
     let vocabulary = hex::decode(&VOCAB[7..]).unwrap();
     let hh = h(&[
-        &[0], &1u64.to_be_bytes(), &(CONSTRUCTION.len() as u64).to_be_bytes(),
-        CONSTRUCTION.as_bytes(), &(SCOPE.len() as u64).to_be_bytes(),
-        SCOPE.as_bytes(), &vocabulary,
+        &[0],
+        &1u64.to_be_bytes(),
+        &(CONSTRUCTION.len() as u64).to_be_bytes(),
+        CONSTRUCTION.as_bytes(),
+        &(SCOPE.len() as u64).to_be_bytes(),
+        SCOPE.as_bytes(),
+        &vocabulary,
     ]);
     let leaf = h(&[
-        &[1], &hh, &0u64.to_be_bytes(), &[1; 32],
-        &(record.len() as u64).to_be_bytes(), &record,
+        &[1],
+        &hh,
+        &0u64.to_be_bytes(),
+        &[1; 32],
+        &(record.len() as u64).to_be_bytes(),
+        &record,
     ]);
     let root = format!("sha256:{}", hex::encode(h(&[&[4], &hh, &leaf])));
-    let disclosure = DisclosedFact { record: &record, salt: [1; 32], index: 0, siblings: vec![] };
+    let disclosure = DisclosedFact {
+        record: &record,
+        salt: [1; 32],
+        index: 0,
+        siblings: vec![],
+    };
     assert_eq!(
         verify_content_disclosures(&root, &header(), 1, &[disclosure]).err(),
         Some(ContentError::UnsupportedNumber)
@@ -161,6 +193,9 @@ fn correctly_computed_hostile_root_cannot_bypass_fact_number_check() {
 #[test]
 fn raw_evidence_comparator_source_is_not_used_to_normalize_facts() {
     // -0 is a raw-evidence integer-equivalence case, not canonical fact bytes.
-    assert_eq!(rejection(&raw_fact("-0")), Some(ContentError::NonCanonicalFact));
+    assert_eq!(
+        rejection(&raw_fact("-0")),
+        Some(ContentError::NonCanonicalFact)
+    );
     assert_eq!(rejection(&raw_fact("0")), None);
 }
