@@ -1,0 +1,771 @@
+{
+  "schema": "pask-local-recipient-fixtures/1",
+  "construction": "pask-local-content-tree/1",
+  "scope": "PRESENTED_AT_SEAL",
+  "vocabulary_digest": "sha256:030cd709841fc057ba76f2568d44401b36d8ce823369756e11e2989309d4468d",
+  "note": "Expected projections for native composition tests. Public synthetic facts/salts; no real-world or service assurance.",
+  "cases": [
+    {
+      "id": "same-bytes-same-value",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:6945a0d6b05a326d3aa0dca0e896047910b4797d7e0d8f1829135b2351c8706a",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65633230313764353439366162636166626339393630316236633233343835386661336661343739666363663634613338323330343064646637346532636665227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "7e6798bd275879558393c1a918cb7cd743436b72912e45b74df503d475f09f76",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe",
+          "state": "bytes",
+          "bytes_hex": "22416c70686122"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "EVIDENCE_LINKED",
+        "integrity": "MATCHED",
+        "comparison": "MATCH",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "same-bytes-contradictory-value",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:41db803c8118f34ec0172334e787dadb938fef58ddcdcc14296d532bb6f30127",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:45dcef5400c6fdc5c19dcaf29496b5f4f483e374206036ac489a2cdaaf2f4312"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a34356463656635343030633666646335633139646361663239343936623566346634383365333734323036303336616334383961326364616166326634333132227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "009427d9bc6f83fef2ec3cda0049edbabde680dcc2ace9e0d9e746a3966e7175",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:45dcef5400c6fdc5c19dcaf29496b5f4f483e374206036ac489a2cdaaf2f4312",
+          "state": "bytes",
+          "bytes_hex": "224265746122"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "EVIDENCE_LINKED",
+        "integrity": "MATCHED",
+        "comparison": "CONTRADICTION",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 1
+      }
+    },
+    {
+      "id": "different-bytes-equal-value",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:e3837821739e5b8403aae0a69862ad943896cd77c76c4c5cfee217dd22066d10",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:469487be9b6becd08fdd8c057c221611258a4fab86708174d9b09e8749a30c43"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a34363934383762653962366265636430386664643863303537633232313631313235386134666162383637303831373464396230396538373439613330633433227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "b072cef39576649075bf035376e87d1ff9cbbde60ddfc759b61c69009fbd57d8",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:469487be9b6becd08fdd8c057c221611258a4fab86708174d9b09e8749a30c43",
+          "state": "bytes",
+          "bytes_hex": "22416c70686122"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": null,
+        "integrity": "MISMATCH",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "not-presented",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:6945a0d6b05a326d3aa0dca0e896047910b4797d7e0d8f1829135b2351c8706a",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65633230313764353439366162636166626339393630316236633233343835386661336661343739666363663634613338323330343064646637346532636665227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "7e6798bd275879558393c1a918cb7cd743436b72912e45b74df503d475f09f76",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "ATTRIBUTION_ONLY",
+        "integrity": "BYTES_UNAVAILABLE",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "not-requested",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:6945a0d6b05a326d3aa0dca0e896047910b4797d7e0d8f1829135b2351c8706a",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65633230313764353439366162636166626339393630316236633233343835386661336661343739666363663634613338323330343064646637346532636665227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "7e6798bd275879558393c1a918cb7cd743436b72912e45b74df503d475f09f76",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe",
+          "state": "not_requested",
+          "bytes_hex": "22416c70686122"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "ATTRIBUTION_ONLY",
+        "integrity": "NOT_REQUESTED",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "unavailable",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:6945a0d6b05a326d3aa0dca0e896047910b4797d7e0d8f1829135b2351c8706a",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65633230313764353439366162636166626339393630316236633233343835386661336661343739666363663634613338323330343064646637346532636665227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "7e6798bd275879558393c1a918cb7cd743436b72912e45b74df503d475f09f76",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe",
+          "state": "unavailable",
+          "bytes_hex": "22416c70686122"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "ATTRIBUTION_ONLY",
+        "integrity": "BYTES_UNAVAILABLE",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "no-reference",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:70e1502acd36ed6c8283f9d93f9095242de013e7bdecf09ebd3ac728f4012bef",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha"
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "168f6b9e60355fb31f4a68b42e9ec86a6eb5660c8207adf4896b328b2f361e2d",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "ATTRIBUTION_ONLY",
+        "integrity": "NO_REFERENCE",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "pointer-only",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:ceed5f725c0b6675d6687e48f6e9131eab0932014a998a60c07feada46aedc19",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "pointer": "opaque:local-locator"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22706f696e746572223a226f70617175653a6c6f63616c2d6c6f6361746f72227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "477709832a4b9700c8afab0f52ab9575e10019448d1cb33b92dcc90b2ccda362",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "ATTRIBUTION_ONLY",
+        "integrity": "DIGEST_BINDING_UNAVAILABLE",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "empty-presented-object",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:9dbc35cab4c761ef2a1f28b9ee6608b486c5c4e9d030aa479ee4507bcb5586a6",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65336230633434323938666331633134396166626634633839393666623932343237616534316534363439623933346361343935393931623738353262383535227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "6e7489f383bf218bc337ee4681754858242fc3585cf612a517bf2b9c17c841af",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "state": "bytes",
+          "bytes_hex": ""
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "EVIDENCE_LINKED",
+        "integrity": "MATCHED",
+        "comparison": "NOT_COMPARABLE",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "compound-is-not-a-scalar",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:c139b61e550aba5fe8eb10e9a1c3c522043a5b6decb6db83589ab7097ddbe6e7",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:11ddeee1e2f272bf3b5919c87fc33d80cfe93849cdeffc7710bf85f61fffe4d4"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a31316464656565316532663237326266336235393139633837666333336438306366653933383439636465666663373731306266383566363166666665346434227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "6a99b1fe89eccae9e269f1d2ba8f8cce23a6f2498189c547ffd058a7a47c1bf5",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:11ddeee1e2f272bf3b5919c87fc33d80cfe93849cdeffc7710bf85f61fffe4d4",
+          "state": "bytes",
+          "bytes_hex": "7b2276616c7565223a22416c706861227d"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "EVIDENCE_LINKED",
+        "integrity": "MATCHED",
+        "comparison": "NOT_COMPARABLE",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "scalar-type-mismatch",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:704cb7d862a84d6f69ed9ee6a5418c71869a4e463b2020994e3478730106b45c",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a36623836623237336666333466636531396436623830346566663561336635373437616461346561613232663164343963303165353264646237383735623462227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "2f60df9d560f1bcd647dc98b8f11767a2e8123c4ac78078b0164a5cbb53c37c6",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+          "state": "bytes",
+          "bytes_hex": "31"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "EVIDENCE_LINKED",
+        "integrity": "MATCHED",
+        "comparison": "NOT_COMPARABLE",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "malformed-unit",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:de5bebe49000c3614a0dca90f24c5a9829f997282eaea4b9443cb5b4e571c7e9",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": "Alpha",
+              "evidence": {
+                "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe"
+              },
+              "unit": 42
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65633230313764353439366162636166626339393630316236633233343835386661336661343739666363663634613338323330343064646637346532636665227d2c226e616d65223a22756e69742e6d6f64656c222c22756e6974223a34322c2276616c7565223a22416c706861227d",
+            "index": 0,
+            "leaf_hex": "2663b2dbd0822fa824465827ffd7e63829f8a59f31af1e89175199c20e57232a",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:ec2017d5496abcafbc99601b6c234858fa3fa479fccf64a3823040ddf74e2cfe",
+          "state": "bytes",
+          "bytes_hex": "22416c70686122"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": null,
+        "integrity": "MATCHED",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 1,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "malformed-value",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:f7b506a7d5a183289f769903ea27652b54bb019d59fcf6c60c70e360bb78cb4d",
+        "facts": [
+          {
+            "fact": {
+              "name": "unit.model",
+              "assertedBy": "site-policy",
+              "basis": "declared",
+              "value": true,
+              "evidence": {
+                "digest": "sha256:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a62356265613431623663363233663763303966316266323464636165353865626162336330636464393061643936366263343361343562343438363765313262227d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a747275657d",
+            "index": 0,
+            "leaf_hex": "85ffc2402841ccc084ce1be46245afdbaeea75df3c7c9a5fd8d20bf8c51ee359",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+          "state": "bytes",
+          "bytes_hex": "74727565"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": null,
+        "integrity": "MATCHED",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 1,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "forbidden-but-linked",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:7057d921867217ce3e4905e8acd6c46c542bd5fe848a7ed4fcd2fca47f79c18a",
+        "facts": [
+          {
+            "fact": {
+              "name": "limits.rated-force",
+              "assertedBy": "robot-attributed",
+              "basis": "measured",
+              "value": 50,
+              "evidence": {
+                "digest": "sha256:1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a22726f626f742d61747472696275746564222c226261736973223a226d65617375726564222c2265766964656e6365223a7b22646967657374223a227368613235363a31613635363235393065663139643130343564303663343035353734326433383238386539653664636437316363646535636565383066316435613737346562227d2c226e616d65223a226c696d6974732e72617465642d666f726365222c2276616c7565223a35307d",
+            "index": 0,
+            "leaf_hex": "388b0d7bbd07bf077e0b3bb10e3b791db2e204b3791bb59e6274dd7691214251",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb",
+          "state": "bytes",
+          "bytes_hex": "3530"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "ATTRIBUTION_FORBIDDEN",
+        "integrity": "MATCHED",
+        "comparison": "NOT_COMPARABLE",
+        "invalid_metadata": 0,
+        "forbidden": 1,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "implicit-unit-not-unitless",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:735972a54a5b049a3a5a027f09e1fec135b13c9345e7b08bec801c0205f52905",
+        "facts": [
+          {
+            "fact": {
+              "name": "limits.rated-force",
+              "assertedBy": "manufacturer-declared",
+              "basis": "declared",
+              "value": 50,
+              "evidence": {
+                "digest": "sha256:1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a226d616e7566616374757265722d6465636c61726564222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a31613635363235393065663139643130343564303663343035353734326433383238386539653664636437316363646535636565383066316435613737346562227d2c226e616d65223a226c696d6974732e72617465642d666f726365222c2276616c7565223a35307d",
+            "index": 0,
+            "leaf_hex": "40112175946a2775e4a730257fa7a428d4657848eae1c60a2119c385d65535b4",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb",
+          "state": "bytes",
+          "bytes_hex": "3530"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "EVIDENCE_LINKED",
+        "integrity": "MATCHED",
+        "comparison": "NOT_COMPARABLE",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "negative-zero-is-zero",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:997c3507c485c7a530cc0c4da1894ebfcd096cb34bdd27fae18889d3be6c5d6f",
+        "facts": [
+          {
+            "fact": {
+              "name": "outcome.severity-grade",
+              "assertedBy": "operator-entered",
+              "basis": "declared",
+              "value": 0,
+              "evidence": {
+                "digest": "sha256:ed79f26d03f412bde3db206601a698e0bb451bea9e3cc25289636ac17ea74b0a"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65643739663236643033663431326264653364623230363630316136393865306262343531626561396533636332353238393633366163313765613734623061227d2c226e616d65223a226f7574636f6d652e73657665726974792d6772616465222c2276616c7565223a307d",
+            "index": 0,
+            "leaf_hex": "6277fb46fb44f0eafc9930dd1daaed45d9419eceb3e3715f69c49ca466e66943",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:ed79f26d03f412bde3db206601a698e0bb451bea9e3cc25289636ac17ea74b0a",
+          "state": "bytes",
+          "bytes_hex": "2d30"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": "EVIDENCE_LINKED",
+        "integrity": "MATCHED",
+        "comparison": "MATCH",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    },
+    {
+      "id": "negative-zero-wrong-raw-bytes",
+      "material": {
+        "count": 1,
+        "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+        "root_digest": "sha256:997c3507c485c7a530cc0c4da1894ebfcd096cb34bdd27fae18889d3be6c5d6f",
+        "facts": [
+          {
+            "fact": {
+              "name": "outcome.severity-grade",
+              "assertedBy": "operator-entered",
+              "basis": "declared",
+              "value": 0,
+              "evidence": {
+                "digest": "sha256:ed79f26d03f412bde3db206601a698e0bb451bea9e3cc25289636ac17ea74b0a"
+              }
+            },
+            "salt_hex": "5151515151515151515151515151515151515151515151515151515151515151",
+            "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a65643739663236643033663431326264653364623230363630316136393865306262343531626561396533636332353238393633366163313765613734623061227d2c226e616d65223a226f7574636f6d652e73657665726974792d6772616465222c2276616c7565223a307d",
+            "index": 0,
+            "leaf_hex": "6277fb46fb44f0eafc9930dd1daaed45d9419eceb3e3715f69c49ca466e66943",
+            "proof_hex": []
+          }
+        ]
+      },
+      "objects": [
+        {
+          "digest": "sha256:ed79f26d03f412bde3db206601a698e0bb451bea9e3cc25289636ac17ea74b0a",
+          "state": "bytes",
+          "bytes_hex": "30"
+        }
+      ],
+      "expected": {
+        "state": "ALL_COMMITTED_SLOTS",
+        "statement": "passed",
+        "membership": "passed",
+        "binding": "passed",
+        "vocabulary": "passed",
+        "provenance": null,
+        "integrity": "MISMATCH",
+        "comparison": "NOT_RUN",
+        "invalid_metadata": 0,
+        "forbidden": 0,
+        "contradictions": 0
+      }
+    }
+  ]
+}

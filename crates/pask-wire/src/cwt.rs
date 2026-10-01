@@ -19,7 +19,7 @@ pub(crate) struct CwtClaims {
 }
 
 impl CwtClaims {
-    pub(crate) fn to_value(&self) -> Value {
+    pub(crate) fn to_value(&self, text_subject: bool) -> Value {
         Value::Map(vec![
             (
                 Value::Integer(ISS_LABEL.into()),
@@ -27,12 +27,16 @@ impl CwtClaims {
             ),
             (
                 Value::Integer(SUB_LABEL.into()),
-                Value::Bytes(self.subject.clone()),
+                if text_subject {
+                    Value::Text(String::from_utf8(self.subject.clone()).expect("site.id is UTF-8"))
+                } else {
+                    Value::Bytes(self.subject.clone())
+                },
             ),
         ])
     }
 
-    pub(crate) fn from_value(value: &Value) -> Result<Self> {
+    pub(crate) fn from_value(value: &Value, text_subject: bool) -> Result<Self> {
         let Value::Map(entries) = value else {
             return Err(Error::Header("CWT_Claims must be a CBOR map"));
         };
@@ -47,10 +51,12 @@ impl CwtClaims {
                     issuer = Some(value.clone());
                 }
                 Value::Integer(integer) if i128::from(*integer) == i128::from(SUB_LABEL) => {
-                    let Value::Bytes(value) = claim else {
-                        return Err(Error::Header("CWT sub must be bytes"));
-                    };
-                    subject = Some(value.clone());
+                    subject = Some(match (text_subject, claim) {
+                        (true, Value::Text(value)) => value.as_bytes().to_vec(),
+                        (false, Value::Bytes(value)) => value.clone(),
+                        (true, _) => return Err(Error::Header("0.7 CWT sub must be text")),
+                        (false, _) => return Err(Error::Header("CWT sub must be bytes")),
+                    });
                 }
                 _ => {}
             }

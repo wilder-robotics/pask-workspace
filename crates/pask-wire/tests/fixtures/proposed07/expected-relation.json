@@ -1,0 +1,5798 @@
+[
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.model",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.model",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.model",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.model",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.model",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.model",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.model",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.model",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.model",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.model",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.model",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.model",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.model",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.model",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.model",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.model",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.model",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.model",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.model",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.model",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.model",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.pseudonym",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.pseudonym",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.pseudonym",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.pseudonym",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.pseudonym",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.pseudonym",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.pseudonym",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.pseudonym",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.pseudonym",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.pseudonym",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.pseudonym",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.pseudonym",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.pseudonym",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.pseudonym",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.pseudonym",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.pseudonym",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.pseudonym",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.pseudonym",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.pseudonym",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.pseudonym",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.pseudonym",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.deployment-status",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.deployment-status",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.deployment-status",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.deployment-status",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.deployment-status",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.deployment-status",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.deployment-status",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.deployment-status",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.deployment-status",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.deployment-status",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.deployment-status",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.deployment-status",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.deployment-status",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.deployment-status",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.deployment-status",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.deployment-status",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.deployment-status",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.deployment-status",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.deployment-status",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.deployment-status",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.deployment-status",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.software-build",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.software-build",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.software-build",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "unit.software-build",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.software-build",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.software-build",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.software-build",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.software-build",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.software-build",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.software-build",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.software-build",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.software-build",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.software-build",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.software-build",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.software-build",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.software-build",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.software-build",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.software-build",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.software-build",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.software-build",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.software-build",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.safety-parameter-digest",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.safety-parameter-digest",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.safety-parameter-digest",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "unit.safety-parameter-digest",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.safety-parameter-digest",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.safety-parameter-digest",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.safety-parameter-digest",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.safety-parameter-digest",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.safety-parameter-digest",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.safety-parameter-digest",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.safety-parameter-digest",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.safety-parameter-digest",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.safety-parameter-digest",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.safety-parameter-digest",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.safety-parameter-digest",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.safety-parameter-digest",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.safety-parameter-digest",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.safety-parameter-digest",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.safety-parameter-digest",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.safety-parameter-digest",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.safety-parameter-digest",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.category",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.category",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.category",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.category",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.category",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.category",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.category",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.category",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.category",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.category",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.category",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.category",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.category",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.category",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.category",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.category",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.category",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.category",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.category",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.category",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.category",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-force",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-force",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-force",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-force",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-force",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "limits.rated-force",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-force",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-force",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-force",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-force",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-force",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-force",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-force",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-force",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-force",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-force",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-force",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "limits.rated-force",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-force",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-force",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-force",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-speed",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-speed",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-speed",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-speed",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-speed",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "limits.rated-speed",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-speed",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-speed",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-speed",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-speed",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-speed",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-speed",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-speed",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-speed",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-speed",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-speed",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-speed",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "limits.rated-speed",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "limits.rated-speed",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "limits.rated-speed",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "limits.rated-speed",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.mass-centre-height",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.mass-centre-height",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.mass-centre-height",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.mass-centre-height",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "unit.mass-centre-height",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.mass-centre-height",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.mass-centre-height",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.mass-centre-height",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.mass-centre-height",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.mass-centre-height",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.mass-centre-height",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.mass-centre-height",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.mass-centre-height",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.mass-centre-height",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.mass-centre-height",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.mass-centre-height",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.mass-centre-height",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.mass-centre-height",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.mass-centre-height",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.mass-centre-height",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.mass-centre-height",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "unit.total-mass",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.total-mass",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.total-mass",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.total-mass",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.total-mass",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.total-mass",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.total-mass",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.total-mass",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.total-mass",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.total-mass",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.total-mass",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.total-mass",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.total-mass",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.total-mass",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.total-mass",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.total-mass",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.total-mass",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.total-mass",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.total-mass",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.total-mass",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.total-mass",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.channel-rates",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.channel-rates",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.channel-rates",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.channel-rates",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.channel-rates",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.channel-rates",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.channel-rates",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.channel-rates",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.channel-rates",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.channel-rates",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.channel-rates",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.channel-rates",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.channel-rates",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.channel-rates",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.channel-rates",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.channel-rates",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.channel-rates",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "unit.channel-rates",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "unit.channel-rates",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "unit.channel-rates",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "unit.channel-rates",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "mode.control",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "mode.control",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "mode.control",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "mode.control",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "mode.control",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control-handover-preceding",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control-handover-preceding",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control-handover-preceding",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "mode.control-handover-preceding",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control-handover-preceding",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "mode.control-handover-preceding",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control-handover-preceding",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control-handover-preceding",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control-handover-preceding",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "mode.control-handover-preceding",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control-handover-preceding",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "mode.control-handover-preceding",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control-handover-preceding",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control-handover-preceding",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control-handover-preceding",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control-handover-preceding",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control-handover-preceding",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control-handover-preceding",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "mode.control-handover-preceding",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "mode.control-handover-preceding",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "mode.control-handover-preceding",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "scene.event-instant",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.event-instant",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.event-instant",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "scene.event-instant",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.event-instant",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.event-instant",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.event-instant",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.event-instant",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.event-instant",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "scene.event-instant",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.event-instant",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.event-instant",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.event-instant",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.event-instant",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.event-instant",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.event-instant",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.event-instant",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.event-instant",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.event-instant",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.event-instant",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.event-instant",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.setting",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.setting",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.setting",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.setting",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.setting",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.setting",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.setting",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.setting",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.setting",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.setting",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.setting",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.setting",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.setting",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.setting",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.setting",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.setting",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.setting",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.setting",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.setting",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.setting",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.setting",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.collaboration-regime",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.collaboration-regime",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.collaboration-regime",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "scene.collaboration-regime",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.collaboration-regime",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.collaboration-regime",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.collaboration-regime",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.collaboration-regime",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.collaboration-regime",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.collaboration-regime",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.collaboration-regime",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.collaboration-regime",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.collaboration-regime",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.collaboration-regime",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.collaboration-regime",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.collaboration-regime",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.collaboration-regime",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.collaboration-regime",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.collaboration-regime",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.collaboration-regime",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.collaboration-regime",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "scene.persons-in-zone",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "scene.persons-in-zone",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.persons-in-zone",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "scene.persons-in-zone",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "scene.persons-in-zone",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.persons-in-zone",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.persons-in-zone",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "scene.persons-in-zone",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.persons-in-zone",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.persons-in-zone",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.persons-in-zone",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.persons-in-zone",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.persons-in-zone",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.persons-in-zone",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.persons-in-zone",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.persons-in-zone",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.persons-in-zone",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.persons-in-zone",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.persons-in-zone",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.persons-in-zone",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.persons-in-zone",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.attendant-present",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.attendant-present",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.attendant-present",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.attendant-present",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.attendant-present",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.attendant-present",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.attendant-present",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.attendant-present",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.attendant-present",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "scene.attendant-present",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.attendant-present",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.attendant-present",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.attendant-present",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.attendant-present",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.attendant-present",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.attendant-present",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.attendant-present",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.attendant-present",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.attendant-present",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.attendant-present",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.attendant-present",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.surface-state",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "scene.surface-state",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.surface-state",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.surface-state",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.surface-state",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.surface-state",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.surface-state",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "scene.surface-state",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.surface-state",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.surface-state",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.surface-state",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.surface-state",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.surface-state",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.surface-state",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "scene.surface-state",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.surface-state",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.surface-state",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.surface-state",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "scene.surface-state",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "scene.surface-state",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "scene.surface-state",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.kind",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.kind",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.kind",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.kind",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.kind",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.kind",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.kind",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.kind",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.kind",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.kind",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.kind",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.kind",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.kind",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.kind",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.kind",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.kind",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.kind",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.kind",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.kind",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.kind",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.kind",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.trigger",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.trigger",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trigger",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.trigger",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.trigger",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.trigger",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trigger",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.trigger",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.trigger",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.trigger",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trigger",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.trigger",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trigger",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trigger",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.trigger",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trigger",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trigger",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.trigger",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trigger",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "event.trigger",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.trigger",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.trace-window",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trace-window",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trace-window",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.trace-window",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trace-window",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trace-window",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trace-window",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trace-window",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trace-window",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trace-window",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trace-window",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trace-window",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trace-window",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trace-window",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trace-window",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trace-window",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trace-window",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trace-window",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.trace-window",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.trace-window",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.trace-window",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.scene-capture",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.scene-capture",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.scene-capture",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.scene-capture",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.scene-capture",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.scene-capture",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.scene-capture",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.scene-capture",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.scene-capture",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.scene-capture",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.scene-capture",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.scene-capture",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.scene-capture",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.scene-capture",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.scene-capture",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.scene-capture",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.scene-capture",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.scene-capture",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.scene-capture",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.scene-capture",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.scene-capture",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.shift-trace",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.shift-trace",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.shift-trace",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.shift-trace",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.shift-trace",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.shift-trace",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.shift-trace",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.shift-trace",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.shift-trace",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.shift-trace",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.shift-trace",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.shift-trace",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.shift-trace",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.shift-trace",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.shift-trace",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.shift-trace",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.shift-trace",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.shift-trace",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.shift-trace",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.shift-trace",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.shift-trace",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.override-attempt",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.override-attempt",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.override-attempt",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.override-attempt",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.override-attempt",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.override-attempt",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.override-attempt",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.override-attempt",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.override-attempt",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.override-attempt",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.override-attempt",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.override-attempt",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.override-attempt",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.override-attempt",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.override-attempt",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.override-attempt",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.override-attempt",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.override-attempt",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.override-attempt",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.override-attempt",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.override-attempt",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.software-update-preceding",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.software-update-preceding",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.software-update-preceding",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "event.software-update-preceding",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.software-update-preceding",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.software-update-preceding",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.software-update-preceding",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.software-update-preceding",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.software-update-preceding",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.software-update-preceding",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.software-update-preceding",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.software-update-preceding",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.software-update-preceding",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.software-update-preceding",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.software-update-preceding",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.software-update-preceding",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.software-update-preceding",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "event.software-update-preceding",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "event.software-update-preceding",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "event.software-update-preceding",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "event.software-update-preceding",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.recovery-engaged",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.recovery-engaged",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.recovery-engaged",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "stability.recovery-engaged",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.recovery-engaged",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.recovery-engaged",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.recovery-engaged",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.recovery-engaged",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.recovery-engaged",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.recovery-engaged",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.recovery-engaged",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.recovery-engaged",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.recovery-engaged",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.recovery-engaged",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.recovery-engaged",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.recovery-engaged",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.recovery-engaged",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.recovery-engaged",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.recovery-engaged",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.recovery-engaged",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.recovery-engaged",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.margin-min",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.margin-min",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.margin-min",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "stability.margin-min",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "stability.margin-min",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.margin-min",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.margin-min",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.margin-min",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.margin-min",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.margin-min",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.margin-min",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.margin-min",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.margin-min",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.margin-min",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.margin-min",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.margin-min",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.margin-min",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.margin-min",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.margin-min",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.margin-min",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.margin-min",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-mass",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-mass",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-mass",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "stability.carried-mass",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "stability.carried-mass",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "stability.carried-mass",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-mass",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "stability.carried-mass",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "stability.carried-mass",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-mass",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-mass",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-mass",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-mass",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-mass",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "stability.carried-mass",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-mass",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-mass",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-mass",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-mass",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-mass",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-mass",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-speed-bound",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-speed-bound",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-speed-bound",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "stability.carried-speed-bound",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-speed-bound",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "stability.carried-speed-bound",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-speed-bound",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-speed-bound",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-speed-bound",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-speed-bound",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-speed-bound",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-speed-bound",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-speed-bound",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-speed-bound",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "stability.carried-speed-bound",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-speed-bound",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-speed-bound",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-speed-bound",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "stability.carried-speed-bound",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "stability.carried-speed-bound",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "stability.carried-speed-bound",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.session-minutes",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.session-minutes",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.session-minutes",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.session-minutes",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.session-minutes",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.session-minutes",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.session-minutes",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.session-minutes",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.session-minutes",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "crew.session-minutes",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.session-minutes",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.session-minutes",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.session-minutes",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.session-minutes",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.session-minutes",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.session-minutes",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.session-minutes",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.session-minutes",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.session-minutes",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.session-minutes",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.session-minutes",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.supervision-ratio",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.supervision-ratio",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.supervision-ratio",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.supervision-ratio",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.supervision-ratio",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.supervision-ratio",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.supervision-ratio",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.supervision-ratio",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.supervision-ratio",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "crew.supervision-ratio",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.supervision-ratio",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "crew.supervision-ratio",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.supervision-ratio",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.supervision-ratio",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "crew.supervision-ratio",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.supervision-ratio",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.supervision-ratio",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.supervision-ratio",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.supervision-ratio",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.supervision-ratio",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.supervision-ratio",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.certification-tier",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.certification-tier",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.certification-tier",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.certification-tier",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.certification-tier",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.certification-tier",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.certification-tier",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.certification-tier",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.certification-tier",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.certification-tier",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.certification-tier",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "crew.certification-tier",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.certification-tier",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.certification-tier",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "crew.certification-tier",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.certification-tier",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.certification-tier",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.certification-tier",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.certification-tier",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.certification-tier",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.certification-tier",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.platform",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.platform",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.platform",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.platform",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.platform",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.platform",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.platform",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.platform",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.platform",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.platform",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.platform",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "crew.platform",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.platform",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.platform",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "crew.platform",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.platform",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.platform",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.platform",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.platform",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.platform",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.platform",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.operator-pseudonym",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.operator-pseudonym",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.operator-pseudonym",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.operator-pseudonym",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.operator-pseudonym",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.operator-pseudonym",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.operator-pseudonym",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.operator-pseudonym",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.operator-pseudonym",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.operator-pseudonym",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.operator-pseudonym",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "crew.operator-pseudonym",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.operator-pseudonym",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.operator-pseudonym",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.operator-pseudonym",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.operator-pseudonym",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.operator-pseudonym",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.operator-pseudonym",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "crew.operator-pseudonym",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "crew.operator-pseudonym",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "crew.operator-pseudonym",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-mean",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-mean",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-mean",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.rtt-mean",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-mean",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-mean",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-mean",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-mean",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-mean",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.rtt-mean",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-mean",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-mean",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-mean",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-mean",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-mean",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-mean",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-mean",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-mean",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-mean",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-mean",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-mean",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-p95",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-p95",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-p95",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.rtt-p95",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-p95",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-p95",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-p95",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-p95",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-p95",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.rtt-p95",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-p95",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-p95",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-p95",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-p95",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-p95",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-p95",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-p95",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-p95",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-p95",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-p95",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-p95",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-jitter",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-jitter",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-jitter",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.rtt-jitter",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-jitter",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-jitter",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-jitter",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-jitter",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-jitter",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.rtt-jitter",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-jitter",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-jitter",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-jitter",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-jitter",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-jitter",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-jitter",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-jitter",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-jitter",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.rtt-jitter",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.rtt-jitter",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.rtt-jitter",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.loss-ratio",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.loss-ratio",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.loss-ratio",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.loss-ratio",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.loss-ratio",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.loss-ratio",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.loss-ratio",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.loss-ratio",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.loss-ratio",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "link.loss-ratio",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.loss-ratio",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.loss-ratio",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.loss-ratio",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.loss-ratio",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.loss-ratio",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.loss-ratio",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.loss-ratio",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.loss-ratio",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "link.loss-ratio",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "link.loss-ratio",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "link.loss-ratio",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "contact.kind",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.kind",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.kind",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "contact.kind",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.kind",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "contact.kind",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.kind",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.kind",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "contact.kind",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.kind",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.kind",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.kind",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.kind",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.kind",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.kind",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.kind",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.kind",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.kind",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.kind",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.kind",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.kind",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.body-zone",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.body-zone",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.body-zone",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.body-zone",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.body-zone",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "contact.body-zone",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.body-zone",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.body-zone",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "contact.body-zone",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.body-zone",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.body-zone",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.body-zone",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.body-zone",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.body-zone",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.body-zone",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.body-zone",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.body-zone",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.body-zone",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.body-zone",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.body-zone",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.body-zone",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "contact.force-peak",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-peak",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-peak",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "contact.force-peak",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-peak",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-peak",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-peak",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-peak",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-peak",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-peak",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-peak",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-peak",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-peak",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-peak",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-peak",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-peak",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-peak",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-peak",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-peak",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-peak",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-peak",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-reconstructed",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.force-reconstructed",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-reconstructed",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-reconstructed",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.force-reconstructed",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-reconstructed",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-reconstructed",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.force-reconstructed",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-reconstructed",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-reconstructed",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-reconstructed",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-reconstructed",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-reconstructed",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-reconstructed",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-reconstructed",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-reconstructed",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-reconstructed",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-reconstructed",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-reconstructed",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "contact.force-reconstructed",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-reconstructed",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-limit-active",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-limit-active",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-limit-active",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": true,
+    "basis": "measured",
+    "name": "contact.force-limit-active",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-limit-active",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "contact.force-limit-active",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-limit-active",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-limit-active",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-limit-active",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-limit-active",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-limit-active",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-limit-active",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-limit-active",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-limit-active",
+    "party": "site-policy"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "contact.force-limit-active",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-limit-active",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-limit-active",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "contact.force-limit-active",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "contact.force-limit-active",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "contact.force-limit-active",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "contact.force-limit-active",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "outcome.severity-grade",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "outcome.severity-grade",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "outcome.severity-grade",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "outcome.severity-grade",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "outcome.severity-grade",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "outcome.severity-grade",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "outcome.severity-grade",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "outcome.severity-grade",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "outcome.severity-grade",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "outcome.severity-grade",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "outcome.severity-grade",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "outcome.severity-grade",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "outcome.severity-grade",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "outcome.severity-grade",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "outcome.severity-grade",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "outcome.severity-grade",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "outcome.severity-grade",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "outcome.severity-grade",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "outcome.severity-grade",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "outcome.severity-grade",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "outcome.severity-grade",
+    "party": "undetermined"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "cause.category",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "cause.category",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "cause.category",
+    "party": "appliance-measured"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "cause.category",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "cause.category",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "cause.category",
+    "party": "robot-attributed"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "cause.category",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "cause.category",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "cause.category",
+    "party": "operator-entered"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "cause.category",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "cause.category",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "cause.category",
+    "party": "platform-recorded"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "cause.category",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "cause.category",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "cause.category",
+    "party": "site-policy"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "cause.category",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "estimated",
+    "name": "cause.category",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "declared",
+    "name": "cause.category",
+    "party": "manufacturer-declared"
+  },
+  {
+    "allowed": false,
+    "basis": "measured",
+    "name": "cause.category",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "estimated",
+    "name": "cause.category",
+    "party": "undetermined"
+  },
+  {
+    "allowed": true,
+    "basis": "declared",
+    "name": "cause.category",
+    "party": "undetermined"
+  }
+]

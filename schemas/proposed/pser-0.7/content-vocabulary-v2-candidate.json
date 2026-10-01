@@ -1,0 +1,1207 @@
+{
+  "assertedBy": [
+    "appliance-measured",
+    "robot-attributed",
+    "operator-entered",
+    "platform-recorded",
+    "site-policy",
+    "manufacturer-declared",
+    "undetermined"
+  ],
+  "basis": [
+    "measured",
+    "estimated",
+    "declared"
+  ],
+  "facts": [
+    {
+      "assertedBy": [
+        "manufacturer-declared",
+        "robot-attributed",
+        "site-policy"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Model designation of the acting machine.",
+      "name": "unit.model",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 64,
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "manufacturer-declared",
+        "robot-attributed"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Stable pseudonym for the individual machine; the manufacturer holds the mapping to the physical serial.",
+      "name": "unit.pseudonym",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9:_.-]+$",
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "site-policy"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Whether the site's registry lists this machine as a deployed unit or a planned one. Site-registry status, not proof of physical presence.",
+      "name": "unit.deployment-status",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "enum": [
+          "deployed",
+          "planned",
+          "unknown"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "manufacturer-declared"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Identity of the software actually running (build string or measured digest).",
+      "name": "unit.software-build",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 128,
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "site-policy"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Digest over the active safety-function parameterization.",
+      "name": "unit.safety-parameter-digest",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "manufacturer-declared",
+        "site-policy"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Category of the machine under the applicable safety standard; opaque code, checked for form only.",
+      "name": "unit.category",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 32,
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "manufacturer-declared",
+        "robot-attributed"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Rated force limit. A rated limit is a declaration; it is never measured.",
+      "name": "limits.rated-force",
+      "remoteOrigin": "forbidden",
+      "unit": "N",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "manufacturer-declared",
+        "robot-attributed"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Rated speed limit. Declaration only.",
+      "name": "limits.rated-speed",
+      "remoteOrigin": "forbidden",
+      "unit": "mm/s",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "manufacturer-declared",
+        "robot-attributed"
+      ],
+      "basis": [
+        "declared",
+        "estimated"
+      ],
+      "evidence": "optional",
+      "meaning": "Height of the centre of mass, to bound fall energy.",
+      "name": "unit.mass-centre-height",
+      "remoteOrigin": "forbidden",
+      "unit": "mm",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "manufacturer-declared",
+        "appliance-measured",
+        "robot-attributed"
+      ],
+      "basis": [
+        "declared",
+        "measured"
+      ],
+      "evidence": "optional",
+      "meaning": "Total mass. Nameplate (declared) or weighed by site equipment (appliance-measured).",
+      "name": "unit.total-mass",
+      "pairsForbidden": [
+        [
+          "robot-attributed",
+          "measured"
+        ]
+      ],
+      "remoteOrigin": "forbidden",
+      "unit": "g",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "manufacturer-declared"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Declared native logging rate per safety channel, as a map of channel label to hertz.",
+      "name": "unit.channel-rates",
+      "remoteOrigin": "forbidden",
+      "unit": "Hz",
+      "value": {
+        "type": "map-of-integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "platform-recorded",
+        "operator-entered"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Who or what was issuing motion commands. Carries remoteOrigin: whether the command source was off-site.",
+      "name": "mode.control",
+      "remoteOrigin": "required",
+      "unit": null,
+      "value": {
+        "enum": [
+          "autonomous",
+          "supervised-autonomous",
+          "assisted-remote",
+          "full-remote",
+          "fallback-to-remote",
+          "transition"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "platform-recorded"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Whether control changed hands within the 60 s before the event, and which way. Carries remoteOrigin.",
+      "name": "mode.control-handover-preceding",
+      "remoteOrigin": "required",
+      "unit": null,
+      "value": {
+        "properties": {
+          "direction": {
+            "enum": [
+              "to-remote",
+              "to-autonomy"
+            ],
+            "nullable": true,
+            "type": "string"
+          },
+          "occurred": {
+            "type": "boolean"
+          },
+          "secondsBefore": {
+            "maximum": 60,
+            "minimum": 0,
+            "nullable": true,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "occurred",
+          "direction",
+          "secondsBefore"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed",
+        "platform-recorded"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "required",
+      "meaning": "Instant of the event at millisecond precision, on the receipt's clock basis. Measured by a device, never typed.",
+      "name": "scene.event-instant",
+      "remoteOrigin": "forbidden",
+      "unit": "ms UTC",
+      "value": {
+        "maxLength": 32,
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$",
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "site-policy"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "The kind of place the work happened in, as the site declares it.",
+      "name": "scene.setting",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "enum": [
+          "industrial-segregated",
+          "industrial-shared",
+          "logistics",
+          "service",
+          "domestic",
+          "other"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "site-policy"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Collaborative operating regime in force; measured when the machine reports its active regime, declared when the site's plan states it.",
+      "name": "scene.collaboration-regime",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "enum": [
+          "monitored-stop",
+          "hand-guiding",
+          "speed-separation",
+          "force-limited",
+          "non-collaborative",
+          "transitioning",
+          "unknown"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed",
+        "operator-entered"
+      ],
+      "basis": [
+        "measured",
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Whether people were inside the working zone.",
+      "name": "scene.persons-in-zone",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "operator-entered",
+        "site-policy"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Whether an attending operator, local or remote, was present.",
+      "name": "scene.attendant-present",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "assertedBy": [
+        "operator-entered",
+        "appliance-measured",
+        "site-policy"
+      ],
+      "basis": [
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Condition of the floor or ground.",
+      "name": "scene.surface-state",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "enum": [
+          "nominal",
+          "wet",
+          "uneven",
+          "obstructed",
+          "unknown"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed",
+        "operator-entered",
+        "undetermined"
+      ],
+      "basis": [
+        "measured",
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "What kind of event this block describes.",
+      "name": "event.kind",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "enum": [
+          "protective-stop",
+          "emergency-stop",
+          "transient-contact",
+          "sustained-contact",
+          "stability-loss",
+          "fall",
+          "near-miss",
+          "hardware-fault",
+          "software-fault",
+          "sensing-fault",
+          "override-attempt",
+          "cyber-anomaly",
+          "software-update",
+          "remote-handover",
+          "other"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed",
+        "operator-entered",
+        "platform-recorded",
+        "site-policy",
+        "manufacturer-declared",
+        "undetermined"
+      ],
+      "basis": [
+        "measured",
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "What set the event off; free text bounded to 256 characters.",
+      "name": "event.trigger",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 256,
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "required",
+      "meaning": "High-rate series across the mechanical event. The value describes the window; the series itself is the referenced retained object.",
+      "name": "event.trace-window",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "properties": {
+          "durationMs": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "rateHz": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "durationMs",
+          "rateHz"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "required",
+      "meaning": "Perception capture around the event. Frames are a retained object behind the reference; they never travel in the block.",
+      "name": "event.scene-capture",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "properties": {
+          "biometricsExcluded": {
+            "type": "boolean"
+          },
+          "modality": {
+            "enum": [
+              "video",
+              "depth",
+              "lidar",
+              "mixed"
+            ],
+            "type": "string"
+          },
+          "postMs": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "preMs": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "preMs",
+          "postMs",
+          "modality",
+          "biometricsExcluded"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "appliance-measured"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "required",
+      "humanFactors": true,
+      "meaning": "Low-rate series across the whole shift, to expose fatigue and slow drift. Series is the referenced retained object.",
+      "name": "event.shift-trace",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "properties": {
+          "durationMin": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "rateHz": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "durationMin",
+          "rateHz"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "platform-recorded",
+        "appliance-measured"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Any attempt to override a safety function in the prior five minutes. Carries remoteOrigin as a separate tag.",
+      "name": "event.override-attempt",
+      "remoteOrigin": "required",
+      "unit": null,
+      "value": {
+        "properties": {
+          "attempted": {
+            "type": "boolean"
+          },
+          "secondsBefore": {
+            "maximum": 300,
+            "minimum": 0,
+            "nullable": true,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "attempted",
+          "secondsBefore"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "manufacturer-declared",
+        "site-policy"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Whether the machine's software was updated in the prior 72 hours.",
+      "name": "event.software-update-preceding",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "properties": {
+          "hoursBefore": {
+            "maximum": 72,
+            "minimum": 0,
+            "nullable": true,
+            "type": "integer"
+          },
+          "occurred": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "occurred",
+          "hoursBefore"
+        ],
+        "type": "object"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "required",
+      "meaning": "Whether balance recovery engaged. Only the machine can know this.",
+      "name": "stability.recovery-engaged",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured",
+        "estimated"
+      ],
+      "evidence": "required",
+      "meaning": "Minimum stability margin reached (support-polygon margin). Only the machine can assert it; an operator cannot.",
+      "name": "stability.margin-min",
+      "remoteOrigin": "forbidden",
+      "unit": "mm",
+      "value": {
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "operator-entered",
+        "site-policy"
+      ],
+      "basis": [
+        "measured",
+        "declared",
+        "estimated"
+      ],
+      "evidence": "optional",
+      "meaning": "Mass being carried.",
+      "name": "stability.carried-mass",
+      "remoteOrigin": "forbidden",
+      "unit": "g",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "site-policy"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Upper bound of load velocity.",
+      "name": "stability.carried-speed-bound",
+      "remoteOrigin": "forbidden",
+      "unit": "mm/s",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "optional",
+      "humanFactors": true,
+      "meaning": "How long the operator had been in session. Platform-recorded only; the operator cannot self-report it.",
+      "name": "crew.session-minutes",
+      "remoteOrigin": "forbidden",
+      "unit": "min",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "site-policy"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "humanFactors": true,
+      "meaning": "Robots per operator at the time.",
+      "name": "crew.supervision-ratio",
+      "remoteOrigin": "forbidden",
+      "unit": "robots/operator",
+      "value": {
+        "minimum": 1,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "site-policy"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "humanFactors": true,
+      "meaning": "Operator certification tier 1-3. Neither the operator nor the machine can assert it.",
+      "name": "crew.certification-tier",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maximum": 3,
+        "minimum": 1,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "site-policy"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Which teleoperation platform was in the loop.",
+      "name": "crew.platform",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 128,
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded"
+      ],
+      "basis": [
+        "declared"
+      ],
+      "evidence": "optional",
+      "humanFactors": true,
+      "meaning": "Stable pseudonym for the individual operator; the platform holds the mapping, the witness never does.",
+      "name": "crew.operator-pseudonym",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9:_.-]+$",
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "optional",
+      "meaning": "Mean round-trip latency over the prior 60 s.",
+      "name": "link.rtt-mean",
+      "remoteOrigin": "forbidden",
+      "unit": "us",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "optional",
+      "meaning": "95th-percentile round-trip latency over the prior 60 s.",
+      "name": "link.rtt-p95",
+      "remoteOrigin": "forbidden",
+      "unit": "us",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "optional",
+      "meaning": "Round-trip latency variability over the prior 60 s.",
+      "name": "link.rtt-jitter",
+      "remoteOrigin": "forbidden",
+      "unit": "us",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "platform-recorded",
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "optional",
+      "meaning": "Packet loss over the prior 60 s, parts per million.",
+      "name": "link.loss-ratio",
+      "remoteOrigin": "forbidden",
+      "unit": "ppm",
+      "value": {
+        "maximum": 1000000,
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed",
+        "operator-entered"
+      ],
+      "basis": [
+        "measured",
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Transient or sustained contact.",
+      "name": "contact.kind",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "enum": [
+          "transient",
+          "sustained"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "operator-entered",
+        "appliance-measured",
+        "robot-attributed"
+      ],
+      "basis": [
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Body region code under the applicable body model; opaque code, checked for form only.",
+      "name": "contact.body-zone",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maxLength": 32,
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed"
+      ],
+      "basis": [
+        "measured"
+      ],
+      "evidence": "required",
+      "meaning": "Peak contact force actually measured. Measured only. A reconstructed value can never be carried under this name.",
+      "name": "contact.force-peak",
+      "remoteOrigin": "forbidden",
+      "unit": "mN",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "robot-attributed",
+        "operator-entered",
+        "undetermined"
+      ],
+      "basis": [
+        "estimated"
+      ],
+      "evidence": "optional",
+      "meaning": "Contact force reconstructed where it was not measured. Estimated only, under a separate name.",
+      "name": "contact.force-reconstructed",
+      "remoteOrigin": "forbidden",
+      "unit": "mN",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "robot-attributed",
+        "site-policy",
+        "manufacturer-declared"
+      ],
+      "basis": [
+        "measured",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Force-limiting threshold in force at the time.",
+      "name": "contact.force-limit-active",
+      "remoteOrigin": "forbidden",
+      "unit": "mN",
+      "value": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "operator-entered",
+        "undetermined"
+      ],
+      "basis": [
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Severity 0 (near-miss) to 5 (fatality or permanent disability). A human judgment; no device can assert it.",
+      "name": "outcome.severity-grade",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "maximum": 5,
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    {
+      "assertedBy": [
+        "operator-entered",
+        "undetermined"
+      ],
+      "basis": [
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Root-cause category. A judgment; no device, platform or site policy can assert it.",
+      "name": "cause.category",
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "enum": [
+          "hardware",
+          "software",
+          "sensing",
+          "configuration",
+          "balance",
+          "local-operator",
+          "remote-operator",
+          "credential-compromise",
+          "platform-failure",
+          "network-quality",
+          "environmental",
+          "cyber-vulnerability",
+          "cyber-supply-chain",
+          "cyber-network",
+          "unknown",
+          "under-investigation"
+        ],
+        "type": "string"
+      }
+    },
+    {
+      "assertedBy": [
+        "appliance-measured",
+        "platform-recorded",
+        "operator-entered"
+      ],
+      "basis": [
+        "measured",
+        "estimated",
+        "declared"
+      ],
+      "evidence": "optional",
+      "meaning": "Position only: one observation of one site-declared reference point, from one source sample, scaled against EPSG:4979. Not orientation, speed, trajectory or ephemeris. With heightMm null it is a partial observation with no asserted height. The signature binds that this observation was committed with this attribution; it does not establish that the site was at this position, that the named source produced it, or its accuracy.",
+      "name": "site.pose",
+      "pairsForbidden": [
+        [
+          "platform-recorded",
+          "declared"
+        ],
+        [
+          "operator-entered",
+          "estimated"
+        ]
+      ],
+      "remoteOrigin": "forbidden",
+      "unit": null,
+      "value": {
+        "additionalProperties": false,
+        "properties": {
+          "crs": {
+            "enum": [
+              "EPSG:4979"
+            ],
+            "type": "string"
+          },
+          "heightMm": {
+            "maximum": 100000000,
+            "minimum": -20000000,
+            "nullable": true,
+            "type": "integer"
+          },
+          "horizontalAccuracyMm": {
+            "maximum": 100000000,
+            "minimum": 0,
+            "nullable": true,
+            "type": "integer"
+          },
+          "latE7": {
+            "maximum": 900000000,
+            "minimum": -900000000,
+            "type": "integer"
+          },
+          "latLonDerivation": {
+            "enum": [
+              "exact-integer-rescaling",
+              "rounded-half-even-to-1e-7-deg"
+            ],
+            "type": "string"
+          },
+          "lonE7": {
+            "maximum": 1799999999,
+            "minimum": -1800000000,
+            "type": "integer"
+          },
+          "observedAt": {
+            "maxLength": 32,
+            "nullable": true,
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$",
+            "type": "string"
+          },
+          "referencePoint": {
+            "maxLength": 64,
+            "pattern": "^[A-Za-z0-9:_.-]+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "crs",
+          "referencePoint",
+          "latE7",
+          "lonE7",
+          "heightMm",
+          "horizontalAccuracyMm",
+          "observedAt",
+          "latLonDerivation"
+        ],
+        "type": "object"
+      }
+    }
+  ],
+  "globalRules": {
+    "basisByParty": {
+      "appliance-measured": [
+        "measured",
+        "estimated"
+      ],
+      "manufacturer-declared": [
+        "declared"
+      ],
+      "operator-entered": [
+        "estimated",
+        "declared"
+      ],
+      "platform-recorded": [
+        "measured",
+        "declared"
+      ],
+      "robot-attributed": [
+        "measured",
+        "estimated",
+        "declared"
+      ],
+      "site-policy": [
+        "declared"
+      ],
+      "undetermined": [
+        "estimated",
+        "declared"
+      ]
+    },
+    "evidenceRequiredByParty": [
+      "appliance-measured",
+      "robot-attributed"
+    ],
+    "numbers": "All numeric values are integers in the stated unit; floats are rejected (RFC 8785 number interoperability).",
+    "operatorPseudonym": "crew.operator-pseudonym is assigned and mapped by the teleoperation platform; the witness never holds the mapping.",
+    "remoteOrigin": "Tag values on-site | off-site | undetermined; required exactly where the table says, forbidden elsewhere."
+  },
+  "remoteOrigin": [
+    "on-site",
+    "off-site",
+    "undetermined"
+  ],
+  "version": "wilder.pser-content-vocab/2"
+}

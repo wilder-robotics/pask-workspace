@@ -13,7 +13,7 @@ use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
 use crate::{
     Error, Payload, Result,
     cwt::{CWT_CLAIMS_LABEL, CwtClaims},
-    payload::{SPEC_VERSION, SPEC_VERSION_06},
+    payload::{SPEC_VERSION, SPEC_VERSION_06, SPEC_VERSION_07},
 };
 
 /// Required protected content type for the profile.
@@ -21,6 +21,8 @@ pub const CONTENT_TYPE: &str = "application/pser+json; profile=wilder.pser/0.5";
 
 /// Content type for the 0.6 profile version.
 pub const CONTENT_TYPE_06: &str = "application/pser+json; profile=wilder.pser/0.6";
+/// Proposed local 0.7 content type.
+pub const CONTENT_TYPE_07: &str = "application/pser+json; profile=wilder.pser/0.7";
 
 /// Returns the required protected content type for the given profile version.
 ///
@@ -31,6 +33,7 @@ fn content_type_for_spec(spec: &str) -> Option<&'static str> {
     match spec {
         SPEC_VERSION => Some(CONTENT_TYPE),
         SPEC_VERSION_06 => Some(CONTENT_TYPE_06),
+        SPEC_VERSION_07 => Some(CONTENT_TYPE_07),
         _ => None,
     }
 }
@@ -118,7 +121,10 @@ where
     let protected = HeaderBuilder::new()
         .algorithm(algorithm)
         .content_type(ct.to_owned())
-        .value(CWT_CLAIMS_LABEL, claims.to_value())
+        .value(
+            CWT_CLAIMS_LABEL,
+            claims.to_value(payload.spec() == SPEC_VERSION_07),
+        )
         .build();
     let statement = CoseSign1Builder::new()
         .protected(protected)
@@ -221,6 +227,9 @@ fn parse_statement(mut encoded: &[u8]) -> Result<CoseSign1> {
                             } else if ct_str == CONTENT_TYPE_06 {
                                 ct_needs_compat = true;
                                 ct_normalized = Some(CONTENT_TYPE_06);
+                            } else if ct_str == CONTENT_TYPE_07 {
+                                ct_needs_compat = true;
+                                ct_normalized = Some(CONTENT_TYPE_07);
                             }
                             // Other text values at label 3 are not patched.
                             // coset may accept or reject them; validate_headers
@@ -328,30 +337,32 @@ fn validate_headers(
     if claim_values.next().is_some() {
         return Err(Error::Header("CWT_Claims is duplicated"));
     }
-    let claims = CwtClaims::from_value(claims)?;
+    let claims = CwtClaims::from_value(claims, payload.spec() == SPEC_VERSION_07)?;
     if claims.issuer.is_empty() {
         return Err(Error::Header("CWT iss must not be empty"));
     }
     if claims.subject.as_slice() != payload.site_id().as_bytes() {
         return Err(Error::Header("CWT sub does not match site.id"));
     }
-    // Issue #66: Under wilder.pser/0.6, when bindingMode is DIRECT_WITNESS,
+    // Issue #66: Under wilder.pser/0.6 and proposed 0.7, when bindingMode is DIRECT_WITNESS,
     // attestation.witnessKey and the protected CWT `iss` value MUST be textually
     // equal. This check does not apply to DELEGATED_WITNESS mode or to earlier
     // profile versions. It establishes only a naming convention; it does not
     // establish that the signature-verification key is authentically associated
     // with either identifier or that genuine TEE hardware produced the
     // signature.
-    if payload.spec() == crate::payload::SPEC_VERSION_06
+    if (payload.spec() == SPEC_VERSION_06 || payload.spec() == SPEC_VERSION_07)
         && matches!(
             payload.attestation_binding_mode(),
             crate::BindingMode::DirectWitness
         )
         && claims.issuer != payload.witness_key()
     {
-        return Err(Error::Header(
-            "DIRECT_WITNESS witnessKey and CWT iss must be textually equal under wilder.pser/0.6",
-        ));
+        return Err(Error::Header(if payload.spec() == SPEC_VERSION_07 {
+            "DIRECT_WITNESS witnessKey and CWT iss must be textually equal under wilder.pser/0.7"
+        } else {
+            "DIRECT_WITNESS witnessKey and CWT iss must be textually equal under wilder.pser/0.6"
+        }));
     }
     if statement.unprotected.alg.is_some()
         || statement.unprotected.content_type.is_some()
