@@ -63,7 +63,7 @@ jobs:
       - name: Install Rust
         uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          toolchain: stable
+          toolchain: "1.98.1"
           components: clippy,rustfmt
 
       - name: Check formatting
@@ -119,7 +119,7 @@ jobs:
       - name: Install Rust
         uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          toolchain: stable
+          toolchain: "1.98.1"
           cache: false
 
       - name: Select Cargo cache week
