@@ -16,7 +16,7 @@ untouched. -05 §8 cites the version that actually verifies CCF receipts.
 ## Specification the identifier and procedure come from
 
 `draft-ietf-scitt-receipts-ccf-profile-05`, "CCF Profile for COSE Receipts",
-23 September 2026 (Birkholz, Delignat-Lavaud, Fournet, Chamayou),
+23 September 2026,
 https://www.ietf.org/archive/id/draft-ietf-scitt-receipts-ccf-profile-05.txt
 
 - VDS identifier: `TBD_1`, **requested assignment 2**, name
