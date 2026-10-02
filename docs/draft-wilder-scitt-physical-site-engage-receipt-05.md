@@ -71,6 +71,33 @@ informative:
     seriesinfo:
       Internet-Draft: draft-mih-scitt-agent-action-capsule-05
   RFC6838:
+  ISO10218-1:
+    title: "Robotics -- Safety requirements -- Part 1: Industrial robots"
+    author:
+      - org: International Organization for Standardization
+    date: 2025-02
+    seriesinfo:
+      ISO: "10218-1:2025"
+    target: https://www.iso.org/standard/73933.html
+    ann: Third edition.
+  ISO10218-2:
+    title: "Robotics -- Safety requirements -- Part 2: Industrial robot applications and robot cells"
+    author:
+      - org: International Organization for Standardization
+    date: 2025-02
+    seriesinfo:
+      ISO: "10218-2:2025"
+    target: https://www.iso.org/standard/73934.html
+    ann: Second edition.
+  ISO-TS-15066:
+    title: "Robots and robotic devices -- Collaborative robots"
+    author:
+      - org: International Organization for Standardization
+    date: 2016-02-15
+    seriesinfo:
+      ISO/TS: "15066:2016"
+    target: https://www.iso.org/standard/62996.html
+    ann: First edition.
 
 --- abstract
 
@@ -1556,6 +1583,45 @@ The local replay does not validate attached SCITT Receipts, appraise hardware,
 authenticate keys or policies, locate a signing key, or make an application
 decision. The separately implemented Receipt-verification coordinator is not
 silently invoked by this workflow.
+
+## Use with robot safety records (informative) {#safety-records}
+
+Industrial robot safety standards distinguish the robot from its
+integrated application and call for application-specific risk assessment,
+verification, validation and documentation. ISO 10218-1:2025
+{{ISO10218-1}}, 5.3.5, and ISO 10218-2:2025 {{ISO10218-2}}, 5.5.5, address
+identifying safety-function settings. ISO 10218-2:2025, Annex N.2.4.4,
+provides informative guidance for retaining measurement conditions and the
+parameter identifier used in testing. ISO/TS 15066:2016 {{ISO-TS-15066}}
+provides related guidance for collaborative industrial applications; its
+dated references and terminology remain edition-specific.
+
+The retained-content mechanism can support exchange of recorded claims
+about a safety-parameter digest, operating context and associated test or
+observation evidence. A manufacturer-specific configuration identifier
+and a SHA-256 digest of a retained export are different items. An
+application using either identifies the represented data, algorithm,
+coverage and provenance rather than assuming interchangeability.
+
+The vocabulary is not an ISO safety classification or conformity scheme.
+Its attribution categories, contact labels and mode labels have the
+meanings defined in this profile. Any mapping to a safety standard states
+the relevant edition and application assumptions. A single operating-regime
+label need not describe all simultaneously active protective measures.
+
+A successful signature, disclosure proof, evidence digest or supported
+value comparison does not establish that settings were active or safe,
+that measurements were calibrated, or that a robot application conforms
+to a safety standard. In particular, the current unitless scalar
+comparator does not assess unit-bearing force values, measurement traces,
+pressure, stopping performance or biomechanical criteria. Recorded
+configuration, measured outcome and selected safety limit remain distinct.
+
+Retained content can assist later examination of evidence; it does not
+replace the safety functions, application risk assessment or validation
+activities. The applicability of industrial-robot standards is determined
+for the deployment. Their principles can inform a non-industrial example
+without making that example a conformity test.
 
 # SCITT registration and Receipt attachment {#scitt-registration}
 
