@@ -1587,41 +1587,71 @@ silently invoked by this workflow.
 ## Use with robot safety records (informative) {#safety-records}
 
 Industrial robot safety standards distinguish the robot from its
-integrated application and call for application-specific risk assessment,
-verification, validation and documentation. ISO 10218-1:2025
-{{ISO10218-1}}, 5.3.5, and ISO 10218-2:2025 {{ISO10218-2}}, 5.5.5, address
-identifying safety-function settings. ISO 10218-2:2025, Annex N.2.4.4,
-provides informative guidance for retaining measurement conditions and the
-parameter identifier used in testing. ISO/TS 15066:2016 {{ISO-TS-15066}}
-provides related guidance for collaborative industrial applications; its
-dated references and terminology remain edition-specific.
+integrated application and call for application-specific risk
+assessment, verification, validation and documentation. ISO
+10218-1:2025 {{ISO10218-1}}, 5.3.5, and ISO 10218-2:2025
+{{ISO10218-2}}, 5.5.5, address identifying safety-function settings.
+ISO 10218-2:2025, Annex N.2.4.4, provides informative guidance for
+retaining measurement conditions and the parameter identifier used in
+testing. ISO/TS 15066:2016 {{ISO-TS-15066}} provides related guidance
+for collaborative industrial applications; its dated references and
+terminology remain edition-specific.
 
 The retained-content mechanism can support exchange of recorded claims
-about a safety-parameter digest, operating context and associated test or
-observation evidence. A manufacturer-specific configuration identifier
-and a SHA-256 digest of a retained export are different items. An
-application using either identifies the represented data, algorithm,
-coverage and provenance rather than assuming interchangeability.
+about a safety-parameter digest, operating context and associated test
+or observation evidence. In `unit.safety-parameter-digest`, "active"
+is part of the attributed claim, not a recipient-verified device
+state. The manufacturer's native identifier, a SHA-256 digest over
+exact retained export bytes, the export's stated coverage, the claim
+that those settings were active, and any validation record are
+separate items. An application identifies the represented data,
+algorithm, coverage and provenance rather than assuming
+interchangeability.
 
-The vocabulary is not an ISO safety classification or conformity scheme.
-Its attribution categories, contact labels and mode labels have the
-meanings defined in this profile. Any mapping to a safety standard states
-the relevant edition and application assumptions. A single operating-regime
-label need not describe all simultaneously active protective measures.
+The digest stored as this fact's `value` is distinct from a digest in
+its `evidence` reference. The current evidence-integrity check
+compares the original supplied bytes with the evidence-reference
+digest in the proved fact; it does not compare that digest with the
+recorded `value`. Evidence can be an export or a report about an
+export, so digest equality is not an implicit rule for every evidence
+relationship.
+
+For example, a fact can record a digest naming configuration X while
+its evidence reference correctly binds a different configuration
+export Y. With that compound export as evidence, the current recipient
+can report `MATCHED` and `EVIDENCE_LINKED` together with
+`NOT_COMPARABLE`. Those findings do not establish that Y describes the
+recorded digest, that the settings were complete or active, or that
+changes were authorized or safe. They do not authenticate the
+attributed party. An application that needs a particular
+configuration-to-evidence relationship checks that relationship
+separately; it is not supplied by the byte-integrity result.
+
+The vocabulary is not an ISO safety classification or conformity
+scheme. Its attribution categories, contact labels and mode labels
+have the meanings defined in this profile. Any mapping to a safety
+standard states the relevant edition and application assumptions. A
+single operating-regime label need not describe all simultaneously
+active protective measures.
 
 A successful signature, disclosure proof, evidence digest or supported
 value comparison does not establish that settings were active or safe,
-that measurements were calibrated, or that a robot application conforms
-to a safety standard. In particular, the current unitless scalar
-comparator does not assess unit-bearing force values, measurement traces,
-pressure, stopping performance or biomechanical criteria. Recorded
-configuration, measured outcome and selected safety limit remain distinct.
+that measurements were calibrated, or that a robot application
+conforms to a safety standard. In particular, the current unitless
+scalar comparator does not assess unit-bearing force values,
+measurement traces, pressure, stopping performance or biomechanical
+criteria. Recorded configuration, measured outcome and selected safety
+limit remain distinct.
+
+Round-trip network latency is not a safety-function response or
+stopping time. A `site.pose` observation is not a tool-centre-point
+pose or a human-to-robot separation measurement.
 
 Retained content can assist later examination of evidence; it does not
-replace the safety functions, application risk assessment or validation
-activities. The applicability of industrial-robot standards is determined
-for the deployment. Their principles can inform a non-industrial example
-without making that example a conformity test.
+replace the safety functions, application risk assessment or
+validation activities. The applicability of industrial-robot standards
+is determined for the deployment. Their principles can inform a
+non-industrial example without making that example a conformity test.
 
 # SCITT registration and Receipt attachment {#scitt-registration}
 
