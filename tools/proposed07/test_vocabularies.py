@@ -28,10 +28,30 @@ class GenerationTests(unittest.TestCase):
         self.assertEqual(CONFIG['profiles']['v1']['source_sha256'],
                          '030cd709841fc057ba76f2568d44401b36d8ce823369756e11e2989309d4468d')
 
-    def test_v1_generated_bytes_are_frozen(self):
-        result = render(V1, CONFIG['profiles']['v1']['source_sha256'], legacy=True)
-        self.assertEqual(hashlib.sha256(result).hexdigest(),
-                         'cb13b49683ad62e6345dda82e056403306998ba9dd295570f3edcf227e396cf9')
+    def test_pre_header_generated_bytes_are_frozen(self):
+        # Remove only the one authorized line; every historical byte stays pinned.
+        for name, vocab, expected in (
+            ('v1', V1, 'cb13b49683ad62e6345dda82e056403306998ba9dd295570f3edcf227e396cf9'),
+            ('v2', V2, 'd2d9aacc57ad1718127569f363bdb8447902f091ce5d2cc1ea7f7c6876a56af7'),
+        ):
+            with self.subTest(profile=name):
+                result = render(vocab, CONFIG['profiles'][name]['source_sha256'],
+                                legacy=(name == 'v1'))
+                lines = result.splitlines(keepends=True)
+                self.assertEqual(lines[1], b'// SPDX-License-Identifier: Apache-2.0\n')
+                self.assertEqual(result.count(b'SPDX-License-Identifier:'), 1)
+                historical = b''.join(lines[:1] + lines[2:])
+                self.assertEqual(hashlib.sha256(historical).hexdigest(), expected)
+
+    def test_licensed_generated_bytes_are_pinned(self):
+        for name, vocab, expected in (
+            ('v1', V1, 'b370b2a77ea0ba2cd17f1dd463384fc82a2e1bef042cc4d10435c7c753279497'),
+            ('v2', V2, '42a721abe52d9ba83cf637d9a08981f202bbafa143cf4f836163f95d64d8102e'),
+        ):
+            with self.subTest(profile=name):
+                result = render(vocab, CONFIG['profiles'][name]['source_sha256'],
+                                legacy=(name == 'v1'))
+                self.assertEqual(hashlib.sha256(result).hexdigest(), expected)
 
     def test_new_vocabulary_is_only_version_and_appended_row(self):
         reduced = copy.deepcopy(V2)
