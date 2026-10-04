@@ -1,0 +1,87 @@
+# Proposed local vocabulary: origin and restrictions
+
+Original technical vocabulary: private wilder-robotics/pask-tournament commit
+`844bf9b0032972b17a1725f3598f92ce21567b8e`, path
+`rounds/01/content-block/schema/vocab.json`, identifier `wilder.pser-content-vocab/1`.
+Original SHA-256: `e8c1a2c028114c82523514e4aab686692d2c9409ed343467ef6c6ba070adf0b0`.
+
+Rob authorized narrow local use on September 22, 2026. No explicit LICENSE,
+COPYING or NOTICE file was found in the inspected pinned repository path inventory.
+No redistribution license is inferred from moving or generating this material.
+This input and its generated derivative are excluded from all release candidates.
+Public redistribution rights require review before any publication.
+
+The local spelling-migrated derivative is not the frozen original identifier's
+public redefinition. The unchanged version string is retained to reproduce checkpoint
+01 bytes, with this external origin/hash record marking it as proposed local input.
+A future identifier change needs a new hash and reviewed version decision.
+
+JSON is the sole editable rule source. `tools/proposed07/generate.py` generates
+the Rust representation. No build fetches the private source. This file contains
+no evaluation prose, participant information or scores.
+
+## 2026-10-01 addendum: artifact-specific Apache-2.0 promotion
+
+On 2026-10-01 at 9:01 PM CDT (2026-10-02 02:01 UTC), Rob Wilder authorized
+artifact-specific promotion of the five artifacts below into the Pask
+interoperability implementation under Apache-2.0, **for the rights Rob Wilder and
+Wilder Management Inc. control**. The authority is
+`VOCABULARY_PROMOTION_DECISION_2026-10-01.md` in the private project record
+(SHA-256 `fc5ac943b0336d1bb6fa39be90fdd6bca243dc136ac85bd23b15aa4db4d9b4f1`),
+accepting the proposal with SHA-256
+`0e66849396d779f9ec7aee7eb5f54ce97b63e3b5e90bcf47b2625c9afb3c461a`.
+
+**Historical licensing hold superseded on 2026-10-01.** The earlier exclusion
+from release candidates and unresolved redistribution-rights prerequisite are
+superseded only for the five artifacts and controlled rights identified here.
+The earlier statements remain above as history. No permission is inferred from
+moving or generating material: the recorded owner decision supplies the authority.
+Original provenance, version identifiers and historical byte identities are not
+rewritten. Public action still requires separate authorization.
+
+### Exact identities covered by the decision
+
+| Artifact | SHA-256 at authorization |
+|---|---|
+| Original technical vocabulary, private `wilder-robotics/pask-tournament` commit `844bf9b0032972b17a1725f3598f92ce21567b8e`, `rounds/01/content-block/schema/vocab.json` | `e8c1a2c028114c82523514e4aab686692d2c9409ed343467ef6c6ba070adf0b0` |
+| `schemas/proposed/pser-0.7/content-vocabulary.json` | `030cd709841fc057ba76f2568d44401b36d8ce823369756e11e2989309d4468d` |
+| `schemas/proposed/pser-0.7/content-vocabulary-v2-candidate.json` | `2fb4e3a099003638d318333dee66fe2b710fb39b6dec78f570f6ecf31592a248` |
+| `crates/pask-wire/src/proposed_vocabulary_generated.rs` (pre-header) | `cb13b49683ad62e6345dda82e056403306998ba9dd295570f3edcf227e396cf9` |
+| `crates/pask-wire/src/proposed_vocabulary_v2_generated.rs` (pre-header) | `d2d9aacc57ad1718127569f363bdb8447902f091ce5d2cc1ea7f7c6876a56af7` |
+
+The original-source identity is retained provenance, not a claim that its bytes
+were fetched again for this addendum. The Rust hashes identify the authorized
+pre-header bytes, not the current licensed outputs.
+
+### Scope and exclusions
+
+Preserve all legitimate third-party notices and flag contrary provenance evidence
+if found. The earlier absence of LICENSE, COPYING or NOTICE in the inspected
+source inventory is not proof of exclusive ownership. The unrelated
+`crates/pask-wire/THIRD-PARTY-NOTICES.txt` (fluent-uri) is unchanged.
+
+This decision grants no rights to ISO material and does not promote the
+surrounding private repository, evaluations or evidence. It permits preparing
+these definitions for eventual IETF contribution under the applicable IETF Trust
+terms; it does not replace those terms with an Apache-only restriction.
+
+This is the actual dated licensing authorization, not DCO certification or a
+public-action approval. Public push, PR, merge, registry release and IETF filing
+remain separate decisions by Rob.
+
+### Licensed generation and preserved history
+
+Both JSON files remain byte-identical at the hashes above. Their adjacent grant
+is recorded in [LICENSE-NOTE.md](LICENSE-NOTE.md). No rule, fixture, expected
+relation, profile source hash or license-guard rule changes.
+
+`tools/proposed07/generate.py` remains frozen for historical pre-header v1
+reproduction. The current licensed path is
+`python3 tools/proposed07/generate_vocabularies.py --write`; use `--check` to verify
+committed output. It uses `vocabulary_codegen.py` for both profiles and adds
+exactly one `// SPDX-License-Identifier: Apache-2.0` line after the existing
+"Generated by" line. Every other generated byte, including both `VOCAB_SHA256`
+constants, is preserved. The v1 `generate.py` attribution remains historical
+provenance, not an instruction to regenerate the current licensed file with that
+frozen script. `test_vocabularies.py` separately pins the two historical
+pre-header byte streams and the two current licensed outputs.

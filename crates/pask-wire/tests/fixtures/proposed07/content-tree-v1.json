@@ -1,0 +1,2147 @@
+{
+  "construction": "pask-local-content-tree/1",
+  "scope": "PRESENTED_AT_SEAL",
+  "vocabulary_digest": "sha256:030cd709841fc057ba76f2568d44401b36d8ce823369756e11e2989309d4468d",
+  "note": "Local prototype; synthetic facts and salts. Not a PSER conformance corpus.",
+  "groups": [
+    {
+      "id": "tree-0",
+      "count": 0,
+      "header_hash": "cb66f0e5555675bc92ce5e1d66a2f913d2bd27a09554e8c03f36dc8f4cd871ef",
+      "root_digest": "sha256:e842b402c8871fee89a303465c2c2c6a00a5630834f8fe1b2243c10c474df107",
+      "facts": []
+    },
+    {
+      "id": "tree-1",
+      "count": 1,
+      "header_hash": "3d84192369bb58c64cb97038b95c78d4bb416160076a7b972a374ab08a966eee",
+      "root_digest": "sha256:452d58dfbac6a2d402e9d494bf4a0b20322afa4ef0917d873b3dd3eb3f6bd912",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "3e593ff5f80f3d3e4f8ba4523882fe1eb932ce4f9f2ddcc64313be397f1e73f5",
+          "proof_hex": []
+        }
+      ]
+    },
+    {
+      "id": "tree-2",
+      "count": 2,
+      "header_hash": "cbfaaea28de562594a53b962079093902ac4f39c27318ad75d1b399be500c484",
+      "root_digest": "sha256:1eebbd82c1625023a4e9e3384d51124fd230c4a592855f756f4bd62302592600",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "cffb43a7e0fa5d8d2ec9aca67ab213877be6e234a255f48d6b9f8030d57339d7",
+          "proof_hex": [
+            "3923b51649d280f28bf4fc2ba17027ee0f2c01ebc1f4119fe7e985c5d52d7151"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-001",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 1
+          },
+          "salt_hex": "38341d662e5d4b5874aa2fde520fb32e248d50ae34774db6ee72522ece80d0a9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303031222c2276616c7565223a317d",
+          "index": 1,
+          "leaf_hex": "3923b51649d280f28bf4fc2ba17027ee0f2c01ebc1f4119fe7e985c5d52d7151",
+          "proof_hex": [
+            "cffb43a7e0fa5d8d2ec9aca67ab213877be6e234a255f48d6b9f8030d57339d7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tree-3",
+      "count": 3,
+      "header_hash": "e808c5cfb0622ed9028e46e00d3839902344a50dc975c921be271a75b07af5c3",
+      "root_digest": "sha256:bc9321819aec8dc52f5f7d56c585afa289fc0047f5e1f123b2f738a018866614",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "3c45766ca92176a2a14f328e08a2763c3c92d6ece718bbc1acdb3626d80d35d7",
+          "proof_hex": [
+            "7f5d5eda77786dfffa6616f60b1a550f870e6ea818e8ba80d34dfa631fc04740",
+            "db0cdd5b2b6dacc149c459b037b6200d19b3e82047d138a7095b5d32517acc53"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-001",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 1
+          },
+          "salt_hex": "38341d662e5d4b5874aa2fde520fb32e248d50ae34774db6ee72522ece80d0a9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303031222c2276616c7565223a317d",
+          "index": 1,
+          "leaf_hex": "7f5d5eda77786dfffa6616f60b1a550f870e6ea818e8ba80d34dfa631fc04740",
+          "proof_hex": [
+            "3c45766ca92176a2a14f328e08a2763c3c92d6ece718bbc1acdb3626d80d35d7",
+            "db0cdd5b2b6dacc149c459b037b6200d19b3e82047d138a7095b5d32517acc53"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-002",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 2
+          },
+          "salt_hex": "4a6205b2b76459d70af3803ec60d6e263775b0dcaac79a93b41d9b242157386e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303032222c2276616c7565223a327d",
+          "index": 2,
+          "leaf_hex": "db0cdd5b2b6dacc149c459b037b6200d19b3e82047d138a7095b5d32517acc53",
+          "proof_hex": [
+            "2abfbe0a6ba9aced193d7213b7d23f7177a88ff897fd893c2b5d8f8356c9a570"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tree-4",
+      "count": 4,
+      "header_hash": "0f71ccc5b2d9005d1275837578a33b527cd2480bcde2759b4b2d9ac0dae834b2",
+      "root_digest": "sha256:0cc7c34c9de4ed2400b8ea6f1791e157f4c90179e10ceef49e1261accf806c04",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "8ed8afc5469a494a30a4da9ed5387c35a783318ba7e35f3b49e80e8071c8e557",
+          "proof_hex": [
+            "fa1b43597a2f10596b186c344b0fd026a70a7f808e0d08800c17ed4842cccf1b",
+            "5d509896a9bbbb53d8fac70a0f37cf68e75ddfe2bb94c5d6590487f16744d63c"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-001",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 1
+          },
+          "salt_hex": "38341d662e5d4b5874aa2fde520fb32e248d50ae34774db6ee72522ece80d0a9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303031222c2276616c7565223a317d",
+          "index": 1,
+          "leaf_hex": "fa1b43597a2f10596b186c344b0fd026a70a7f808e0d08800c17ed4842cccf1b",
+          "proof_hex": [
+            "8ed8afc5469a494a30a4da9ed5387c35a783318ba7e35f3b49e80e8071c8e557",
+            "5d509896a9bbbb53d8fac70a0f37cf68e75ddfe2bb94c5d6590487f16744d63c"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-002",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 2
+          },
+          "salt_hex": "4a6205b2b76459d70af3803ec60d6e263775b0dcaac79a93b41d9b242157386e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303032222c2276616c7565223a327d",
+          "index": 2,
+          "leaf_hex": "62e41285a277f7c9d799e5b1ce33832fbd26c43e5faae0c8a40f895b5a6927e0",
+          "proof_hex": [
+            "b6b28cca8b9cfe872ecb37994e7794fcc51819faf91b7b62808772add8f7d33f",
+            "33a18702d4ff5ec6f8c8ac864953c4ea652035ca7854220ee0a0165700e87b26"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-003",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 3
+          },
+          "salt_hex": "b0a318b4c288042cfb7fb25872f972096a10dde33c4561c1bc67512f58e2cefd",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303033222c2276616c7565223a337d",
+          "index": 3,
+          "leaf_hex": "b6b28cca8b9cfe872ecb37994e7794fcc51819faf91b7b62808772add8f7d33f",
+          "proof_hex": [
+            "62e41285a277f7c9d799e5b1ce33832fbd26c43e5faae0c8a40f895b5a6927e0",
+            "33a18702d4ff5ec6f8c8ac864953c4ea652035ca7854220ee0a0165700e87b26"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tree-5",
+      "count": 5,
+      "header_hash": "4d5750cf9dff4ff7c0a578d8d7af879fada8b599b68460a7cbd97828f76b26f3",
+      "root_digest": "sha256:7f47c379824bfb0bf8118c674ca0eb5a515c8c225bf2a8524b82f904fa9b04c7",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "51e39264bc13c04e7538ab4aebf65650f044a1c2845c6d7dc6ab205afd7bb005",
+          "proof_hex": [
+            "ccdf94a8afb3ad9ef7c24ccdcbe933307f1dbad955f3cb4b2387120ecfc1f1b3",
+            "e9d79a56258386321fdb05aa21f4d01dd576588829730904f6ff54de1a100c5b",
+            "286a9c9cc60f5349a63461d17c560e82d46ed4debcd3728463adab23f2a3aaed"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-001",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 1
+          },
+          "salt_hex": "38341d662e5d4b5874aa2fde520fb32e248d50ae34774db6ee72522ece80d0a9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303031222c2276616c7565223a317d",
+          "index": 1,
+          "leaf_hex": "ccdf94a8afb3ad9ef7c24ccdcbe933307f1dbad955f3cb4b2387120ecfc1f1b3",
+          "proof_hex": [
+            "51e39264bc13c04e7538ab4aebf65650f044a1c2845c6d7dc6ab205afd7bb005",
+            "e9d79a56258386321fdb05aa21f4d01dd576588829730904f6ff54de1a100c5b",
+            "286a9c9cc60f5349a63461d17c560e82d46ed4debcd3728463adab23f2a3aaed"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-002",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 2
+          },
+          "salt_hex": "4a6205b2b76459d70af3803ec60d6e263775b0dcaac79a93b41d9b242157386e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303032222c2276616c7565223a327d",
+          "index": 2,
+          "leaf_hex": "80236159661cbd906d0af66e6f6d4a7c73fde83f5729beb93179fa265e875b89",
+          "proof_hex": [
+            "7cd3d678d1be0071ad8537ffb874ceb66898716fe7efac073a4a5e51bf651abe",
+            "2dc23bcb15d3a6b0df0453be0e2ed09e534e0ef6a1a7e5a4241a4cd709cf397c",
+            "286a9c9cc60f5349a63461d17c560e82d46ed4debcd3728463adab23f2a3aaed"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-003",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 3
+          },
+          "salt_hex": "b0a318b4c288042cfb7fb25872f972096a10dde33c4561c1bc67512f58e2cefd",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303033222c2276616c7565223a337d",
+          "index": 3,
+          "leaf_hex": "7cd3d678d1be0071ad8537ffb874ceb66898716fe7efac073a4a5e51bf651abe",
+          "proof_hex": [
+            "80236159661cbd906d0af66e6f6d4a7c73fde83f5729beb93179fa265e875b89",
+            "2dc23bcb15d3a6b0df0453be0e2ed09e534e0ef6a1a7e5a4241a4cd709cf397c",
+            "286a9c9cc60f5349a63461d17c560e82d46ed4debcd3728463adab23f2a3aaed"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-004",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 4
+          },
+          "salt_hex": "6892e3b1416387fcfa6ca994945c1156a26e14bdd70ecce0d4c8aeff14d36f14",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303034222c2276616c7565223a347d",
+          "index": 4,
+          "leaf_hex": "286a9c9cc60f5349a63461d17c560e82d46ed4debcd3728463adab23f2a3aaed",
+          "proof_hex": [
+            "52e19b1d4cac5b46ae77780f9808f86f71bffe7b1c9327055bc7c4bf7f3345bc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tree-9",
+      "count": 9,
+      "header_hash": "5cb7ea67cf7cabe159adcabc1d854d302fff59af9b5fdb5662dfe5c4eece8fe6",
+      "root_digest": "sha256:9ab5d4d056a35699ad34931b9d67d4b56e5e2db451b20f8cfa447a413e8b5e36",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "6cdd4608eae7196ef5737e6d440a64148ceac452a86df1533420177dc63b5836",
+          "proof_hex": [
+            "3b6f7b64c82875e5b6dfe322f12e809c8720772c818cd992e9f5f0c7240673ca",
+            "bb8974f102d5b070797483918f38339f79ce0e3a1c144cd5e0c2f6a16d2a44f4",
+            "d8ce22c58d3f1bc25bcced8f58c7bf76a350ee2b61a782d12c14f339fd252d86",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-001",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 1
+          },
+          "salt_hex": "38341d662e5d4b5874aa2fde520fb32e248d50ae34774db6ee72522ece80d0a9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303031222c2276616c7565223a317d",
+          "index": 1,
+          "leaf_hex": "3b6f7b64c82875e5b6dfe322f12e809c8720772c818cd992e9f5f0c7240673ca",
+          "proof_hex": [
+            "6cdd4608eae7196ef5737e6d440a64148ceac452a86df1533420177dc63b5836",
+            "bb8974f102d5b070797483918f38339f79ce0e3a1c144cd5e0c2f6a16d2a44f4",
+            "d8ce22c58d3f1bc25bcced8f58c7bf76a350ee2b61a782d12c14f339fd252d86",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-002",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 2
+          },
+          "salt_hex": "4a6205b2b76459d70af3803ec60d6e263775b0dcaac79a93b41d9b242157386e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303032222c2276616c7565223a327d",
+          "index": 2,
+          "leaf_hex": "cb16c1e0b1423b405096f6dc1720f97b042d24b6ba207dc5a17258edcc54583c",
+          "proof_hex": [
+            "7860b69816dc352099149cb774427454fb92f4c130ca175ab0cdf6f4d5237b8d",
+            "183d663cfc227bcccfb3d515ba970a133c5d692c9fdfbd35f82e67fddc20ffe3",
+            "d8ce22c58d3f1bc25bcced8f58c7bf76a350ee2b61a782d12c14f339fd252d86",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-003",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 3
+          },
+          "salt_hex": "b0a318b4c288042cfb7fb25872f972096a10dde33c4561c1bc67512f58e2cefd",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303033222c2276616c7565223a337d",
+          "index": 3,
+          "leaf_hex": "7860b69816dc352099149cb774427454fb92f4c130ca175ab0cdf6f4d5237b8d",
+          "proof_hex": [
+            "cb16c1e0b1423b405096f6dc1720f97b042d24b6ba207dc5a17258edcc54583c",
+            "183d663cfc227bcccfb3d515ba970a133c5d692c9fdfbd35f82e67fddc20ffe3",
+            "d8ce22c58d3f1bc25bcced8f58c7bf76a350ee2b61a782d12c14f339fd252d86",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-004",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 4
+          },
+          "salt_hex": "6892e3b1416387fcfa6ca994945c1156a26e14bdd70ecce0d4c8aeff14d36f14",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303034222c2276616c7565223a347d",
+          "index": 4,
+          "leaf_hex": "d4c32e19825f88a95da869f4c7cfced730ca9120b8471ceb117e23656dbd5098",
+          "proof_hex": [
+            "b57093d3f9e3d6a4e7d2314a4e13b4dc703901ecf85752e44fc3795704925c64",
+            "d40a3d6ad4fbd303f2c8db2f258286937730c5be982ff8f8b462f6dbe978e82c",
+            "91860183d72c5fefa1c404024518e8a665e2b1c4b0bcdf08643aa91dc57ae0dd",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-005",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 5
+          },
+          "salt_hex": "a602d19562565b42c10d09b1324705515c79e4474574ca912b5d585252ce0d27",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303035222c2276616c7565223a357d",
+          "index": 5,
+          "leaf_hex": "b57093d3f9e3d6a4e7d2314a4e13b4dc703901ecf85752e44fc3795704925c64",
+          "proof_hex": [
+            "d4c32e19825f88a95da869f4c7cfced730ca9120b8471ceb117e23656dbd5098",
+            "d40a3d6ad4fbd303f2c8db2f258286937730c5be982ff8f8b462f6dbe978e82c",
+            "91860183d72c5fefa1c404024518e8a665e2b1c4b0bcdf08643aa91dc57ae0dd",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-006",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 6
+          },
+          "salt_hex": "e70af12f2b7d87894e74a75bf7c5a9353db45ea6db1993b456accc12e85bd3c2",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303036222c2276616c7565223a367d",
+          "index": 6,
+          "leaf_hex": "72fd5a0b0441de2054c6359e5931f7f9955f519ba26f3bc231a56659bb4bf5af",
+          "proof_hex": [
+            "d763e57636c6059e734650230705b6c37170aa01bacc4e955ea39fc9704de0e0",
+            "9d68581a4187ea8323ca185a7a536342e0d5ab5b45a7cf0205cc153bf19832b3",
+            "91860183d72c5fefa1c404024518e8a665e2b1c4b0bcdf08643aa91dc57ae0dd",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-007",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 7
+          },
+          "salt_hex": "d08ecc752112fd79a0ae40455f8f836354db8a0a12e7f46c80007a3321f2af86",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303037222c2276616c7565223a377d",
+          "index": 7,
+          "leaf_hex": "d763e57636c6059e734650230705b6c37170aa01bacc4e955ea39fc9704de0e0",
+          "proof_hex": [
+            "72fd5a0b0441de2054c6359e5931f7f9955f519ba26f3bc231a56659bb4bf5af",
+            "9d68581a4187ea8323ca185a7a536342e0d5ab5b45a7cf0205cc153bf19832b3",
+            "91860183d72c5fefa1c404024518e8a665e2b1c4b0bcdf08643aa91dc57ae0dd",
+            "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-008",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 8
+          },
+          "salt_hex": "5fa15e2e17440be70aa8a40c254fed62fcdf11d6d667ba4523ad952adb137655",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303038222c2276616c7565223a387d",
+          "index": 8,
+          "leaf_hex": "90dd0c0b4a9e3092cf3db93d3434e70ce294aa61b5a4a64f68c168c3531e2550",
+          "proof_hex": [
+            "1253e05e37c7f8e2da000b49f79514dbb2cc288b16d85bda97451fd0e7c51fbe"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tree-17",
+      "count": 17,
+      "header_hash": "8fc6484ad3ba2d9125eb0603350072381ce9b40b1e64ece60bcf7a784027fe32",
+      "root_digest": "sha256:e031e2754b14ff0334ef7eaf3b0bceced049b6f924bd422c7ed1317320762b43",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "f6ec2530e231c385e344d0847ed126025f40dcef5fd8a54d39a201f5717ba902",
+          "proof_hex": [
+            "035f43d56dfe9deaf515f0192810ef474b1eeb332eb7c9bcecc89999bba63977",
+            "d0a337fc6063383e9d7df4917c7718ded6aa89619d4d63a766d6b341818599c8",
+            "2fc09ad47d5ce36e41b8a213a409b3e9258ce96eb71ca4d95c307244030e0622",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-001",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 1
+          },
+          "salt_hex": "38341d662e5d4b5874aa2fde520fb32e248d50ae34774db6ee72522ece80d0a9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303031222c2276616c7565223a317d",
+          "index": 1,
+          "leaf_hex": "035f43d56dfe9deaf515f0192810ef474b1eeb332eb7c9bcecc89999bba63977",
+          "proof_hex": [
+            "f6ec2530e231c385e344d0847ed126025f40dcef5fd8a54d39a201f5717ba902",
+            "d0a337fc6063383e9d7df4917c7718ded6aa89619d4d63a766d6b341818599c8",
+            "2fc09ad47d5ce36e41b8a213a409b3e9258ce96eb71ca4d95c307244030e0622",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-002",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 2
+          },
+          "salt_hex": "4a6205b2b76459d70af3803ec60d6e263775b0dcaac79a93b41d9b242157386e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303032222c2276616c7565223a327d",
+          "index": 2,
+          "leaf_hex": "3dd855b2e9243fa1737d39c28ad28a4df33ad39729dd8db8e2a74fe3992a20e8",
+          "proof_hex": [
+            "6c5a6a9851f6207b15b4679d2b31cf30d5fe03dd9a607e16d8a24615357dae8f",
+            "0b386ac7cf398298eef37adaae25e5bbb10147cac36697d7dcd703e2b7df9a51",
+            "2fc09ad47d5ce36e41b8a213a409b3e9258ce96eb71ca4d95c307244030e0622",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-003",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 3
+          },
+          "salt_hex": "b0a318b4c288042cfb7fb25872f972096a10dde33c4561c1bc67512f58e2cefd",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303033222c2276616c7565223a337d",
+          "index": 3,
+          "leaf_hex": "6c5a6a9851f6207b15b4679d2b31cf30d5fe03dd9a607e16d8a24615357dae8f",
+          "proof_hex": [
+            "3dd855b2e9243fa1737d39c28ad28a4df33ad39729dd8db8e2a74fe3992a20e8",
+            "0b386ac7cf398298eef37adaae25e5bbb10147cac36697d7dcd703e2b7df9a51",
+            "2fc09ad47d5ce36e41b8a213a409b3e9258ce96eb71ca4d95c307244030e0622",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-004",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 4
+          },
+          "salt_hex": "6892e3b1416387fcfa6ca994945c1156a26e14bdd70ecce0d4c8aeff14d36f14",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303034222c2276616c7565223a347d",
+          "index": 4,
+          "leaf_hex": "4b0ac4bea0d481ae5f2d5366c5d45af8667613121798672514157c6b54130279",
+          "proof_hex": [
+            "f463ada9795cf91e29b516a5ab3afebc17c200931a1cb4d6970fd8940d681b8f",
+            "b6f27da3d95473ae3728268be608b5995a75c6350a14639ec71a54b0a3b64a39",
+            "9fddf5de96984b5fdb85c5f6e281d1e863774173e499760e77fdb661cdf2a5e5",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-005",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 5
+          },
+          "salt_hex": "a602d19562565b42c10d09b1324705515c79e4474574ca912b5d585252ce0d27",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303035222c2276616c7565223a357d",
+          "index": 5,
+          "leaf_hex": "f463ada9795cf91e29b516a5ab3afebc17c200931a1cb4d6970fd8940d681b8f",
+          "proof_hex": [
+            "4b0ac4bea0d481ae5f2d5366c5d45af8667613121798672514157c6b54130279",
+            "b6f27da3d95473ae3728268be608b5995a75c6350a14639ec71a54b0a3b64a39",
+            "9fddf5de96984b5fdb85c5f6e281d1e863774173e499760e77fdb661cdf2a5e5",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-006",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 6
+          },
+          "salt_hex": "e70af12f2b7d87894e74a75bf7c5a9353db45ea6db1993b456accc12e85bd3c2",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303036222c2276616c7565223a367d",
+          "index": 6,
+          "leaf_hex": "0e3e4a532e1783b873e25de538f356bc7194b55dfd841e018d2400328dc2fdc0",
+          "proof_hex": [
+            "3df1c01b43252edbae2bf93ddff2a2e49a10c1652d03a0084b21e11fc5c69a9e",
+            "4d3190d5be62372eb2ddbd59d66bf7cca91a70cf99c16033972f3c84681d7e7e",
+            "9fddf5de96984b5fdb85c5f6e281d1e863774173e499760e77fdb661cdf2a5e5",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-007",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 7
+          },
+          "salt_hex": "d08ecc752112fd79a0ae40455f8f836354db8a0a12e7f46c80007a3321f2af86",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303037222c2276616c7565223a377d",
+          "index": 7,
+          "leaf_hex": "3df1c01b43252edbae2bf93ddff2a2e49a10c1652d03a0084b21e11fc5c69a9e",
+          "proof_hex": [
+            "0e3e4a532e1783b873e25de538f356bc7194b55dfd841e018d2400328dc2fdc0",
+            "4d3190d5be62372eb2ddbd59d66bf7cca91a70cf99c16033972f3c84681d7e7e",
+            "9fddf5de96984b5fdb85c5f6e281d1e863774173e499760e77fdb661cdf2a5e5",
+            "74e9c7ab05228a32915b0ec47fa39792e65cab42e174dbf606449aa11d17df07",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-008",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 8
+          },
+          "salt_hex": "5fa15e2e17440be70aa8a40c254fed62fcdf11d6d667ba4523ad952adb137655",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303038222c2276616c7565223a387d",
+          "index": 8,
+          "leaf_hex": "e62b9a79e78e4be1e08f6a84e55fe5a5ab09e39fd63280ee4d69248ed46bdb39",
+          "proof_hex": [
+            "fb84e481c354014ce13a7b9fc09e386a61826f1509aea79d711985e48ae3dc78",
+            "20db3b15187a427769a7cf3788b871f146130b0fd9419480ace75850db8b5832",
+            "e73796eb24da0da1fde074ad811467e39e6d970972dcc360ce71e1698c47dd1f",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-009",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 9
+          },
+          "salt_hex": "0bd7d20ec8907fd6f5d17bd2f757969325817fac69d90d8a1059afa3f0ed6eab",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303039222c2276616c7565223a397d",
+          "index": 9,
+          "leaf_hex": "fb84e481c354014ce13a7b9fc09e386a61826f1509aea79d711985e48ae3dc78",
+          "proof_hex": [
+            "e62b9a79e78e4be1e08f6a84e55fe5a5ab09e39fd63280ee4d69248ed46bdb39",
+            "20db3b15187a427769a7cf3788b871f146130b0fd9419480ace75850db8b5832",
+            "e73796eb24da0da1fde074ad811467e39e6d970972dcc360ce71e1698c47dd1f",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-010",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 10
+          },
+          "salt_hex": "48eaece2cdc50db89e73b4cd98aa22866e26e08ef37dde1e608267e54cf8bd80",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303130222c2276616c7565223a31307d",
+          "index": 10,
+          "leaf_hex": "4791dda6476d594a5a949c6727ae88118bdd22dd0fa9009c591f510df0c68c8c",
+          "proof_hex": [
+            "15b61eb11c9995db6b7158430e8457a8f0c5d0d73e6962c6b8a378e5d4ed603f",
+            "eac3d88faf81b584d59140e7d5a1f6b17adbf9a1298bf433fb8b4a2dfb95185e",
+            "e73796eb24da0da1fde074ad811467e39e6d970972dcc360ce71e1698c47dd1f",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-011",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 11
+          },
+          "salt_hex": "42aff98d3b1dd9a4ca2a0c105177b7897c53225d14e5661b362dfb6c7dac5979",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303131222c2276616c7565223a31317d",
+          "index": 11,
+          "leaf_hex": "15b61eb11c9995db6b7158430e8457a8f0c5d0d73e6962c6b8a378e5d4ed603f",
+          "proof_hex": [
+            "4791dda6476d594a5a949c6727ae88118bdd22dd0fa9009c591f510df0c68c8c",
+            "eac3d88faf81b584d59140e7d5a1f6b17adbf9a1298bf433fb8b4a2dfb95185e",
+            "e73796eb24da0da1fde074ad811467e39e6d970972dcc360ce71e1698c47dd1f",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-012",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 12
+          },
+          "salt_hex": "e68a07776baa20ffd39821931f99bc1b7d15b549d3eb1cdd595b32b793e84a8d",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303132222c2276616c7565223a31327d",
+          "index": 12,
+          "leaf_hex": "70ceb7887fd6907c88e68d297aa395d303125fda8dc34b852fbda8028c42be6c",
+          "proof_hex": [
+            "ae6841f299e746467dc5fc9cd5da463cbf5226d3714d7afae9848b796bf4c434",
+            "b7cee590dd9a655e570cf677e8bdafc60d385bcb168ba078dd0412d6a1db80fe",
+            "76991a1fc0af3d8504a5e4f31bae0f46394ab78de2fa9980b9b714ccbf450fcc",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-013",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 13
+          },
+          "salt_hex": "6acfe28981cc674beefd1e67670a1c44cd049b9d1fb0dab53317185788cc63b6",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303133222c2276616c7565223a31337d",
+          "index": 13,
+          "leaf_hex": "ae6841f299e746467dc5fc9cd5da463cbf5226d3714d7afae9848b796bf4c434",
+          "proof_hex": [
+            "70ceb7887fd6907c88e68d297aa395d303125fda8dc34b852fbda8028c42be6c",
+            "b7cee590dd9a655e570cf677e8bdafc60d385bcb168ba078dd0412d6a1db80fe",
+            "76991a1fc0af3d8504a5e4f31bae0f46394ab78de2fa9980b9b714ccbf450fcc",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-014",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 14
+          },
+          "salt_hex": "d525f860fec5e1a40e229a2e72999b4819d476b2fdc1e94064ecec4afe7279bf",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303134222c2276616c7565223a31347d",
+          "index": 14,
+          "leaf_hex": "a7ad6c1194b1b61e37b3f01ef8c8277732eab668351b3ff494f75919d19b9df3",
+          "proof_hex": [
+            "63e40db96c4eef06e6af8a777eea9f6a3e33279acd1ff452a95bf438914417df",
+            "a4512401f2b1e5ada7fb7a5eededc47bb90c0a4631a47a1b8a3c561e909cf7bd",
+            "76991a1fc0af3d8504a5e4f31bae0f46394ab78de2fa9980b9b714ccbf450fcc",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-015",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 15
+          },
+          "salt_hex": "119afd77833697b847f0bb30b564c8841d71d209dea98339599f9fff12232699",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303135222c2276616c7565223a31357d",
+          "index": 15,
+          "leaf_hex": "63e40db96c4eef06e6af8a777eea9f6a3e33279acd1ff452a95bf438914417df",
+          "proof_hex": [
+            "a7ad6c1194b1b61e37b3f01ef8c8277732eab668351b3ff494f75919d19b9df3",
+            "a4512401f2b1e5ada7fb7a5eededc47bb90c0a4631a47a1b8a3c561e909cf7bd",
+            "76991a1fc0af3d8504a5e4f31bae0f46394ab78de2fa9980b9b714ccbf450fcc",
+            "826e79fc0163756a4b027ca0e5ea8f8f6311616b0a2de4a2803cc55a70dd2135",
+            "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-016",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 16
+          },
+          "salt_hex": "f2fae05101c978119199c9a256c52540eb74fdddd977bcc7505b552324b72aa3",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303136222c2276616c7565223a31367d",
+          "index": 16,
+          "leaf_hex": "58b30cdd0e703a422db0561be035f575c1a2dc18a6e0bd712a71d4d91540cbaa",
+          "proof_hex": [
+            "6d30671a6db47764a8fe159a6e83f8e2e15cceec0cccee56f5de06785c2e1a65"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tree-64",
+      "count": 64,
+      "header_hash": "bad0fa9625e0c1051db6e020c21c120a26d5dd76e2c80b067844e44fc7d9875e",
+      "root_digest": "sha256:bb0415ecf58ab9396b673f6dc6be478ec7fb8fb15cf36eab8fdb94d7a495d34f",
+      "facts": [
+        {
+          "fact": {
+            "name": "sample.fact-000",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 0
+          },
+          "salt_hex": "7257303e14682a4f76b14a411dcc855a37f156c717986db3c005bd82f13eb994",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303030222c2276616c7565223a307d",
+          "index": 0,
+          "leaf_hex": "2f57a1415505b09405b0d03068cc631917095594e0a0123b2d7045e72f8febd4",
+          "proof_hex": [
+            "7267b6be5a1e1ed1c238af53618598e6a187b0fa26c94ff5a639fae03433b0b8",
+            "61d29ca668017c83619d4e3918dd91f40d191d34734a441ac86ef8deca8d032b",
+            "47672e495c0db66c802e724bbecfa5251fe63ddf282b5107f4e14f6ed4bb6ea1",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-001",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 1
+          },
+          "salt_hex": "38341d662e5d4b5874aa2fde520fb32e248d50ae34774db6ee72522ece80d0a9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303031222c2276616c7565223a317d",
+          "index": 1,
+          "leaf_hex": "7267b6be5a1e1ed1c238af53618598e6a187b0fa26c94ff5a639fae03433b0b8",
+          "proof_hex": [
+            "2f57a1415505b09405b0d03068cc631917095594e0a0123b2d7045e72f8febd4",
+            "61d29ca668017c83619d4e3918dd91f40d191d34734a441ac86ef8deca8d032b",
+            "47672e495c0db66c802e724bbecfa5251fe63ddf282b5107f4e14f6ed4bb6ea1",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-002",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 2
+          },
+          "salt_hex": "4a6205b2b76459d70af3803ec60d6e263775b0dcaac79a93b41d9b242157386e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303032222c2276616c7565223a327d",
+          "index": 2,
+          "leaf_hex": "acb5c3987c17a843af8c0c7015f31723a23b2ef9596bd35a5f26c7ea909f73fc",
+          "proof_hex": [
+            "e0b9978079078a5fc1d36016562b0a00a2e117a6ac773c6817957133caf6c01a",
+            "ce0935a309429a5239d793718dacb337e98675c33074eb75b7ab16b508b0740f",
+            "47672e495c0db66c802e724bbecfa5251fe63ddf282b5107f4e14f6ed4bb6ea1",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-003",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 3
+          },
+          "salt_hex": "b0a318b4c288042cfb7fb25872f972096a10dde33c4561c1bc67512f58e2cefd",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303033222c2276616c7565223a337d",
+          "index": 3,
+          "leaf_hex": "e0b9978079078a5fc1d36016562b0a00a2e117a6ac773c6817957133caf6c01a",
+          "proof_hex": [
+            "acb5c3987c17a843af8c0c7015f31723a23b2ef9596bd35a5f26c7ea909f73fc",
+            "ce0935a309429a5239d793718dacb337e98675c33074eb75b7ab16b508b0740f",
+            "47672e495c0db66c802e724bbecfa5251fe63ddf282b5107f4e14f6ed4bb6ea1",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-004",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 4
+          },
+          "salt_hex": "6892e3b1416387fcfa6ca994945c1156a26e14bdd70ecce0d4c8aeff14d36f14",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303034222c2276616c7565223a347d",
+          "index": 4,
+          "leaf_hex": "a9dd5a53983eb3bf6d5c40158f2b21d6f9c5090e1ca719ac69575c03834075d6",
+          "proof_hex": [
+            "f91b2690ddc0c2f2a83011acfa09ac12acf9a2f45c03950b2904a27ae34870fe",
+            "421c8f85fa2ed330b4cdc6b98931a1c89ddf43f66b49dbf4dbfb4137500b3c78",
+            "1bb47362ab0017c0784cad47d2b5a6598446bc41b1788ee5fff6a7302c2566be",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-005",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 5
+          },
+          "salt_hex": "a602d19562565b42c10d09b1324705515c79e4474574ca912b5d585252ce0d27",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303035222c2276616c7565223a357d",
+          "index": 5,
+          "leaf_hex": "f91b2690ddc0c2f2a83011acfa09ac12acf9a2f45c03950b2904a27ae34870fe",
+          "proof_hex": [
+            "a9dd5a53983eb3bf6d5c40158f2b21d6f9c5090e1ca719ac69575c03834075d6",
+            "421c8f85fa2ed330b4cdc6b98931a1c89ddf43f66b49dbf4dbfb4137500b3c78",
+            "1bb47362ab0017c0784cad47d2b5a6598446bc41b1788ee5fff6a7302c2566be",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-006",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 6
+          },
+          "salt_hex": "e70af12f2b7d87894e74a75bf7c5a9353db45ea6db1993b456accc12e85bd3c2",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303036222c2276616c7565223a367d",
+          "index": 6,
+          "leaf_hex": "d5d8d34aa5011417e53af5f2113af828967f6c94f504067ffcf37e26d2148b95",
+          "proof_hex": [
+            "652bccb94e36226a5860c062bde73b50cd2162b12583d86af5b9f0a11dbdcdcb",
+            "feb5250fd650344342ad5293aeab9243b471ef7f868b6ed8e442adba119cbd20",
+            "1bb47362ab0017c0784cad47d2b5a6598446bc41b1788ee5fff6a7302c2566be",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-007",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 7
+          },
+          "salt_hex": "d08ecc752112fd79a0ae40455f8f836354db8a0a12e7f46c80007a3321f2af86",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303037222c2276616c7565223a377d",
+          "index": 7,
+          "leaf_hex": "652bccb94e36226a5860c062bde73b50cd2162b12583d86af5b9f0a11dbdcdcb",
+          "proof_hex": [
+            "d5d8d34aa5011417e53af5f2113af828967f6c94f504067ffcf37e26d2148b95",
+            "feb5250fd650344342ad5293aeab9243b471ef7f868b6ed8e442adba119cbd20",
+            "1bb47362ab0017c0784cad47d2b5a6598446bc41b1788ee5fff6a7302c2566be",
+            "76f936ba5cab5a83db29bb7808c64fcf743e7a224912a01a65a8174c0da266dd",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-008",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 8
+          },
+          "salt_hex": "5fa15e2e17440be70aa8a40c254fed62fcdf11d6d667ba4523ad952adb137655",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303038222c2276616c7565223a387d",
+          "index": 8,
+          "leaf_hex": "df278f8594afe3eeff29679fd69af8ae362f24ca71998f1ad5043e56bd33b813",
+          "proof_hex": [
+            "fc232e7553c717d3507850960a924254d7b591f9351c0a09131829963f73c97b",
+            "f91790f59bebb31b09dc90c7e17454aa1e896c42fe59147d6d787b87a83a3d86",
+            "dc858013956e6412263e2e9f77a7a6eb06c10c2985b67589a360160d7b16729e",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-009",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 9
+          },
+          "salt_hex": "0bd7d20ec8907fd6f5d17bd2f757969325817fac69d90d8a1059afa3f0ed6eab",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303039222c2276616c7565223a397d",
+          "index": 9,
+          "leaf_hex": "fc232e7553c717d3507850960a924254d7b591f9351c0a09131829963f73c97b",
+          "proof_hex": [
+            "df278f8594afe3eeff29679fd69af8ae362f24ca71998f1ad5043e56bd33b813",
+            "f91790f59bebb31b09dc90c7e17454aa1e896c42fe59147d6d787b87a83a3d86",
+            "dc858013956e6412263e2e9f77a7a6eb06c10c2985b67589a360160d7b16729e",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-010",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 10
+          },
+          "salt_hex": "48eaece2cdc50db89e73b4cd98aa22866e26e08ef37dde1e608267e54cf8bd80",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303130222c2276616c7565223a31307d",
+          "index": 10,
+          "leaf_hex": "b79c2b2200dc98e584648322a392e117893fcb72a26ab539d305853139ef0812",
+          "proof_hex": [
+            "650038f5e6e61495084ba45d890ac8dc72e9ee5a549c9e44fbaaa85e3679c807",
+            "eec4aef29e9e1077619f0b215eb16d99e59425947a49a274f514fa7352bd23b7",
+            "dc858013956e6412263e2e9f77a7a6eb06c10c2985b67589a360160d7b16729e",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-011",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 11
+          },
+          "salt_hex": "42aff98d3b1dd9a4ca2a0c105177b7897c53225d14e5661b362dfb6c7dac5979",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303131222c2276616c7565223a31317d",
+          "index": 11,
+          "leaf_hex": "650038f5e6e61495084ba45d890ac8dc72e9ee5a549c9e44fbaaa85e3679c807",
+          "proof_hex": [
+            "b79c2b2200dc98e584648322a392e117893fcb72a26ab539d305853139ef0812",
+            "eec4aef29e9e1077619f0b215eb16d99e59425947a49a274f514fa7352bd23b7",
+            "dc858013956e6412263e2e9f77a7a6eb06c10c2985b67589a360160d7b16729e",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-012",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 12
+          },
+          "salt_hex": "e68a07776baa20ffd39821931f99bc1b7d15b549d3eb1cdd595b32b793e84a8d",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303132222c2276616c7565223a31327d",
+          "index": 12,
+          "leaf_hex": "c39a0567419ecd8f1a89e1f3cfae8cce1e8ce4727b82742653efeb491fd43f61",
+          "proof_hex": [
+            "4245680f2eb23cf2d8ffa88d2f81de12113e0450d035fe00181aa1b5848e6e97",
+            "3531e202340512e9cf9b474029bfc0a71d642de1fd538e2e92f7432e8f60bded",
+            "eac8fbfaa78d0dbb2667200e2a05cf5d810b0330a3909e77e16ee54ba795cd7f",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-013",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 13
+          },
+          "salt_hex": "6acfe28981cc674beefd1e67670a1c44cd049b9d1fb0dab53317185788cc63b6",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303133222c2276616c7565223a31337d",
+          "index": 13,
+          "leaf_hex": "4245680f2eb23cf2d8ffa88d2f81de12113e0450d035fe00181aa1b5848e6e97",
+          "proof_hex": [
+            "c39a0567419ecd8f1a89e1f3cfae8cce1e8ce4727b82742653efeb491fd43f61",
+            "3531e202340512e9cf9b474029bfc0a71d642de1fd538e2e92f7432e8f60bded",
+            "eac8fbfaa78d0dbb2667200e2a05cf5d810b0330a3909e77e16ee54ba795cd7f",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-014",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 14
+          },
+          "salt_hex": "d525f860fec5e1a40e229a2e72999b4819d476b2fdc1e94064ecec4afe7279bf",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303134222c2276616c7565223a31347d",
+          "index": 14,
+          "leaf_hex": "86f5726eeb83a6036934ee2d6a14d48952859a7e3ff46df338b83e08d9d24b92",
+          "proof_hex": [
+            "ac5807153a5a6c8603cfa469a24a535099254a61ae206d11f2fe2c8f991f2aa9",
+            "858fe2c4a6d0b7254f43c36f90aa0b3e01f2372e6a05cc9eed290d5339463ace",
+            "eac8fbfaa78d0dbb2667200e2a05cf5d810b0330a3909e77e16ee54ba795cd7f",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-015",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 15
+          },
+          "salt_hex": "119afd77833697b847f0bb30b564c8841d71d209dea98339599f9fff12232699",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303135222c2276616c7565223a31357d",
+          "index": 15,
+          "leaf_hex": "ac5807153a5a6c8603cfa469a24a535099254a61ae206d11f2fe2c8f991f2aa9",
+          "proof_hex": [
+            "86f5726eeb83a6036934ee2d6a14d48952859a7e3ff46df338b83e08d9d24b92",
+            "858fe2c4a6d0b7254f43c36f90aa0b3e01f2372e6a05cc9eed290d5339463ace",
+            "eac8fbfaa78d0dbb2667200e2a05cf5d810b0330a3909e77e16ee54ba795cd7f",
+            "308ef41ce5d56eb42a701a90c841b006b01b4f2869cb858d0e16f8ac5e8ef575",
+            "f80fa8342e86a60f44ed631f3125815e6518553525cd5e0120d658ab0ae962db",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-016",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 16
+          },
+          "salt_hex": "f2fae05101c978119199c9a256c52540eb74fdddd977bcc7505b552324b72aa3",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303136222c2276616c7565223a31367d",
+          "index": 16,
+          "leaf_hex": "2e0b6cbfa29c0fb9bcc6d4fcf9dfb891e119536ac84871b8656259d58b8297a2",
+          "proof_hex": [
+            "50e3a6f8a3f09988c1427a5a0c90c3808e1e1780f7cee1b79c5bd30241892d1e",
+            "6120eb6591fec98db98f884208c09b9bd409dc528162f4c47e726779d4b12bc8",
+            "f5f2cb2740348708208ff188d0693a055088cedf8b386c684c382f7722c2d020",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-017",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 17
+          },
+          "salt_hex": "7e2f427b7f876ff78d808ec729c43c17f2dca6018a81a90a9d365bf378cdd1ef",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303137222c2276616c7565223a31377d",
+          "index": 17,
+          "leaf_hex": "50e3a6f8a3f09988c1427a5a0c90c3808e1e1780f7cee1b79c5bd30241892d1e",
+          "proof_hex": [
+            "2e0b6cbfa29c0fb9bcc6d4fcf9dfb891e119536ac84871b8656259d58b8297a2",
+            "6120eb6591fec98db98f884208c09b9bd409dc528162f4c47e726779d4b12bc8",
+            "f5f2cb2740348708208ff188d0693a055088cedf8b386c684c382f7722c2d020",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-018",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 18
+          },
+          "salt_hex": "df57d1b9d36cc7328a47dfea39f68ef17971acb9640bd128cae78a7530607130",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303138222c2276616c7565223a31387d",
+          "index": 18,
+          "leaf_hex": "dcc7d87c3dea444927c0a5ff28505c3369ee45e3676196618d0b16f4d14e546a",
+          "proof_hex": [
+            "9358dab16899961d1c52a8ef185a58eb5c61684ed3b5a0912c6e240cddbd801b",
+            "c71e8b2bbcee8686e528e0204fc9ddde676b9421a12bbe57b4f5bef6e7b4a0e2",
+            "f5f2cb2740348708208ff188d0693a055088cedf8b386c684c382f7722c2d020",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-019",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 19
+          },
+          "salt_hex": "affc45bfe01fde4d8e48d6b6bd2df311599732c61c825ae339be7adc7b027255",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303139222c2276616c7565223a31397d",
+          "index": 19,
+          "leaf_hex": "9358dab16899961d1c52a8ef185a58eb5c61684ed3b5a0912c6e240cddbd801b",
+          "proof_hex": [
+            "dcc7d87c3dea444927c0a5ff28505c3369ee45e3676196618d0b16f4d14e546a",
+            "c71e8b2bbcee8686e528e0204fc9ddde676b9421a12bbe57b4f5bef6e7b4a0e2",
+            "f5f2cb2740348708208ff188d0693a055088cedf8b386c684c382f7722c2d020",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-020",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 20
+          },
+          "salt_hex": "d99a3b854e51bb07cdabeff056d4a46779e0f0b2d45488ea39266b24be64951f",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303230222c2276616c7565223a32307d",
+          "index": 20,
+          "leaf_hex": "1d2c9c71170cd074ed5cbcbc573ad83f201048539de814bdd080533c1c022dea",
+          "proof_hex": [
+            "97dd2c1dbe1895eee77ff3ecdf5206370c3ebe831a691798fcf1a56005e09689",
+            "08cfb8688f8f85f9e917730c3ab5836ba546775f796d63d51a9d8326a53465e5",
+            "0903a42154465117e3b73f3ea91d440f30df12f176fb1902ba1741e70257652e",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-021",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 21
+          },
+          "salt_hex": "88e96f3135bc9940762b7827ccc0f5a82008f55d9c59d2fe9b7f3af0044c5152",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303231222c2276616c7565223a32317d",
+          "index": 21,
+          "leaf_hex": "97dd2c1dbe1895eee77ff3ecdf5206370c3ebe831a691798fcf1a56005e09689",
+          "proof_hex": [
+            "1d2c9c71170cd074ed5cbcbc573ad83f201048539de814bdd080533c1c022dea",
+            "08cfb8688f8f85f9e917730c3ab5836ba546775f796d63d51a9d8326a53465e5",
+            "0903a42154465117e3b73f3ea91d440f30df12f176fb1902ba1741e70257652e",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-022",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 22
+          },
+          "salt_hex": "ce6b334a2b56bfda3dad27c7e815abdcfca0ef1ab4adfc97f5ef8855b01bec01",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303232222c2276616c7565223a32327d",
+          "index": 22,
+          "leaf_hex": "24195e00d62e6724aefc4fc03050977d2152222ef2b45b30fbbfc9488ec18bf9",
+          "proof_hex": [
+            "3d8e3eecbeb9cee8895fc92006d1da2c206fd98bda31b36b374609514fe32b07",
+            "57e1900ea7d5925d61ebdb992902e97c824d109a602e34bdbe9fdc79aeedc905",
+            "0903a42154465117e3b73f3ea91d440f30df12f176fb1902ba1741e70257652e",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-023",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 23
+          },
+          "salt_hex": "0aa5e34576c17630db661e4a2fab58850569a87f1b6e2e8ceceedcafd8e6bdf9",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303233222c2276616c7565223a32337d",
+          "index": 23,
+          "leaf_hex": "3d8e3eecbeb9cee8895fc92006d1da2c206fd98bda31b36b374609514fe32b07",
+          "proof_hex": [
+            "24195e00d62e6724aefc4fc03050977d2152222ef2b45b30fbbfc9488ec18bf9",
+            "57e1900ea7d5925d61ebdb992902e97c824d109a602e34bdbe9fdc79aeedc905",
+            "0903a42154465117e3b73f3ea91d440f30df12f176fb1902ba1741e70257652e",
+            "4f8df0dafd713554700a0a08b89d0fd97979a1adb8081ccc984f74940afff2cc",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-024",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 24
+          },
+          "salt_hex": "64293387938d80c87f66737a7da900d84a0427fe9d21f5a77facb1fd12c444dd",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303234222c2276616c7565223a32347d",
+          "index": 24,
+          "leaf_hex": "3a4f0bc5633ec9038479d401feaf2ef421339b3cc1a121cd07b11900d608d509",
+          "proof_hex": [
+            "1b2ccbeb45525c6c37e1fb017c3316ea83c144fdfce900978a5ffb6ed42293e2",
+            "5c55d8866f96f1e6a8d4e743885d5e03cc26f301431500a974717ff660bf98d9",
+            "2726d85de934234ea00f9c31c6a65dba0a162580b6c4e3db3c060124ee8483b8",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-025",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 25
+          },
+          "salt_hex": "eb3b4283e4deb3ce51b366e484044bb1b41567e3e1474643b6a8e97de9e7e056",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303235222c2276616c7565223a32357d",
+          "index": 25,
+          "leaf_hex": "1b2ccbeb45525c6c37e1fb017c3316ea83c144fdfce900978a5ffb6ed42293e2",
+          "proof_hex": [
+            "3a4f0bc5633ec9038479d401feaf2ef421339b3cc1a121cd07b11900d608d509",
+            "5c55d8866f96f1e6a8d4e743885d5e03cc26f301431500a974717ff660bf98d9",
+            "2726d85de934234ea00f9c31c6a65dba0a162580b6c4e3db3c060124ee8483b8",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-026",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 26
+          },
+          "salt_hex": "1e4b2a7e3d6c706bf0d3729fabb7e6dc2c3ac3ef71104e499efbec18cf066af2",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303236222c2276616c7565223a32367d",
+          "index": 26,
+          "leaf_hex": "c45d96c672a51fd8f5bf57c342d2752442b6d2e23cc2f7e1861f8591fcb504a2",
+          "proof_hex": [
+            "3be848ff1b5f3ee2b6f93db2a34a6ae44c2a2d269cd456fd34455f46507beff2",
+            "b5178abae63cfc2954923c712d51a2ceae7a8f95c9ea99d6cd61d42eb775a3c8",
+            "2726d85de934234ea00f9c31c6a65dba0a162580b6c4e3db3c060124ee8483b8",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-027",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 27
+          },
+          "salt_hex": "c55a08834c8ae1215ec4de796ecf3564c3f3c9817f296e15969577d216bde70a",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303237222c2276616c7565223a32377d",
+          "index": 27,
+          "leaf_hex": "3be848ff1b5f3ee2b6f93db2a34a6ae44c2a2d269cd456fd34455f46507beff2",
+          "proof_hex": [
+            "c45d96c672a51fd8f5bf57c342d2752442b6d2e23cc2f7e1861f8591fcb504a2",
+            "b5178abae63cfc2954923c712d51a2ceae7a8f95c9ea99d6cd61d42eb775a3c8",
+            "2726d85de934234ea00f9c31c6a65dba0a162580b6c4e3db3c060124ee8483b8",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-028",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 28
+          },
+          "salt_hex": "81dde8f635d01e46f117fda3ab538b8ca09c36453371d58a8bfe8a5a657cec15",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303238222c2276616c7565223a32387d",
+          "index": 28,
+          "leaf_hex": "d8e8c7d1b7814f323f270d644188b4a73f40f90bcc32c8c2718b5cfb1dea1d63",
+          "proof_hex": [
+            "ef31c7980cafddf8369b59b237325729ca2b0a25a60f27122a21cc06fa9e6de4",
+            "1d674a2e2a102363ccce9cc49c1d10e419ce2d77fa64b9140fc5a73c0f066dc7",
+            "a5029b45546fa7d6ebcca47077b70d6c15cce1a00ae94e5059f23f777f12d698",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-029",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 29
+          },
+          "salt_hex": "23ba0984206e155221471389134ed6170ab2a4bad30c268ff8ebdfb64c58097d",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303239222c2276616c7565223a32397d",
+          "index": 29,
+          "leaf_hex": "ef31c7980cafddf8369b59b237325729ca2b0a25a60f27122a21cc06fa9e6de4",
+          "proof_hex": [
+            "d8e8c7d1b7814f323f270d644188b4a73f40f90bcc32c8c2718b5cfb1dea1d63",
+            "1d674a2e2a102363ccce9cc49c1d10e419ce2d77fa64b9140fc5a73c0f066dc7",
+            "a5029b45546fa7d6ebcca47077b70d6c15cce1a00ae94e5059f23f777f12d698",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-030",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 30
+          },
+          "salt_hex": "35c4527e1b70649f7704907fc0219f1ac0b92fa092678e135f87bbde7f8b3740",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303330222c2276616c7565223a33307d",
+          "index": 30,
+          "leaf_hex": "65fa48a704cd6741ac64937e749b963a07dadf53c954d2cd8e79336112e2fa4d",
+          "proof_hex": [
+            "9a01a286f7170c24362d7a3750d97c09dc5bf7755de5fe07a42533322529e107",
+            "a25a3dee1522ed30f7f1e1e0e32182ad7bba18f1cf07c6e295e535efa978ab8e",
+            "a5029b45546fa7d6ebcca47077b70d6c15cce1a00ae94e5059f23f777f12d698",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-031",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 31
+          },
+          "salt_hex": "59b98cea26ea9a676791984e5facaa650785b3ccc03c9420bc4842c26f31a46d",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303331222c2276616c7565223a33317d",
+          "index": 31,
+          "leaf_hex": "9a01a286f7170c24362d7a3750d97c09dc5bf7755de5fe07a42533322529e107",
+          "proof_hex": [
+            "65fa48a704cd6741ac64937e749b963a07dadf53c954d2cd8e79336112e2fa4d",
+            "a25a3dee1522ed30f7f1e1e0e32182ad7bba18f1cf07c6e295e535efa978ab8e",
+            "a5029b45546fa7d6ebcca47077b70d6c15cce1a00ae94e5059f23f777f12d698",
+            "464f52d0e8cced7f9430433e47fe000e32a76253df8285a02e23b148d15eb0e3",
+            "61e20ce3508a1fac649f2e3c153dfeb2d2a8008a7763087cc82e458489a22035",
+            "04179a828665903412cf9bd4bb1f2aa7aa9ab80f026bde26e2fa12d43aacc280"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-032",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 32
+          },
+          "salt_hex": "386bf650052dcc6f931893ebc5839820408dbd7105a2bfcb46be3f912b16bb6e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303332222c2276616c7565223a33327d",
+          "index": 32,
+          "leaf_hex": "f2ed996d0aaa27611e95421d9ba1c6b34b4df3e147d40beb3a1f496b5b08f30a",
+          "proof_hex": [
+            "cfdbbacaaa9e209c25c10336cec212e8f15faea1abfbbb6a8e2ae24ece95601f",
+            "1fb8da6f18ec8d011b8043030566cef0096b3e4e3cc558c467c817f34790c023",
+            "385d0785fefe8988c34525af83bd5448a952893d0f594b8db2046f0e1b640c9c",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-033",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 33
+          },
+          "salt_hex": "00ced75d134f455a7b3ee4b3a7b5ea36c2c1dafe1ff5e2cac55d8fde48ce02d0",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303333222c2276616c7565223a33337d",
+          "index": 33,
+          "leaf_hex": "cfdbbacaaa9e209c25c10336cec212e8f15faea1abfbbb6a8e2ae24ece95601f",
+          "proof_hex": [
+            "f2ed996d0aaa27611e95421d9ba1c6b34b4df3e147d40beb3a1f496b5b08f30a",
+            "1fb8da6f18ec8d011b8043030566cef0096b3e4e3cc558c467c817f34790c023",
+            "385d0785fefe8988c34525af83bd5448a952893d0f594b8db2046f0e1b640c9c",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-034",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 34
+          },
+          "salt_hex": "10f20d207017492d321b69f45d5eed612ee246b3d6cc9c874ce15dda413e3bd4",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303334222c2276616c7565223a33347d",
+          "index": 34,
+          "leaf_hex": "724153c01653a97736ef3ed6066dff6ac96fa66a7946f2336a72fd8fc6fa1a1f",
+          "proof_hex": [
+            "d43a1254f4194ca31435a195afe08cb004fd46270c467b26eca4b6498f368a53",
+            "ae8261f7220308bd2d62d64d3b3000f9001918153eee9fdea15ae4168ebb973e",
+            "385d0785fefe8988c34525af83bd5448a952893d0f594b8db2046f0e1b640c9c",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-035",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 35
+          },
+          "salt_hex": "484b4b735f9e4c6ae077966b7c6ffd3cc912385d0c8c6933b0573af37e2bb549",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303335222c2276616c7565223a33357d",
+          "index": 35,
+          "leaf_hex": "d43a1254f4194ca31435a195afe08cb004fd46270c467b26eca4b6498f368a53",
+          "proof_hex": [
+            "724153c01653a97736ef3ed6066dff6ac96fa66a7946f2336a72fd8fc6fa1a1f",
+            "ae8261f7220308bd2d62d64d3b3000f9001918153eee9fdea15ae4168ebb973e",
+            "385d0785fefe8988c34525af83bd5448a952893d0f594b8db2046f0e1b640c9c",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-036",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 36
+          },
+          "salt_hex": "49f430aa8bd90b5c54743cff03af93b902a4e7307780c63c879794a2b29de7d1",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303336222c2276616c7565223a33367d",
+          "index": 36,
+          "leaf_hex": "99d3eb45a8f841cd2a311cd02ded88e10c27398ff1b93825e0401a110b4c788b",
+          "proof_hex": [
+            "134b67f54fa7b1eba152d5955077a48f35f4e73dbde629ee7881222bef29e297",
+            "5d9d685e6e619401c4a4b7e7623894b90505f88de67d328b889e7c4e01dba60a",
+            "bfaa3a4b1bcb2cd9772b5c3a760369126ec0963408c883c347eb31a64db4388e",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-037",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 37
+          },
+          "salt_hex": "e7cf3810c06644f85e9d43a831c6d759037aa52115f8ace243617f68101fec83",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303337222c2276616c7565223a33377d",
+          "index": 37,
+          "leaf_hex": "134b67f54fa7b1eba152d5955077a48f35f4e73dbde629ee7881222bef29e297",
+          "proof_hex": [
+            "99d3eb45a8f841cd2a311cd02ded88e10c27398ff1b93825e0401a110b4c788b",
+            "5d9d685e6e619401c4a4b7e7623894b90505f88de67d328b889e7c4e01dba60a",
+            "bfaa3a4b1bcb2cd9772b5c3a760369126ec0963408c883c347eb31a64db4388e",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-038",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 38
+          },
+          "salt_hex": "145b24a586152d24da0d0ec1eb7b10982ebebcfe3de44a8810751bcf675dd9f2",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303338222c2276616c7565223a33387d",
+          "index": 38,
+          "leaf_hex": "8ca12443cd7557e760771a2ba8e4891d9cfc88fe84dda7246995b5cf49cb8211",
+          "proof_hex": [
+            "0db1bf84da4b5da82eda27b58a48a8013191d99faeffc6f839aada09bc606e4f",
+            "37fbabf27b94363edf2354a2d5bac8ed52c1724bf3bb0212a0debbd405cf8c5e",
+            "bfaa3a4b1bcb2cd9772b5c3a760369126ec0963408c883c347eb31a64db4388e",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-039",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 39
+          },
+          "salt_hex": "99e0c0268e10bcaf5a3f3769d11c8cf484d79bab7ab512567332d5ec9f4a2d15",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303339222c2276616c7565223a33397d",
+          "index": 39,
+          "leaf_hex": "0db1bf84da4b5da82eda27b58a48a8013191d99faeffc6f839aada09bc606e4f",
+          "proof_hex": [
+            "8ca12443cd7557e760771a2ba8e4891d9cfc88fe84dda7246995b5cf49cb8211",
+            "37fbabf27b94363edf2354a2d5bac8ed52c1724bf3bb0212a0debbd405cf8c5e",
+            "bfaa3a4b1bcb2cd9772b5c3a760369126ec0963408c883c347eb31a64db4388e",
+            "7834ef7b41299a701209a71659958711eb8850badc0f763e2949ea7f7fc24490",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-040",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 40
+          },
+          "salt_hex": "bc69f9184709d282745bcc2f2f9b7a2d4500ed925c73a9831c683ee43ff06522",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303430222c2276616c7565223a34307d",
+          "index": 40,
+          "leaf_hex": "e76a5b6943f1940475d03b5f225092f42ef07be7ffb53989958b0e5db3db7b54",
+          "proof_hex": [
+            "17d2a209696172f32f06188a44eebad858e4afee9ca528481fbccff1fa7af9cb",
+            "7a579ec0a3861c96f88379b97a9a0de6a04c652904d375432a1f4e3bcfa88d01",
+            "35e58dca884c03376dadc97c0c09641ec7c5a569d6276e7fc6e37e4466bbeb46",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-041",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 41
+          },
+          "salt_hex": "9df6ab58cc7a9b2e4415009aef7ab97495b69dedcb9051e08049145a8fff5ad5",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303431222c2276616c7565223a34317d",
+          "index": 41,
+          "leaf_hex": "17d2a209696172f32f06188a44eebad858e4afee9ca528481fbccff1fa7af9cb",
+          "proof_hex": [
+            "e76a5b6943f1940475d03b5f225092f42ef07be7ffb53989958b0e5db3db7b54",
+            "7a579ec0a3861c96f88379b97a9a0de6a04c652904d375432a1f4e3bcfa88d01",
+            "35e58dca884c03376dadc97c0c09641ec7c5a569d6276e7fc6e37e4466bbeb46",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-042",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 42
+          },
+          "salt_hex": "930cf69102fa3dafeb5e27b61723290a83d421e613600a55ee5c84208f45937c",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303432222c2276616c7565223a34327d",
+          "index": 42,
+          "leaf_hex": "f8e281a71f1f9e1ef08a202554e667c7264f2681bfb034e5edf42c46d1d04f52",
+          "proof_hex": [
+            "8ef30c5d2a18bbf535454459472492705e2a580f35ce425d24312dfdd69b24f6",
+            "61127469dea547b76b3cd2db2d26bae60be82ce8bf7d243ea4dfe26c6eea74b2",
+            "35e58dca884c03376dadc97c0c09641ec7c5a569d6276e7fc6e37e4466bbeb46",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-043",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 43
+          },
+          "salt_hex": "cd134c8abae1769fae8dbb12ab034699cab65ec7f746e036714125e3aca426d6",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303433222c2276616c7565223a34337d",
+          "index": 43,
+          "leaf_hex": "8ef30c5d2a18bbf535454459472492705e2a580f35ce425d24312dfdd69b24f6",
+          "proof_hex": [
+            "f8e281a71f1f9e1ef08a202554e667c7264f2681bfb034e5edf42c46d1d04f52",
+            "61127469dea547b76b3cd2db2d26bae60be82ce8bf7d243ea4dfe26c6eea74b2",
+            "35e58dca884c03376dadc97c0c09641ec7c5a569d6276e7fc6e37e4466bbeb46",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-044",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 44
+          },
+          "salt_hex": "3a6ce0cb8b8f92fd9b42e325f5aabf52e3548c21e49db8ba3fe1763e20369b01",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303434222c2276616c7565223a34347d",
+          "index": 44,
+          "leaf_hex": "9e85226f6e6cd1b5cbdec4f8e4bd668ff5fbf6b7409d8b7cbad7434fc6675821",
+          "proof_hex": [
+            "fa2cb60c17825c339f06566a32bdb21c5fd989c0f1a7231cff702acd18dbb079",
+            "97b695e82de4cba9e5e95a5c6c6cc3280685d118fd0adf53e93e498e279a4c9b",
+            "b91dd8ed59f9edff0d304de8172b49df414b1755d0876f5eaa871e233ecf64c9",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-045",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 45
+          },
+          "salt_hex": "f83bff9cb12845e3b1059b1d2422a245ef6db47bed9e34bbb79c0eff3db0750e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303435222c2276616c7565223a34357d",
+          "index": 45,
+          "leaf_hex": "fa2cb60c17825c339f06566a32bdb21c5fd989c0f1a7231cff702acd18dbb079",
+          "proof_hex": [
+            "9e85226f6e6cd1b5cbdec4f8e4bd668ff5fbf6b7409d8b7cbad7434fc6675821",
+            "97b695e82de4cba9e5e95a5c6c6cc3280685d118fd0adf53e93e498e279a4c9b",
+            "b91dd8ed59f9edff0d304de8172b49df414b1755d0876f5eaa871e233ecf64c9",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-046",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 46
+          },
+          "salt_hex": "8deacffc69688bd68eeca2510b939bcacb9578cf0c0724e66724c2a2d1e3cf19",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303436222c2276616c7565223a34367d",
+          "index": 46,
+          "leaf_hex": "a04c0d4ebc01149374f55b47853e23a1aca0fab096506eacdcf48e88489b1367",
+          "proof_hex": [
+            "8fa1e3e0749a283cf1785282ebef0c08ebd8740ef5a5124f16f0d63b480e00e2",
+            "0339a341ae24c0a0620d0da375e81a70dd80b722aa2b1a18f5a9085e0b54e53f",
+            "b91dd8ed59f9edff0d304de8172b49df414b1755d0876f5eaa871e233ecf64c9",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-047",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 47
+          },
+          "salt_hex": "ccbf88e81985069696fb006f674ca25ca11dedd42b717d7c89d07bc5aaddcdb0",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303437222c2276616c7565223a34377d",
+          "index": 47,
+          "leaf_hex": "8fa1e3e0749a283cf1785282ebef0c08ebd8740ef5a5124f16f0d63b480e00e2",
+          "proof_hex": [
+            "a04c0d4ebc01149374f55b47853e23a1aca0fab096506eacdcf48e88489b1367",
+            "0339a341ae24c0a0620d0da375e81a70dd80b722aa2b1a18f5a9085e0b54e53f",
+            "b91dd8ed59f9edff0d304de8172b49df414b1755d0876f5eaa871e233ecf64c9",
+            "f4047b74e1cf7520d2c8692fcad5661e7a4bafeaabe23a3f3f4bd981bcbfa43e",
+            "7871f45af1dde5be331ff3828205a789b142f988e8eb86a4a037cfbbe3566694",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-048",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 48
+          },
+          "salt_hex": "a0d355c117f660ab84c7a91052422be031127100d28c48b707cc6eac4ef22a24",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303438222c2276616c7565223a34387d",
+          "index": 48,
+          "leaf_hex": "aad46b86be90aa3bf5ae5fb6d8454f7741069854353a085f4d4fae3f79586e2d",
+          "proof_hex": [
+            "ca052bbec5ead4ce71feaba7d8c6d80fb3cc218bf2367215a346c13983623639",
+            "224607625143a4d6073cbebd65f0c8ac14b8bd670100ef8a370583f7ee5ce424",
+            "629653321b2005aa587e7ff81618ed5be2c01831b99b298f470f5a60bbb475aa",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-049",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 49
+          },
+          "salt_hex": "a969529b7c1432d80b549ee5453030dd0cc88374e1fb39cc1a8892211853b0b1",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303439222c2276616c7565223a34397d",
+          "index": 49,
+          "leaf_hex": "ca052bbec5ead4ce71feaba7d8c6d80fb3cc218bf2367215a346c13983623639",
+          "proof_hex": [
+            "aad46b86be90aa3bf5ae5fb6d8454f7741069854353a085f4d4fae3f79586e2d",
+            "224607625143a4d6073cbebd65f0c8ac14b8bd670100ef8a370583f7ee5ce424",
+            "629653321b2005aa587e7ff81618ed5be2c01831b99b298f470f5a60bbb475aa",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-050",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 50
+          },
+          "salt_hex": "acdf05ed615371349ba0f8a0f5148c19e239c4c7640c0bcf828af0221305d27b",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303530222c2276616c7565223a35307d",
+          "index": 50,
+          "leaf_hex": "20db53c3070258be36f85309495caeea096f5221f22db1b15cfc194dfdbe96f9",
+          "proof_hex": [
+            "4aa53018ccbee4eb06aa9f05137c0bc63822059d6fe5b0441556d878273e6e85",
+            "31f3e9d58501528624801cac162783a734b4f720ad352a55a31c9bb8d3068e56",
+            "629653321b2005aa587e7ff81618ed5be2c01831b99b298f470f5a60bbb475aa",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-051",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 51
+          },
+          "salt_hex": "2812e49f9e76dec6f53a2ae6c4fbd1815120fbcc3b96a91138842802e5660360",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303531222c2276616c7565223a35317d",
+          "index": 51,
+          "leaf_hex": "4aa53018ccbee4eb06aa9f05137c0bc63822059d6fe5b0441556d878273e6e85",
+          "proof_hex": [
+            "20db53c3070258be36f85309495caeea096f5221f22db1b15cfc194dfdbe96f9",
+            "31f3e9d58501528624801cac162783a734b4f720ad352a55a31c9bb8d3068e56",
+            "629653321b2005aa587e7ff81618ed5be2c01831b99b298f470f5a60bbb475aa",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-052",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 52
+          },
+          "salt_hex": "33d82ed41fde61babe6de2e4fc39ae63739ac05bc557e8f2b3229888c13d3cf4",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303532222c2276616c7565223a35327d",
+          "index": 52,
+          "leaf_hex": "eb65d6e3f37a3102cad419b2cc584a9f07b3500a60262758d2c939fff274951a",
+          "proof_hex": [
+            "66e2a26f8c1f4e8db0575f93eef46c5fe7cce28b0e030846c19320ff6730a929",
+            "da1d95aebda1aa25234f30071f4895406b6a917c8d6cb2634e48305c380cbd25",
+            "894cbbf47d23cd2155af0e4ae432fb5eb7e6b26083fab124bbd4fb8aafb69f9b",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-053",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 53
+          },
+          "salt_hex": "8fabb3819d0a0e9877c2fd087c4b1fe5b8617885606a0d3ee55dbe44284235bc",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303533222c2276616c7565223a35337d",
+          "index": 53,
+          "leaf_hex": "66e2a26f8c1f4e8db0575f93eef46c5fe7cce28b0e030846c19320ff6730a929",
+          "proof_hex": [
+            "eb65d6e3f37a3102cad419b2cc584a9f07b3500a60262758d2c939fff274951a",
+            "da1d95aebda1aa25234f30071f4895406b6a917c8d6cb2634e48305c380cbd25",
+            "894cbbf47d23cd2155af0e4ae432fb5eb7e6b26083fab124bbd4fb8aafb69f9b",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-054",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 54
+          },
+          "salt_hex": "9a161e3591681298e0dee71c3e109590eae6b4bb0d2202bb4a6b7af01b2219a4",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303534222c2276616c7565223a35347d",
+          "index": 54,
+          "leaf_hex": "3098eda131f753a74b5aacb25b4e883051264720f4d902b82251fa4babbd6e56",
+          "proof_hex": [
+            "fe1da72925ef12c716d9ba72de7bef3dd848d71e2fd53e2c8beda39e33677f81",
+            "e69002db50a821690b22aa3fec6674c82fa00996fa620baadd2bf20875ba42e2",
+            "894cbbf47d23cd2155af0e4ae432fb5eb7e6b26083fab124bbd4fb8aafb69f9b",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-055",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 55
+          },
+          "salt_hex": "bb15e9e7744ef525196423cb9db0bfdd872fc5a7698d6d4523388dd69c89d159",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303535222c2276616c7565223a35357d",
+          "index": 55,
+          "leaf_hex": "fe1da72925ef12c716d9ba72de7bef3dd848d71e2fd53e2c8beda39e33677f81",
+          "proof_hex": [
+            "3098eda131f753a74b5aacb25b4e883051264720f4d902b82251fa4babbd6e56",
+            "e69002db50a821690b22aa3fec6674c82fa00996fa620baadd2bf20875ba42e2",
+            "894cbbf47d23cd2155af0e4ae432fb5eb7e6b26083fab124bbd4fb8aafb69f9b",
+            "35852327ab206c9c54d9ef1797c93433671b2a1ba0386657ed9405ce849b6109",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-056",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 56
+          },
+          "salt_hex": "7a52a3410b148e6e8d72be780ecd0351ece7b443b0886ac7e23056ee14bbdd79",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303536222c2276616c7565223a35367d",
+          "index": 56,
+          "leaf_hex": "6f49a5a9f79489f83865db3f5e39f9bd0b7b470f8355be408dd65d789cd935a7",
+          "proof_hex": [
+            "9b07b674a9eef9f228b1f9fcc1f4a12f56408918481f7fc2a9ebb7ca55e4870b",
+            "43d918a3f66958c31a9e73548b9f52b703c08775ad5c8f88133fd0b16cf76afb",
+            "483985288f5e1da8949d8e258ae34aa4b6af5b522b170086960ea2f96931dc0c",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-057",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 57
+          },
+          "salt_hex": "cebfb7b6515ccdbf9110f3c392d2488af32fd61e647b1e2a6c35752d49b7aaa0",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303537222c2276616c7565223a35377d",
+          "index": 57,
+          "leaf_hex": "9b07b674a9eef9f228b1f9fcc1f4a12f56408918481f7fc2a9ebb7ca55e4870b",
+          "proof_hex": [
+            "6f49a5a9f79489f83865db3f5e39f9bd0b7b470f8355be408dd65d789cd935a7",
+            "43d918a3f66958c31a9e73548b9f52b703c08775ad5c8f88133fd0b16cf76afb",
+            "483985288f5e1da8949d8e258ae34aa4b6af5b522b170086960ea2f96931dc0c",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-058",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 58
+          },
+          "salt_hex": "87218e4b675e1ce1fbca2084a9aa24352ff100e3935461262199a02c6553c2dd",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303538222c2276616c7565223a35387d",
+          "index": 58,
+          "leaf_hex": "89efbd025629b6f13599b13f957d553ca43a8bdbd10ea907f9359b3275e54a1b",
+          "proof_hex": [
+            "c17fc86866570455e44c7236e13c21ff4f485924433533a9ed2a5d4d7e4e0fe7",
+            "d0e20d1ecb6fc653054a90ec03f5ae676155b10e1e023d60e97aaf6e27fd8398",
+            "483985288f5e1da8949d8e258ae34aa4b6af5b522b170086960ea2f96931dc0c",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-059",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 59
+          },
+          "salt_hex": "d51ad8beaa9ca3d4b61e99d48e63fc236a76dcc5cbf2baa81cbaa4fd31af8dc1",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303539222c2276616c7565223a35397d",
+          "index": 59,
+          "leaf_hex": "c17fc86866570455e44c7236e13c21ff4f485924433533a9ed2a5d4d7e4e0fe7",
+          "proof_hex": [
+            "89efbd025629b6f13599b13f957d553ca43a8bdbd10ea907f9359b3275e54a1b",
+            "d0e20d1ecb6fc653054a90ec03f5ae676155b10e1e023d60e97aaf6e27fd8398",
+            "483985288f5e1da8949d8e258ae34aa4b6af5b522b170086960ea2f96931dc0c",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-060",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 60
+          },
+          "salt_hex": "49da17e2baa4f1549e07afc2db1780d2ccec881a9f7487c51c01a1b4ade29063",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303630222c2276616c7565223a36307d",
+          "index": 60,
+          "leaf_hex": "eea6dd01b59670727466ed1b26c9fc47cffc5284c24abd15a387e81c0f954334",
+          "proof_hex": [
+            "b6e2713884c2bf29a3d1c8abb5fb5959a59b27a7d03682fd76715cefca832cba",
+            "099f331d876461a85516c50b2b72017bf7936b4985d25c7ce463e5980dd3a877",
+            "e0c5dc8746d09c0b2db3126481e4d9bb67493d9c38b96a7baeaae9ab573c75aa",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-061",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 61
+          },
+          "salt_hex": "965e6384cb68e43856d38a2c429109a8324a2542b6ffd0e00f0d226fb56ab11e",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303631222c2276616c7565223a36317d",
+          "index": 61,
+          "leaf_hex": "b6e2713884c2bf29a3d1c8abb5fb5959a59b27a7d03682fd76715cefca832cba",
+          "proof_hex": [
+            "eea6dd01b59670727466ed1b26c9fc47cffc5284c24abd15a387e81c0f954334",
+            "099f331d876461a85516c50b2b72017bf7936b4985d25c7ce463e5980dd3a877",
+            "e0c5dc8746d09c0b2db3126481e4d9bb67493d9c38b96a7baeaae9ab573c75aa",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-062",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 62
+          },
+          "salt_hex": "bdff2449501f6a0f5cd6adfaa79abca4e28ec72fc76ac3efbfae07e03cd9e7b6",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303632222c2276616c7565223a36327d",
+          "index": 62,
+          "leaf_hex": "03d6c6ca6c606ae411c8f61990af5abdebc698c4e0c98bd6d018e7dea50480f1",
+          "proof_hex": [
+            "c80590e687ae47677c02d34681c13661670b96fa53db93633de60d3c6e022b99",
+            "1085d6b5e9f88f1384abf937000aef68108c21e403871992d75f97d3e68be997",
+            "e0c5dc8746d09c0b2db3126481e4d9bb67493d9c38b96a7baeaae9ab573c75aa",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        },
+        {
+          "fact": {
+            "name": "sample.fact-063",
+            "assertedBy": "operator-entered",
+            "basis": "declared",
+            "value": 63
+          },
+          "salt_hex": "2346d3eff1e3eb7eab19bf003f030a8c96a06bfa63ecda0dd4c11ba46a0f8f3a",
+          "canonical_hex": "7b2261737365727465644279223a226f70657261746f722d656e7465726564222c226261736973223a226465636c61726564222c226e616d65223a2273616d706c652e666163742d303633222c2276616c7565223a36337d",
+          "index": 63,
+          "leaf_hex": "c80590e687ae47677c02d34681c13661670b96fa53db93633de60d3c6e022b99",
+          "proof_hex": [
+            "03d6c6ca6c606ae411c8f61990af5abdebc698c4e0c98bd6d018e7dea50480f1",
+            "1085d6b5e9f88f1384abf937000aef68108c21e403871992d75f97d3e68be997",
+            "e0c5dc8746d09c0b2db3126481e4d9bb67493d9c38b96a7baeaae9ab573c75aa",
+            "28b81cd4a8718dc920140900303f83f97acee460ea09c6df8f0b1a1056d8fe02",
+            "7b4f43f0dd3ba129df1db6ef4bc9ba4e545afd53875036f21cc519b45f7be893",
+            "c49ecd9ce3274fe594a064528ad9f45cf2dd86a74ea40ddfeb4afc28925e4a1d"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mixed-with-forbidden-metadata",
+      "count": 3,
+      "header_hash": "e808c5cfb0622ed9028e46e00d3839902344a50dc975c921be271a75b07af5c3",
+      "root_digest": "sha256:7156ff17f32d838093b5e9ea71fd122e1180df7e2ac6d07eabf594d74e83e430",
+      "facts": [
+        {
+          "fact": {
+            "name": "limits.rated-force",
+            "assertedBy": "robot-attributed",
+            "basis": "measured",
+            "value": 1.5,
+            "unit": "N",
+            "extra": [
+              true,
+              null,
+              "\n\t\u0001"
+            ]
+          },
+          "salt_hex": "3232323232323232323232323232323232323232323232323232323232323232",
+          "canonical_hex": "7b2261737365727465644279223a22726f626f742d61747472696275746564222c226261736973223a226d65617375726564222c226578747261223a5b747275652c6e756c6c2c225c6e5c745c7530303031225d2c226e616d65223a226c696d6974732e72617465642d666f726365222c22756e6974223a224e222c2276616c7565223a312e357d",
+          "index": 0,
+          "leaf_hex": "189e7daa82b5b628d95aa3957ee3cb7d25f600a8c7b56275fd1fad996cf360e2",
+          "proof_hex": [
+            "7b244d497160c112e7e2d8e9cbb4bea6700e93e491614407ae627cb96fa9c318",
+            "297bc041daf3c3b6d85e4e0378dcd5ba80d3775be307694bd550954f74b2f3ca"
+          ]
+        },
+        {
+          "fact": {
+            "name": "scene.event-instant",
+            "assertedBy": "appliance-measured",
+            "basis": "measured",
+            "value": "2026-09-23T12:34:56.789Z",
+            "extra": {
+              "nested": {
+                "value": false
+              }
+            }
+          },
+          "salt_hex": "3333333333333333333333333333333333333333333333333333333333333333",
+          "canonical_hex": "7b2261737365727465644279223a226170706c69616e63652d6d65617375726564222c226261736973223a226d65617375726564222c226578747261223a7b226e6573746564223a7b2276616c7565223a66616c73657d7d2c226e616d65223a227363656e652e6576656e742d696e7374616e74222c2276616c7565223a22323032362d30392d32335431323a33343a35362e3738395a227d",
+          "index": 1,
+          "leaf_hex": "7b244d497160c112e7e2d8e9cbb4bea6700e93e491614407ae627cb96fa9c318",
+          "proof_hex": [
+            "189e7daa82b5b628d95aa3957ee3cb7d25f600a8c7b56275fd1fad996cf360e2",
+            "297bc041daf3c3b6d85e4e0378dcd5ba80d3775be307694bd550954f74b2f3ca"
+          ]
+        },
+        {
+          "fact": {
+            "name": "unit.model",
+            "assertedBy": "site-policy",
+            "basis": "declared",
+            "value": "robot-\ud83e\udd16",
+            "extra": {
+              "\ue000": 1,
+              "\ud800\udc00": 2
+            },
+            "evidence": {
+              "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          },
+          "salt_hex": "3131313131313131313131313131313131313131313131313131313131313131",
+          "canonical_hex": "7b2261737365727465644279223a22736974652d706f6c696379222c226261736973223a226465636c61726564222c2265766964656e6365223a7b22646967657374223a227368613235363a61616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161227d2c226578747261223a7b22f0908080223a322c22ee8080223a317d2c226e616d65223a22756e69742e6d6f64656c222c2276616c7565223a22726f626f742df09fa496227d",
+          "index": 2,
+          "leaf_hex": "297bc041daf3c3b6d85e4e0378dcd5ba80d3775be307694bd550954f74b2f3ca",
+          "proof_hex": [
+            "62db84868838c827a59739441a27806c9d4f31c2a2f1853940ea6712b0bf9aed"
+          ]
+        }
+      ]
+    }
+  ]
+}

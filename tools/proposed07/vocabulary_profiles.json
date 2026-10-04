@@ -1,0 +1,39 @@
+{
+  "profiles": {
+    "v1": {
+      "expected": {
+        "after_global": 154,
+        "allowed": 153,
+        "combinations": 966,
+        "facts": 46,
+        "forbidden": 813,
+        "per_fact_pairs": 191
+      },
+      "expected_relation": "crates/pask-wire/tests/fixtures/proposed07/expected-relation.json",
+      "expected_relation_sha256": "0fd5b229039136b9594b3bd0b4c10c3b4a147a5c678ee7748c0ca67dcdd128ed",
+      "output": "crates/pask-wire/src/proposed_vocabulary_generated.rs",
+      "source": "schemas/proposed/pser-0.7/content-vocabulary.json",
+      "source_sha256": "030cd709841fc057ba76f2568d44401b36d8ce823369756e11e2989309d4468d",
+      "strict_dialect": false,
+      "version": "wilder.pser-content-vocab/1"
+    },
+    "v2": {
+      "expected": {
+        "after_global": 160,
+        "allowed": 157,
+        "combinations": 987,
+        "facts": 47,
+        "forbidden": 830,
+        "per_fact_pairs": 200
+      },
+      "expected_relation": "crates/pask-wire/tests/fixtures/proposed07/expected-relation-v2.json",
+      "expected_relation_sha256": "b73cdd3b47f64efed19e30462ffa23e2884495383777cbd8dd44828f3741fa18",
+      "output": "crates/pask-wire/src/proposed_vocabulary_v2_generated.rs",
+      "source": "schemas/proposed/pser-0.7/content-vocabulary-v2-candidate.json",
+      "source_sha256": "2fb4e3a099003638d318333dee66fe2b710fb39b6dec78f570f6ecf31592a248",
+      "strict_dialect": true,
+      "version": "wilder.pser-content-vocab/2"
+    }
+  },
+  "schema": "pask-local-vocabulary-generation/1"
+}

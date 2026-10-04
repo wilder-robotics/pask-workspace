@@ -1,0 +1,233 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "entries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "pask-local-recipient-replay/1"
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "statement_hex",
+          "presentation",
+          "objects",
+          "policy"
+        ],
+        "properties": {
+          "statement_hex": {
+            "type": "string",
+            "maxLength": 2097152,
+            "pattern": "^(?:[0-9a-f]{2})*$"
+          },
+          "presentation": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "construction",
+                  "scope",
+                  "vocabulary_digest",
+                  "fact_count",
+                  "disclosures"
+                ],
+                "properties": {
+                  "construction": {
+                    "type": "string",
+                    "maxLength": 128
+                  },
+                  "scope": {
+                    "type": "string",
+                    "maxLength": 128
+                  },
+                  "vocabulary_digest": {
+                    "type": "string",
+                    "maxLength": 71
+                  },
+                  "fact_count": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 256
+                  },
+                  "disclosures": {
+                    "type": "array",
+                    "maxItems": 256,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "record_hex",
+                        "salt_hex",
+                        "index",
+                        "siblings_hex"
+                      ],
+                      "properties": {
+                        "record_hex": {
+                          "type": "string",
+                          "maxLength": 32768,
+                          "pattern": "^(?:[0-9a-f]{2})*$"
+                        },
+                        "salt_hex": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "index": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295
+                        },
+                        "siblings_hex": {
+                          "type": "array",
+                          "maxItems": 8,
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "objects": {
+            "type": "array",
+            "maxItems": 256,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "digest",
+                "state",
+                "bytes_hex"
+              ],
+              "properties": {
+                "digest": {
+                  "type": "string",
+                  "maxLength": 71
+                },
+                "state": {
+                  "enum": [
+                    "BYTES",
+                    "UNAVAILABLE",
+                    "NOT_REQUESTED"
+                  ]
+                },
+                "bytes_hex": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 131072,
+                      "pattern": "^(?:[0-9a-f]{2})*$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "state": {
+                        "const": "BYTES"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "bytes_hex": {
+                        "type": "string",
+                        "maxLength": 131072,
+                        "pattern": "^(?:[0-9a-f]{2})*$"
+                      }
+                    }
+                  },
+                  "else": {
+                    "properties": {
+                      "bytes_hex": {
+                        "type": "null"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "expected_context",
+              "require_presented_content",
+              "require_all_committed_slots",
+              "required_fact_names",
+              "compare_unitless_scalars"
+            ],
+            "properties": {
+              "expected_context": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "site_id",
+                      "engagement_id"
+                    ],
+                    "properties": {
+                      "site_id": {
+                        "type": "string",
+                        "maxLength": 8192
+                      },
+                      "engagement_id": {
+                        "type": "string",
+                        "maxLength": 8192
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "require_presented_content": {
+                "type": "boolean"
+              },
+              "require_all_committed_slots": {
+                "type": "boolean"
+              },
+              "required_fact_names": {
+                "type": "array",
+                "maxItems": 256,
+                "items": {
+                  "type": "string",
+                  "maxLength": 128
+                }
+              },
+              "compare_unitless_scalars": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "minItems": 1
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pask:local-recipient-replay:1",
+  "$comment": "Informative shape aid. Native contract is stricter: UTF-8 byte length not codepoints; integer tokens not 1.0; duplicates including escaped aliases rejected; raw/depth/aggregate decoded limits and caller-selected mode enforced separately. No public PSER wire format."
+}

@@ -27,5 +27,9 @@ clap = { version = "4.5.40", features = ["derive"] }
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8"] }
 pask-wire = { version = "0.1.0", path = "../pask-wire", features = ["std"] }
 
+[dev-dependencies]
+# Test-only inspection of complete draft rules; no runtime API expansion.
+serde_json = { version = "1.0.140", default-features = false, features = ["alloc", "float_roundtrip"] }
+
 [lints]
 workspace = true

@@ -57,3 +57,32 @@ pub fn canonical_example_06() -> Result<String> {
         serde_json::from_slice(&canonical).map_err(|error| Error::Json(error.to_string()))?;
     serde_json::to_string_pretty(&value).map_err(|error| Error::Json(error.to_string()))
 }
+
+/// Emits the proposed 0.7 null-content example, pretty-printed for the draft.
+///
+/// Starts from the unchanged 0.5 vector, changes only the profile and the new
+/// explicit null member, and recomputes `chain.hash` through production logic.
+/// This does not change either historical emitter or the CLI's default example.
+///
+/// # Errors
+///
+/// Returns an error if the source vector has an unexpected shape, or if the
+/// generated payload fails production validation or serialization.
+pub fn canonical_example_07() -> Result<String> {
+    let mut input: serde_json::Value =
+        serde_json::from_str(MINIMAL_VALID_JCS).map_err(|error| Error::Json(error.to_string()))?;
+    input["spec"] = serde_json::Value::String(crate::SPEC_VERSION_07.to_string());
+    let engagement = input
+        .get_mut("engagement")
+        .and_then(serde_json::Value::as_object_mut)
+        .ok_or(Error::Validation(
+            "canonical example lacks engagement object",
+        ))?;
+    engagement.insert("contentDigest".to_string(), serde_json::Value::Null);
+    let input_bytes = serde_json::to_vec(&input).map_err(|error| Error::Json(error.to_string()))?;
+    let payload = Payload::from_json_for_production(&input_bytes)?;
+    let canonical = payload.to_jcs()?;
+    let value: serde_json::Value =
+        serde_json::from_slice(&canonical).map_err(|error| Error::Json(error.to_string()))?;
+    serde_json::to_string_pretty(&value).map_err(|error| Error::Json(error.to_string()))
+}

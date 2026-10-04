@@ -1,0 +1,412 @@
+{
+  "schema": "pask-local-mobile-v2-fixtures/1",
+  "note": "Public synthetic key and salts. Checks are authored native expectations, not execution evidence.",
+  "cases": [
+    {
+      "id": "v2-pose",
+      "file": "v2-pose.json",
+      "sha256": "81ecae9ac30fa4a8843c25326d6944948a202b9ddb88c76057d884c7c46048c1",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "DISCLOSED"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "facts",
+            0,
+            "evidence",
+            "comparison"
+          ],
+          "equals": "NOT_COMPARABLE"
+        }
+      ]
+    },
+    {
+      "id": "v2-extra-field",
+      "file": "v2-extra-field.json",
+      "sha256": "0a244229ca8fb497d42466ff0d57bafc62dfd47c47068e506f43bfc0afb2c194",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "DISCLOSED"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "facts",
+            0,
+            "constraint",
+            "metadata_findings"
+          ],
+          "equals": [
+            "invalid_typed_value"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v2-forbidden",
+      "file": "v2-forbidden.json",
+      "sha256": "c6e5c9c60c4be49f58ede2555f48be9c9cd77ad3a0e4925d2b943c5e0af802eb",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "DISCLOSED"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "facts",
+            0,
+            "provenance"
+          ],
+          "equals": "ATTRIBUTION_FORBIDDEN"
+        }
+      ]
+    },
+    {
+      "id": "v2-pose-withheld",
+      "file": "v2-pose-withheld.json",
+      "sha256": "739692f14e4ff465e99f370025e7f74f9f881cebd8ac61878a61617da249fb31",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "NOT_DISCLOSED_UNPROVEN"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        }
+      ]
+    },
+    {
+      "id": "v2-pose-absent",
+      "file": "v2-pose-absent.json",
+      "sha256": "ef810bc0b3eb2d1fce377c6413682ad0a46a97cd8e34d0ceaf76be68280dea51",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "ABSENT_FROM_COMMITTED_BLOCK"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        }
+      ]
+    },
+    {
+      "id": "v2-null",
+      "file": "v2-null.json",
+      "sha256": "25a6f5e7682072a6477a45ebe8d817e940e775c417f0d75d08fb70f8b250fb68",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "NO_BLOCK_COMMITTED"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        }
+      ]
+    },
+    {
+      "id": "v1-required-pose",
+      "file": "v1-required-pose.json",
+      "sha256": "6cc49a2838fa27036d11ff6d59fec543cd053742c0d01f27f695eb009ac5a867",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "UNSUPPORTED_BY_VOCABULARY"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        }
+      ]
+    },
+    {
+      "id": "v1-committed-pose",
+      "file": "v1-committed-pose.json",
+      "sha256": "b505035d6321e1532d02506aec94332f2901528468029dfa1ea26a5ec2b7a405",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "UNSUPPORTED_BY_VOCABULARY"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "facts",
+            0,
+            "constraint",
+            "classification"
+          ],
+          "equals": "UNKNOWN_FACT"
+        }
+      ]
+    },
+    {
+      "id": "unknown-vocabulary",
+      "file": "unknown-vocabulary.json",
+      "sha256": "6cda4731b544beeb11b41a5a420cac26e1d4209be3f68cf9369b483e4d907b74",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "NOT_EVALUATED"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "vocabulary",
+            "status"
+          ],
+          "equals": "unsupported"
+        }
+      ]
+    },
+    {
+      "id": "v2-bad-evidence",
+      "file": "v2-bad-evidence.json",
+      "sha256": "c7eba813f4859f92228991de66056eb8aa78215b1f7526ef5209b57b331487f6",
+      "mode": "single",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "DISCLOSED"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "summary",
+            "evidence_failures"
+          ],
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "id": "mixed-chain",
+      "file": "mixed-chain.json",
+      "sha256": "7c48a1bc43f81e41fd38eafc94a135fe6534abb7a216d6bed7edb4ce8dcef3a4",
+      "mode": "chain",
+      "checks": [
+        {
+          "path": [
+            "records",
+            0,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "UNSUPPORTED_BY_VOCABULARY"
+        },
+        {
+          "path": [
+            "records",
+            1,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "DISCLOSED"
+        },
+        {
+          "path": [
+            "records",
+            2,
+            "requested_facts",
+            0,
+            "availability"
+          ],
+          "equals": "NOT_EVALUATED"
+        },
+        {
+          "path": [
+            "records",
+            0,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            1,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "records",
+            2,
+            "application_acceptance",
+            "status"
+          ],
+          "equals": "unestablished"
+        },
+        {
+          "path": [
+            "chain",
+            "check",
+            "status"
+          ],
+          "equals": "passed"
+        }
+      ]
+    }
+  ]
+}

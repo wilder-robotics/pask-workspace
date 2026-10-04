@@ -1,0 +1,299 @@
+{
+  "schema": "pask-local-replay-fixtures/1",
+  "note": "PUBLIC deterministic synthetic inputs. Expected native report projections are assertions to test, not executed Rust results. No hardware or service attestation. Public key origin is this generator.",
+  "public_key_hex": "7f747b67bd3fe63c2a736739dfe40156d622347346e70f68f51c178a75ce5537",
+  "cases": [
+    {
+      "id": "single-match",
+      "file": "single-match.json",
+      "mode": "single",
+      "expected": {
+        "chain_status": "not-evaluated",
+        "statement_statuses": [
+          "passed"
+        ],
+        "presentation_states": [
+          "ALL_COMMITTED_SLOTS"
+        ],
+        "contradictions": [
+          0
+        ],
+        "forbidden": [
+          0
+        ]
+      },
+      "sha256": "2f6de806266baab8718473f2686894228e13fd36cadaefaa578970b3fa1125b8"
+    },
+    {
+      "id": "single-contradiction",
+      "file": "single-contradiction.json",
+      "mode": "single",
+      "expected": {
+        "chain_status": "not-evaluated",
+        "statement_statuses": [
+          "passed"
+        ],
+        "contradictions": [
+          1
+        ]
+      },
+      "sha256": "12d683861533c946641954c7ffe236fad7d7e38eb37e68c2e7a93f1d622b2a48"
+    },
+    {
+      "id": "single-bad-evidence",
+      "file": "single-bad-evidence.json",
+      "mode": "single",
+      "expected": {
+        "chain_status": "not-evaluated",
+        "statement_statuses": [
+          "passed"
+        ],
+        "evidence_failures": [
+          1
+        ]
+      },
+      "sha256": "1f3874d2cbeaaa6d9719ec91c3fd70b896c941a019e67e308f3a16725761e485"
+    },
+    {
+      "id": "single-forbidden",
+      "file": "single-forbidden.json",
+      "mode": "single",
+      "expected": {
+        "forbidden": [
+          1
+        ],
+        "disclosure_policy": [
+          "passed"
+        ]
+      },
+      "sha256": "b21ec90bf9016f18390c2d5e72e2ae45848b3a42e3ee29ffc71e23f3df0c07ed"
+    },
+    {
+      "id": "single-null",
+      "file": "single-null.json",
+      "mode": "single",
+      "expected": {
+        "presentation_states": [
+          "NULL_COMMITMENT"
+        ],
+        "disclosure_policy": [
+          "failed"
+        ]
+      },
+      "sha256": "9910a25a0fc97265135c57d608d9f7a94a99e694b7b758d880a16a00fb221f79"
+    },
+    {
+      "id": "single-withheld",
+      "file": "single-withheld.json",
+      "mode": "single",
+      "expected": {
+        "presentation_states": [
+          "NOT_PRESENTED"
+        ],
+        "disclosure_policy": [
+          "unestablished"
+        ]
+      },
+      "sha256": "de820ee981ee5907d21597456becb55e20d1c6046b2270dc2afe223a6c500c0f"
+    },
+    {
+      "id": "single-empty",
+      "file": "single-empty.json",
+      "mode": "single",
+      "expected": {
+        "presentation_states": [
+          "EMPTY_COMMITTED_BLOCK"
+        ],
+        "disclosure_policy": [
+          "passed"
+        ]
+      },
+      "sha256": "006199ad64c0c6de110bf7d9e9494d96cd5f67c4054fbc44fa417f62f08195f4"
+    },
+    {
+      "id": "single-subset",
+      "file": "single-subset.json",
+      "mode": "single",
+      "expected": {
+        "presentation_states": [
+          "SELECTED_SLOTS"
+        ],
+        "requested_availability": [
+          [
+            "NOT_DISCLOSED_UNPROVEN"
+          ]
+        ]
+      },
+      "sha256": "0fa69d7f0475acbe225d42ab308d89718110ca4145f0ea55c49ee1c08a1f581f"
+    },
+    {
+      "id": "single-block-absence",
+      "file": "single-block-absence.json",
+      "mode": "single",
+      "expected": {
+        "requested_availability": [
+          [
+            "ABSENT_FROM_COMMITTED_BLOCK"
+          ]
+        ]
+      },
+      "sha256": "5b9669eff81f751d2ad357251c13e79f8d7a27194b0f03bb67968353b0c76938"
+    },
+    {
+      "id": "single-invalid-proof",
+      "file": "single-invalid-proof.json",
+      "mode": "single",
+      "expected": {
+        "presentation_states": [
+          "INVALID"
+        ],
+        "membership": [
+          "failed"
+        ]
+      },
+      "sha256": "22f834c204e403109d91cabd817cd49325ba512eb57802e7d240ba1e46ae7c12"
+    },
+    {
+      "id": "single-legacy06",
+      "file": "single-legacy06.json",
+      "mode": "single",
+      "expected": {
+        "statement_statuses": [
+          "passed"
+        ],
+        "presentation_states": [
+          "LEGACY_PROFILE_UNSUPPORTED"
+        ]
+      },
+      "sha256": "4d1464c5a0096574edcac3ba3e33cd0953fe0778319db01de90370eb87cf4467"
+    },
+    {
+      "id": "chain-three",
+      "file": "chain-three.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "passed",
+        "statement_statuses": [
+          "passed",
+          "passed",
+          "passed"
+        ],
+        "affiliation_changes": 0
+      },
+      "sha256": "0025b2bede61258aa0302cf3ff9be542806beda41a6e8564f2ab54e0149a3797"
+    },
+    {
+      "id": "chain-prefix",
+      "file": "chain-prefix.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "passed",
+        "statement_statuses": [
+          "passed",
+          "passed"
+        ]
+      },
+      "sha256": "35135cfdd8fb1371a4637e3aa58e403cb60b2a2a29d91820a4100b6aadc7275a"
+    },
+    {
+      "id": "chain-genesis-only",
+      "file": "chain-genesis-only.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "passed"
+      },
+      "sha256": "2f6de806266baab8718473f2686894228e13fd36cadaefaa578970b3fa1125b8"
+    },
+    {
+      "id": "single-midchain",
+      "file": "single-midchain.json",
+      "mode": "single",
+      "expected": {
+        "chain_status": "not-evaluated",
+        "statement_statuses": [
+          "passed"
+        ]
+      },
+      "sha256": "aa84fd41eb421721f316bf1092ba9a0c5c3d1173a8e9c2a7089361d7cb33a60e"
+    },
+    {
+      "id": "chain-midchain",
+      "file": "chain-midchain.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "failed",
+        "statement_statuses": [
+          "passed",
+          "passed"
+        ]
+      },
+      "sha256": "8e85ca261be085cbe9741b0538d9360698a1893a2979f0e33cc283f5cc0f55f1"
+    },
+    {
+      "id": "chain-sequence-gap",
+      "file": "chain-sequence-gap.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "failed",
+        "statement_statuses": [
+          "passed",
+          "passed"
+        ]
+      },
+      "sha256": "458051e7438f25929ec80db751b253570f1c53c17944d017746796757f9703df"
+    },
+    {
+      "id": "chain-wrong-predecessor",
+      "file": "chain-wrong-predecessor.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "failed",
+        "statement_statuses": [
+          "passed",
+          "passed"
+        ]
+      },
+      "sha256": "133288fd26a1b7b4f6370226bc77792f66e2d348da3015dab01d5dedefea15e3"
+    },
+    {
+      "id": "chain-affiliation-change",
+      "file": "chain-affiliation-change.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "passed",
+        "affiliation_changes": 1
+      },
+      "sha256": "c10708fed6b814e072cafa10491bcb8db5dd7a3ab5f4b5b5b730686effe3981c"
+    },
+    {
+      "id": "chain-contradictory-value",
+      "file": "chain-contradictory-value.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "passed",
+        "contradictions": [
+          0,
+          1
+        ],
+        "disclosure_policy": [
+          "passed",
+          "passed"
+        ]
+      },
+      "sha256": "d02f6e034673d2bab8184f06990319c8297e97c3ecb10d3cf30349da40c82f5e"
+    },
+    {
+      "id": "chain-invalid-signature",
+      "file": "chain-invalid-signature.json",
+      "mode": "chain",
+      "expected": {
+        "chain_status": "unestablished",
+        "statement_statuses": [
+          "passed",
+          "failed"
+        ]
+      },
+      "sha256": "08f0b97fe59e8347a6d6c938ba62a0f03eddfe94e622c50c1ac66d56328df4d7"
+    }
+  ]
+}

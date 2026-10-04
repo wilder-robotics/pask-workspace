@@ -19,6 +19,14 @@
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
+#[cfg(feature = "alloc")]
+pub mod proposed_constraints;
+#[cfg(feature = "alloc")]
+pub mod proposed_content;
+#[cfg(feature = "alloc")]
+pub mod proposed_evidence;
+#[cfg(feature = "alloc")]
+pub mod proposed_recipient;
 #[cfg(feature = "std")]
 extern crate std;
 
@@ -44,7 +52,7 @@ mod receipt;
 pub mod testvectors;
 
 #[cfg(feature = "alloc")]
-pub use canonical_example::{canonical_example, canonical_example_06};
+pub use canonical_example::{canonical_example, canonical_example_06, canonical_example_07};
 #[cfg(feature = "alloc")]
 pub use chain::{AffiliationChange, ChainReport, verify_chain};
 #[cfg(feature = "alloc")]
@@ -52,7 +60,9 @@ pub use digest::{sha256_prefixed, validate_sha256};
 #[cfg(feature = "alloc")]
 pub use entry::{candidate_leaf_hash, derive_candidate_entry};
 #[cfg(feature = "alloc")]
-pub use envelope::{CONTENT_TYPE, CONTENT_TYPE_06, produce_ed25519, verify_ed25519};
+pub use envelope::{
+    CONTENT_TYPE, CONTENT_TYPE_06, CONTENT_TYPE_07, produce_ed25519, verify_ed25519,
+};
 #[cfg(feature = "es256")]
 pub use envelope::{produce_es256, verify_es256};
 #[cfg(feature = "alloc")]
@@ -60,7 +70,7 @@ pub use error::{Error, Result};
 #[cfg(feature = "alloc")]
 pub use payload::{
     AckProvenance, BindingMode, IssuerAffiliation, Payload, SPEC_VERSION, SPEC_VERSION_06,
-    canonicalize_json, is_supported_spec,
+    SPEC_VERSION_07, canonicalize_json, is_supported_spec,
 };
 #[cfg(feature = "alloc")]
 pub use receipt::{
@@ -97,3 +107,6 @@ pub use transparent_statement::{
     StatementVerificationInputs, SubjectMapping, SubjectPolicy, TransparentStatementPolicy,
     TransparentStatementReport, inspect_transparent_statement, verify_transparent_statement,
 };
+
+#[cfg(feature = "alloc")]
+pub mod proposed_replay;
