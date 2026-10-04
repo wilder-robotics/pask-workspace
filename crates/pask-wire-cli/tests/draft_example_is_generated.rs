@@ -11,8 +11,8 @@
 //! observe that three of its attestation members no longer matched the code.
 //!
 //! If this test fails, do not edit the document by hand. Run
-//! the library's `pask_wire::canonical_example_06()` generator. The CLI's
-//! `canonical-example` command intentionally continues to emit the 0.5 example.
+//! `cargo run -p pask-wire --features alloc --example draft07_payload` and paste the output.
+//! The CLI's `canonical-example` command intentionally continues to emit the 0.5 example.
 
 use std::{fs, path::PathBuf};
 
@@ -65,14 +65,14 @@ fn draft_payload_figure_is_byte_identical_to_the_emitted_example() {
     let draft = fs::read_to_string(draft_path()).expect("the profile document is readable");
     let body = figure_body(&draft);
 
-    // The active draft targets 0.6; validate against the 0.6 generator.
-    // The 0.5 generator and fixtures are preserved separately.
-    let emitted = pask_wire::canonical_example_06().expect("the 0.6 canonical example emits");
+    // The active draft targets 0.7; validate against the 0.7 generator.
+    // The 0.5/0.6 generators, fixtures and CLI default are preserved separately.
+    let emitted = pask_wire::canonical_example_07().expect("the 0.7 canonical example emits");
 
     assert_eq!(
         body, emitted,
         "the profile document's payload figure has drifted from the reference \
-         implementation. Regenerate it from `pask_wire::canonical_example_06()` \
+         implementation. Regenerate it from `pask_wire::canonical_example_07()` \
          in `crates/pask-wire/src/canonical_example.rs`. \
          Do not edit the figure by hand."
     );
@@ -80,7 +80,7 @@ fn draft_payload_figure_is_byte_identical_to_the_emitted_example() {
 
 #[test]
 fn the_emitted_example_is_parseable_json() {
-    let emitted = pask_wire::canonical_example_06().expect("the 0.6 canonical example emits");
+    let emitted = pask_wire::canonical_example_07().expect("the 0.7 canonical example emits");
     pask_wire::Payload::from_json(emitted.as_bytes())
-        .expect("the emitted 0.6 example validates as a payload");
+        .expect("the emitted 0.7 example validates as a payload");
 }

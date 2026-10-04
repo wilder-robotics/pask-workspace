@@ -2,10 +2,10 @@
 
 | | |
 | --- | --- |
-| Applies to | `draft-wilder-scitt-physical-site-engage-receipt-04` (posted 2026-09-14) and this repository |
-| Profile identifier in the implementation | `wilder.pser/0.5` (`SPEC_VERSION`); `wilder.pser/0.6` is also supported |
+| Applies to | `draft-wilder-scitt-physical-site-engage-receipt-05` (working draft, not posted) and this local candidate |
+| Profile identifier in the implementation | `wilder.pser/0.5` (`SPEC_VERSION`); `wilder.pser/0.6` and proposed `wilder.pser/0.7` are also supported |
 | Profile target of the current posted revision | `wilder.pser/0.6`, specified by `-04` |
-| Last reviewed | 2026-09-22 |
+| Last reviewed | 2026-09-30 (author corrections; new native checks pending) |
 | Status | Pre-alpha reference implementation |
 
 This file is maintained alongside the code. It records what the profile and
@@ -28,52 +28,44 @@ safety, insurance, or regulatory-compliance claim.
 
 ### 1.1 The profile identifier is not published in any register
 
-The implementation supports `wilder.pser/0.5` (`SPEC_VERSION` in the code) and
-`wilder.pser/0.6` (also supported). The most recently posted revision is `-04`,
-posted 2026-09-14, which defines `wilder.pser/0.6`. The posted `-03` defines
-`wilder.pser/0.5` and the posted `-02` defines `wilder.pser/0.4`.
+The implementation retains `wilder.pser/0.5` (`SPEC_VERSION` in the code)
+and `wilder.pser/0.6` and has a separately reviewed local development path
+for proposed `wilder.pser/0.7`. The most recently posted revision remains
+`-04`, posted 2026-09-14, defining 0.6. The posted `-03` defines 0.5 and
+the posted `-02` defines 0.4. The current -05 source is not posted.
 
-So an implementer working from the current posted document and an implementer
-working from this tree share `0.6`, and both also have `0.5` available. `0.6` is
-no longer an unpublished working contract; `-04` publishes it. An implementer
-still on `-03` shares `0.5` with this tree.
+These identifiers are profile labels, not an IANA registration or an
+assurance of interoperability. The published 0.1.0 packages do not contain
+this local 0.7 development work. The released CLI default example remains
+0.5; the separate `canonical_example_07()` emitter supplies the 0.7 draft
+figure. A new example API does not change the released CLI default.
 
-Neither identifier is published in any register. The value space is described
-only by the drafts, so nothing outside this repository and those documents
-resolves either string.
+### 1.2 Document checks have a bounded scope
 
-Supported versions, example output, published specification status, and
-interoperable deployment evidence are separate concerns. The code emits 0.5
-and 0.6 payloads; the generated example figure in the working draft uses 0.6;
-the current posted specification is `-04` (0.6); and no receipt produced by this
-implementation has been registered with a production Transparency Service.
+The candidate connects its one payload figure to the dedicated 0.7 emitter
+and accounts for every fenced block. Forty-eight vocabulary definition
+blocks are compared with the two unchanged JSON artifacts; long meanings
+and global string annotations are reconstructed from the adjacent prose.
+Four explanatory fragments have explicit, exact expectations rather than
+being silently skipped. These new document tests still need execution on
+this candidate. Their presence is not a passed validation result.
 
-### 1.2 One figure is generated; the rest of the document is prose
+Those checks do not verify every normative prose sentence. Producer duties,
+cryptographic policy and relying-party interpretations require review and
+appropriate execution evidence. Historically, `-00` used a schema template
+as a payload figure; `-01` replaced it with a generated instance.
 
-The Section 4 payload figure in the current revision is emitted by `pask-wire`
-and asserted byte-identical in CI, and every fenced example in the document is
-now required to be accounted for — parsed by the reference parser, or listed
-with a written reason it should not be. That guarantee covers the examples
-only.
+The draft identifies the published release for public implementation
+status. Private closeout details, pending license decisions, and candidate
+measurements live in the accompanying internal record, not in that section.
 
-The normative member definitions in Section 4.1, the security considerations,
-and the IANA request are maintained by hand and are not mechanically checked
-against the implementation. Nothing in the build would observe a member
-definition drifting away from the type that implements it.
+### 1.3 Identifier consistency is implemented for 0.6/0.7; authenticated key association remains unresolved
 
-`-00` presented its payload structure as a schema template — unquoted
-placeholders showing member names and value shapes rather than a literal
-instance. A template is not machine-checkable, which is why four attestation
-members came to be described differently by `-00` and by the implementation.
-`-01` reconciles all four and replaces the template with a generated instance.
-
-### 1.3 Identifier consistency is implemented for 0.6; authenticated key association remains unresolved
-
-The in-tree `-04` retains the required `attestation.bindingMode` member
+The in-tree working draft retains the required `attestation.bindingMode` member
 with a closed two-value set. That member is implemented: the producer emits it,
 the parser requires it, and validation refuses a value outside the set.
 
-Under `wilder.pser/0.6`, the identifier-consistency check is now implemented
+Under `wilder.pser/0.6` and proposed `wilder.pser/0.7`, the identifier-consistency check is implemented
 (#66). When `bindingMode` is `DIRECT_WITNESS`, `attestation.witnessKey` and
 the protected CWT `iss` value MUST be textually equal. This check does not
 apply to `DELEGATED_WITNESS` mode or to 0.5. It establishes only a naming
@@ -87,8 +79,7 @@ implementation does not establish that authenticated key relationship. The
 additional exact-string naming convention introduced for `wilder.pser/0.6` is
 not applied retroactively to 0.5. Successful label comparison under 0.6 does
 not establish authenticated association with the signature-verification key or
-genuine hardware provenance. The broader assurance gap remains open for both
-supported versions.
+genuine hardware provenance. The broader assurance gap remains open for all supported versions.
 
 ---
 
@@ -470,3 +461,18 @@ through V5 met (§8).
 If you find a limitation that is not recorded here, please open an issue. An
 inaccurate entry is worth reporting too — a limitations file that overstates
 what is missing is as misleading as one that understates it.
+
+## Development correction: integer-token bound
+
+The content-byte preflight now checks integer-form tokens against the
+existing safe-integer range before JSON parsing can represent an overflowing
+integer token as a floating value. This check includes nested and extra fields
+and ignores digits inside strings. It does not alter the raw-evidence
+comparator, normalize noncanonical fact bytes, or recover precision lost
+before the input reached Pask. The new regression requires a failing-before
+and passing-after native result; no such result is inferred from source review.
+
+The generated-vocabulary distribution basis remains unresolved for both
+tables. No SPDX declaration has been invented, and the earlier incomplete
+name scan remains incomplete. These hold public readiness, not private
+drafting or source review.

@@ -18,11 +18,13 @@ pub const SPEC_VERSION: &str = "wilder.pser/0.5";
 
 /// Profile version carrying the timestamp containment requirement.
 pub const SPEC_VERSION_06: &str = "wilder.pser/0.6";
+/// Proposed local 0.7 candidate, not a published profile.
+pub const SPEC_VERSION_07: &str = "wilder.pser/0.7";
 
 /// Returns true when the given spec string is a supported profile version.
 #[must_use]
 pub fn is_supported_spec(spec: &str) -> bool {
-    spec == SPEC_VERSION || spec == SPEC_VERSION_06
+    spec == SPEC_VERSION || spec == SPEC_VERSION_06 || spec == SPEC_VERSION_07
 }
 
 /// Wire strings for the three named `adapter.ackProvenance` values.
@@ -108,6 +110,18 @@ struct Engagement {
     outcome_class: OutcomeClass,
     envelope_conformance: EnvelopeConformance,
     evidence_digest: String,
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "present_content_digest"
+    )]
+    content_digest: Option<serde_json::Value>,
+}
+
+fn present_content_digest<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> core::result::Result<Option<serde_json::Value>, D::Error> {
+    serde_json::Value::deserialize(deserializer).map(Some)
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -789,6 +803,11 @@ impl Payload {
         &self.engagement.evidence_digest
     }
 
+    /// None for legacy profiles, Some(Null) for no block at seal in 0.7.
+    pub fn engagement_content_digest(&self) -> Option<&serde_json::Value> {
+        self.engagement.content_digest.as_ref()
+    }
+
     /// Returns the TEE class identifier.
     #[must_use]
     pub fn attestation_tee_class(&self) -> &str {
@@ -923,6 +942,21 @@ impl Payload {
         validate_utc(&self.adapter.posted_at)?;
         validate_sha256(&self.site.envelope.digest)?;
         validate_sha256(&self.engagement.evidence_digest)?;
+        if self.spec == SPEC_VERSION_07 {
+            match self.engagement.content_digest.as_ref() {
+                Some(serde_json::Value::Null) => {}
+                Some(serde_json::Value::String(digest)) => validate_sha256(digest)?,
+                _ => {
+                    return Err(Error::Validation(
+                        "0.7 requires explicit null or SHA-256 contentDigest",
+                    ));
+                }
+            }
+        } else if self.engagement.content_digest.is_some() {
+            return Err(Error::Validation(
+                "contentDigest is not permitted in legacy profiles",
+            ));
+        }
         validate_sha256(&self.attestation.measured_boot.chain)?;
         validate_sha256(&self.attestation.platform_evidence.digest)?;
         validate_sha256(&self.attestation.sealed_evidence.digest)?;
@@ -957,14 +991,14 @@ impl Payload {
                 "attestation validity notAfter must be strictly later than notBefore",
             ));
         }
-        // Issue #30: Under wilder.pser/0.6, the Verifier MUST check that
+        // Issue #30: Under wilder.pser/0.6 and proposed 0.7, check that
         // the receipt-issuance timestamp `ts` falls within the attestation
         // validity interval [notBefore, notAfter] using inclusive endpoints.
         // This check does not apply to wilder.pser/0.5, whose profile does not
         // require timestamp containment. A separately identified local policy
         // may perform an additional check without changing the historical
         // profile contract.
-        if self.spec == SPEC_VERSION_06 {
+        if self.spec == SPEC_VERSION_06 || self.spec == SPEC_VERSION_07 {
             let ts = validate_utc(&self.ts)?;
             if ts < validity_start || ts > validity_end {
                 return Err(Error::Validation(
