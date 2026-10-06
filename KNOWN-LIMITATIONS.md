@@ -476,3 +476,36 @@ The generated-vocabulary distribution basis remains unresolved for both
 tables. No SPDX declaration has been invented, and the earlier incomplete
 name scan remains incomplete. These hold public readiness, not private
 drafting or source review.
+
+### Status update, 2026-10-04: two publication holds closed
+
+The preceding hold paragraph records an earlier development state and
+is retained as history. The two holds are resolved for the public
+source integrated by PR #105 at commit
+`60a3d16ed26841dc597b5b90f6fdb4ef5b039a5e`:
+
+- Vocabulary distribution basis: the two pinned vocabulary JSON files
+  and their generated Rust tables have the artifact-specific
+  Apache-2.0 grant for the rights Rob Wilder and Wilder Management
+  Inc. control, recorded in
+  `schemas/proposed/pser-0.7/LICENSE-NOTE.md` and the dated addenda
+  in `ORIGIN.md` and `ORIGIN-V2.md` in that directory. The JSON bytes
+  are unchanged. Each generated table differs from its historical
+  bytes by one SPDX line, reproducible through
+  `tools/proposed07/generate_vocabularies.py`. Legitimate third-party
+  notices and applicable IETF Trust terms remain unaffected. The
+  promotion grants no rights to ISO material or to the surrounding
+  private repository, evaluations, or evidence.
+- Publication name checks: in PR workflow 37174081694, the unchanged
+  `Public Name Rule` passed its self-test, tracked-file scan, and
+  scan of the eight contribution commits' messages and
+  author/committer fields. In post-merge workflow 37178318604 on
+  `60a3d16e`, the self-test and tracked-file scan passed; the
+  commit-metadata step was skipped because this was a push event.
+  Neither execution is a scan or sanitization of the repository's
+  complete history.
+
+This update supersedes the two hold statements, not the recorded
+outcomes of earlier checks. Their resolution does not establish
+conformance, interoperability, production readiness, or CCF
+verification.

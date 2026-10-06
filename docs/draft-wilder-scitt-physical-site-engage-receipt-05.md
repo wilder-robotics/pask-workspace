@@ -2245,29 +2245,60 @@ is a Rust workspace containing `pask-wire`, `pask-attest`, `pask-site`,
 `pask-adapter`, `pask-wire-cli`, and `pask-ts-client`. Its source repository is
 `https://github.com/wilder-robotics/pask-workspace`.
 
-The public source snapshot identified here is commit
-`9ba85f1034145de9e8670a83ffc26ca6608fcec6`, corresponding to the initial
-0.1.0 releases of the three permissive crates. That snapshot supports the
-0.5 and 0.6 profiles. It does not implement the 0.7 retained-content
-construction, the additional vocabulary, or the subject-type correction
-specified by this document. Package versions and profile versions are
-independent; the released crates are not evidence of 0.7 support.
+**Public 0.7 source integration.** At commit
+`60a3d16ed26841dc597b5b90f6fdb4ef5b039a5e` (pull request 105, merged
+2026-10-04 UTC), the public source implements the 0.7
+retained-content construction, selective-disclosure verification,
+evidence-reference byte-integrity checks, the bounded unitless scalar
+comparator, recipient and replay checks, the `site.pose` vocabulary,
+and the version-specific text-string subject check. This identifies a
+reference-source snapshot, not a package release or a claim of full
+conformance.
 
-That snapshot implements the payload and signature paths, recorded-time
-containment and DIRECT_WITNESS naming checks for 0.6, candidate-entry
-derivation, bounded Ed25519/RFC9162 Receipt validation, and sender
-byte-string wrapping. These components are not a claim of an end-to-end
-registered deployment. Service-key trust inputs, required claims,
-registration policy, and exact ledger representation require their own
-evaluation.
+**Released crates.** Commit
+`9ba85f1034145de9e8670a83ffc26ca6608fcec6` corresponds to the initial
+0.1.0 releases of the three permissive crates. That snapshot supports
+the 0.5 and 0.6 profiles. It does not implement the 0.7
+retained-content construction, the additional vocabulary, or the
+subject-type correction specified by this document. The 0.7 source
+integration did not change those released artifacts or bump package
+versions. Package versions and profile versions are independent; the
+released 0.1.0 crates are not evidence of 0.7 support.
 
-The Signed Statement implementation checks that the Issuer identifier is
-nonempty text but does not fully enforce the inherited URI requirement in
+**Recorded checks.** Pull-request workflow run 37174081694 checked
+the provisional test-merge commit
+`603f75dfee766cb110e3df4ece9e072378f5dcdf`; post-merge workflow run
+37178318604 checked the landed commit identified above. In both runs,
+the Cargo jobs passed formatting, lint, build, and default-feature
+and ES256-feature tests on Linux, macOS, and Windows. Separate Linux
+jobs performed document, revision, license, compliance, and name
+checks. The document-job passes are policy passes with recorded
+exceptions, not reports of zero idnits errors or IETF approval. The
+DCO and commit-name checks inspected the contribution range in the
+pull-request run; they were skipped on the post-merge push. The
+tracked-file name check ran in both. These results retain their
+respective execution identities.
+
+Both source snapshots implement the payload and signature paths,
+recorded-time containment and DIRECT_WITNESS naming checks for 0.6,
+candidate-entry derivation, bounded Ed25519/RFC9162 Receipt
+validation, and sender byte-string wrapping. These components are not
+a claim of an end-to-end registered deployment. Service-key trust
+inputs, required claims, registration policy, and exact ledger
+representation require their own evaluation. CCF-profile Receipt
+verification is not implemented in either snapshot. The separate
+advisory `TS Integration` job exercises submission and Receipt
+retrieval, not Receipt-signature or inclusion-proof verification; its
+success is not evidence of CCF verification.
+
+The Signed Statement implementation in both snapshots checks that the
+Issuer identifier is nonempty text but does not fully enforce the
+inherited URI requirement in
 {{cose-header}}. This is an implementation limitation, not a relaxation of
 the normative requirement. The string-consistency check does not establish
 an authenticated association between that identifier and a signing key.
 
-Neither the published implementation nor this implementation-status report
+Neither source snapshot nor this implementation-status report
 establishes authenticated asserting parties, navigation-source conversion,
 compound pose/evidence comparison, reliable real-world clocks, recipient
 geometry containment, hardware evidence appraisal, a complete mobile-site
