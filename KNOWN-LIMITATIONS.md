@@ -81,6 +81,37 @@ not applied retroactively to 0.5. Successful label comparison under 0.6 does
 not establish authenticated association with the signature-verification key or
 genuine hardware provenance. The broader assurance gap remains open for all supported versions.
 
+### 1.4 CWT subject encoding is profile-version specific
+
+At public source commit `ed3e72e98e01bf6b2e592edbf524942b462aa26d`,
+the outer Signed Statement's protected CWT Subject claim (`sub`, claim 2)
+is handled according to the declared PSER profile.
+
+For `wilder.pser/0.5` and `wilder.pser/0.6`, the producer encodes `sub`
+as a CBOR byte string, and the legacy reader requires that representation.
+The initial 0.1.0 releases implement those legacy profiles, not 0.7.
+Preserving the legacy encoding is compatibility behavior, not a claim
+that it satisfies the text-string Subject requirement of CWT and the
+SCITT architecture. Successful signature or legacy-profile verification
+therefore does not establish full SCITT Signed Statement conformance.
+
+For `wilder.pser/0.7`, the producer emits a CBOR text string and the
+reader requires that type. The subject must equal the payload's `site.id`
+under 0.5, 0.6, and 0.7; the 0.7 correction changes the required CBOR type,
+not the existence of the equality check. A missing subject, a byte-string
+subject under 0.7, or a different subject value is rejected.
+
+Existing signed 0.5/0.6 statements are not silently converted or
+reinterpreted as 0.7. A differently encoded statement needs its own
+signature; rewriting the claim type does not repair an existing signature.
+The text-type and equality checks do not authenticate the Site, establish
+hardware provenance, or replace the remaining SCITT validation checks.
+[Issue #76](https://github.com/wilder-robotics/pask-workspace/issues/76)
+remains subject to its separate acceptance criteria.
+
+References: [RFC 8392, Section 3.2](https://www.rfc-editor.org/rfc/rfc8392.html#section-3.2)
+and [RFC 9943, Section 6](https://www.rfc-editor.org/rfc/rfc9943.html#section-6).
+
 ---
 
 ## 2. What the attestation layer does not verify

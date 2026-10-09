@@ -1895,6 +1895,26 @@ Engagement Receipt does NOT attest that:
 
 Relying parties MUST NOT infer these claims from a receipt.
 
+## Verification scope and trust inputs {#verification-scope}
+
+Successful signature verification establishes a relationship between the
+presented signed bytes and the verification key used for that check. It
+does not, by itself, establish who controls that key, that a named device
+holds it, that the device was at the Site, or that the recorded content is
+true. Trust in the key and its association with a named role comes from
+the relying party's independently established policy and authenticated
+evidence, not solely from a key, identifier, certificate, or policy
+supplied alongside the statement. A credential conveyed with a statement
+can participate in such validation; its presence does not make it its
+own trust anchor.
+
+The direct-witness and delegated-witness requirements in
+{{attestation-binding}} state the relationships needed for the profile's
+hardware-related claims. A class label, a matching identifier, or a
+successful ordinary signature check does not establish those
+relationships. The reference implementation's current appraisal and
+trust-establishment limits are described in {{impl-status}}.
+
 ## Equivocation and tail-truncation {#equivocation}
 
 The `chain` field defined in {{payload}} makes *in-band tampering*
@@ -2194,6 +2214,15 @@ conceal an Issuer's choice not to commit available material, and a valid
 chain prefix can conceal a later suffix. These limits survive registration
 of the presented material; no complete-history witness is added here.
 
+Repeating a previously valid presentation does not make its signatures or
+commitments invalid. This revision's reference processing does not
+establish that an engagement is new merely because the same bytes verify
+again. Application decisions that require freshness or duplicate-use
+prevention need separately identified state, trust inputs, and policy.
+The local replay implementation in {{local-replay}} re-evaluates retained
+bytes and reports its findings; it is not a replay-prevention mechanism
+or a replay of the physical event.
+
 Salts provide no secrecy once exposed and no hiding guarantee when weak or
 predictable. Reused roots can link contexts. Consumers need bounded parsers,
 work limits, and access policies in addition to proof verification. A small
@@ -2304,6 +2333,18 @@ compound pose/evidence comparison, reliable real-world clocks, recipient
 geometry containment, hardware evidence appraisal, a complete mobile-site
 protocol, or latest/complete history. A disclosure-policy result must not be
 confused with application acceptance.
+
+In the published `pask-attest` 0.1.0 path, verification of a quote
+containing evidence digests does not parse or appraise the referenced
+platform report and does not require those evidence bytes to be
+available. That path therefore cannot reject an otherwise verifiable
+quote merely because the referenced platform evidence is synthetic or
+absent. In the recorded 2026-09-29 UTC SEV-SNP experiment, separate
+tooling verified the AMD report and its certificate chain. The
+published Pask crates verified the quote and Signed Statement, not the
+AMD report. The repository's [known limitations](https://github.com/wilder-robotics/pask-workspace/blob/ed3e72e98e01bf6b2e592edbf524942b462aa26d/KNOWN-LIMITATIONS.md)
+record that configuration and its limits; the experiment does not
+establish hardware key custody for a deployed Issuer.
 
 The informative corrective-statement design remains unimplemented and its
 reference encodings remain unresolved. Planned experiments are not listed
