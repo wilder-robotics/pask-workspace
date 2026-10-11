@@ -1,6 +1,6 @@
 [package]
 name = "pask-wire"
-version = "0.1.0"
+version = "0.2.0"
 edition.workspace = true
 rust-version.workspace = true
 # Apache-2.0, not the workspace AGPL-3.0-only default. The spec-side crates
@@ -16,7 +16,7 @@ readme = "README.md"
 keywords = ["cose", "scitt", "receipts", "robotics", "attestation"]
 categories = ["cryptography", "encoding", "no-std"]
 authors.workspace = true
-description = "SCITT-native COSE receipt library for Physical-Site Engagement Receipts; implements the wilder.pser/0.5 and 0.6 profiles"
+description = "SCITT-style COSE receipt library for Physical-Site Engagement Receipts: supplied-key production and verification for the wilder.pser/0.5, 0.6 and 0.7 profiles, not complete conformance"
 
 # docs.rs builds with default features. This crate's default is `[]`, which would
 # document almost nothing, so name the documented surface explicitly. This changes the
@@ -59,3 +59,87 @@ serde_json = { version = "1.0.140", default-features = false, features = ["alloc
 
 [lints]
 workspace = true
+
+# Every public item of this crate is gated behind `alloc` and the library default
+# is `[]`. The integration tests and examples below import those items without a
+# crate-level `#![cfg(feature = "alloc")]` guard, so a default-feature invocation
+# such as `cargo test -p pask-wire --test chain` cannot compile them (an exit-101
+# unresolved-import failure, not a test failure). Declaring the gate on
+# the Cargo target makes a no-feature invocation report the missing feature
+# instead, and lets the ordinary default `cargo test -p pask-wire` skip them
+# cleanly. The remaining test files carry their own `#![cfg(feature = "alloc")]`
+# and are left to automatic discovery. Library defaults and assertions are
+# unchanged; automatic target discovery stays enabled (edition 2024).
+
+[[test]]
+name = "chain"
+path = "tests/chain.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "ack_provenance"
+path = "tests/ack_provenance.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "cose_independent"
+path = "tests/cose_independent.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "issue_30_66"
+path = "tests/issue_30_66.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "issue_67"
+path = "tests/issue_67.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "issuer_affiliation"
+path = "tests/issuer_affiliation.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "jcs_vectors"
+path = "tests/jcs_vectors.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "malformed"
+path = "tests/malformed.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "receipt"
+path = "tests/receipt.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "receipt_fixtures"
+path = "tests/receipt_fixtures.rs"
+required-features = ["alloc"]
+
+[[test]]
+name = "roundtrip"
+path = "tests/roundtrip.rs"
+required-features = ["alloc"]
+
+# `draft07_payload` and `proposed_recipient_replay` carry their own
+# `#[cfg(not(feature = "alloc"))]` fallback `main` and need no declaration.
+
+[[example]]
+name = "export_fixture"
+path = "examples/export_fixture.rs"
+required-features = ["alloc"]
+
+[[example]]
+name = "proposed07_measure"
+path = "examples/proposed07_measure.rs"
+required-features = ["alloc"]
+
+[[example]]
+name = "proposed_constraints"
+path = "examples/proposed_constraints.rs"
+required-features = ["alloc"]

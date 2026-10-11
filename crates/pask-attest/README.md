@@ -26,16 +26,41 @@ The receipt profile that consumes these claims is specified in
 An Internet-Draft is a work in progress. It is not a standard, and publication does not
 imply IETF endorsement.
 
-## Current source evaluation
+## What verification does and does not establish
 
-From a checkout, run `cargo test --locked -p pask-attest --all-features`.
-For a local consumer use a path dependency on `crates/pask-attest`; it depends on
-the sibling `pask-wire` crate. Registry installation below is prospective,
-after authorized publication:
+These are distinct operations, and passing one does not imply another:
+
+- **Supplied-key quote verification** is implemented: the framed `wilder.attest/0.1`
+  canonical JSON is checked against the Ed25519 keys the caller placed in an
+  `Ed25519RootOfTrust`, and the measured-boot binding, claim encodings and validity
+  window are checked before an `Attestation` is returned. Success establishes that
+  the quote verifies under a configured key, not who controls that key.
+- **Platform-evidence appraisal is not implemented.** `PlatformEvidence` and
+  `SealedEvidence` are digest-addressed opaque objects: the crate validates the
+  `sha256:` digest syntax and the `opaque/1` encoding label. It does not parse,
+  retrieve, or appraise vendor-native hardware evidence, and a `TeeClass` value does
+  not supply that capability. Hardware custody is not established.
+- **Receipt processing** (statement signature verification, retained-content checks
+  and registration verification) belongs to `pask-wire`, not to this crate.
+- **Full PSER or SCITT conformance** is not established by this crate. Remaining gaps
+  are recorded in the repository's KNOWN-LIMITATIONS.md.
+
+## Releases and evaluation
+
+`pask-attest` 0.1.0 is the historical first release on crates.io; it depends on
+`pask-wire` 0.1.0.
+
+This source is prepared as `pask-attest` 0.2.0, which depends on `pask-wire` 0.2.0.
+Once that exact version has been published, it installs with:
 
 ```
-cargo add pask-attest@0.1.0
+cargo add pask-attest@0.2.0
 ```
+
+Until then, evaluate from a checkout with
+`cargo test --locked -p pask-attest --all-features`, or use a path dependency on
+`crates/pask-attest`; it depends on the sibling `pask-wire` crate. The minimum
+supported Rust version is 1.88.
 
 ## License
 

@@ -1,6 +1,6 @@
 [package]
 name = "pask-attest"
-version = "0.1.0"
+version = "0.2.0"
 edition.workspace = true
 rust-version.workspace = true
 # Apache-2.0, not the workspace AGPL-3.0-only default. The spec-side crates
@@ -16,7 +16,7 @@ readme = "README.md"
 keywords = ["attestation", "tee", "scitt", "cose", "robotics"]
 categories = ["cryptography", "encoding"]
 authors.workspace = true
-description = "TEE attestation verification and typed claims for Pask receipts"
+description = "Supplied-key verification of signed wilder.attest/0.1 attestation quotes and typed claims for Pask receipts; platform-evidence appraisal is not implemented"
 
 [features]
 default = []
@@ -24,7 +24,7 @@ mock = []
 
 [dependencies]
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["std"] }
-pask-wire = { version = "0.1.0", path = "../pask-wire", features = ["std"] }
+pask-wire = { version = "0.2.0", path = "../pask-wire", features = ["std"] }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 thiserror = "2.0.12"

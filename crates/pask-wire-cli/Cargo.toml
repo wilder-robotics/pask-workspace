@@ -1,6 +1,6 @@
 [package]
 name = "pask-wire-cli"
-version = "0.1.0"
+version = "0.2.0"
 edition.workspace = true
 rust-version.workspace = true
 # Apache-2.0, not the workspace AGPL-3.0-only default. This binary is a
@@ -15,7 +15,19 @@ readme = "README.md"
 keywords = ["cose", "scitt", "conformance", "cli", "receipts"]
 categories = ["command-line-utilities", "cryptography"]
 authors.workspace = true
-description = "Command-line conformance tool: produce, verify, and emit canonical Pask receipts"
+description = "Command-line producer, supplied-key verifier, and canonical-example emitter for Pask receipts (wilder.pser/0.5, 0.6, 0.7); not a complete conformance certifier"
+
+# Repository-only integration checks. Both tests read the Internet-Draft under
+# `../../docs` (and the second also reads the two vocabulary JSON files at the
+# repository root), so they can only run from a workspace checkout and would
+# fail to find their inputs inside a standalone package archive. They stay in
+# `tests/` and keep running in workspace CI; only the archive omits them. The
+# archive keeps `tests/canonical_examples_are_valid_payloads.rs`, which covers
+# the portable part of what they check.
+exclude = [
+    "/tests/draft_example_is_generated.rs",
+    "/tests/draft_examples_are_validated.rs",
+]
 
 [features]
 default = []
@@ -25,7 +37,7 @@ es256 = ["pask-wire/es256"]
 anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
 ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem", "pkcs8"] }
-pask-wire = { version = "0.1.0", path = "../pask-wire", features = ["std"] }
+pask-wire = { version = "0.2.0", path = "../pask-wire", features = ["std"] }
 
 [dev-dependencies]
 # Test-only inspection of complete draft rules; no runtime API expansion.

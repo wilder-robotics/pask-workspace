@@ -39,7 +39,7 @@ fn header(digest: &str) -> ContentHeader<'_> {
 fn exact_v2_json_hash_matches_the_compiled_table() {
     assert_eq!(
         sha256_prefixed(include_bytes!(
-            "../../../schemas/proposed/pser-0.7/content-vocabulary-v2-candidate.json"
+            "fixtures/proposed07/content-vocabulary-v2-candidate.json"
         )),
         format!("sha256:{}", Vocabulary::V2.sha256())
     );
