@@ -2284,7 +2284,7 @@ and the version-specific text-string subject check. This identifies a
 reference-source snapshot, not a package release or a claim of full
 conformance.
 
-**Released crates.** Commit
+**Initial 0.1.0 releases.** Commit
 `9ba85f1034145de9e8670a83ffc26ca6608fcec6` corresponds to the initial
 0.1.0 releases of the three permissive crates. That snapshot supports
 the 0.5 and 0.6 profiles. It does not implement the 0.7
@@ -2308,41 +2308,71 @@ pull-request run; they were skipped on the post-merge push. The
 tracked-file name check ran in both. These results retain their
 respective execution identities.
 
-Both source snapshots implement the payload and signature paths,
+**Released 0.2.0 crates.** On 2026-10-12 UTC,
+[pask-wire](https://crates.io/crates/pask-wire/0.2.0),
+[pask-attest](https://crates.io/crates/pask-attest/0.2.0), and
+[pask-wire-cli](https://crates.io/crates/pask-wire-cli/0.2.0)
+were published at version 0.2.0 on crates.io from public commit
+`eddbb7f7c54d4e9aea59e8a0166d1c5165baf4d0` (pull request 108).
+The registry API and index checksums, and the downloaded archive
+bytes, matched the reviewed release artifacts. With the applicable
+features enabled, the released `pask-wire` exposes the 0.7 processing
+described above. The released CLI produces and verifies 0.7 Signed
+Statements from 0.7 input payloads using caller-supplied keys. Legacy
+0.5 and 0.6 processing and the CLI's 0.5 `canonical-example` default
+are retained. These releases do not establish full profile conformance.
+
+**Registry-release checks.** Installation of `pask-wire-cli` 0.2.0
+from crates.io and a separate registry-only consumer of `pask-wire`
+0.2.0 exercised 0.7 production and verification with supplied
+Ed25519 keys, including rejection under an unrelated verification
+key. The CLI checks included a null `contentDigest` and a
+syntactically valid digest placeholder; the latter does not establish
+that committed content exists or was verified. Retained tests for
+`pask-attest` and `pask-wire-cli` passed from downloaded 0.2.0 archives
+using their own packaged lockfiles, with `pask-wire` resolved from the
+registry and without local path or Git overrides. These release checks
+used Cargo and rustc 1.98.1 on Linux x86-64. They are distinct from the source
+and document workflow executions recorded above, and do not constitute
+hardware-evidence appraisal or CCF Receipt verification.
+
+The initial 0.1.0 source snapshot, the first public 0.7 integration,
+and the 0.2.0 release source implement the payload and signature paths,
 recorded-time containment and DIRECT_WITNESS naming checks for 0.6,
 candidate-entry derivation, bounded Ed25519/RFC9162 Receipt
 validation, and sender byte-string wrapping. These components are not
 a claim of an end-to-end registered deployment. Service-key trust
 inputs, required claims, registration policy, and exact ledger
 representation require their own evaluation. CCF-profile Receipt
-verification is not implemented in either snapshot. The separate
+verification is not implemented in any of these snapshots. The separate
 advisory `TS Integration` job exercises submission and Receipt
 retrieval, not Receipt-signature or inclusion-proof verification; its
 success is not evidence of CCF verification.
 
-The Signed Statement implementation in both snapshots checks that the
+The Signed Statement implementation in these snapshots checks that the
 Issuer identifier is nonempty text but does not fully enforce the
 inherited URI requirement in
 {{cose-header}}. This is an implementation limitation, not a relaxation of
 the normative requirement. The string-consistency check does not establish
 an authenticated association between that identifier and a signing key.
 
-Neither source snapshot nor this implementation-status report
-establishes authenticated asserting parties, navigation-source conversion,
-compound pose/evidence comparison, reliable real-world clocks, recipient
-geometry containment, hardware evidence appraisal, a complete mobile-site
-protocol, or latest/complete history. A disclosure-policy result must not be
-confused with application acceptance.
+None of these source snapshots, the registry-release checks, or this
+implementation-status report establishes authenticated asserting
+parties, navigation-source conversion, compound pose/evidence comparison,
+reliable real-world clocks, recipient geometry containment, hardware
+evidence appraisal, a complete mobile-site protocol, or latest/complete
+history. A disclosure-policy result must not be confused with application
+acceptance.
 
-In the published `pask-attest` 0.1.0 path, verification of a quote
-containing evidence digests does not parse or appraise the referenced
+In the published `pask-attest` 0.1.0 and 0.2.0 paths, verification of a
+quote containing evidence digests does not parse or appraise the referenced
 platform report and does not require those evidence bytes to be
-available. That path therefore cannot reject an otherwise verifiable
+available. Those paths therefore cannot reject an otherwise verifiable
 quote merely because the referenced platform evidence is synthetic or
 absent. In the recorded 2026-09-29 UTC SEV-SNP experiment, separate
 tooling verified the AMD report and its certificate chain. The
-published Pask crates verified the quote and Signed Statement, not the
-AMD report. The repository's [known limitations](https://github.com/wilder-robotics/pask-workspace/blob/ed3e72e98e01bf6b2e592edbf524942b462aa26d/KNOWN-LIMITATIONS.md)
+0.1.0 Pask crates used in that experiment verified the quote and Signed
+Statement, not the AMD report. The repository's [known limitations](https://github.com/wilder-robotics/pask-workspace/blob/ed3e72e98e01bf6b2e592edbf524942b462aa26d/KNOWN-LIMITATIONS.md)
 record that configuration and its limits; the experiment does not
 establish hardware key custody for a deployed Issuer.
 
