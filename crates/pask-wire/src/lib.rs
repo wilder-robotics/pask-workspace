@@ -4,7 +4,7 @@
 // modify or redistribute it; see LICENSING.md in the workspace root.
 
 //! Specified producer and verifier processing for Physical-Site Engagement Receipts
-//! under `wilder.pser/0.5` and `wilder.pser/0.6`.
+//! under `wilder.pser/0.5`, `wilder.pser/0.6`, and `wilder.pser/0.7`.
 //!
 //! Package names (`pask-*`), profile versions (`wilder.pser/<version>`) and
 //! Internet-Draft revision numbers identify different things and are versioned

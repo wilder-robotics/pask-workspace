@@ -119,6 +119,17 @@ class GenerationTests(unittest.TestCase):
         validate_vocabulary(v, CONFIG['profiles']['v1'])
         # Hash-pinned loading still prevents this edited value being generated as v1.
 
+    def test_packaged_v2_fixture_copy_is_byte_identical_to_the_original(self):
+        # The pask-wire archive ships its own copy of the v2 source so the
+        # shipped vocabulary test is self-contained. The original stays the
+        # generator input; the copy must never drift from it.
+        original = (ROOT / CONFIG['profiles']['v2']['source']).read_bytes()
+        packaged = (ROOT / 'crates/pask-wire/tests/fixtures/proposed07/'
+                    'content-vocabulary-v2-candidate.json').read_bytes()
+        self.assertEqual(packaged, original)
+        self.assertEqual(hashlib.sha256(packaged).hexdigest(),
+                         CONFIG['profiles']['v2']['source_sha256'])
+
 
 class DialectTests(unittest.TestCase):
     def reject(self, schema):
