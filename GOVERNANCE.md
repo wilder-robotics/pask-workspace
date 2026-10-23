@@ -3,7 +3,7 @@
 This document describes how decisions are made in this repository.
 
 **Maintainer entity:** Wilder Management Inc. (Illinois, USA), operating under the Wilder Robotics assumed name (DBA)
-**Domain of authority:** the reference implementation of `draft-wilder-scitt-physical-site-engagement-receipt` and directly supporting artifacts in this repository. **Not the specification itself** — see §3.
+**Domain of authority:** the reference implementation of `draft-wilder-scitt-physical-site-engage-receipt` and the supporting artifacts in this repository. Governance of the specification text is in section 3. The in-tree working draft is [`docs/draft-wilder-scitt-physical-site-engage-receipt-05.md`](docs/draft-wilder-scitt-physical-site-engage-receipt-05.md).
 
 ---
 
@@ -11,8 +11,8 @@ This document describes how decisions are made in this repository.
 
 This repository holds two categories of material:
 
-- The **draft specification source** — `draft-wilder-scitt-physical-site-engagement-receipt-XX.xml` and its rendered outputs, tracked at the [IETF datatracker](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engagement-receipt/).
-- The **reference implementation** — a Rust workspace implementing the draft's signing, verification, and profile-compliance logic, licensed under [AGPL-3.0-only with a documented commercial exception](./COMMERCIAL-EXCEPTION.md).
+- The **draft specification source**. The working copy in this tree is [`docs/draft-wilder-scitt-physical-site-engage-receipt-05.md`](docs/draft-wilder-scitt-physical-site-engage-receipt-05.md). It is Markdown. CI generates RFCXML from that file when the draft changes, and the XML is not committed. The -05 file is a working draft and is not the posted revision. The canonical posted document is the IETF individual submission [`draft-wilder-scitt-physical-site-engage-receipt`](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engage-receipt/). There is no `draft/` directory.
+- The **reference implementation**. A Rust workspace of six crates. `pask-wire`, `pask-attest`, and `pask-wire-cli` are [Apache-2.0](LICENSE-APACHE-2.0). `pask-site`, `pask-adapter`, and `pask-ts-client` are [AGPL-3.0-only](LICENSE). [LICENSING.md](LICENSING.md) is the authoritative map. [COMMERCIAL-EXCEPTION.md](COMMERCIAL-EXCEPTION.md) applies only to the AGPL-3.0-only crates. The implementation is pre-alpha. [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md) records what it does not do. In particular, section 2 records that the profile's three-party trust model is not demonstrated here, and section 5.2 records that Transparency Service registration is implemented in `pask-ts-client` and is not wired into the reference site.
 
 Governance of these two categories is different, described in §3 and §4 below.
 
@@ -22,8 +22,8 @@ Governance of these two categories is different, described in §3 and §4 below.
 
 - **Sole codeowner:** listed in [CODEOWNERS](./CODEOWNERS). Currently a single person.
 - **Contributors:** anyone who opens issues, discussions, or pull requests.
-- **Reviewers:** appointed at the codeowner's discretion. As of `-00`, there are no additional reviewers beyond the sole codeowner.
-- **Trusted contributors (future):** contributors invited to hold write access to specific subdirectories. As of `-00`, none exist.
+- **Reviewers:** appointed at the codeowner's discretion. There are no additional reviewers beyond the sole codeowner.
+- **Trusted contributors (future):** contributors invited to hold write access to specific subdirectories. None exist.
 
 ---
 
@@ -69,9 +69,11 @@ The maintainer entity (Wilder Management Inc., operating under the Wilder Roboti
 
 **Draft text:** licensed under the [IETF Trust Legal Provisions](https://trustee.ietf.org/documents/trust-legal-provisions/) as applicable to Internet-Drafts. See the boilerplate in the draft itself.
 
-**Reference implementation code:** [AGPL-3.0-only](./LICENSE), with a documented commercial exception published in [COMMERCIAL-EXCEPTION.md](./COMMERCIAL-EXCEPTION.md). The commercial exception permits Wilder Management Inc. (operating under the Wilder Robotics assumed name) to offer a proprietary hosted overlay ("Pask Enterprise") under separate commercial terms without triggering AGPL's network-use clause against paying customers who deploy the open-source layer for internal use.
+**Reference implementation code:** this repository is not licensed uniformly. `pask-wire`, `pask-attest`, and `pask-wire-cli` are [Apache-2.0](LICENSE-APACHE-2.0) and are published on crates.io at 0.2.0. `pask-site`, `pask-adapter`, and `pask-ts-client` are [AGPL-3.0-only](LICENSE) and are not published. [LICENSING.md](LICENSING.md) states the rule: code whose purpose is interoperability is Apache-2.0, and code whose purpose is operating a deployment is AGPL-3.0-only. [`scripts/license_guard.sh`](scripts/license_guard.sh) checks that split in CI.
 
-**Contributions:** all contributions to this repository are accepted under the AGPL-3.0-only license (for code) and the IETF Trust Legal Provisions (for draft text), and by opening a pull request the contributor certifies compliance with the [Developer Certificate of Origin](https://developercertificate.org/) via a `Signed-off-by:` line on every commit.
+[COMMERCIAL-EXCEPTION.md](COMMERCIAL-EXCEPTION.md) applies only to the AGPL-3.0-only crates. The commercial exception permits Wilder Management Inc. (operating under the Wilder Robotics assumed name) to offer a proprietary hosted overlay ("Pask Enterprise") under separate commercial terms without triggering AGPL's network-use clause against paying customers who deploy the open-source layer for internal use. The Apache-2.0 crates do not need that agreement.
+
+**Contributions:** a code contribution is accepted under the license of the crate it modifies. Draft text is accepted under the IETF Trust Legal Provisions. By opening a pull request the contributor certifies compliance with the [Developer Certificate of Origin](https://developercertificate.org/) via a `Signed-off-by:` line on every commit. See [CONTRIBUTING.md](CONTRIBUTING.md) and [LICENSING.md](LICENSING.md).
 
 **Trademarks:** "Pask" and "Wilder Robotics" are common-law trademarks used in commerce by Wilder Management Inc. under the Wilder Robotics assumed name. Use of these marks in derivative works, forks, or downstream products is governed by trademark law; the AGPL-3.0 grant does not extend to trademarks.
 
