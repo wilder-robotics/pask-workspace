@@ -1,70 +1,83 @@
 <!--
 Thanks for opening a pull request against pask-workspace.
 
-Please fill out every section below. PRs missing sign-off, tests, or
-context will be asked to update before review.
+Fill in every section. GOVERNANCE.md section 11 is the requirement.
+A pull request that changes normative draft text belongs on the SCITT
+WG mailing list (scitt@ietf.org) before merge. The mailing list is the
+decision venue for that text. This queue is not.
 
-For substantive changes to the draft's normative content, please open
-discussion on the SCITT WG mailing list (scitt@ietf.org) *before* this
-PR — the mailing list is where those decisions live, per GOVERNANCE.md.
+Security-sensitive changes need ChatGPT's disposition and independent
+evidence review. Cursor does not approve or merge its own pull request.
 -->
 
-## Summary
+## 1. Decision and scope
 
-<!-- One-line description of what this PR changes and why. -->
+- Task id:
+- Specification path:
+- Specification commit:
+- Base commit:
+- Head commit:
+- Changed behavior:
+- Unchanged boundaries:
+- Dependency or license changes:
 
-## Type of change
+## 2. Acceptance matrix
+
+<!--
+Map every acceptance criterion to a test or an evidence artifact.
+Include failures, ignored tests, and NOT_RUN items. A blank cell is
+not a pass.
+-->
+
+| Criterion | Evidence | Result |
+| --- | --- | --- |
+|  |  |  |
+
+## 3. Reproduction evidence
+
+<!--
+Exact commands, toolchain, feature flags, operating system, exit codes,
+test counts, logs, and fixture identities. Write NOT_RUN for anything
+this pull request did not execute, and say why.
+-->
+
+- Operating system:
+- Toolchain:
+- Feature flags:
+- Commands and exit codes:
+- Test counts:
+- Logs:
+- Fixture identities:
+
+## 4. Risk and review
+
+- Migrations:
+- Rollback:
+- Unresolved limitations:
+- Reviewer findings:
+
+## Change class
 
 <!-- Check exactly one. -->
 
-- [ ] Editorial fix to the draft (typo, cross-reference, reference update)
-- [ ] Normative change to the draft (schema, wire format, MUST/SHOULD language) — has this been discussed on the SCITT WG mailing list?
+- [ ] Editorial fix to the in-tree draft (typo, cross-reference, reference update)
+- [ ] Normative change to the draft (schema, wire format, MUST/SHOULD language). SCITT WG thread:
 - [ ] Bug fix in the Rust reference implementation
 - [ ] New feature or capability in the Rust reference implementation
 - [ ] New conformance vector or update to existing vectors
 - [ ] Documentation, governance, or repository housekeeping
 - [ ] CI, tooling, or release automation
-- [ ] Other (describe below)
+- [ ] Other (describe in section 1)
 
-## Related issues / drafts
+## Boundaries this pull request must not cross
 
-<!-- Link any related GitHub issues, IETF mailing-list threads, or datatracker entries. -->
-
-Closes #
-
-## Testing
-
-<!-- What did you run locally to verify the change? -->
-
-- [ ] `cargo fmt --check` passes
-- [ ] `cargo clippy -- -D warnings` passes
-- [ ] `cargo test` passes
-- [ ] `xml2rfc` validates the draft (if draft touched)
-- [ ] `idnits` passes (if draft touched)
-- [ ] New tests or vectors added where behavior changed
-- [ ] Not applicable (documentation-only, etc.)
-
-## Draft-XML impact (only fill in if this PR touches `/draft/`)
-
-- [ ] Does not change any MUST / SHOULD / MAY normative language
-- [ ] Changes normative language — discussed on `scitt@ietf.org`, thread link:
-- [ ] Changes the wire format or schema — code freeze status has been reviewed against `pask_code_freeze.md`
-
-## RATS-semantics / reservation discipline check
-
-<!-- The panel discipline: repo-owner and maintainer are NOT the same as RATS roles.
-Confirm this PR does not blur that boundary. -->
-
-- [ ] This PR does not introduce language implying the repository owner is an Issuer, Attester, Verifier, or Relying Party in the RATS sense.
-- [ ] This PR does not introduce commercial-positioning language, named-counterparty targets, or "Pask solves X" claims.
+- [ ] Does not introduce language that treats the repository owner as an Issuer, Attester, Verifier, or Relying Party in the RATS sense.
+- [ ] Does not introduce commercial-positioning language, named-counterparty targets, or a claim that Pask solves a named deployment.
+- [ ] Does not weaken a negative test to make CI green.
+- [ ] Security-sensitive changes (signed bytes, trust anchors, accepted algorithms, profile versions, enum meanings, time policy, key custody, fixture expectations, licensing, or public assurance claims) are escalated, with ChatGPT's disposition linked here:
 
 ## Sign-off
 
-Every commit in this PR must include a `Signed-off-by:` line per the [Developer Certificate of Origin](https://developercertificate.org) and be [cryptographically signed](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits) (GPG, S/MIME, or SSH signature). The DCO and signed-commits status checks will block merge otherwise.
+Every commit in this pull request carries a `Signed-off-by:` line per the [Developer Certificate of Origin](https://developercertificate.org/). The commit identity is on the allowlist in `scripts/name_guard.sh`.
 
 - [ ] All commits are DCO-signed (`git commit -s`)
-- [ ] All commits are cryptographically signed (verified badge visible in the commit list)
-
-## Additional notes
-
-<!-- Anything else the reviewer should know. -->
