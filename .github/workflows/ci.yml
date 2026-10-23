@@ -5,6 +5,7 @@
 #
 # Jobs:
 #   - cargo:      Rust build/test matrix (Linux + macOS + Windows).
+#                 The Ubuntu leg also runs cargo audit against Cargo.lock.
 #   - ts-integration: advisory real-ledger HTTP test on Linux.
 #   - dco:        Developer Certificate of Origin sign-off check on every
 #                 commit in a PR. Enforces the CONTRIBUTING.md contract.
@@ -65,6 +66,27 @@ jobs:
         with:
           toolchain: stable
           components: clippy,rustfmt
+
+      # Cargo.lock does not vary by OS, so the Ubuntu leg audits once for
+      # the whole matrix. `cargo audit` exits non-zero when any crate in
+      # the lockfile has a vulnerability advisory, which fails this job.
+      #
+      # The HTTP clients compile rustls, rustls-webpki, and webpki-roots
+      # through reqwest's rustls-tls feature. reqwest also records its
+      # optional HTTP/3 crates in the lockfile. Those crates are not
+      # compiled: the http3 feature is not enabled, and `cargo tree` does
+      # not list them. They are kept on patched releases so this step can
+      # stay strict, with no ignore list and without turning HTTP/3 on.
+      #
+      # cargo-audit is pinned here. Dependabot updates Action SHAs; it does
+      # not rewrite this installer line, so a newer auditor is a deliberate
+      # edit.
+      - name: Audit dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          set -euo pipefail
+          cargo install cargo-audit --version 0.22.2 --locked
+          cargo audit
 
       - name: Check formatting
         run: cargo fmt --all -- --check
