@@ -73,3 +73,79 @@ fn example_default_remains_exact_05_not_06() {
         pask_wire::canonical_example_06().unwrap().as_bytes()
     );
 }
+
+#[test]
+fn canonical_example_without_a_flag_is_byte_for_byte_the_05_example() {
+    let out = run(&["canonical-example"]);
+    assert!(
+        out.status.success(),
+        "canonical-example failed: {}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let expected = pask_wire::canonical_example().expect("the 0.5 example emits");
+    assert_eq!(
+        out.stdout,
+        expected.as_bytes(),
+        "no-flag canonical-example must stay the current 0.5 output"
+    );
+
+    let explicit = run(&["canonical-example", "--profile", "0.5"]);
+    assert!(
+        explicit.status.success(),
+        "--profile 0.5 failed: {}",
+        String::from_utf8_lossy(&explicit.stderr)
+    );
+    assert_eq!(explicit.stdout, expected.as_bytes());
+}
+
+#[test]
+fn canonical_example_profiles_match_the_library_figures_exactly() {
+    let cases = [
+        ("0.6", pask_wire::canonical_example_06()),
+        ("0.7", pask_wire::canonical_example_07()),
+    ];
+    let legacy = pask_wire::canonical_example().unwrap();
+    for (profile, expected) in cases {
+        let expected = expected.expect("the library example emits");
+        let out = run(&["canonical-example", "--profile", profile]);
+        assert!(
+            out.status.success(),
+            "--profile {profile} failed: {}",
+            String::from_utf8_lossy(&out.stderr)
+        );
+        assert_eq!(
+            out.stdout,
+            expected.as_bytes(),
+            "--profile {profile} must match the library emitter"
+        );
+        assert_ne!(out.stdout, legacy.as_bytes());
+    }
+}
+
+#[test]
+fn canonical_example_help_names_the_profile_choices() {
+    let out = run(&["canonical-example", "--help"]);
+    assert!(out.status.success());
+    let text = String::from_utf8(out.stdout).unwrap();
+    assert_canonical_usage(&text, Some("canonical-example"));
+    assert!(text.contains("--profile"), "{text}");
+    for profile in ["0.5", "0.6", "0.7"] {
+        assert!(text.contains(profile), "{text}");
+    }
+}
+
+#[test]
+fn canonical_example_rejects_an_unknown_profile() {
+    let out = run(&["canonical-example", "--profile", "0.8"]);
+    assert_eq!(out.status.code(), Some(2));
+    let text = String::from_utf8(out.stderr).unwrap();
+    assert!(text.contains("invalid value"), "{text}");
+    assert!(text.contains("--profile"), "{text}");
+    for profile in ["0.5", "0.6", "0.7"] {
+        assert!(text.contains(profile), "{text}");
+    }
+    assert!(
+        out.stdout.is_empty(),
+        "a rejected profile must not print an example"
+    );
+}

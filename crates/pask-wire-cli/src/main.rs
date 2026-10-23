@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Wilder Management Inc. (d/b/a Wilder Robotics) <rob@wilder-robotics.com>
 // pask-wire-cli is licensed Apache-2.0. It is a conformance tool: it produces
-// receipts, verifies them, and emits the legacy 0.5 canonical example.
-// The posted -04 figure uses the library's 0.6 generator. An implementer can use
-// own implementation without a copyleft review, so it takes no dependency on
-// the operational crates. Pushing a verified receipt into an operations
-// system lives in the `pask-adapt` binary in the AGPL-3.0-only pask-adapter
-// crate. See LICENSING.md.
+// receipts, verifies them, and emits canonical examples. With no flag,
+// `canonical-example` emits the legacy 0.5 example; `--profile 0.6` and
+// `--profile 0.7` emit those library figures. The posted -04 figure uses the
+// library's 0.6 generator. An implementer can use own implementation without
+// a copyleft review, so it takes no dependency on the operational crates.
+// Pushing a verified receipt into an operations system lives in the
+// `pask-adapt` binary in the AGPL-3.0-only pask-adapter crate. See
+// LICENSING.md.
 
 use std::{
     fs,
@@ -15,12 +17,15 @@ use std::{
 };
 
 use anyhow::{Context, Result};
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 use ed25519_dalek::{
     SigningKey, VerifyingKey,
     pkcs8::{DecodePrivateKey, DecodePublicKey},
 };
-use pask_wire::{Payload, canonical_example, produce_ed25519, verify_ed25519};
+use pask_wire::{
+    Payload, canonical_example, canonical_example_06, canonical_example_07, produce_ed25519,
+    verify_ed25519,
+};
 
 #[derive(Debug, Parser)]
 #[command(name = "pask-wire-cli", bin_name = "pask-wire-cli")]
@@ -48,9 +53,17 @@ enum Command {
         #[arg(long)]
         output: PathBuf,
     },
-    /// Emit the legacy wilder.pser/0.5 canonical example.
-    /// The posted -04 figure instead uses pask_wire::canonical_example_06().
-    CanonicalExample,
+    /// Emit a canonical example. Defaults to the legacy 0.5 figure.
+    ///
+    /// With no `--profile`, this writes the legacy wilder.pser/0.5 example,
+    /// byte for byte the same as `pask_wire::canonical_example()`.
+    /// `--profile 0.6` writes `canonical_example_06()`, the posted -04 figure.
+    /// `--profile 0.7` writes `canonical_example_07()`, the in-tree draft figure.
+    CanonicalExample {
+        /// Profile figure to print: 0.5 (default), 0.6, or 0.7.
+        #[arg(long, value_enum, default_value = "0.5")]
+        profile: ExampleProfile,
+    },
     Verify {
         #[arg(long)]
         input: PathBuf,
@@ -68,10 +81,15 @@ fn main() -> Result<()> {
             private_key,
             output,
         } => produce(input, private_key, output),
-        Command::CanonicalExample => {
+        Command::CanonicalExample { profile } => {
+            let example = match profile {
+                ExampleProfile::V05 => canonical_example(),
+                ExampleProfile::V06 => canonical_example_06(),
+                ExampleProfile::V07 => canonical_example_07(),
+            }?;
             let mut stdout = io::stdout().lock();
             stdout
-                .write_all(canonical_example()?.as_bytes())
+                .write_all(example.as_bytes())
                 .context("failed to write the canonical example to stdout")
         }
         Command::Verify {
@@ -80,6 +98,19 @@ fn main() -> Result<()> {
             output,
         } => verify(input, public_key, output),
     }
+}
+
+/// Which library figure `canonical-example` prints.
+///
+/// `0.5` is the default and stays byte-for-byte `canonical_example()`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
+enum ExampleProfile {
+    #[value(name = "0.5")]
+    V05,
+    #[value(name = "0.6")]
+    V06,
+    #[value(name = "0.7")]
+    V07,
 }
 
 fn produce(input: PathBuf, private_key: PathBuf, output: PathBuf) -> Result<()> {
@@ -160,6 +191,33 @@ mod usage_contract_tests {
                     .expect_err("help must terminate parsing before command execution");
                 assert_eq!(error.kind(), ErrorKind::DisplayHelp, "{program} {args:?}");
                 assert_canonical_usage(&error, subcommand);
+            }
+        }
+    }
+
+    #[test]
+    fn canonical_example_defaults_to_05_and_accepts_the_newer_profiles() {
+        use super::{Command, ExampleProfile};
+
+        let defaulted = Cli::try_parse_from(["pask-wire-cli", "canonical-example"]).unwrap();
+        assert!(matches!(
+            defaulted.command,
+            Command::CanonicalExample {
+                profile: ExampleProfile::V05
+            }
+        ));
+
+        for (flag, expected) in [
+            ("0.5", ExampleProfile::V05),
+            ("0.6", ExampleProfile::V06),
+            ("0.7", ExampleProfile::V07),
+        ] {
+            let parsed =
+                Cli::try_parse_from(["pask-wire-cli", "canonical-example", "--profile", flag])
+                    .unwrap();
+            match parsed.command {
+                Command::CanonicalExample { profile } => assert_eq!(profile, expected),
+                other => panic!("unexpected command for --profile {flag}: {other:?}"),
             }
         }
     }
