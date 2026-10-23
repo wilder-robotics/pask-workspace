@@ -1,6 +1,6 @@
 # Task specifications
 
-A task is work with one owner and one approved specification revision. The specification lives in this directory. Dispatch, review, and merge authority are in [`GOVERNANCE.md`](../../GOVERNANCE.md). Grok Bot dispatches the approved revision. ChatGPT amends it when a finding changes meaning or scope. Cursor implements the revision that was dispatched. Rob Wilder merges.
+A task is work with one owner and one approved specification revision. The specification lives in this directory. Dispatch, review, and merge authority are in [`GOVERNANCE.md`](../../GOVERNANCE.md). Grok Bot dispatches the approved revision. ChatGPT advises and amends a specification when a finding changes meaning or scope, unless Rob Wilder overrides that advice. Cursor implements the revision that was dispatched. Rob Wilder merges, including by delegating the merge to Grok Bot after he has explicitly approved that pull request.
 
 ## Template
 
@@ -35,5 +35,5 @@ These ids are reserved. Each is a pending specification. This list does not defi
 - T06. Verified registration. Pending specification.
 - T07. SNP capture contract. Pending specification.
 - T08. Native SNP appraisal. Pending specification.
-- T09. Licensing and issue reconciliation. Pending specification.
+- T09. Licensing and issue reconciliation, under owner review by Rob Wilder assisted by the Wilder Legal & IP agent. Pending specification.
 - T10. Composed acceptance suite. Pending specification.

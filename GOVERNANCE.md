@@ -20,35 +20,37 @@ Governance of these two categories is different, described in §3 and §4 below.
 
 ## 2. Roles
 
+Rob Wilder's authority is above every participant, including the architect. ChatGPT's role is advisory and technical. ChatGPT's decisions and acceptance criteria stand unless Rob Wilder overrides them. Rob Wilder can override any of them.
+
 The maintainer entity is unchanged. [CODEOWNERS](./CODEOWNERS) routes review to `actionrob`, the GitHub account controlled by Rob Wilder. On 2026-10-23 that account was the only collaborator this repository's API listed, and it holds repository admin.
 
-The following operating roles apply to work dispatched on or after 2026-10-23. They do not override §3, legal counsel, or a relying party's own trust policy.
+The following operating roles apply to work dispatched on or after 2026-10-23. They describe how participants carry out work Rob Wilder has accepted. Section 3 remains the description of the IETF individual-submission process.
 
 ### 2.1 Rob Wilder
 
-Rob Wilder approves merges and consequential decisions about scope, trust, disclosure, licensing, release, purchase, and deployment. A merge approval is not a release approval, a certification, or a deployment approval.
+Rob Wilder approves merges and consequential decisions about scope, trust, disclosure, licensing, release, purchase, and deployment. He may delegate merging to his agents. When Rob Wilder has explicitly approved a pull request, Grok Bot may merge it, and that merge counts as Rob Wilder's merge. A merge approval is not a release approval, a certification, or a deployment approval.
 
 ### 2.2 ChatGPT
 
-ChatGPT holds architecture, the threat model, interfaces, profile semantics, specifications, acceptance criteria, and the final technical disposition of security-sensitive changes. ChatGPT does not override owner decisions, legal counsel, or relying-party trust policy.
+ChatGPT advises on architecture, the threat model, interfaces, profile semantics, specifications, acceptance criteria, and the technical disposition of security-sensitive changes. Those decisions and acceptance criteria stand unless Rob Wilder overrides them.
 
 ### 2.3 Cursor
 
-Cursor holds production implementation, tests, ordinary refactoring, documentation updates, and CI repair inside an approved task. Cursor must not make an unapproved change to trust, wire semantics, licensing, assurance language, or acceptance criteria. Cursor must not approve its own pull request and must not merge.
+Cursor holds production implementation, tests, ordinary refactoring, documentation updates, and CI repair inside an approved task. Cursor must not make an unapproved change to trust, wire semantics, licensing, assurance language, or acceptance criteria. Cursor does not approve its own pull request and does not merge.
 
 ### 2.4 Perplexity Computer
 
-Perplexity Computer holds standards and vendor research, evidence acquisition, explicitly isolated prototypes, and independent reproduction or review of critical results. A prototype is a research artifact and must not be treated as a second production implementation. A research conclusion must not be treated as an architectural decision. This assignment replaces Perplexity Computer's former canonical-integrator role: Cursor prepares the source pull request, CI tests the exact revision, and Rob Wilder merges.
+Perplexity Computer holds standards and vendor research, evidence acquisition, explicitly isolated prototypes, and independent reproduction or review of critical results. A prototype is a research artifact and must not be treated as a second production implementation. A research conclusion must not be treated as an architectural decision. This assignment replaces Perplexity Computer's former canonical-integrator role: Cursor prepares the source pull request, and CI tests the exact revision. The merge is Rob Wilder's, including a merge Grok Bot performs after Rob Wilder's explicit approval of that pull request.
 
 ### 2.5 Grok Bot
 
-Grok Bot holds dispatch, task ownership, dependency tracking, reminders, and evidence-based status reporting. Grok Bot relays a specification without changing it. Grok Bot must not resolve an architectural question by paraphrasing it.
+Grok Bot holds dispatch, task ownership, dependency tracking, reminders, and evidence-based status reporting. Grok Bot relays a specification without changing it. Grok Bot must not resolve an architectural question by paraphrasing it. Grok Bot is Rob Wilder's coordinator for merges: when Rob Wilder has explicitly approved a pull request, Grok Bot merges it, and that merge counts as Rob Wilder's merge.
 
 ### 2.6 Contributors
 
 Anyone may open issues, discussions, or pull requests. Additional reviewers are appointed at the code owner's discretion. No trusted contributor holds write access to a subdirectory.
 
-The earlier statement that no reviewer exists beyond the sole code owner is superseded for future work. A security-sensitive change needs ChatGPT's disposition and an independent evidence review. The merge itself needs Rob Wilder's approval once he applies the ruleset remediation in the [settings report](docs/governance/github-settings-report-2026-10-23.md). Until that remediation is applied, GitHub does not enforce a separate approval. See §4.1.
+The earlier statement that no reviewer exists beyond the sole code owner is superseded for future work. A security-sensitive change carries ChatGPT's technical disposition and an independent evidence review. Those stand unless Rob Wilder overrides them. The merge is Rob Wilder's explicit approval of that pull request, which Grok Bot may carry out. See §4.1 and the options in the [settings report](docs/governance/github-settings-report-2026-10-23.md). GitHub, as read on 2026-10-23, does not require a separate approval.
 
 ---
 
@@ -74,21 +76,17 @@ Preserved assertion, superseded as a description of enforcement: this section pr
 
 Read on 2026-10-23 from ruleset `main-protection` (id 19786840), and written up in [docs/governance/github-settings-report-2026-10-23.md](docs/governance/github-settings-report-2026-10-23.md): a pull request is required, the required approving review count is zero, code-owner review is not required, conversation resolution is not required, and the ruleset has no signed-commit rule. Linear history is required. Branch deletion and non-fast-forward pushes are rejected. Stale-review dismissal on push is already enabled. This document does not change those settings. Rob Wilder applies and verifies every setting that a source pull request cannot change.
 
-Enforcement Rob Wilder applies outside this repository's files:
+Settings choices are Rob Wilder's. The [settings report](docs/governance/github-settings-report-2026-10-23.md) records the live rules and lists options. Those options are not requirements. They leave a working path for merges Rob Wilder delegates to his agents. The report does not ask him to remove the bypass that path uses.
 
-- One approval on the final revision.
-- Stale approvals stay dismissed when new commits are pushed.
-- Code-owner review for the security-sensitive paths in [CODEOWNERS](./CODEOWNERS).
-- Required status checks must pass, and review conversations must be resolved.
-- Agents must not have a bypass. An administrator bypass must not be available to an agent.
+Rob Wilder may delegate merging to his agents. Grok Bot merges a pull request when Rob Wilder has explicitly approved that pull request, and that merge counts as Rob Wilder's merge. That is not a violation. Cursor does not merge and does not approve its own pull requests.
 
-The code owner does not approve their own pull request. No second code owner is named in §4.3 yet. After code-owner review is required, a pull request authored by `actionrob` still has no second owner who can satisfy it. Agent-authored pull requests are the case this charter can satisfy: the agent identity is not `actionrob`, and Rob Wilder approves.
+No second code owner is named in §4.3 yet. If code-owner review were turned on, a pull request authored by `actionrob` would have no second owner who could satisfy it. That is an observation, not an instruction to remove `actionrob`'s bypass. Cursor's own pull requests are still not approved or merged by Cursor.
 
 Agents must not push implementation work directly to `main`. Any instruction that would send future task work straight to `main` is superseded by this paragraph. Commits already on `main` stay as history. §4.3 still provides no emergency-merge process.
 
 ### 4.2 Constitutional changes
 
-Changes to `GOVERNANCE.md`, `LICENSE`, `COMMERCIAL-EXCEPTION.md`, `CODEOWNERS`, or the repository's default branch protections are decided by the maintainer entity (Wilder Management Inc., operating under the Wilder Robotics assumed name), currently through the sole codeowner. ChatGPT, Cursor, Perplexity Computer, and Grok Bot do not acquire that authority. Cursor must not edit grant text unless a later task says so after legal review.
+Changes to `GOVERNANCE.md`, `LICENSE`, `COMMERCIAL-EXCEPTION.md`, `CODEOWNERS`, or the repository's default branch protections are decided by the maintainer entity (Wilder Management Inc., operating under the Wilder Robotics assumed name), currently through Rob Wilder. Delegated merge authority does not by itself edit those documents. Grant-changing license text needs Rob Wilder's explicit approval before merge. Owner review of that text is Rob Wilder's, assisted by his Wilder Legal & IP agent. Pask does not use outside counsel.
 
 ### 4.3 Succession plan
 
@@ -110,7 +108,7 @@ The maintainer entity (Wilder Management Inc., operating under the Wilder Roboti
 
 [COMMERCIAL-EXCEPTION.md](COMMERCIAL-EXCEPTION.md) applies only to the AGPL-3.0-only crates. The commercial exception permits Wilder Management Inc. (operating under the Wilder Robotics assumed name) to offer a proprietary hosted overlay ("Pask Enterprise") under separate commercial terms without triggering AGPL's network-use clause against paying customers who deploy the open-source layer for internal use. The Apache-2.0 crates do not need that agreement.
 
-**Contributions:** a code contribution is accepted under the license of the crate it modifies. Draft text is accepted under the IETF Trust Legal Provisions. By opening a pull request the contributor certifies compliance with the [Developer Certificate of Origin](https://developercertificate.org/) via a `Signed-off-by:` line on every commit. See [CONTRIBUTING.md](CONTRIBUTING.md) and [LICENSING.md](LICENSING.md).
+**Contributions:** a code contribution is accepted under the license of the crate it modifies. Draft text is accepted under the IETF Trust Legal Provisions. By opening a pull request the contributor certifies compliance with the [Developer Certificate of Origin](https://developercertificate.org/) via a `Signed-off-by:` line on every commit. See [CONTRIBUTING.md](CONTRIBUTING.md) and [LICENSING.md](LICENSING.md). A DCO sign-off is not a copyright assignment. Contributor rights are checked as part of owner review by Rob Wilder, assisted by his Wilder Legal & IP agent, before grant-changing license text merges.
 
 **Trademarks:** "Pask" and "Wilder Robotics" are common-law trademarks used in commerce by Wilder Management Inc. under the Wilder Robotics assumed name. Use of these marks in derivative works, forks, or downstream products is governed by trademark law; the AGPL-3.0 grant does not extend to trademarks.
 
@@ -182,7 +180,7 @@ A critical trust change requires independent reproduction by Perplexity Computer
 
 ## 12. Security-sensitive changes
 
-[CODEOWNERS](./CODEOWNERS) routes security-sensitive paths to `actionrob`. GitHub's code-owner review, once Rob Wilder enables it, is the platform half of that control. The technical disposition still belongs to ChatGPT, and the independent evidence review in §11 still applies. Neither half is optional for a security-sensitive change.
+[CODEOWNERS](./CODEOWNERS) routes security-sensitive paths to `actionrob`. ChatGPT's technical disposition and the independent evidence review in §11 stand unless Rob Wilder overrides them. Code-owner review on GitHub is one of the options in the settings report, not a requirement of this document.
 
 Cursor must escalate, and must stop rather than invent a disposition, when a change touches any of the following:
 
@@ -203,10 +201,10 @@ Paths that carry those concerns are listed in [CODEOWNERS](./CODEOWNERS). The li
 
 ## 13. Agent permissions
 
-Agents must not operate with Rob Wilder's administrator credentials. Agent-authored pull requests use a distinct agent identity so that approval by Rob Wilder is a separate person's approval.
+Rob Wilder may delegate merging to his agents. Grok Bot merges a pull request when Rob Wilder has explicitly approved that pull request. That merge counts as Rob Wilder's merge and is not a violation. The settings report keeps the facts about required reviews and bypass actors, and its options leave the bypass that delegated merges use.
+
+Cursor does not merge and does not approve its own pull requests. Cursor does not edit GitHub rulesets, branch protection, or team permissions. Those settings are reported for Rob Wilder, who applies whatever he chooses. The report for the 2026-10-23 read is [docs/governance/github-settings-report-2026-10-23.md](docs/governance/github-settings-report-2026-10-23.md).
 
 Cursor's cloud environment receives only the repositories, test credentials, and outbound access a task needs. It does not receive production signing keys, cloud-administrator credentials, or live tournament access.
 
-An agent must not use an administrator bypass, must not edit GitHub rulesets or branch protection, and must not merge. Settings that require those permissions are reported for Rob Wilder. The report for the 2026-10-23 read is [docs/governance/github-settings-report-2026-10-23.md](docs/governance/github-settings-report-2026-10-23.md).
-
-Public files, commit messages, and pull-request text may name Rob Wilder. Other human participants are not named. AI participants are named only as ChatGPT, Cursor, Perplexity Computer, and Grok Bot. Every commit carries a Developer Certificate of Origin `Signed-off-by` trailer. Commit identity stays on the allowlist in [`scripts/name_guard.sh`](scripts/name_guard.sh).
+Public files, commit messages, and pull-request text may name Rob Wilder. Other human participants are not named. AI participants are named only as ChatGPT, Cursor, Perplexity Computer, Grok Bot, and the Wilder Legal & IP agent. Every commit carries a Developer Certificate of Origin `Signed-off-by` trailer. Commit identity stays on the allowlist in [`scripts/name_guard.sh`](scripts/name_guard.sh).

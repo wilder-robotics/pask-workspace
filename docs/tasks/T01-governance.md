@@ -28,7 +28,7 @@ Invariants:
 - Completed records stay in place. This includes the succession plan, the license map, the IETF draft-governance section, and `docs/scoping/ccf-vds-verify.md`.
 - Future instructions that would write task implementation directly to `main` are superseded. History already on `main` is not rewritten.
 - `AdapterWriteIn::push` is not weakened. No Rust file is edited.
-- Grant text is not edited. `pask-ts-client` joining the commercial-licensing scope waits on legal review.
+- Grant text is not edited. `pask-ts-client` joining the commercial-licensing scope waits on owner review by Rob Wilder, assisted by his Wilder Legal & IP agent. Pask does not use outside counsel. A DCO sign-off is not a copyright assignment. Grant-changing text needs Rob Wilder's explicit approval before merge.
 
 Non-goals:
 
@@ -46,8 +46,8 @@ Non-goals:
 | The charter names one owner and one specification revision for a task. | `GOVERNANCE.md` §10 and this file. | Filled by the implementation pull request. |
 | Security-sensitive paths require architect disposition and independent evidence review. | `GOVERNANCE.md` §11 and §12, and the security-sensitive entries in `CODEOWNERS`. | Filled by the implementation pull request. |
 | The settings report names required checks, review count, stale-approval behavior, and every bypass actor the reader could see. | `docs/governance/github-settings-report-2026-10-23.md`. | Filled by the implementation pull request. |
-| Rob Wilder has exact steps for settings a source pull request cannot change. | Remediation section of the settings report, repeated in the pull request. | Filled by the implementation pull request. |
-| Agents have no administrator bypass in the instructions. | `GOVERNANCE.md` §13 and `.cursor/rules/governance.mdc`. | Filled by the implementation pull request. |
+| Rob Wilder has the settings facts and a set of options a source pull request cannot apply. The options keep the bypass used for delegated merges. | Options section of `docs/governance/github-settings-report-2026-10-23.md`, repeated in the pull request. | Filled by the implementation pull request. |
+| Cursor does not merge or approve its own pull requests. A merge Grok Bot performs after Rob Wilder's explicit approval counts as Rob Wilder's merge. Settings options keep the bypass that path uses. | `GOVERNANCE.md` §2, §4.1, and §13, `.cursor/rules/governance.mdc`, and the options in `docs/governance/github-settings-report-2026-10-23.md`. | Filled by the implementation pull request. |
 | Four accepted selections are recorded as selections, with implementation not done. | `docs/decisions/0001` through `0004`. | Filled by the implementation pull request. |
 | T02 through T10 are named as pending specifications, without added design. | `docs/tasks/README.md`. | Filled by the implementation pull request. |
 
@@ -60,8 +60,8 @@ Non-goals:
 
 Stop and report, rather than choosing, when any of the following is true:
 
-- The administrator identity and the agent identity are the same account.
-- Separate approval cannot be enforced, including the absence of a second code owner for pull requests authored by `actionrob`.
+- A GitHub identity fact is being used to block a merge Rob Wilder has explicitly approved. Report the identity. Do not treat Grok Bot's merge of that pull request as a violation. Cursor still does not merge or approve its own pull requests.
+- A settings change would remove the bypass Rob Wilder's delegated merges use. Report the facts. Offer options that keep the path. Do not apply the change.
 - Freeze status is unresolved beyond the CCF checkpoint hold in `docs/decisions/0001-ccf-verification-hold.md`. This task does not decide any other freeze.
 - A request would expose private evidence.
 - The GitHub handle for Rob Wilder cannot be determined. On this task the handle `actionrob` was determined from `CODEOWNERS`, the collaborator list, and `.mailmap`. No placeholder was used.

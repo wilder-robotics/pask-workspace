@@ -1,12 +1,12 @@
 # 0004. Commercial-licensing scope and issue status
 
-- Status: Accepted by the architect (ChatGPT) on 2026-10-23.
-- Implementation of the grant: not done. No grant-changing text merges in the task that records this selection.
+- Status: Accepted by the architect (ChatGPT) on 2026-10-23. Owner override by Rob Wilder on 2026-10-23 replaces the review gate below. Rob Wilder's authority is above the architect. ChatGPT's role on this selection is advisory and technical.
+- Implementation of the grant: not done. No grant-changing text merges in the task that records this selection. Grant-changing text needs Rob Wilder's explicit approval before merge.
 - Implementation of the issue sections: the dated text below is the status to append to issues #66 and #76. The original issue text stays.
 
 ## Selection
 
-`pask-ts-client` is inside the intended commercial-licensing scope. Legal review is required before any text that changes a grant merges. Until that review, [`COMMERCIAL-EXCEPTION.md`](../../COMMERCIAL-EXCEPTION.md) remains the grant. As of its 2026-09-02 scope statement, that grant names `pask-site` and `pask-adapter` and does not name `pask-ts-client`. This record does not edit `LICENSE`, `LICENSING.md`, or `COMMERCIAL-EXCEPTION.md`.
+`pask-ts-client` is inside the intended commercial-licensing scope. Owner review by Rob Wilder, assisted by his Wilder Legal & IP agent, comes before any text that changes a grant merges. Pask does not use outside counsel. A DCO sign-off is not a copyright assignment, so contributor rights are checked as part of that owner review. Until Rob Wilder explicitly approves a grant change, [`COMMERCIAL-EXCEPTION.md`](../../COMMERCIAL-EXCEPTION.md) remains the grant. As of its 2026-09-02 scope statement, that grant names `pask-site` and `pask-adapter` and does not name `pask-ts-client`. This record does not edit `LICENSE`, `LICENSING.md`, or `COMMERCIAL-EXCEPTION.md`.
 
 Issues [#66](https://github.com/wilder-robotics/pask-workspace/issues/66) and [#76](https://github.com/wilder-robotics/pask-workspace/issues/76) are meant to gain a dated implementation-status section. Their history must not be erased, rewritten, or closed by that status.
 

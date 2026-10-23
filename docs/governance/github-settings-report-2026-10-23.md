@@ -123,26 +123,23 @@ These job names were read from `.github/workflows/` on the base commit. They are
 
 Rob Wilder checks each of those in the UI before treating this report as a complete bypass inventory.
 
-## Remediation Rob Wilder applies
+## Options for Rob Wilder
 
-Do this on ruleset `main-protection` (id 19786840). A source pull request cannot apply it. After saving, verify with a pull request opened by an agent identity that is not `actionrob`.
+These are options, not requirements. A source pull request cannot apply them. Rob Wilder chooses. Owner override of 2026-10-23: he may delegate merging to his agents. Grok Bot merges a pull request when Rob Wilder has explicitly approved that pull request, and that merge counts as Rob Wilder's merge. Cursor does not merge and does not approve its own pull requests.
 
-1. Open the bypass list. Write down every actor shown there before changing it. This report could not see them. Remove every agent, bot, GitHub App, and integration. Remove the Organization admin bypass role and the Repository admin bypass role. Leave the list empty unless a named break-glass human, distinct from every agent and distinct from the account agents use, is deliberately retained. An agent must not be able to use an administrator bypass.
-2. Keep `actionrob` as repository admin, because Rob Wilder is the person who applies these settings. Do not grant Admin, Maintain, or a bypass to Cursor, Grok Bot, or any other agent identity. Admin on the repository can still edit this ruleset. That meta-bypass is not something this report can remove. The mitigation is that agent logins do not hold Admin.
-3. Under "Require a pull request before merging":
-   - Required approvals: 1.
-   - Turn on "Require approval of the most recent reviewable push" so the approval is of the final revision.
-   - Leave "Dismiss stale pull request approvals when new commits are pushed" on. It is already on.
-   - Turn on "Require review from Code Owners".
-   - Turn on "Require conversation resolution before merging".
-   - Leave allowed merge methods as squash unless a separate decision changes them.
-4. Keep "Require status checks to pass" in strict mode (branches must be up to date). Keep these contexts required: `Cargo (ubuntu-latest)`, `DCO sign-off`, `Draft (xml2rfc + idnits)`, `Public Name Rule`, `Compliance grep`.
-5. Decide, separately from this task, whether `License split` and `Revision consistency` become required. They enforce licensing and the revision ratchet and they are not required today. This task does not make that choice.
-6. Reconcile signed commits. Either add "Require signed commits", or correct `CONTRIBUTING.md` in a later task so it stops saying branch protection enforces signatures. The live ruleset does not require signatures.
-7. Confirm classic branch protection. The token received HTTP 403. If a classic rule exists, give it the same approval count, code-owner review, conversation resolution, required checks, and empty agent/admin bypass. A weaker classic rule is another way through.
-8. Confirm organization rulesets. The token received HTTP 403. If an organization ruleset targets this repository, apply the same constraints. Record every bypass actor on those rulesets.
-9. Confirm the collaborator and outside-collaborator lists, and the GitHub Apps installed on the repository. This token saw one collaborator, `actionrob`, with admin. It could not list teams, installed apps, or the integration's own login. Any agent login with Admin, Write plus a bypass, or organization-owner rights fails the separate-approval requirement.
-10. Verification after the edit: an agent-authored pull request cannot be merged by the agent; it needs one approval from `actionrob` on the latest push; a new commit dismisses that approval; unresolved conversations block merge; the five checks above are required and green; the agent is not offered a bypass. A pull request authored by `actionrob` still has no second code owner. That gap remains until a second owner is named under `GOVERNANCE.md` §4.3. Do not close the gap by letting `actionrob` bypass the rule.
+The delegated-merge path needs a bypass this token could not name. The ruleset requires zero approving reviews. `bypass_actors` was absent from the payload. An earlier reading said organization-admin bypass is permitted, and this token did not re-observe that actor. Do not remove the bypass that path uses, including an organization-admin or repository-admin bypass if that is how Grok Bot merges after Rob Wilder's explicit approval.
+
+Options that keep that path:
+
+1. Open the bypass list and write down every actor. This report could not see them. Keep the bypass Grok Bot uses for a pull request Rob Wilder has explicitly approved. Do not delete that actor in order to force a separate human click.
+2. Optionally require the status checks that are already required to keep passing, still in strict mode: `Cargo (ubuntu-latest)`, `DCO sign-off`, `Draft (xml2rfc + idnits)`, `Public Name Rule`, `Compliance grep`. Requiring checks does not remove the bypass.
+3. Optionally require conversation resolution before merging. Requiring it does not remove the bypass.
+4. Stale-review dismissal is already on. Leaving it on is compatible with the delegated-merge path.
+5. Optionally add `License split` and `Revision consistency` to the required checks. They are not required today.
+6. Signed commits are not a rule in this ruleset. `CONTRIBUTING.md` says branch protection enforces them. One option is to add "Require signed commits". Another is to correct `CONTRIBUTING.md` in a later task. Either option can keep the delegated-merge bypass.
+7. Classic branch protection returned HTTP 403, and organization rulesets returned HTTP 403. If either exists, one option is to align required checks and conversation resolution with this repository ruleset, while keeping the delegated-merge bypass on every ruleset that targets this repository. Record every bypass actor those screens show.
+8. This token saw one collaborator, `actionrob`, with admin. It could not list teams, installed apps, or its own login. One option is to confirm which identity Grok Bot uses when it merges, and to keep that identity able to merge after Rob Wilder's explicit approval.
+9. If code-owner review is turned on later, a pull request authored by `actionrob` has no second code owner (`GOVERNANCE.md` §4.3). That observation is not a request to remove `actionrob`'s bypass. Cursor's own pull requests are still not approved or merged by Cursor.
 
 ## Earlier reading, not re-observed
 
