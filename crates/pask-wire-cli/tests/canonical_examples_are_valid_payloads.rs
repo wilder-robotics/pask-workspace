@@ -9,7 +9,9 @@
 //! the repository root, so they run only from a workspace checkout and are
 //! excluded from the archive (see `exclude` in `Cargo.toml`). This file keeps
 //! the part that needs no repository asset: the existing 0.7 emitter must
-//! produce a payload that validates, and the documented 0.7
+//! produce a payload that validates, `canonical-example` must print each
+//! library figure (`0.5` by default, and `0.6` / `0.7` with `--profile`) as
+//! bytes that pass `Payload::from_json`, and the documented 0.7
 //! input -> `produce` -> supplied-key `verify` procedure must round-trip
 //! through the actual executable, with its runtime rejections intact.
 //!
@@ -119,6 +121,46 @@ fn the_emitted_07_example_is_a_valid_payload_with_an_explicit_null_digest() {
 
     // Deterministic output.
     assert_eq!(emitted, pask_wire::canonical_example_07().unwrap());
+}
+
+fn assert_cli_example_matches_and_validates(args: &[&str], expected: &str, spec: &str) {
+    let out = run(args);
+    assert!(
+        out.status.success(),
+        "{args:?} failed: {}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    assert_eq!(out.stdout, expected.as_bytes(), "{args:?}");
+    let payload = pask_wire::Payload::from_json(&out.stdout)
+        .unwrap_or_else(|error| panic!("{args:?} did not pass Payload::from_json: {error}"));
+    assert_eq!(payload.spec(), spec, "{args:?}");
+}
+
+#[test]
+fn cli_profile_examples_match_the_library_and_pass_from_json() {
+    let legacy = pask_wire::canonical_example().expect("the 0.5 example emits");
+    let example_06 = pask_wire::canonical_example_06().expect("the 0.6 example emits");
+    let example_07 = pask_wire::canonical_example_07().expect("the 0.7 example emits");
+    assert_cli_example_matches_and_validates(
+        &["canonical-example"],
+        &legacy,
+        pask_wire::SPEC_VERSION,
+    );
+    assert_cli_example_matches_and_validates(
+        &["canonical-example", "--profile", "0.5"],
+        &legacy,
+        pask_wire::SPEC_VERSION,
+    );
+    assert_cli_example_matches_and_validates(
+        &["canonical-example", "--profile", "0.6"],
+        &example_06,
+        pask_wire::SPEC_VERSION_06,
+    );
+    assert_cli_example_matches_and_validates(
+        &["canonical-example", "--profile", "0.7"],
+        &example_07,
+        pask_wire::SPEC_VERSION_07,
+    );
 }
 
 #[test]

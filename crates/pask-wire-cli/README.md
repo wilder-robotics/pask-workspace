@@ -23,6 +23,7 @@ Until then, evaluate from a checkout of the reviewed source, with Rust stable
 ```sh
 cargo run --locked -p pask-wire-cli -- --help
 cargo run --locked -p pask-wire-cli -- canonical-example
+cargo run --locked -p pask-wire-cli -- canonical-example --profile 0.7
 cargo install --locked --path crates/pask-wire-cli --root ./local-install
 ./local-install/bin/pask-wire-cli --help
 ```
@@ -31,6 +32,8 @@ cargo install --locked --path crates/pask-wire-cli --root ./local-install
 
 ```text
 pask-wire-cli canonical-example
+pask-wire-cli canonical-example --profile 0.6
+pask-wire-cli canonical-example --profile 0.7
 pask-wire-cli produce --input payload.json --private-key private.pem --output statement.cbor
 pask-wire-cli verify --input statement.cbor --public-key public.pem --output payload.json
 ```
@@ -41,14 +44,15 @@ Ed25519 SubjectPublicKeyInfo PEM (`PUBLIC KEY`), not an SSH public-key line.
 It does not output the full recipient coordinator report, automatically verify
 attached SCITT Receipts, or establish a presented chain's contiguity.
 
-`canonical-example` deliberately emits the legacy 0.5 example, byte for byte,
-and a packaged test pins that output. The historical -04/0.6 figure used
-`pask_wire::canonical_example_06()`. The current in-tree draft figure uses
-`pask_wire::canonical_example_07()` and is checked by repository-only document
-tests. The portable packaged test separately validates the legacy and 0.7
-emitters; it does not compare the historical -04 document. No profile-selection
-option is provided: the profile a statement carries is the `spec` of the
-payload given to `produce`.
+`canonical-example` with no flag emits the legacy 0.5 example, byte for byte,
+and a packaged test pins that output. `--profile 0.5` prints the same bytes.
+`--profile 0.6` prints `pask_wire::canonical_example_06()`, the historical
+-04 figure. `--profile 0.7` prints `pask_wire::canonical_example_07()`, the
+current in-tree draft figure, which repository-only document tests compare
+with the draft. The portable packaged tests check that each of these CLI
+outputs matches the library emitter and validates with `Payload::from_json`.
+`--profile` only chooses which example this command prints. The profile a
+statement carries is still the `spec` of the payload given to `produce`.
 
 ## Producing and verifying a 0.7 statement
 
@@ -74,13 +78,21 @@ is on `PATH`.
    ```
 
 2. Input. Start from the 0.7 canonical example, which commits to no retained
-   content (`"contentDigest": null`). From a checkout:
+   content (`"contentDigest": null`):
 
    ```sh
-   cargo run --locked -p pask-wire --features alloc --example draft07_payload > payload-07.json
+   pask-wire-cli canonical-example --profile 0.7 > payload-07.json
    ```
 
-   Its `engagement` object contains `"contentDigest": null` and its `spec` is
+   Those bytes are `pask_wire::canonical_example_07()`. From a checkout, before
+   the binary is installed:
+
+   ```sh
+   cargo run --locked -p pask-wire-cli -- canonical-example --profile 0.7 > payload-07.json
+   ```
+
+   The `pask-wire` example `draft07_payload` prints the same figure. Its
+   `engagement` object contains `"contentDigest": null` and its `spec` is
    `"wilder.pser/0.7"`. The producer still applies its normal value and
    cross-field validation; a matching JSON shape alone is insufficient.
 

@@ -12,7 +12,8 @@
 //!
 //! If this test fails, do not edit the document by hand. Run
 //! `cargo run -p pask-wire --features alloc --example draft07_payload` and paste the output.
-//! The CLI's `canonical-example` command intentionally continues to emit the 0.5 example.
+//! The CLI's `canonical-example` command intentionally continues to emit the 0.5
+//! example when no `--profile` is given. `--profile 0.7` prints this same figure.
 
 use std::{fs, path::PathBuf};
 
