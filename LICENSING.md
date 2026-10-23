@@ -180,12 +180,14 @@ no one else's agreement.
 
 ## Publication and protocol versions
 
-These crates are not yet published to crates.io. When they are, the crate version and the protocol
+The Apache-2.0 crates `pask-wire`, `pask-attest`, and `pask-wire-cli` are published on crates.io at
+version 0.2.0. The AGPL-3.0-only crates are not published. The crate version and the protocol
 revision it implements are not the same number and should never be assumed to track each other. Each
-published crate must state the profile revision it implements — the `wilder.pser` profile version
-and the corresponding draft revision — in its manifest metadata and in its documentation, so that
+published crate must state the profile revision it implements, the `wilder.pser` profile version
+and the corresponding draft revision, in its manifest metadata and in its documentation, so that
 the mapping is unambiguous to a reader who has only the crate.
 
 ---
 
-*Last updated 2026-09-02.*
+*Last updated 2026-09-02. The publication paragraph was corrected on 2026-10-22 to record the
+crates.io 0.2.0 releases of the three Apache-2.0 crates. The license split above is unchanged.*
