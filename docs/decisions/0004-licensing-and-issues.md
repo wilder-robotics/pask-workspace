@@ -8,7 +8,9 @@
 
 `pask-ts-client` is inside the intended commercial-licensing scope. Legal review is required before any text that changes a grant merges. Until that review, [`COMMERCIAL-EXCEPTION.md`](../../COMMERCIAL-EXCEPTION.md) remains the grant. As of its 2026-09-02 scope statement, that grant names `pask-site` and `pask-adapter` and does not name `pask-ts-client`. This record does not edit `LICENSE`, `LICENSING.md`, or `COMMERCIAL-EXCEPTION.md`.
 
-Issues [#66](https://github.com/wilder-robotics/pask-workspace/issues/66) and [#76](https://github.com/wilder-robotics/pask-workspace/issues/76) gain a dated implementation-status section. Their history is not erased, rewritten, or closed by this status.
+Issues [#66](https://github.com/wilder-robotics/pask-workspace/issues/66) and [#76](https://github.com/wilder-robotics/pask-workspace/issues/76) are meant to gain a dated implementation-status section. Their history must not be erased, rewritten, or closed by that status.
+
+On 2026-10-23 the integration token received HTTP 403 for `PATCH` on both issue bodies and for `POST` of a comment on both issues. The sections below are the text to append. They are not yet on the issues. Rob Wilder can paste them without deleting the original request. This task does not close either issue.
 
 The sections below were read from base `fa78e8be7243df772eb37cf0fbead61a5d2bb047` on 2026-10-23. Task T01 did not change Rust code and did not re-run the tests those files contain.
 
