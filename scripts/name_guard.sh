@@ -173,12 +173,17 @@ TEST_HASH='c2a235569183581c'
 # commit level. Flagged for a ruling. Recorded here rather than silently
 # widened, because widening a control to match reality and widening it to
 # stop it complaining look identical in a diff.
+# 'Cursor Agent' is the machine identity of the Cursor cloud agent. It is not
+# a personal name. That environment signs commits as this identity, so
+# rewriting them onto another allowed name would put the wrong author on the
+# signature.
 ALLOWED_IDENTITIES=(
   'Rob Wilder'
   'Wilder Robotics Automation'
   'actionrob'
   'dependabot[bot]'
   'GitHub'
+  'Cursor Agent'
 )
 
 hash_token() {

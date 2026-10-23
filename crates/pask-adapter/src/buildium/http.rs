@@ -3,9 +3,14 @@
 // pask-adapter is licensed AGPL-3.0-only with a commercial exception; see
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
+use std::fmt;
+
 use serde_json::Value;
 
 use crate::AdapterError;
+
+/// Placeholder written in place of a secret header value in `Debug` output.
+const REDACTED_SECRET: &str = "[redacted]";
 
 /// HTTP methods permitted by the adapter transport boundary.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -18,7 +23,10 @@ pub enum HttpMethod {
 }
 
 /// Transport-neutral HTTP request.
-#[derive(Clone, Debug, PartialEq)]
+///
+/// `Debug` redacts header values whose names contain `secret` and leaves other
+/// headers, including the client id, visible.
+#[derive(Clone, PartialEq)]
 pub struct HttpRequest {
     /// Request method.
     pub method: HttpMethod,
@@ -31,6 +39,36 @@ pub struct HttpRequest {
 
     /// Optional JSON request body.
     pub body: Option<Value>,
+}
+
+impl fmt::Debug for HttpRequest {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let headers: Vec<(&str, &str)> = self
+            .headers
+            .iter()
+            .map(|(name, value)| {
+                let value = if header_holds_secret(name) {
+                    REDACTED_SECRET
+                } else {
+                    value.as_str()
+                };
+                (name.as_str(), value)
+            })
+            .collect();
+        f.debug_struct("HttpRequest")
+            .field("method", &self.method)
+            .field("url", &self.url)
+            .field("headers", &headers)
+            .field("body", &self.body)
+            .finish()
+    }
+}
+
+/// Returns whether this header name marks a credential secret.
+///
+/// The client id header does not match, so it stays visible in `Debug`.
+fn header_holds_secret(name: &str) -> bool {
+    name.to_ascii_lowercase().contains("secret")
 }
 
 /// Transport-neutral HTTP response.

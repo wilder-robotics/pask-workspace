@@ -3,16 +3,32 @@
 // pask-adapter is licensed AGPL-3.0-only with a commercial exception; see
 // COMMERCIAL-EXCEPTION.md in the workspace root.
 
+use std::fmt;
+
 use crate::AdapterError;
 
+/// Placeholder written in place of a client secret in `Debug` output.
+const REDACTED_SECRET: &str = "[redacted]";
+
 /// Credentials required by the Buildium API.
-#[derive(Clone, Debug, PartialEq, Eq)]
+///
+/// `Debug` includes the client id and redacts the client secret.
+#[derive(Clone, PartialEq, Eq)]
 pub struct Credentials {
     /// Buildium client identifier.
     pub client_id: String,
 
-    /// Buildium client secret.
+    /// Buildium client secret. Redacted in `Debug` output.
     pub client_secret: String,
+}
+
+impl fmt::Debug for Credentials {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Credentials")
+            .field("client_id", &self.client_id)
+            .field("client_secret", &REDACTED_SECRET)
+            .finish()
+    }
 }
 
 /// Resolves credentials at adapter execution time.
