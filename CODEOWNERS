@@ -1,10 +1,39 @@
-# Every file requires review from Rob unless overridden below.
+# Review routes to actionrob, the GitHub account controlled by Rob Wilder.
+# Evidence for that handle is recorded in
+# docs/governance/github-settings-report-2026-10-23.md.
+# Do not add an agent identity here. An agent must not satisfy review of
+# its own pull request.
 *                @actionrob
 
-# The authoritative specification MUST be reviewed by Rob personally.
-/docs/draft-wilder-scitt-physical-site-engage-receipt-*.md    @actionrob
+# Security-sensitive paths. These entries stay assigned to @actionrob even
+# if the wildcard above is later narrowed. GitHub can require code-owner
+# review only after Rob Wilder enables that ruleset setting. Process beyond
+# GitHub: ChatGPT disposition, plus independent evidence review, before
+# merge. See GOVERNANCE.md sections 11 and 12.
+#
+# The set is the surface where a change can alter signed bytes, trust
+# anchors, accepted algorithms, profile versions, enum meanings, time
+# policy, key custody, fixture expectations, licensing, or public
+# assurance claims.
 
-# Licensing and commercial-exception boilerplate MUST NOT be edited without
-# explicit approval.
-/LICENSE                    @actionrob
-/COMMERCIAL-EXCEPTION.md    @actionrob
+/crates/pask-wire/                  @actionrob
+/crates/pask-attest/                @actionrob
+/crates/pask-wire-cli/              @actionrob
+/crates/pask-ts-client/             @actionrob
+/crates/pask-adapter/               @actionrob
+/crates/pask-site/                  @actionrob
+/schemas/                           @actionrob
+/evidence/                          @actionrob
+
+/docs/draft-wilder-scitt-physical-site-engage-receipt-*.md    @actionrob
+/docs/decisions/                    @actionrob
+/docs/tasks/                        @actionrob
+
+/GOVERNANCE.md                      @actionrob
+/CODEOWNERS                         @actionrob
+/SECURITY.md                        @actionrob
+/KNOWN-LIMITATIONS.md               @actionrob
+/LICENSE                            @actionrob
+/LICENSE-APACHE-2.0                 @actionrob
+/LICENSING.md                       @actionrob
+/COMMERCIAL-EXCEPTION.md            @actionrob
