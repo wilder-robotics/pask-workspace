@@ -466,7 +466,8 @@ remain open until their own criteria are satisfied.
   establish that the write path works.
 - The PropertyMeld adapter is a fail-closed stub.
 - Local deduplication does not establish remote idempotency.
-- Credentials can appear in debug output.
+- Resolved: debug formatting shows the client id and redacts the client
+  secret on `Credentials` and on HTTP requests that carry it.
 
 ---
 
