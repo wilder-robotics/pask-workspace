@@ -22,6 +22,11 @@ ed25519-dalek = { version = "2.2.0", default-features = false, features = ["pem"
 pask-adapter = { path = "../pask-adapter" }
 pask-attest = { path = "../pask-attest" }
 pask-wire = { path = "../pask-wire", features = ["std"] }
+# Local operation and chain store only. MIT license. Feature `bundled` compiles
+# the SQLite amalgamation with pregenerated bindings (no bindgen, no system
+# libsqlite). The optional `time` feature is not enabled, so this dependency
+# does not move the workspace `time` pin. Not a default feature of the crate.
+rusqlite = { version = "0.37.0", default-features = false, features = ["bundled"] }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 sha2 = "0.10.9"
