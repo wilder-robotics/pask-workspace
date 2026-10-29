@@ -81,7 +81,7 @@ The particular naming-equality check is not imposed on `DELEGATED_WITNESS` or
 check does not establish that a delegation credential exists or is authentic.
 The producer's ability to sign an object does not substitute for verifying it.
 
-## 3. Compatibility matrix — pinned implementation, not universal conformance
+## 3. Compatibility matrix: pinned implementation, not universal conformance
 
 | Property | 0.5 | 0.6 | 0.7 |
 |---|---|---|---|
