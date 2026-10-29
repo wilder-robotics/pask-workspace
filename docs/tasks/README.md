@@ -23,14 +23,17 @@ The pull request that implements the specification uses the four-part evidence b
 | Id | Specification | State |
 | --- | --- | --- |
 | T01 | [Governance charter](T01-governance.md) | Approved for dispatch. Implementation is the pull request that adds this directory. |
+| T02 | [Conformance carry-forward](T02-conformance-carry-forward.md) | Approved, filing-critical. |
+| T03 | [CCF verification](T03-ccf-verification.md) | Approved, conditional, not a filing prerequisite. |
+| T04 | [Durable state](T04-durable-state.md) | Approved, conditional, not a filing prerequisite. |
 
 ## Queued tasks
 
-These ids are reserved. Each is a pending specification. This list does not define scope, owner, acceptance, or design.
+These ids are reserved. T02, T03, and T04 are filed specifications, and the lines below point at those files. T05 through T10 are pending specifications. This list does not define scope, owner, acceptance, or design.
 
-- T02. Conformance carry-forward. Pending specification.
-- T03. CCF verification. Pending specification.
-- T04. Durable state. Pending specification.
+- T02. Conformance carry-forward. Filed specification: [T02-conformance-carry-forward.md](T02-conformance-carry-forward.md).
+- T03. CCF verification. Filed specification: [T03-ccf-verification.md](T03-ccf-verification.md).
+- T04. Durable state. Filed specification: [T04-durable-state.md](T04-durable-state.md).
 - T05. 0.7 reference-first producer. Pending specification.
 - T06. Verified registration. Pending specification.
 - T07. SNP capture contract. Pending specification.
