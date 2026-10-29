@@ -541,3 +541,79 @@ This update supersedes the two hold statements, not the recorded
 outcomes of earlier checks. Their resolution does not establish
 conformance, interoperability, production readiness, or CCF
 verification.
+
+## Implementation-boundary addendum for the 0.2.0 source baseline
+
+**Successor clarification; this addendum is not itself a native result.** The private
+author package held by the owner recorded this clarification against source
+`2adf75ec66630ba8525d8dfdfc3e71afe87bceec` and supplied no native result. This
+successor is appended at integration base
+`e725a53c2bbd90f3dcac1c06128ad4a367be5bd1` for the 0.2.0 reference
+implementation. Every preceding byte of this file is preserved. The historical
+author tests were not executed, and this addendum does not treat them as having
+run. Earlier dated status descriptions in this file, including the original
+header and 0.1.0 experiment narrative, are preserved as history. The accepted
+continuity baseline is filed -05, profile 0.7, and the 0.2.0 releases; this
+addendum does not refile or replace them.
+
+### Conformance documentation already exists
+
+The -05 source already requires nested `engagement.contentDigest`, text CWT
+`sub` for 0.7, and DIRECT_WITNESS identifier equality for 0.6/0.7. Sections 1.3
+and 1.4 above already document the latter two checks. The new
+[implementer guide](docs/conformance-07.md) collects those rules and identifies
+additional proposed test coverage; it does not introduce new normative rules
+or change accepted receipt bytes.
+
+### Published test-vector authority is not production issuer control
+
+The reviewed reference-range configuration uses the RFC 8032 §7.1 TEST 1
+signing vector as its sole statement anchor. That vector's signing material
+is public, so signatures under that configured key cannot establish exclusive
+issuer control, independent provenance, hardware custody, or production
+suitability. This observation applies to that test configuration, not every
+Pask deployment, and is not a report of a production-key leak.
+
+A caller-supplied-key signature API may accept a valid signature under a test
+key that the caller supplies; it is not thereby performing a production
+trust-anchor check. This text neither rotates an anchor nor implements an
+automatic known-test-key rejection policy. Private evidence attribution for
+the reviewed configuration is retained in the accompanying author record;
+publication of that record is a separate decision.
+
+### Three distinct time surfaces
+
+The wire payload validates window shape and, for 0.6/0.7, requires declared
+receipt `ts` to lie within the declared attestation interval, inclusively.
+That consistency check is not an engagement-in-envelope calculation, a
+cross-receipt overlap check, or independent event-time evidence.
+`engagement.envelopeConformance` remains producer-declared. `UNKNOWN` is not
+upgraded to `WITHIN` by the statement verifier.
+
+The statement-verification API does not evaluate a separate quote at a
+caller clock. The distinct `pask-attest` quote API DOES apply its injected
+Clock through `ValidityWindow::check_clock`, with the existing 60-second skew
+allowance. An absence observed on the statement-only path must not be
+reported as absence of every quote-clock check in the crates. Certificate
+validity, quoted intervals, receipt issuance, caller-selected historical
+appraisal and verifier-challenge freshness are separate conditions.
+
+### Opaque quote claims do not close hardware-evidence gaps
+
+The quote-only path in the reviewed 0.2.0 `pask-attest` still authenticates
+opaque evidence references without retrieving or appraising native platform
+reports. The synthetic-underlying-evidence and absent-referenced-evidence
+gaps described in §5.2a therefore remain at this boundary. Evidence-reference
+integrity APIs and supplied-key signature verification are not substitutes
+for those checks. Closing both gaps would still not, by itself, prove
+non-exportability, continuous key custody, an approved boot configuration,
+a physical Site or robot identity, or completeness/latest history.
+
+### Preserve the byte form used for identity
+
+A tag-18 wrapper can change whole-statement bytes without changing the
+COSE signature input. The pinned reader supports tagged and local untagged
+forms. Whole-presented-byte digests, payload `chain.hash`, and any future
+representation-independent identifier must not be silently conflated. No
+new semantic identity, normalizer, de-duplication rule, or replay policy is
+adopted by this addendum.
