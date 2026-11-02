@@ -13,20 +13,16 @@ disagrees with it, believe KNOWN-LIMITATIONS.md.
 
 ## About this repository
 
-This repository is the reference implementation and workspace for
-[`draft-wilder-scitt-physical-site-engage-receipt`](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engage-receipt/),
-an IETF individual submission. The working copy in this tree is
-[`docs/draft-wilder-scitt-physical-site-engage-receipt-05.md`](docs/draft-wilder-scitt-physical-site-engage-receipt-05.md).
-That -05 file is a working draft and is not the posted revision. The posted
-revision is -04, which specifies profile `wilder.pser/0.6`. The -05 draft
-specifies `wilder.pser/0.7`. An Internet-Draft has no IETF standing until a
-working group adopts it. This one has not been adopted. Posting it is not an
-endorsement, and it is not a standard.
+- **Posted Internet-Draft:** [Revision -06 on IETF Datatracker](https://datatracker.ietf.org/doc/draft-wilder-scitt-physical-site-engage-receipt/06/), posted November 1, 2026. It is an individual submission, not a working-group document or an IETF standard.
+- **Receipt profile:** `wilder.pser/0.7`, unchanged from revision -05.
+- **Published Rust crates:** `pask-wire`, `pask-attest`, and `pask-wire-cli` remain at `0.2.0`. Revision -06 did not require a software release.
 
-The code's profile constant `SPEC_VERSION` is `wilder.pser/0.5`. The same
-library also accepts `wilder.pser/0.6` and proposed `wilder.pser/0.7`. Package
-versions, profile identifiers, and draft revision numbers are three different
-numbers.
+The [Markdown source in this repository](docs/draft-wilder-scitt-physical-site-engage-receipt-05.md)
+is for revision -05. Use the Datatracker link above to read -06.
+
+The code's profile constant `SPEC_VERSION` remains `wilder.pser/0.5`. The
+library also accepts `wilder.pser/0.6` and `wilder.pser/0.7` inputs under
+its implemented checks.
 
 **Ownership vs. protocol roles.** This repository is owned by the
 [Wilder Robotics](https://wilder-robotics.com) GitHub organization and
@@ -48,8 +44,8 @@ Physical-Site Engagement Receipts are a profile of the IETF SCITT
 architecture ([RFC 9943](https://datatracker.ietf.org/doc/rfc9943/)). They
 use [RFC 9942](https://www.rfc-editor.org/rfc/rfc9942.html) COSE Receipts. The
 payload is a canonical JSON vocabulary covering the site, the actor, the
-engagement, attestation evidence, and an adapter write-in. The -05 draft also
-binds separately retained content facts for `wilder.pser/0.7`. The draft is
+engagement, attestation evidence, and an adapter write-in. Profile
+`wilder.pser/0.7` also binds separately retained content facts. The draft is
 the definition. This page does not restate it.
 
 The profile is written around three parties: the site owner, who controls the
@@ -117,7 +113,7 @@ tree, described below.
 
 Apache-2.0 library, published on crates.io at 0.2.0. It builds a canonical
 payload, signs a statement, and runs the implemented checks for
-`wilder.pser/0.5`, `wilder.pser/0.6`, and proposed `wilder.pser/0.7`. Passing
+`wilder.pser/0.5`, `wilder.pser/0.6`, and `wilder.pser/0.7`. Passing
 those checks is not complete profile conformance. See
 [crates/pask-wire/README.md](crates/pask-wire/README.md).
 
@@ -250,7 +246,7 @@ Pre-alpha. No production-readiness claim. No safety, insurance, or
 regulatory-compliance claim.
 
 - The permissive crates produce and check `wilder.pser/0.5`,
-  `wilder.pser/0.6`, and proposed `wilder.pser/0.7` statements under a key
+  `wilder.pser/0.6`, and `wilder.pser/0.7` statements under a key
   the caller supplies. The reference site producer targets `wilder.pser/0.5`.
 - Offline checking of an attached `RFC9162_SHA256` Receipt is implemented in
   `pask-wire`.
