@@ -829,7 +829,12 @@ fn signed_0_6_just_after_interval_rejected() {
 mod es256_tests {
     use super::*;
     use p256::ecdsa::SigningKey as Es256SigningKey;
-    use p256::elliptic_curve::rand_core::OsRng as P256OsRng;
+
+    fn es256_key() -> Es256SigningKey {
+        // p256 0.14 no longer re-exports rand_core::OsRng. A fixed in-range
+        // scalar keeps these checks on signature verification, not key generation.
+        Es256SigningKey::from_bytes((&[7u8; 32]).into()).expect("7 is a valid P-256 scalar")
+    }
 
     fn build_signed_es256(
         payload_json: &str,
@@ -874,7 +879,7 @@ mod es256_tests {
     #[test]
     fn es256_0_6_version_match_passes() {
         let json_06 = minimal_06();
-        let key = Es256SigningKey::random(&mut P256OsRng);
+        let key = es256_key();
 
         let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
         let witness_key = value
@@ -892,7 +897,7 @@ mod es256_tests {
     #[test]
     fn es256_version_mismatch_06_payload_05_header_rejected() {
         let json_06 = minimal_06();
-        let key = Es256SigningKey::random(&mut P256OsRng);
+        let key = es256_key();
 
         let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
         let witness_key = value
@@ -910,7 +915,7 @@ mod es256_tests {
     #[test]
     fn es256_0_6_out_of_window_ts_rejected_for_containment() {
         let json_06 = with_ts("2026-10-15T12:00:00Z");
-        let key = Es256SigningKey::random(&mut P256OsRng);
+        let key = es256_key();
 
         let value: serde_json::Value = serde_json::from_str(&json_06).expect("must parse");
         let witness_key = value

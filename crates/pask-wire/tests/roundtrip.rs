@@ -28,7 +28,9 @@ fn produce_serialize_parse_verify_round_trip() {
 #[test]
 fn es256_round_trip() {
     let payload = Payload::from_json_for_production(MINIMAL_VALID_PAYLOAD.as_bytes()).unwrap();
-    let key = p256::ecdsa::SigningKey::random(&mut rand_core::OsRng);
+    // p256 0.14 generates keys with rand_core 0.10. This fixed scalar stays
+    // inside the P-256 scalar field and exercises the same sign-then-verify path.
+    let key = p256::ecdsa::SigningKey::from_bytes((&[7u8; 32]).into()).unwrap();
     let statement = pask_wire::produce_es256(&payload, payload.witness_key(), &key).unwrap();
     let verified = pask_wire::verify_es256(&statement, key.verifying_key()).unwrap();
     assert_eq!(verified, payload);
