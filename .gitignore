@@ -20,3 +20,6 @@ Thumbs.db
 *.p12
 *.pfx
 /secrets/
+
+# Checkout created by the external checker workflow. Not a member of this tree.
+/.scitt-verifier/

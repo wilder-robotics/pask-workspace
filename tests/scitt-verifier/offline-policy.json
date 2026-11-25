@@ -1,0 +1,8 @@
+{
+  "policyId": "pask-test/offline-scitt-verifier",
+  "policyVersion": "1",
+  "description": "Offline input for scripts/scitt_verifier_cases.sh. It names no issuer and is not a trust anchor.",
+  "assertions": {
+    "receiptCount": 1
+  }
+}

@@ -1,0 +1,103 @@
+# Offline cases for the pinned external checker.
+#
+# The CLI is https://github.com/microsoft/scitt-verifier at one commit.
+# It is built here and executed as a separate process. It is not a Cargo
+# dependency of the Apache-2.0 crates. A failure to fetch that checkout is
+# this job's checkout step, not a Pask test failure. The case script refuses
+# --online. Exit 3 is not a pass unless the documented diagnostic is present.
+
+name: External scitt-verifier
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-checker:
+    name: Offline cases against pinned checkout
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SCITT_VERIFIER_REV: 7bb6054a6feb0c286924042504fe9cbf5cf6bfe5
+      SCITT_VERIFIER_TOOLCHAIN: "1.89.0"
+
+    steps:
+      - name: Check out Pask source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Self-test the case judge
+        run: bash scripts/scitt_verifier_cases.sh --self-test
+
+      - name: Check out pinned scitt-verifier
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: microsoft/scitt-verifier
+          ref: ${{ env.SCITT_VERIFIER_REV }}
+          path: .scitt-verifier
+          persist-credentials: false
+
+      - name: Confirm the pinned checker commit
+        run: |
+          set -euo pipefail
+          actual="$(git -C .scitt-verifier rev-parse HEAD)"
+          echo "scitt-verifier HEAD=$actual"
+          if [ "$actual" != "$SCITT_VERIFIER_REV" ]; then
+            echo "::error::Pinned checker checkout is $actual, not $SCITT_VERIFIER_REV."
+            echo "This is a checkout failure, not a Pask result."
+            exit 1
+          fi
+
+      - name: Install Rust for the Pask statement generator
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          toolchain: stable
+
+      - name: Install rustc 1.89.0 for the pinned checker
+        run: |
+          set -euo pipefail
+          rustup toolchain install "$SCITT_VERIFIER_TOOLCHAIN" --profile minimal
+          RUSTUP_TOOLCHAIN="$SCITT_VERIFIER_TOOLCHAIN" rustc --version
+
+      - name: Install OpenSSL headers for the checker build
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libssl-dev
+
+      - name: Cache the pinned checker build
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: |
+            .scitt-verifier/target
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-scitt-verifier-${{ env.SCITT_VERIFIER_REV }}-${{ env.SCITT_VERIFIER_TOOLCHAIN }}
+
+      - name: Build pinned scitt-verifier
+        working-directory: .scitt-verifier
+        env:
+          RUSTUP_TOOLCHAIN: ${{ env.SCITT_VERIFIER_TOOLCHAIN }}
+        run: |
+          set -euo pipefail
+          # This directory sits inside the Pask workspace, whose rust-toolchain.toml
+          # selects stable. RUSTUP_TOOLCHAIN keeps the checker build on 1.89.0.
+          echo "RUSTUP_TOOLCHAIN=${RUSTUP_TOOLCHAIN:-unset}"
+          rustc --version | tee /tmp/scitt-verifier-rustc.txt
+          grep -q 'rustc 1.89.0' /tmp/scitt-verifier-rustc.txt
+          cargo build --locked -p scitt-verifier
+          test -x target/debug/scitt-verifier
+
+      - name: Run offline checker cases
+        env:
+          SCITT_VERIFIER_SRC: ${{ github.workspace }}/.scitt-verifier
+          SCITT_VERIFIER_BIN: ${{ github.workspace }}/.scitt-verifier/target/debug/scitt-verifier
+          SCITT_VERIFIER_TOOLCHAIN: ${{ env.SCITT_VERIFIER_TOOLCHAIN }}
+        run: bash scripts/scitt_verifier_cases.sh
